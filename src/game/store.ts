@@ -2,6 +2,8 @@
 
 import { create } from "zustand";
 import type {
+  ActiveBuff,
+  Chest,
   EnemyInstance,
   EnemyType,
   FloatingText,
@@ -12,6 +14,7 @@ import type {
   ParticleBurst,
   PlayerState,
   QuestState,
+  SkillCooldownState,
   Vec3,
 } from "./types";
 import {
@@ -22,6 +25,13 @@ import {
 } from "./data/enemies";
 import { ITEMS, getItem } from "./data/items";
 import { PLAYER, xpForLevel, ENEMY_RESPAWN_TIME } from "./constants";
+import {
+  SKILLS,
+  CRAFT_RECIPES,
+  CHEST_SPAWNS,
+  getChestGold,
+} from "./data/skills";
+import { playSound, audio } from "./audio";
 
 let enemyIdCounter = 0;
 function nextEnemyId() {
@@ -105,6 +115,19 @@ function makeInitialQuests(): QuestState[] {
     progress: 0,
   }));
 }
+
+function makeInitialChests(): Chest[] {
+  return CHEST_SPAWNS.map((c) => ({
+    id: c.id,
+    position: [...c.position] as Vec3,
+    opened: false,
+    loot: c.loot.map((l) => ({ ...l })),
+  }));
+}
+
+// Day/night cycle: time in seconds (0..DAY_LENGTH), wraps around.
+// 0 = dawn, DAY_LENGTH*0.25 = noon, 0.5 = dusk, 0.75 = midnight
+const DAY_LENGTH = 120; // seconds for a full day-night cycle
 
 export interface GameStore {
   status: GameStatus;

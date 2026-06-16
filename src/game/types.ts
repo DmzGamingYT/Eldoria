@@ -144,3 +144,48 @@ export interface LootDrop {
   position: Vec3;
   born: number;
 }
+
+// Skills / abilities
+export interface SkillDef {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  manaCost: number;
+  cooldown: number; // seconds
+  type: "fireball" | "heal" | "lightning" | "shield" | "frost";
+  power: number; // damage or heal amount
+  unlockLevel: number;
+  color: string;
+}
+
+export interface SkillCooldownState {
+  [skillId: string]: number; // remaining cooldown seconds
+}
+
+// Treasure chests
+export interface Chest {
+  id: string;
+  position: Vec3;
+  opened: boolean;
+  loot: { itemId: string; qty: number }[];
+}
+
+// Active buffs on the player
+export interface ActiveBuff {
+  id: string;
+  type: "shield" | "haste" | "regen" | "rage";
+  name: string;
+  icon: string;
+  expiresAt: number; // seconds (performance.now()/1000)
+  power: number;
+}
+
+// Crafting recipe
+export interface CraftRecipe {
+  id: string;
+  result: { itemId: string; qty: number };
+  materials: { itemId: string; qty: number }[];
+  requiresCraftingStation?: boolean;
+}
+
