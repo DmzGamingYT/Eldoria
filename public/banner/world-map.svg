@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-label="Carte du monde d'Eldoria">
+  <title>Carte du monde d'Eldoria</title>
+  <defs>
+    <radialGradient id="parchmentMap" cx="0.5" cy="0.45" r="0.6">
+      <stop offset="0%"  stop-color="#f8e9c5"/>
+      <stop offset="60%" stop-color="#e6cf9a"/>
+      <stop offset="100%" stop-color="#b88a4a"/>
+    </radialGradient>
+    <linearGradient id="seaGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5b8aa1"/>
+      <stop offset="100%" stop-color="#1f3e54"/>
+    </linearGradient>
+    <linearGradient id="forestGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3e6b3e"/>
+      <stop offset="100%" stop-color="#1c3a1c"/>
+    </linearGradient>
+    <linearGradient id="mountainGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7a6238"/>
+      <stop offset="100%" stop-color="#3a2a14"/>
+    </linearGradient>
+    <radialGradient id="bossAura" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%"  stop-color="#ff3344" stop-opacity="0.85"/>
+      <stop offset="60%" stop-color="#a01a2c" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#2b0a3d" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="goldHalo" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%"  stop-color="#fff6c8" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#fff6c8" stop-opacity="0"/>
+    </radialGradient>
+
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="strongGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="9" result="b1"/>
+      <feGaussianBlur stdDeviation="3" in="SourceGraphic" result="b2"/>
+      <feMerge>
+        <feMergeNode in="b1"/>
+        <feMergeNode in="b2"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Hexagon symbol (radius 30) -->
+    <symbol id="hex" viewBox="-32 -32 64 64">
+      <polygon points="-30,0 -15,-26 15,-26 30,0 15,26 -15,26"
+               fill="#3a2412" stroke="#f6d97c" stroke-width="2"/>
+    </symbol>
+    <!-- Compass rose -->
+    <symbol id="compass" viewBox="-30 -30 60 60">
+      <circle r="28" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" opacity="0.9"/>
+      <circle r="20" fill="#ead7a8" stroke="#a07c3a" stroke-width="1"/>
+      <polygon points="0,-22 4,0 0,22 -4,0" fill="#a13a2a"/>
+      <polygon points="-22,0 0,4 22,0 0,-4" fill="#3a2412"/>
+      <text x="0" y="-25" font-size="9" text-anchor="middle" fill="#f6d97c" font-family="Georgia, serif" font-weight="bold">N</text>
+    </symbol>
+  </defs>
+
+  <!-- Background / "Parchment" -->
+  <rect width="900" height="600" fill="url(#parchmentMap)"/>
+  <!-- Subtle paper texture / vignette -->
+  <radialGradient id="vignette" cx="0.5" cy="0.5" r="0.7">
+    <stop offset="60%" stop-color="#000" stop-opacity="0"/>
+    <stop offset="100%" stop-color="#3a2412" stop-opacity="0.45"/>
+  </radialGradient>
+  <rect width="900" height="600" fill="url(#vignette)"/>
+
+  <!-- Sea (the world is an island in the center) -->
+  <g>
+    <path d="M40,80 Q160,40 320,80 T620,90 T860,80 L860,520 Q700,560 480,540 T100,540 L40,80 Z"
+          fill="url(#seaGrad)" opacity="0.85"/>
+    <!-- Sea waves -->
+    <g stroke="#a6c5d8" stroke-width="1.2" fill="none" opacity="0.45">
+      <path d="M70,160 Q120,150 170,160 T270,160">
+        <animate attributeName="d" values="M70,160 Q120,150 170,160 T270,160; M70,160 Q120,170 170,160 T270,160; M70,160 Q120,150 170,160 T270,160" dur="6s" repeatCount="indefinite"/>
+      </path>
+      <path d="M620,200 Q660,190 700,200 T780,200">
+        <animate attributeName="d" values="M620,200 Q660,190 700,200 T780,200; M620,200 Q660,210 700,200 T780,200; M620,200 Q660,190 700,200 T780,200" dur="5.5s" repeatCount="indefinite"/>
+      </path>
+      <path d="M100,460 Q160,450 220,460 T340,460">
+        <animate attributeName="d" values="M100,460 Q160,450 220,460 T340,460; M100,460 Q160,470 220,460 T340,460; M100,460 Q160,450 220,460 T340,460" dur="7s" repeatCount="indefinite"/>
+      </path>
+    </g>
+  </g>
+
+  <!-- Main landmass (island centered) -->
+  <g>
+    <path d="M180,260
+             Q140,160 280,140
+             Q360,90 460,110
+             Q580,110 640,170
+             Q720,210 720,310
+             Q740,400 640,460
+             Q540,500 440,490
+             Q320,490 240,440
+             Q170,400 180,260 Z"
+          fill="url(#forestGrad)" stroke="#1a2814" stroke-width="3"/>
+    <!-- Forest speckles -->
+    <g fill="#2a4a2a">
+      <circle cx="280" cy="220" r="13"/><circle cx="320" cy="180" r="10"/>
+      <circle cx="380" cy="200" r="12"/><circle cx="450" cy="170" r="11"/>
+      <circle cx="540" cy="180" r="13"/><circle cx="610" cy="220" r="10"/>
+      <circle cx="260" cy="320" r="11"/><circle cx="320" cy="370" r="13"/>
+      <circle cx="430" cy="340" r="10"/><circle cx="510" cy="380" r="12"/>
+      <circle cx="600" cy="350" r="11"/>
+    </g>
+    <!-- Mountains in the north of the island -->
+    <g fill="url(#mountainGrad)">
+      <polygon points="320,150 360,100 400,150"/>
+      <polygon points="380,160 410,120 440,160"/>
+      <polygon points="490,150 530,110 570,150"/>
+      <polygon points="540,170 570,130 600,170"/>
+    </g>
+    <!-- Snow caps -->
+    <g fill="#ffffff" opacity="0.85">
+      <polygon points="356,108 360,100 364,108"/>
+      <polygon points="408,128 410,120 412,128"/>
+      <polygon points="524,118 530,110 535,118"/>
+      <polygon points="566,138 570,130 574,138"/>
+    </g>
+  </g>
+
+  <!-- Paths / routes -->
+  <g fill="none" stroke="#5a3a1f" stroke-width="2.5" stroke-dasharray="6 5" stroke-linecap="round" opacity="0.8">
+    <!-- Village (450,300) ↔ Slimes (300,340) -->
+    <path d="M450,300 Q380,310 300,340"/>
+    <!-- Village ↔ Gobelins (560,380) -->
+    <path d="M450,300 Q510,330 560,380"/>
+    <!-- Village ↔ Loups (380,400) -->
+    <path d="M450,300 Q420,350 380,400"/>
+    <!-- Village ↔ Squelettes (520,230) -->
+    <path d="M450,300 Q500,260 520,230"/>
+    <!-- Squelettes ↔ Mordrak (550,150) (DONJON) -->
+    <path d="M520,230 Q540,195 550,150" stroke="#a13a2a" stroke-width="3"/>
+  </g>
+
+  <!-- 6 hexagonal location markers -->
+  <!-- 1. Village central -->
+  <g transform="translate(450 300)">
+    <circle r="44" fill="url(#goldHalo)"/>
+    <use href="#hex" width="64" height="64" x="-32" y="-32" filter="url(#softGlow)"/>
+    <circle r="6" fill="#f6d97c" filter="url(#softGlow)">
+      <animate attributeName="r" values="5;9;5" dur="3s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <text x="0" y="48" font-size="13" text-anchor="middle" fill="#3a2412"
+          font-family="Georgia, serif" font-weight="bold">🏘️ Village</text>
+  </g>
+
+  <!-- 2. Champs des Slimes -->
+  <g transform="translate(295 340)">
+    <circle r="36" fill="url(#goldHalo)" opacity="0.7"/>
+    <use href="#hex" width="56" height="56" x="-28" y="-28"/>
+    <circle r="5" fill="#5fd35f"/>
+    <text x="0" y="44" font-size="11" text-anchor="middle" fill="#3a2412"
+          font-family="Georgia, serif" font-weight="bold">🌾 Slimes</text>
+  </g>
+
+  <!-- 3. Forêt des Gobelins -->
+  <g transform="translate(565 380)">
+    <circle r="36" fill="url(#goldHalo)" opacity="0.7"/>
+    <use href="#hex" width="56" height="56" x="-28" y="-28"/>
+    <circle r="5" fill="#8b5a2b"/>
+    <text x="0" y="44" font-size="11" text-anchor="middle" fill="#3a2412"
+          font-family="Georgia, serif" font-weight="bold">🌲 Gobelins</text>
+  </g>
+
+  <!-- 4. Forêt des Loups -->
+  <g transform="translate(380 410)">
+    <circle r="36" fill="url(#goldHalo)" opacity="0.7"/>
+    <use href="#hex" width="56" height="56" x="-28" y="-28"/>
+    <circle r="5" fill="#6b6b6b"/>
+    <text x="0" y="44" font-size="11" text-anchor="middle" fill="#3a2412"
+          font-family="Georgia, serif" font-weight="bold">🐺 Loups</text>
+  </g>
+
+  <!-- 5. Ruines des Squelettes -->
+  <g transform="translate(530 230)">
+    <circle r="38" fill="url(#goldHalo)" opacity="0.8"/>
+    <use href="#hex" width="60" height="60" x="-30" y="-30"/>
+    <circle r="5" fill="#e8e8e8"/>
+    <text x="0" y="46" font-size="11" text-anchor="middle" fill="#3a2412"
+          font-family="Georgia, serif" font-weight="bold">🏚️ Squelettes</text>
+  </g>
+
+  <!-- 6. DONJON — BOSS MORDRAK -->
+  <g transform="translate(550 150)">
+    <circle r="80" fill="url(#bossAura)">
+      <animate attributeName="r" values="70;90;70" dur="2.4s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="2.4s" repeatCount="indefinite"/>
+    </circle>
+    <g transform="rotate(0 0 0)">
+      <use href="#hex" width="72" height="72" x="-36" y="-36" stroke="#ff3344" filter="url(#strongGlow)"/>
+      <!-- Skull icon -->
+      <g transform="translate(0 -2)">
+        <ellipse cx="0" cy="-2" rx="11" ry="13" fill="#1a0808" stroke="#ff3344" stroke-width="1.2"/>
+        <circle cx="-4" cy="-3" r="2.5" fill="#ff3344">
+          <animate attributeName="opacity" values="0.6;1;0.6" dur="1.2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="4"  cy="-3" r="2.5" fill="#ff3344">
+          <animate attributeName="opacity" values="0.6;1;0.6" dur="1.2s" begin="0.3s" repeatCount="indefinite"/>
+        </circle>
+        <path d="M-2,8 L-2,12 M0,8 L0,12 M2,8 L2,12" stroke="#ff3344" stroke-width="1"/>
+        <path d="M-12,8 L-4,10 M12,8 L4,10" stroke="#ff3344" stroke-width="1"/>
+      </g>
+    </g>
+    <text x="0" y="55" font-size="13" text-anchor="middle" fill="#3a2412"
+          font-family="Georgia, serif" font-weight="bold">🏰 Donjon de Mordrak</text>
+  </g>
+
+  <!-- Compass -->
+  <g transform="translate(820 80)">
+    <use href="#compass" width="60" height="60" x="-30" y="-30"/>
+    <animateTransform attributeName="transform" type="rotate"
+      values="0 820 80; 360 820 80" dur="40s" repeatCount="indefinite" additive="sum"/>
+  </g>
+
+  <!-- Map title cartouche -->
+  <g transform="translate(450 70)">
+    <rect x="-150" y="-26" width="300" height="42" fill="#3a2412" stroke="#f6d97c" stroke-width="2" rx="6" opacity="0.95"/>
+    <rect x="-145" y="-21" width="290" height="32" fill="none" stroke="#f6d97c" stroke-width="0.5" rx="4" opacity="0.6"/>
+    <text x="0" y="6" font-size="22" text-anchor="middle" fill="#f6d97c"
+          font-family="Georgia, 'Times New Roman', serif" font-weight="bold" letter-spacing="4">
+      ❦ CARTE D'ELDORIA ❦
+    </text>
+  </g>
+
+  <!-- Bottom legend / scale -->
+  <g transform="translate(60 540)">
+    <text x="0" y="0" font-size="13" fill="#3a2412" font-family="Georgia, serif" font-style="italic">
+      ~ Eldoria, Forêt d'Argent, An 1247 de l'Âge des Ténèbres ~
+    </text>
+  </g>
+
+  <!-- Animated scanline across the map (subtle) -->
+  <rect x="0" y="0" width="900" height="6" fill="#fff4c2" opacity="0.15">
+    <animate attributeName="y" values="0;600;0" dur="9s" repeatCount="indefinite"/>
+  </rect>
+
+  <!-- Border -->
+  <rect x="3" y="3" width="894" height="594" fill="none" stroke="#3a2412" stroke-width="2" rx="8" opacity="0.6"/>
+</svg>
