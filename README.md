@@ -119,58 +119,202 @@
 
 ## ⚔️ Galerie en action
 
+<!-- Animated cinebar — cinematic intro -->
 <p align="center">
-  <a href="public/screenshots/01-main-menu.png">
-    <img src="public/screenshots/01-main-menu.png" alt="Menu principal Eldoria" width="88%">
-  </a>
-  <br/>
-  <em>🏰 Le portail de l'aventure — fond cinématique, ambres flottants, rayons divins</em>
+  <svg viewBox="0 0 920 100" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:920px">
+    <defs>
+      <linearGradient id="cineGold" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#fff4c2"/>
+        <stop offset="50%" stop-color="#f6d97c"/>
+        <stop offset="100%" stop-color="#a07c3a"/>
+      </linearGradient>
+      <linearGradient id="cineDark" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#1a0e2e"/>
+        <stop offset="100%" stop-color="#3a2412"/>
+      </linearGradient>
+    </defs>
+    <!-- Cartouche background with subtle glow -->
+    <rect x="80" y="20" width="760" height="68" fill="url(#cineDark)" stroke="url(#cineGold)" stroke-width="2" rx="8"/>
+    <rect x="86" y="26" width="748" height="56" fill="none" stroke="#f6d97c" stroke-width="0.5" rx="6" opacity="0.5"/>
+    <!-- Decorative side ornaments -->
+    <text x="100" y="62" fill="#f6d97c" font-family="Georgia, serif" font-size="22" opacity="0.9">❦</text>
+    <text x="820" y="62" fill="#f6d97c" font-family="Georgia, serif" font-size="22" opacity="0.9" text-anchor="end">❧</text>
+    <!-- Eyebrow -->
+    <text x="460" y="40" text-anchor="middle" fill="#f6d97c" font-family="Georgia, serif" font-size="11" letter-spacing="6" font-weight="bold">◈ UNE PLONGÉE EN IMAGES ◈</text>
+    <!-- Subtitle with cinematic fade-in -->
+    <text x="460" y="66" text-anchor="middle" fill="#fff4c2" font-family="Georgia, serif" font-size="17" font-style="italic">
+      Quatre instants saisis dans le royaume d'Eldoria…
+      <animate attributeName="opacity" values="0;1" dur="1.6s" fill="freeze"/>
+    </text>
+    <!-- Twinkling corner sparkles -->
+    <circle cx="100" cy="34" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" repeatCount="indefinite"/></circle>
+    <circle cx="820" cy="34" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" begin="0.6s" repeatCount="indefinite"/></circle>
+    <circle cx="100" cy="86" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" begin="1.2s" repeatCount="indefinite"/></circle>
+    <circle cx="820" cy="86" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" begin="1.8s" repeatCount="indefinite"/></circle>
+  </svg>
 </p>
 
 <br/>
 
-<table>
-  <tr>
-    <td align="center" width="49%">
-      <a href="public/screenshots/03-game-world.png">
-        <img src="public/screenshots/03-game-world.png" alt="Monde 3D Eldoria" width="100%">
-      </a>
-      <br/>
-      <strong>🌍 Le monde d'Eldoria</strong>
-      <br/>
-      <em>Terrain procédural 200×200, cycle jour/nuit, brouillard atmosphérique</em>
-    </td>
-    <td width="2%"></td>
-    <td align="center" width="49%">
-      <a href="public/screenshots/04-gameplay-hud.png">
-        <img src="public/screenshots/04-gameplay-hud.png" alt="Combat et HUD" width="100%">
-      </a>
-      <br/>
-      <strong>⚔️ Combat en temps réel</strong>
-      <br/>
-      <em>HUD parchemin, barres de vie/mana/XP, minimap, barre rapide</em>
-    </td>
-  </tr>
-  <tr>
-    <td colspan="3" height="20"></td>
-  </tr>
-  <tr>
-    <td align="center" width="49%">
-      <a href="public/screenshots/02-intro-sequence.png">
-        <img src="public/screenshots/02-intro-sequence.png" alt="Cinématique d'intro" width="100%">
-      </a>
-      <br/>
-      <strong>🎬 Cinématique d'introduction</strong>
-      <br/>
-      <em>L'histoire de Mordrak et des ténèbres contée en travelling 3D</em>
-    </td>
-    <td width="2%"></td>
-    <td align="center" width="49%">
-      <em>🖼️ Plus de captures à venir<strong>…</strong></em>
-      <br/>
-      <em>(Inventaire, Boutique, Dialogue, Journal — toutes les UI sont entièrement vectorisées&nbsp;!)</em>
-    </td>
-  </tr>
+<!-- 2×2 grid of "tableaux" — framed parchment cards -->
+<table align="center" cellpadding="0" cellspacing="0">
+<tr>
+<td width="50%" align="center" valign="top">
+
+<a href="public/screenshots/01-main-menu.png">
+<svg viewBox="0 0 600 460" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:600px">
+  <defs>
+    <linearGradient id="frameGold1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a07c3a"/>
+      <stop offset="50%" stop-color="#f6d97c"/>
+      <stop offset="100%" stop-color="#a07c3a"/>
+    </linearGradient>
+    <linearGradient id="bgParch1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fff4c2"/>
+      <stop offset="100%" stop-color="#ead7a8"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="592" height="452" fill="url(#bgParch1)" stroke="url(#frameGold1)" stroke-width="3" rx="6">
+    <animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" repeatCount="indefinite"/>
+  </rect>
+  <rect x="14" y="14" width="572" height="382" fill="none" stroke="#a07c3a" stroke-width="0.6" rx="3" opacity="0.5"/>
+  <image href="public/screenshots/01-main-menu.png" x="18" y="18" width="564" height="368" preserveAspectRatio="xMidYMid slice"/>
+  <rect x="14" y="402" width="572" height="48" fill="#3a2412" stroke="#f6d97c" stroke-width="2" rx="4">
+    <animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.4s" fill="freeze"/>
+  </rect>
+  <rect x="20" y="408" width="560" height="36" fill="none" stroke="#f6d97c" stroke-width="0.5" rx="2" opacity="0.6"/>
+  <text x="300" y="431" text-anchor="middle" fill="#f6d97c" font-family="Georgia, serif" font-size="15" font-weight="bold" letter-spacing="4">❦ ⚔ MENU PRINCIPAL ❦</text>
+  <text x="6" y="22" fill="#a07c3a" font-family="Georgia, serif" font-size="14">❦</text>
+  <text x="594" y="22" text-anchor="end" fill="#a07c3a" font-family="Georgia, serif" font-size="14">❧</text>
+  <text x="6" y="450" fill="#a07c3a" font-family="Georgia, serif" font-size="14">❧</text>
+  <text x="594" y="450" text-anchor="end" fill="#a07c3a" font-family="Georgia, serif" font-size="14">❦</text>
+  <circle cx="10" cy="10" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0;1;0" dur="2.4s" begin="0s" repeatCount="indefinite"/></circle>
+  <circle cx="590" cy="10" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0;1;0" dur="2.4s" begin="0.3s" repeatCount="indefinite"/></circle>
+  <circle cx="10" cy="450" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0;1;0" dur="2.4s" begin="0.6s" repeatCount="indefinite"/></circle>
+  <circle cx="590" cy="450" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0;1;0" dur="2.4s" begin="0.9s" repeatCount="indefinite"/></circle>
+</svg>
+</a>
+<p align="center" style="max-width:600px"><em>🏰 Le portail de l'aventure — fond cinématique, ambres flottants, rayons divins.</em></p>
+
+</td>
+<td width="50%" align="center" valign="top">
+
+<a href="public/screenshots/03-game-world.png">
+<svg viewBox="0 0 600 460" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:600px">
+  <defs>
+    <linearGradient id="frameGold2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a07c3a"/>
+      <stop offset="50%" stop-color="#f6d97c"/>
+      <stop offset="100%" stop-color="#a07c3a"/>
+    </linearGradient>
+    <linearGradient id="bgParch2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fff4c2"/>
+      <stop offset="100%" stop-color="#ead7a8"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="592" height="452" fill="url(#bgParch2)" stroke="url(#frameGold2)" stroke-width="3" rx="6">
+    <animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="0.3s" repeatCount="indefinite"/>
+  </rect>
+  <rect x="14" y="14" width="572" height="382" fill="none" stroke="#a07c3a" stroke-width="0.6" rx="3" opacity="0.5"/>
+  <image href="public/screenshots/03-game-world.png" x="18" y="18" width="564" height="368" preserveAspectRatio="xMidYMid slice"/>
+  <rect x="14" y="402" width="572" height="48" fill="#3a2412" stroke="#f6d97c" stroke-width="2" rx="4">
+    <animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.5s" fill="freeze"/>
+  </rect>
+  <rect x="20" y="408" width="560" height="36" fill="none" stroke="#f6d97c" stroke-width="0.5" rx="2" opacity="0.6"/>
+  <text x="300" y="431" text-anchor="middle" fill="#f6d97c" font-family="Georgia, serif" font-size="15" font-weight="bold" letter-spacing="4">❦ 🌍 LE MONDE ❦</text>
+  <text x="6" y="22" fill="#a07c3a" font-family="Georgia, serif" font-size="14">❦</text>
+  <text x="594" y="22" text-anchor="end" fill="#a07c3a" font-family="Georgia, serif" font-size="14">❧</text>
+  <text x="6" y="450" fill="#a07c3a" font-family="Georgia, serif" font-size="14">❧</text>
+  <text x="594" y="450" text-anchor="end" fill="#a07c3a" font-family="Georgia, serif" font-size="14">❦</text>
+  <circle cx="10" cy="10" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0;1;0" dur="2.4s" begin="0.2s" repeatCount="indefinite"/></circle>
+  <circle cx="590" cy="10" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0;1;0" dur="2.4s" begin="0.5s" repeatCount="indefinite"/></circle>
+  <circle cx="10" cy="450" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0;1;0" dur="2.4s" begin="0.8s" repeatCount="indefinite"/></circle>
+  <circle cx="590" cy="450" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0;1;0" dur="2.4s" begin="1.1s" repeatCount="indefinite"/></circle>
+</svg>
+</a>
+<p align="center" style="max-width:600px"><em>🌲 Terrain procédural 200×200, cycle jour/nuit, brouillard atmosphérique.</em></p>
+
+</td>
+</tr>
+<tr><td colspan="2" height="20"></td></tr>
+<tr>
+<td width="50%" align="center" valign="top">
+
+<a href="public/screenshots/04-gameplay-hud.png">
+<svg viewBox="0 0 600 460" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:600px">
+  <defs>
+    <linearGradient id="frameGold3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a07c3a"/>
+      <stop offset="50%" stop-color="#f6d97c"/>
+      <stop offset="100%" stop-color="#a07c3a"/>
+    </linearGradient>
+    <linearGradient id="bgParch3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fff4c2"/>
+      <stop offset="100%" stop-color="#ead7a8"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="592" height="452" fill="url(#bgParch3)" stroke="url(#frameGold3)" stroke-width="3" rx="6">
+    <animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="0.6s" repeatCount="indefinite"/>
+  </rect>
+  <rect x="14" y="14" width="572" height="382" fill="none" stroke="#a07c3a" stroke-width="0.6" rx="3" opacity="0.5"/>
+  <image href="public/screenshots/04-gameplay-hud.png" x="18" y="18" width="564" height="368" preserveAspectRatio="xMidYMid slice"/>
+  <rect x="14" y="402" width="572" height="48" fill="#3a2412" stroke="#f6d97c" stroke-width="2" rx="4">
+    <animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.6s" fill="freeze"/>
+  </rect>
+  <rect x="20" y="408" width="560" height="36" fill="none" stroke="#f6d97c" stroke-width="0.5" rx="2" opacity="0.6"/>
+  <text x="300" y="431" text-anchor="middle" fill="#f6d97c" font-family="Georgia, serif" font-size="15" font-weight="bold" letter-spacing="4">❦ ⚔ COMBAT & HUD ❦</text>
+  <text x="6" y="22" fill="#a07c3a" font-family="Georgia, serif" font-size="14">❦</text>
+  <text x="594" y="22" text-anchor="end" fill="#a07c3a" font-family="Georgia, serif" font-size="14">❧</text>
+  <text x="6" y="450" fill="#a07c3a" font-family="Georgia, serif" font-size="14">❧</text>
+  <text x="594" y="450" text-anchor="end" fill="#a07c3a" font-family="Georgia, serif" font-size="14">❦</text>
+  <circle cx="10" cy="10" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0;1;0" dur="2.4s" begin="0.4s" repeatCount="indefinite"/></circle>
+  <circle cx="590" cy="10" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0;1;0" dur="2.4s" begin="0.7s" repeatCount="indefinite"/></circle>
+  <circle cx="10" cy="450" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0;1;0" dur="2.4s" begin="1.0s" repeatCount="indefinite"/></circle>
+  <circle cx="590" cy="450" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0;1;0" dur="2.4s" begin="1.3s" repeatCount="indefinite"/></circle>
+</svg>
+</a>
+<p align="center" style="max-width:600px"><em>⚔️ HUD parchemin, barres de vie/mana/XP, minimap, barre rapide.</em></p>
+
+</td>
+<td width="50%" align="center" valign="top">
+
+<a href="public/screenshots/02-intro-sequence.png">
+<svg viewBox="0 0 600 460" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:600px">
+  <defs>
+    <linearGradient id="frameGold4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a07c3a"/>
+      <stop offset="50%" stop-color="#f6d97c"/>
+      <stop offset="100%" stop-color="#a07c3a"/>
+    </linearGradient>
+    <linearGradient id="bgParch4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fff4c2"/>
+      <stop offset="100%" stop-color="#ead7a8"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="592" height="452" fill="url(#bgParch4)" stroke="url(#frameGold4)" stroke-width="3" rx="6">
+    <animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="0.9s" repeatCount="indefinite"/>
+  </rect>
+  <rect x="14" y="14" width="572" height="382" fill="none" stroke="#a07c3a" stroke-width="0.6" rx="3" opacity="0.5"/>
+  <image href="public/screenshots/02-intro-sequence.png" x="18" y="18" width="564" height="368" preserveAspectRatio="xMidYMid slice"/>
+  <rect x="14" y="402" width="572" height="48" fill="#3a2412" stroke="#f6d97c" stroke-width="2" rx="4">
+    <animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.7s" fill="freeze"/>
+  </rect>
+  <rect x="20" y="408" width="560" height="36" fill="none" stroke="#f6d97c" stroke-width="0.5" rx="2" opacity="0.6"/>
+  <text x="300" y="431" text-anchor="middle" fill="#f6d97c" font-family="Georgia, serif" font-size="15" font-weight="bold" letter-spacing="4">❦ 🎬 CINÉMATIQUE ❦</text>
+  <text x="6" y="22" fill="#a07c3a" font-family="Georgia, serif" font-size="14">❦</text>
+  <text x="594" y="22" text-anchor="end" fill="#a07c3a" font-family="Georgia, serif" font-size="14">❧</text>
+  <text x="6" y="450" fill="#a07c3a" font-family="Georgia, serif" font-size="14">❧</text>
+  <text x="594" y="450" text-anchor="end" fill="#a07c3a" font-family="Georgia, serif" font-size="14">❦</text>
+  <circle cx="10" cy="10" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0;1;0" dur="2.4s" begin="0.6s" repeatCount="indefinite"/></circle>
+  <circle cx="590" cy="10" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0;1;0" dur="2.4s" begin="0.9s" repeatCount="indefinite"/></circle>
+  <circle cx="10" cy="450" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0;1;0" dur="2.4s" begin="1.2s" repeatCount="indefinite"/></circle>
+  <circle cx="590" cy="450" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0;1;0" dur="2.4s" begin="1.5s" repeatCount="indefinite"/></circle>
+</svg>
+</a>
+<p align="center" style="max-width:600px"><em>🎬 L'histoire de Mordrak et des ténèbres contée en travelling 3D.</em></p>
+
+</td>
+</tr>
 </table>
 
 ---
