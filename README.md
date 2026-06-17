@@ -455,7 +455,36 @@ Le destin du porteur d'espoir est tracé en cinq chapitres — chacun se conclut
 
 ## ⚡ Les Compétences du Héros
 
-Cinq sorts canalisent votre mana — débloqués au fur et à mesure de votre progression en niveau :
+<!-- Animated cinebar — cinematic intro -->
+<p align="center">
+  <svg viewBox="0 0 920 100" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:920px">
+    <defs>
+      <linearGradient id="skillCineGold" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#fff4c2"/>
+        <stop offset="50%" stop-color="#f6d97c"/>
+        <stop offset="100%" stop-color="#a07c3a"/>
+      </linearGradient>
+      <linearGradient id="skillCineDark" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#1a0e2e"/>
+        <stop offset="100%" stop-color="#3a2412"/>
+      </linearGradient>
+    </defs>
+    <rect x="80" y="20" width="760" height="68" fill="url(#skillCineDark)" stroke="url(#skillCineGold)" stroke-width="2" rx="8"/>
+    <rect x="86" y="26" width="748" height="56" fill="none" stroke="#f6d97c" stroke-width="0.5" rx="6" opacity="0.5"/>
+    <text x="100" y="62" fill="#f6d97c" font-family="Georgia, serif" font-size="22" opacity="0.9">❦</text>
+    <text x="820" y="62" fill="#f6d97c" font-family="Georgia, serif" font-size="22" opacity="0.9" text-anchor="end">❧</text>
+    <text x="460" y="40" text-anchor="middle" fill="#f6d97c" font-family="Georgia, serif" font-size="11" letter-spacing="6" font-weight="bold">◆ CINQ ARTS ARCANIQUES ◆</text>
+    <text x="460" y="66" text-anchor="middle" fill="#fff4c2" font-family="Georgia, serif" font-size="17" font-style="italic">
+      Cinq sorts canalisent votre mana — débloqués au fil de votre ascension…
+      <animate attributeName="opacity" values="0;1" dur="1.6s" fill="freeze"/>
+    </text>
+    <circle cx="100" cy="34" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" repeatCount="indefinite"/></circle>
+    <circle cx="820" cy="34" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" begin="0.6s" repeatCount="indefinite"/></circle>
+    <circle cx="100" cy="86" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" begin="1.2s" repeatCount="indefinite"/></circle>
+    <circle cx="820" cy="86" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" begin="1.8s" repeatCount="indefinite"/></circle>
+  </svg>
+</p>
+
 
 <table>
   <tr>
@@ -469,7 +498,7 @@ Cinq sorts canalisent votre mana — débloqués au fur et à mesure de votre pr
           </radialGradient>
           <linearGradient id="cardBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="100%" stop-color="#d8be83"/></linearGradient>
         </defs>
-        <rect x="6" y="6" width="188" height="208" rx="10" fill="url(#cardBg)" stroke="#a07c3a" stroke-width="2"/>
+        <rect x="6" y="6" width="188" height="208" rx="10" fill="url(#cardBg)" stroke="#a07c3a" stroke-width="2"><animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="0s" repeatCount="indefinite"/></rect>
         <rect x="10" y="10" width="180" height="200" rx="8" fill="none" stroke="#a07c3a" stroke-width="0.5" opacity="0.4"/>
         <!-- Flames -->
         <circle cx="100" cy="80" r="70" fill="url(#sFire)" opacity="0.6">
@@ -480,7 +509,8 @@ Cinq sorts canalisent votre mana — débloqués au fur et à mesure de votre pr
           <animate attributeName="r" values="28;36;28" dur="2.4s" repeatCount="indefinite"/>
         </circle>
         <text x="100" y="92" font-size="40" text-anchor="middle">🔥</text>
-        <text x="100" y="148" font-size="18" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#a13a2a">Boule de Feu</text>
+        <rect x="10" y="135" width="180" height="28" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.4s" fill="freeze"/></rect>
+        <text x="100" y="155" font-size="15" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="2">❦ BOULE DE FEU ❦</text>
         <text x="100" y="170" font-size="12" text-anchor="middle" font-family="Georgia, serif" fill="#5a3a1f">♦ 15 mana</text>
         <text x="100" y="190" font-size="11" text-anchor="middle" font-family="Georgia, serif" fill="#a07c3a" font-style="italic">dégâts AoE</text>
       </svg>
@@ -495,7 +525,7 @@ Cinq sorts canalisent votre mana — débloqués au fur et à mesure de votre pr
           </radialGradient>
           <linearGradient id="cardBg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="100%" stop-color="#d8be83"/></linearGradient>
         </defs>
-        <rect x="6" y="6" width="188" height="208" rx="10" fill="url(#cardBg2)" stroke="#a07c3a" stroke-width="2"/>
+        <rect x="6" y="6" width="188" height="208" rx="10" fill="url(#cardBg2)" stroke="#a07c3a" stroke-width="2"><animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="0.2s" repeatCount="indefinite"/></rect>
         <rect x="10" y="10" width="180" height="200" rx="8" fill="none" stroke="#a07c3a" stroke-width="0.5" opacity="0.4"/>
         <circle cx="100" cy="80" r="60" fill="url(#sHeal)" opacity="0.7">
           <animate attributeName="r" values="50;65;50" dur="3s" repeatCount="indefinite"/>
@@ -510,7 +540,8 @@ Cinq sorts canalisent votre mana — débloqués au fur et à mesure de votre pr
           </circle>
         </g>
         <text x="100" y="92" font-size="36" text-anchor="middle">✨</text>
-        <text x="100" y="148" font-size="18" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#3a7a3a">Soin Léger</text>
+        <rect x="10" y="135" width="180" height="28" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.6s" fill="freeze"/></rect>
+        <text x="100" y="155" font-size="15" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="2">❦ SOIN LÉGER ❦</text>
         <text x="100" y="170" font-size="12" text-anchor="middle" font-family="Georgia, serif" fill="#5a3a1f">♦ 20 mana</text>
         <text x="100" y="190" font-size="11" text-anchor="middle" font-family="Georgia, serif" fill="#a07c3a" font-style="italic">+50 PV instantanés</text>
       </svg>
@@ -521,15 +552,16 @@ Cinq sorts canalisent votre mana — débloqués au fur et à mesure de votre pr
           <linearGradient id="cardBg3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="100%" stop-color="#d8be83"/></linearGradient>
           <filter id="lyGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2"/></filter>
         </defs>
-        <rect x="6" y="6" width="188" height="208" rx="10" fill="url(#cardBg3)" stroke="#a07c3a" stroke-width="2"/>
+        <rect x="6" y="6" width="188" height="208" rx="10" fill="url(#cardBg3)" stroke="#a07c3a" stroke-width="2"><animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="0.4s" repeatCount="indefinite"/></rect>
         <rect x="10" y="10" width="180" height="200" rx="8" fill="none" stroke="#a07c3a" stroke-width="0.5" opacity="0.4"/>
         <!-- Lightning zigzag -->
         <path d="M70,30 L120,80 L80,100 L130,140" fill="none" stroke="#fbbf24" stroke-width="6" stroke-linejoin="round" filter="url(#lyGlow)">
           <animate attributeName="opacity" values="0.4;1;0.4" dur="1.4s" repeatCount="indefinite"/>
         </path>
         <path d="M70,30 L120,80 L80,100 L130,140" fill="none" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"/>
+        <rect x="10" y="186" width="180" height="28" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.8s" fill="freeze"/></rect>
         <text x="100" y="180" font-size="22" text-anchor="middle">⚡</text>
-        <text x="100" y="200" font-size="14" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#a07c3a">ÉCLAIR</text>
+        <text x="100" y="207" font-size="13" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="2">ÉCLAIR</text>
       </svg>
     </td>
     <td align="center" width="20%">
@@ -537,7 +569,7 @@ Cinq sorts canalisent votre mana — débloqués au fur et à mesure de votre pr
         <defs>
           <linearGradient id="cardBg4" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="100%" stop-color="#d8be83"/></linearGradient>
         </defs>
-        <rect x="6" y="6" width="188" height="208" rx="10" fill="url(#cardBg4)" stroke="#a07c3a" stroke-width="2"/>
+        <rect x="6" y="6" width="188" height="208" rx="10" fill="url(#cardBg4)" stroke="#a07c3a" stroke-width="2"><animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="0.6s" repeatCount="indefinite"/></rect>
         <rect x="10" y="10" width="180" height="200" rx="8" fill="none" stroke="#a07c3a" stroke-width="0.5" opacity="0.4"/>
         <!-- Shield -->
         <path d="M100,30 L150,55 L150,110 Q150,140 100,162 Q50,140 50,110 L50,55 Z" fill="#38bdf8" opacity="0.85">
@@ -545,7 +577,8 @@ Cinq sorts canalisent votre mana — débloqués au fur et à mesure de votre pr
         </path>
         <path d="M100,30 L150,55 L150,110 Q150,140 100,162 Q50,140 50,110 L50,55 Z" fill="none" stroke="#0a3a5a" stroke-width="2"/>
         <path d="M76,100 L94,118 L130,80" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-        <text x="100" y="200" font-size="14" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#0a3a5a">BOUCLIER</text>
+        <rect x="10" y="186" width="180" height="28" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="1.0s" fill="freeze"/></rect>
+        <text x="100" y="207" font-size="13" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="2">BOUCLIER</text>
       </svg>
     </td>
     <td align="center" width="20%">
@@ -558,7 +591,7 @@ Cinq sorts canalisent votre mana — débloqués au fur et à mesure de votre pr
             <stop offset="100%" stop-color="#0a3a5a" stop-opacity="0"/>
           </radialGradient>
         </defs>
-        <rect x="6" y="6" width="188" height="208" rx="10" fill="url(#cardBg5)" stroke="#a07c3a" stroke-width="2"/>
+        <rect x="6" y="6" width="188" height="208" rx="10" fill="url(#cardBg5)" stroke="#a07c3a" stroke-width="2"><animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="0.8s" repeatCount="indefinite"/></rect>
         <rect x="10" y="10" width="180" height="200" rx="8" fill="none" stroke="#a07c3a" stroke-width="0.5" opacity="0.4"/>
         <circle cx="100" cy="100" r="65" fill="url(#sFrost)" opacity="0.6">
           <animate attributeName="r" values="55;72;55" dur="3s" repeatCount="indefinite"/>
@@ -575,7 +608,8 @@ Cinq sorts canalisent votre mana — débloqués au fur et à mesure de votre pr
           <line x1="10" y1="0" x2="15" y2="5"/>
           <animateTransform attributeName="transform" type="rotate" values="0;360" dur="12s" repeatCount="indefinite" additive="sum"/>
         </g>
-        <text x="100" y="200" font-size="14" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#0a3a5a">GIVRE</text>
+        <rect x="10" y="186" width="180" height="28" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="1.2s" fill="freeze"/></rect>
+        <text x="100" y="207" font-size="13" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="2">GIVRE</text>
       </svg>
     </td>
   </tr>
@@ -584,6 +618,36 @@ Cinq sorts canalisent votre mana — débloqués au fur et à mesure de votre pr
 ---
 
 ## 👹 Le bestiaire
+
+<!-- Animated cinebar — cinematic intro -->
+<p align="center">
+  <svg viewBox="0 0 920 100" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:920px">
+    <defs>
+      <linearGradient id="bestCineGold" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#fff4c2"/>
+        <stop offset="50%" stop-color="#f6d97c"/>
+        <stop offset="100%" stop-color="#a07c3a"/>
+      </linearGradient>
+      <linearGradient id="bestCineDark" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#1a0e2e"/>
+        <stop offset="100%" stop-color="#3a2412"/>
+      </linearGradient>
+    </defs>
+    <rect x="80" y="20" width="760" height="68" fill="url(#bestCineDark)" stroke="url(#bestCineGold)" stroke-width="2" rx="8"/>
+    <rect x="86" y="26" width="748" height="56" fill="none" stroke="#f6d97c" stroke-width="0.5" rx="6" opacity="0.5"/>
+    <text x="100" y="62" fill="#f6d97c" font-family="Georgia, serif" font-size="22" opacity="0.9">❦</text>
+    <text x="820" y="62" fill="#f6d97c" font-family="Georgia, serif" font-size="22" opacity="0.9" text-anchor="end">❧</text>
+    <text x="460" y="40" text-anchor="middle" fill="#f6d97c" font-family="Georgia, serif" font-size="11" letter-spacing="6" font-weight="bold">◆ BESTIAIRE D'ELDORIA ◆</text>
+    <text x="460" y="66" text-anchor="middle" fill="#fff4c2" font-family="Georgia, serif" font-size="17" font-style="italic">
+      Six créatures rampent dans les terres — et un seigneur les guide…
+      <animate attributeName="opacity" values="0;1" dur="1.6s" fill="freeze"/>
+    </text>
+    <circle cx="100" cy="34" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" repeatCount="indefinite"/></circle>
+    <circle cx="820" cy="34" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" begin="0.6s" repeatCount="indefinite"/></circle>
+    <circle cx="100" cy="86" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" begin="1.2s" repeatCount="indefinite"/></circle>
+    <circle cx="820" cy="86" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" begin="1.8s" repeatCount="indefinite"/></circle>
+  </svg>
+</p>
 
 <p align="center">
   <svg viewBox="0 0 1100 380" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:1100px">
@@ -595,7 +659,7 @@ Cinq sorts canalisent votre mana — débloqués au fur et à mesure de votre pr
 
     <!-- Slime -->
     <g transform="translate(80 60)">
-      <rect x="-50" y="-20" width="160" height="280" rx="10" fill="url(#enemyCard)" stroke="#a07c3a" stroke-width="2"/>
+      <rect x="-50" y="-20" width="160" height="280" rx="10" fill="url(#enemyCard)" stroke="#a07c3a" stroke-width="2"><animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="0s" repeatCount="indefinite"/></rect>
       <circle r="55" cx="30" cy="60" fill="url(#slimeGlow)" opacity="0.6">
         <animate attributeName="r" values="50;60;50" dur="2s" repeatCount="indefinite"/>
       </circle>
@@ -604,7 +668,8 @@ Cinq sorts canalisent votre mana — débloqués au fur et à mesure de votre pr
       <ellipse cx="20" cy="58" rx="6" ry="9" fill="#1a1a1a"/>
       <ellipse cx="40" cy="58" rx="6" ry="9" fill="#1a1a1a"/>
       <ellipse cx="30" cy="80" rx="4" ry="2" fill="#1a1a1a"/>
-      <text x="30" y="155" text-anchor="middle" font-family="Georgia, serif" font-size="16" font-weight="bold" fill="#3a7a3a">Slime Vert</text>
+      <rect x="-50" y="140" width="160" height="26" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.2s" fill="freeze"/></rect>
+      <text x="30" y="159" text-anchor="middle" font-family="Georgia, serif" font-size="14" font-weight="bold" fill="#f6d97c" letter-spacing="2">SLIME VERT</text>
       <text x="30" y="180" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#5a3a1f">PV 25 • ATQ 4</text>
       <text x="30" y="200" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-style="italic" fill="#a07c3a">★☆☆☆☆</text>
       <text x="30" y="230" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#a07c3a">XP 8 • Or 2-5</text>
@@ -612,7 +677,7 @@ Cinq sorts canalisent votre mana — débloqués au fur et à mesure de votre pr
 
     <!-- Goblin -->
     <g transform="translate(280 60)">
-      <rect x="-50" y="-20" width="160" height="280" rx="10" fill="url(#enemyCard)" stroke="#a07c3a" stroke-width="2"/>
+      <rect x="-50" y="-20" width="160" height="280" rx="10" fill="url(#enemyCard)" stroke="#a07c3a" stroke-width="2"><animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="0.3s" repeatCount="indefinite"/></rect>
       <ellipse cx="30" cy="120" rx="35" ry="80" fill="#8b5a2b"/>
       <ellipse cx="30" cy="55" rx="22" ry="24" fill="#a87f4a"/>
       <polygon points="10,38 18,30 20,45" fill="#a87f4a"/>
@@ -623,14 +688,15 @@ Cinq sorts canalisent votre mana — débloqués au fur et à mesure de votre pr
       <circle cx="38" cy="56" r="2" fill="#c00"/>
       <line x1="28" y1="66" x2="36" y2="64" stroke="#3a2412" stroke-width="2"/>
       <rect x="60" y="100" width="6" height="50" fill="#7a6a4a"/>
-      <text x="30" y="200" text-anchor="middle" font-family="Georgia, serif" font-size="16" font-weight="bold" fill="#5a3a1f">Pillard Gobelin</text>
+      <rect x="-50" y="185" width="160" height="26" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.4s" fill="freeze"/></rect>
+      <text x="30" y="204" text-anchor="middle" font-family="Georgia, serif" font-size="14" font-weight="bold" fill="#f6d97c" letter-spacing="2">PILLARD GOBELIN</text>
       <text x="30" y="222" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#5a3a1f">PV 45 • ATQ 8</text>
       <text x="30" y="248" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-style="italic" fill="#a07c3a">★★☆☆☆</text>
     </g>
 
     <!-- Wolf -->
     <g transform="translate(480 60)">
-      <rect x="-50" y="-20" width="160" height="280" rx="10" fill="url(#enemyCard)" stroke="#a07c3a" stroke-width="2"/>
+      <rect x="-50" y="-20" width="160" height="280" rx="10" fill="url(#enemyCard)" stroke="#a07c3a" stroke-width="2"><animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="0.6s" repeatCount="indefinite"/></rect>
       <ellipse cx="30" cy="100" rx="35" ry="25" fill="#6b6b6b"/>
       <ellipse cx="55" cy="95" rx="22" ry="20" fill="#6b6b6b"/>
       <polygon points="40,80 45,72 50,82" fill="#5a5a5a"/>
@@ -643,14 +709,15 @@ Cinq sorts canalisent votre mana — débloqués au fur et à mesure de votre pr
       <line x1="50" y1="125" x2="55" y2="155" stroke="#5a5a5a" stroke-width="4"/>
       <line x1="20" y1="125" x2="15" y2="155" stroke="#5a5a5a" stroke-width="4"/>
       <line x1="10" y1="125" x2="5" y2="155" stroke="#5a5a5a" stroke-width="4"/>
-      <text x="30" y="195" text-anchor="middle" font-family="Georgia, serif" font-size="16" font-weight="bold" fill="#3a3a3a">Loup Sinistre</text>
+      <rect x="-50" y="180" width="160" height="26" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.6s" fill="freeze"/></rect>
+      <text x="30" y="199" text-anchor="middle" font-family="Georgia, serif" font-size="14" font-weight="bold" fill="#f6d97c" letter-spacing="2">LOUP SINISTRE</text>
       <text x="30" y="220" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#5a3a1f">PV 60 • ATQ 12</text>
       <text x="30" y="245" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-style="italic" fill="#a07c3a">★★★☆☆</text>
     </g>
 
     <!-- Skeleton -->
     <g transform="translate(680 60)">
-      <rect x="-50" y="-20" width="160" height="280" rx="10" fill="url(#enemyCard)" stroke="#a07c3a" stroke-width="2"/>
+      <rect x="-50" y="-20" width="160" height="280" rx="10" fill="url(#enemyCard)" stroke="#a07c3a" stroke-width="2"><animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="0.9s" repeatCount="indefinite"/></rect>
       <ellipse cx="30" cy="55" rx="20" ry="22" fill="#e8e8e8"/>
       <circle cx="22" cy="52" r="6" fill="#1a1a1a"/>
       <circle cx="38" cy="52" r="6" fill="#1a1a1a"/>
@@ -670,14 +737,15 @@ Cinq sorts canalisent votre mana — débloqués au fur et à mesure de votre pr
       <line x1="38" y1="125" x2="40" y2="155" stroke="#a0a0a0" stroke-width="4"/>
       <line x1="60" y1="95" x2="80" y2="60" stroke="#a0a0a0" stroke-width="3"/>
       <rect x="78" y="56" width="14" height="14" fill="#a07c3a"/>
-      <text x="30" y="195" text-anchor="middle" font-family="Georgia, serif" font-size="16" font-weight="bold" fill="#5a3a1f">Squelette</text>
+      <rect x="-50" y="180" width="160" height="26" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.8s" fill="freeze"/></rect>
+      <text x="30" y="199" text-anchor="middle" font-family="Georgia, serif" font-size="14" font-weight="bold" fill="#f6d97c" letter-spacing="2">SQUELETTE</text>
       <text x="30" y="218" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#5a3a1f">PV 80 • ATQ 16</text>
       <text x="30" y="245" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-style="italic" fill="#a07c3a">★★★★☆</text>
     </g>
 
     <!-- Ogre -->
     <g transform="translate(880 60)">
-      <rect x="-50" y="-20" width="190" height="280" rx="10" fill="url(#enemyCard)" stroke="#a07c3a" stroke-width="2"/>
+      <rect x="-50" y="-20" width="190" height="280" rx="10" fill="url(#enemyCard)" stroke="#a07c3a" stroke-width="2"><animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="1.2s" repeatCount="indefinite"/></rect>
       <ellipse cx="50" cy="100" rx="50" ry="70" fill="#7a4f8b"/>
       <ellipse cx="50" cy="60" rx="28" ry="28" fill="#9b6fc6"/>
       <circle cx="42" cy="58" r="4" fill="#fff"/>
@@ -688,14 +756,15 @@ Cinq sorts canalisent votre mana — débloqués au fur et à mesure de votre pr
       <polygon points="48,72 50,80 52,72" fill="#fff"/>
       <rect x="78" y="80" width="10" height="60" fill="#b8860b"/>
       <rect x="78" y="125" width="35" height="14" fill="#5a3e10"/>
-      <text x="50" y="200" text-anchor="middle" font-family="Georgia, serif" font-size="16" font-weight="bold" fill="#5a3a1f">Ogre des Cavernes</text>
+      <rect x="-50" y="185" width="190" height="26" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="1.0s" fill="freeze"/></rect>
+      <text x="50" y="204" text-anchor="middle" font-family="Georgia, serif" font-size="14" font-weight="bold" fill="#f6d97c" letter-spacing="2">OGRE DES CAVERNES</text>
       <text x="50" y="222" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#5a3a1f">PV 160 • ATQ 26</text>
       <text x="50" y="245" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-style="italic" fill="#a07c3a">★★★★★</text>
     </g>
 
     <!-- Boss Mordrak -->
     <g transform="translate(1050 60)">
-      <rect x="-15" y="-20" width="220" height="320" rx="10" fill="#1a0838" stroke="#2b0a3d" stroke-width="3"/>
+      <rect x="-15" y="-20" width="220" height="320" rx="10" fill="#1a0838" stroke="#ff3344" stroke-width="3"><animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="2.4s" begin="0s" repeatCount="indefinite"/></rect>
       <rect x="-12" y="-17" width="214" height="314" rx="8" fill="none" stroke="#ff3344" stroke-width="0.6" opacity="0.5"/>
       <circle cx="100" cy="100" r="100" fill="url(#bossAuraCard)">
         <animate attributeName="r" values="80;110;80" dur="2.2s" repeatCount="indefinite"/>
@@ -717,7 +786,8 @@ Cinq sorts canalisent votre mana — débloqués au fur et à mesure de votre pr
       <path d="M96,114 L96,120 M100,114 L100,120 M104,114 L104,120" stroke="#3a2412" stroke-width="1.5"/>
       <!-- Hood -->
       <path d="M62,90 Q100,40 138,90 L138,120 L62,120 Z" fill="#1a0808" opacity="0.85"/>
-      <text x="100" y="245" text-anchor="middle" font-family="Georgia, serif" font-size="17" font-weight="bold" fill="#ff8a96">⚔ Mordrak ⚔</text>
+      <rect x="-15" y="232" width="220" height="28" fill="#1a0808" stroke="#ff3344" stroke-width="2" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.3s" fill="freeze"/></rect>
+      <text x="100" y="252" text-anchor="middle" font-family="Georgia, serif" font-size="16" font-weight="bold" fill="#ff8a96" letter-spacing="3">⚔ MORDRAK ⚔</text>
       <text x="100" y="265" text-anchor="middle" font-family="Georgia, serif" font-size="12" fill="#ff8a96">PV 600 • ATQ 40</text>
       <text x="100" y="285" text-anchor="middle" font-family="Georgia, serif" font-size="11" font-style="italic" fill="#ff5468">✦✦✦ BOSS FINAL ✦✦✦</text>
     </g>
