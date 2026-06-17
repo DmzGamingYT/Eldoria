@@ -18,7 +18,8 @@
 
 <br>
 
-![Aperçu du jeu](https://placehold.co/800x400/1a1207/d8a942?text=Eldoria+⚔️+3D+RPG+Adventure&font=playfair-display)
+<!-- Ajoutez ici une capture d'écran du jeu : -->
+<!-- ![Aperçu du jeu](screenshot.png) -->
 
 </div>
 
@@ -49,8 +50,8 @@
 
 ### Prérequis
 
-- [Node.js](https://nodejs.org/) ≥ 18
-- [Bun](https://bun.sh/) (recommandé) ou npm/yarn
+- [Bun](https://bun.sh/) ≥ 1.0 (gestionnaire de paquets principal)
+- [Node.js](https://nodejs.org/) ≥ 18 (requis par Next.js et Prisma)
 
 ### Installation
 
