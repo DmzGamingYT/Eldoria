@@ -2,7 +2,7 @@
 
 # ⚔️ ELDORIA
 
-### *Un RPG 3D Fantaisie Aventure*
+### *Chroniques de la Forêt d'Argent — Un RPG 3D Fantaisie Aventure*
 
 ![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js)
 ![React Three Fiber](https://img.shields.io/badge/Three.js-0.184-049ef4?style=for-the-badge&logo=threedotjs&logoColor=white)
@@ -16,12 +16,47 @@
 *Explorez le monde d'Eldoria, affrontez des monstres, accomplissez des quêtes*
 *et détruisez le Seigneur des Ombres Mordrak.*
 
+</div>
+
+---
+
+## 🎮 Galerie
+
+<p align="center">
+  <img src="public/screenshots/01-main-menu.png" alt="Menu principal Eldoria" width="80%">
+</p>
+
+<p align="center">
+  <em>Le menu principal — un portail vers l'aventure épique dans un univers fantasy médiéval</em>
+</p>
+
 <br>
 
-<!-- Ajoutez ici une capture d'écran du jeu : -->
-<!-- ![Aperçu du jeu](screenshot.png) -->
+<table align="center">
+  <tr>
+    <td align="center" width="48%">
+      <img src="public/screenshots/03-game-world.png" alt="Monde 3D d'Eldoria" width="100%"><br>
+      <strong>🌍 Le monde d'Eldoria</strong><br>
+      <em>Terrain procédural, forêts, villages et ruines à explorer</em>
+    </td>
+    <td width="4%"></td>
+    <td align="center" width="48%">
+      <img src="public/screenshots/04-gameplay-hud.png" alt="Gameplay avec HUD" width="100%"><br>
+      <strong>⚔️ Combat en temps réel</strong><br>
+      <em>HUD complet avec barres de vie, mana, minimap et barre rapide</em>
+    </td>
+  </tr>
+</table>
 
-</div>
+<br>
+
+<p align="center">
+  <img src="public/screenshots/02-intro-sequence.png" alt="Séquence d'intro Eldoria" width="80%">
+</p>
+
+<p align="center">
+  <em>Cinématique d'intro — plongez dans l'histoire de Mordrak et des ténèbres</em>
+</p>
 
 ---
 
@@ -96,33 +131,39 @@ Ouvrez **http://localhost:3000** dans votre navigateur.
 
 ```
 eldoria/
-├── electron/              # Application Electron (desktop)
-│   ├── main.js            # Processus principal
-│   └── preload.js         # Script de preload
-├── public/assets/         # Modèles 3D, animations, textures
-│   └── characters/
-│       ├── animations/    # Bibliothèque d'animations Quaternius
-│       ├── base/          # Modèle humanoid de base
-│       └── outfits/       # Tenues modulaires
+├── .github/              # GitHub Actions, templates d'issues/PR
+│   └── workflows/
+│       └── ci.yml        # Pipeline CI (lint + typecheck + build)
+├── electron/             # Application Electron (desktop)
+│   ├── main.js           # Processus principal
+│   └── preload.js        # Script de preload
+├── public/
+│   ├── screenshots/      # Captures d'écran du jeu pour le README
+│   ├── illustrations/    # Illustrations du projet
+│   └── assets/           # Modèles 3D, animations, textures
+│       └── characters/
+│           ├── animations/   # Bibliothèque d'animations Quaternius
+│           ├── base/         # Modèle humanoid de base
+│           └── outfits/      # Tenues modulaires
 ├── src/
-│   ├── app/               # Routes Next.js (App Router)
-│   ├── components/        # Composants UI (shadcn/ui)
-│   └── game/              # 🎮 Cœur du jeu
-│       ├── Game.tsx        # Composant principal
-│       ├── store.ts        # État global (Zustand)
-│       ├── types.ts        # Types TypeScript
-│       ├── constants.ts    # Constantes du monde/joueur
-│       ├── audio.ts        # Système audio
-│       ├── data/           # Données de jeu
-│       │   ├── enemies.ts  # Enemis, PNJ, quêtes
-│       │   ├── items.ts    # Objets, craft, coffres
-│       │   └── skills.ts   # Compétences
-│       ├── player/         # Joueur et PNJ (3D)
-│       ├── enemies/        # Gestion des ennemis
-│       ├── effects/        # Effets visuels (post-processing)
-│       ├── world/          # Terrain, ciel, environnement
-│       └── ui/             # Interface utilisateur
-│           ├── HUD.tsx     # Barre de vie, mana, minimap
+│   ├── app/              # Routes Next.js (App Router)
+│   ├── components/       # Composants UI (shadcn/ui)
+│   └── game/             # 🎮 Cœur du jeu
+│       ├── Game.tsx       # Composant principal
+│       ├── store.ts       # État global (Zustand)
+│       ├── types.ts       # Types TypeScript
+│       ├── constants.ts   # Constantes du monde/joueur
+│       ├── audio.ts       # Système audio
+│       ├── data/          # Données de jeu
+│       │   ├── enemies.ts # Ennemis, PNJ, quêtes
+│       │   ├── items.ts   # Objets, craft, coffres
+│       │   └── skills.ts  # Compétences
+│       ├── player/        # Joueur et PNJ (3D)
+│       ├── enemies/       # Gestion des ennemis
+│       ├── effects/       # Effets visuels (post-processing)
+│       ├── world/         # Terrain, ciel, environnement
+│       └── ui/            # Interface utilisateur
+│           ├── HUD.tsx    # Barre de vie, mana, minimap
 │           ├── Inventory.tsx
 │           ├── Shop.tsx
 │           ├── QuestLog.tsx
@@ -131,10 +172,13 @@ eldoria/
 │           ├── MainMenu.tsx
 │           ├── Intro.tsx
 │           └── parchment.tsx  # Composants UI parchemin
-├── prisma/                # Base de données SQLite
-├── electron-builder.yml   # Configuration de build desktop
-└── scripts/               # Scripts utilitaires
-    └── generate-placeholders.mjs
+├── prisma/               # Base de données SQLite
+├── scripts/              # Scripts utilitaires
+│   ├── generate-placeholders.mjs
+│   └── capture-screenshots.mjs  # Capture d'écrans pour le README
+├── CONTRIBUTING.md       # Guide de contribution
+├── electron-builder.yml  # Configuration de build desktop
+└── tailwind.config.ts
 ```
 
 ### Stack technique
@@ -195,12 +239,14 @@ Le jeu adopte une esthétique **parchemin-fantaisie** avec :
 
 Le monde est un terrain de **200×200 unités** avec :
 
-- **Le Village** — Centre du monde avec les 4 PNJ
-- **Les Champs de l'Est** — Habitat des Slimes
-- **La Forêt** — Territoire des Gobelins et des Loups
-- **Les Ruines du Nord** — Repaire des Squelettes
-- **Les Cavernes de l'Ouest** — Tanière des Ogres
-- **Le Donjon du Nord** — Domaine de Mordrak (boss final)
+| Lieu | Description |
+|---|---|
+| 🏘️ **Le Village** | Centre du monde avec les 4 PNJ |
+| 🌾 **Les Champs de l'Est** | Habitat des Slimes |
+| 🌲 **La Forêt** | Territoire des Gobelins et des Loups |
+| 🏚️ **Les Ruines du Nord** | Repaire des Squelettes |
+| 🪨 **Les Cavernes de l'Ouest** | Tanière des Ogres |
+| 🏰 **Le Donjon du Nord** | Domaine de Mordrak (boss final) |
 
 ---
 
@@ -215,6 +261,20 @@ Les modèles et animations sont fournis par **[Quaternius](https://quaternius.co
 | Modular Character Outfits Fantasy | ⚠️ Placeholder | `public/assets/characters/outfits/` |
 
 Pour importer les vrais modèles, voir [`public/assets/characters/INSTRUCTIONS.md`](public/assets/characters/INSTRUCTIONS.md).
+
+---
+
+## 🤝 Contribuer
+
+Consultez le [guide de contribution](CONTRIBUTING.md) pour en savoir plus sur les conventions du projet, la structure du code et comment soumettre une Pull Request.
+
+### Commandes utiles
+
+```bash
+bun run lint          # Vérifier le style de code
+bunx tsc --noEmit     # Vérifier les types TypeScript
+bun run build         # Build de production
+```
 
 ---
 

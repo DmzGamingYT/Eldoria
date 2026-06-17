@@ -63,3 +63,6 @@ out/
 # Prisma database (local dev only)
 db/*.db
 prisma/db/*.db
+
+# npm lockfile (projet utilise Bun)
+package-lock.json

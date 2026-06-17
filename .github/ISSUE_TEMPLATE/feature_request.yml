@@ -1,0 +1,68 @@
+name: ✨ Suggestion d'amélioration
+description: Proposer une nouvelle fonctionnalité ou une amélioration pour Eldoria
+title: "[Feature] "
+labels: ["enhancement", "à discuter"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Vous avez une idée pour améliorer **Eldoria** ?
+        Partagez-la avec nous ! Toutes les suggestions sont les bienvenues.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 💡 Description de la suggestion
+      description: Décrivez la fonctionnalité ou l'amélioration souhaitée.
+      placeholder: "Il serait génial si le jeu pouvait..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: 🎯 Pourquoi c'est utile ?
+      description: Expliquez en quoi cette amélioration rendrait le jeu meilleur.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 🔄 Alternatives envisagées
+      description: Avez-vous pensé à d'autres solutions ?
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: 📸 Maquettes ou captures
+      description: Ajoutez des visuels si votre idée est illustrée.
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: 🏷️ Catégorie
+      description: Dans quelle partie du jeu cette amélioration s'inscrit-elle ?
+      options:
+        - 🌍 Monde & Environnement
+        - ⚔️ Combat & Gameplay
+        - 🎒 Inventaire & Craft
+        - 📜 Quêtes & Histoire
+        - 🎨 Interface & UI
+        - 🎵 Audio & Musique
+        - 🖥️ Performance & Technique
+        - 📦 Assets 3D
+        - Autre
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 💎 Priorité ressentie
+      options:
+        - 🥉 Nice to have
+        - 🥈 Ça améliorerait vraiment le jeu
+        - 🥇 Fonctionnalité essentielle
+    validations:
+      required: false

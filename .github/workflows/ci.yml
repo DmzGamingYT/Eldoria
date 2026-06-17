@@ -1,0 +1,86 @@
+# ═══════════════════════════════════════════════════════════════
+# Eldoria — CI / Qualité de code
+# ═══════════════════════════════════════════════════════════════
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  BUN_VERSION: "1"
+
+jobs:
+  # ── Vérification du code ──────────────────────────────────────
+  lint:
+    name: 🔍 Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Récupération du code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Installation de Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: 📦 Installation des dépendances
+        run: bun install --frozen-lockfile
+
+      - name: 🔍 Vérification du style de code (ESLint)
+        run: bun run lint
+
+  # ── Vérification des types TypeScript ─────────────────────────
+  typecheck:
+    name: 📘 Vérification des types
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Récupération du code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Installation de Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: 📦 Installation des dépendances
+        run: bun install --frozen-lockfile
+
+      - name: 📘 Vérification TypeScript
+        run: bunx tsc --noEmit
+
+  # ── Build de production ───────────────────────────────────────
+  build:
+    name: 🔨 Build de production
+    runs-on: ubuntu-latest
+    needs: [lint, typecheck]
+    steps:
+      - name: 📥 Récupération du code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Installation de Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: 📦 Installation des dépendances
+        run: bun install --frozen-lockfile
+
+      - name: 🔧 Génération Prisma
+        run: bun run db:generate
+
+      - name: 🔨 Build de production
+        run: bun run build
+
+      - name: 📊 Résumé du build
+        run: |
+          echo "✅ Build terminé avec succès !"
+          echo "Taille du dossier .next :"
+          du -sh .next 2>/dev/null || echo "N/A"

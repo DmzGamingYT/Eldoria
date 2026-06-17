@@ -8,7 +8,7 @@ const Game = dynamic(() => import("@/game/Game").then((m) => m.Game), {
     <div className="flex h-screen w-screen items-center justify-center bg-slate-950 text-amber-300">
       <div className="text-center">
         <div className="mb-3 text-5xl" style={{ animation: "spin 1.5s linear infinite" }}>⚔️</div>
-        <div className="text-sm tracking-widest">ENTERING ELDORIA...</div>
+        <div className="text-sm tracking-widest">ENTRÉE DANS ELDORIA...</div>
       </div>
     </div>
   ),

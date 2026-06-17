@@ -19,25 +19,25 @@ const ebGaramond = EB_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "Eldoria — 3D RPG Adventure",
+  title: "Eldoria — RPG 3D Fantaisie",
   description:
-    "A 3D fantasy RPG. Explore the world of Eldoria, battle monsters, complete quests, and defeat the Shadow Lord Mordrak.",
-  keywords: ["RPG", "3D game", "fantasy", "Eldoria", "Three.js", "Next.js"],
-  authors: [{ name: "Z.ai" }],
+    "Un RPG fantasy 3D. Explorez le monde d'Eldoria, affrontez des monstres, accomplissez des quêtes et terrassez le Seigneur des Ombres Mordrak.",
+  keywords: ["RPG", "jeu 3D", "fantaisie", "Eldoria", "Three.js", "Next.js", "RPG browser"],
+  authors: [{ name: "Alessio Innangi" }],
   icons: {
-    icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
+    icon: "/logo.svg",
   },
   openGraph: {
-    title: "Eldoria — 3D RPG Adventure",
-    description: "Explore, battle, and become the hero of Eldoria.",
-    url: "https://chat.z.ai",
+    title: "Eldoria — RPG 3D Fantaisie",
+    description: "Explorez, combattez et devenez le héros d'Eldoria.",
+    url: "https://github.com/DmzGamingYT/Eldoria",
     siteName: "Eldoria RPG",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Eldoria — 3D RPG",
-    description: "A 3D fantasy RPG adventure",
+    title: "Eldoria — RPG 3D",
+    description: "Un RPG fantasy 3D aventure",
   },
 };
 
