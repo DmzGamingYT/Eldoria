@@ -2,8 +2,18 @@
 
 import { useGame } from "../store";
 import { NPCS } from "../data/enemies";
-import { ITEMS } from "../data/items";
+import { ITEMS, getItemIcon } from "../data/items";
 import { COLORS } from "../constants";
+import {
+  ParchmentModal,
+  Eyebrow,
+  GoldButton,
+  InkButton,
+  GoldRule,
+  EmptyState,
+} from "./parchment";
+import { ItemIcon, CategoryBadge } from "./ItemIcon";
+import { ShoppingCart, ArrowLeftRight } from "lucide-react";
 
 export function Shop() {
   const shopNpcId = useGame((s) => s.ui.shop);
@@ -22,92 +32,102 @@ export function Shop() {
     .filter((i) => i.def && i.def.value > 0);
 
   return (
-    <div className="pointer-events-auto absolute inset-0 z-40 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-3xl rounded-xl border border-amber-700/50 bg-slate-950/95 shadow-2xl" style={{ animation: "panelIn 0.2s ease-out" }}>
-        <div className="flex items-center justify-between border-b border-amber-700/30 px-4 py-3">
-          <div className="flex items-center gap-2">
-            <span className="text-2xl">💰</span>
-            <div>
-              <h2 className="text-lg font-bold text-amber-200">{npc.name}'s Shop</h2>
-              <p className="text-[10px] text-slate-400">Buy and sell goods</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="rounded-lg border border-amber-700/40 bg-slate-900/60 px-3 py-1 text-right">
-              <div className="text-[9px] uppercase text-slate-400">Your Gold</div>
-              <div className="font-bold text-amber-300">{player.gold}g</div>
-            </div>
-            <button onClick={closeShop} className="flex h-7 w-7 items-center justify-center rounded border border-slate-600 text-slate-300 hover:bg-slate-800 hover:text-white">✕</button>
-          </div>
+    <ParchmentModal
+      eyebrow={`Étal de ${npc.name}`}
+      title="Boutique"
+      onClose={closeShop}
+      width="max-w-3xl"
+    >
+      <div className="mb-3 flex items-center justify-between gap-3 rounded-lg border-2 border-[var(--gold-3)] bg-[rgba(255,245,215,0.55)] px-3 py-2">
+        <div className="font-serif text-sm italic text-[var(--parchment-ink-soft)]">
+          « Achetez et vendez vos marchandises au juste prix. »
         </div>
-
-        <div className="grid gap-4 p-4 md:grid-cols-2">
-          {/* Buy */}
-          <div>
-            <h3 className="mb-2 text-xs font-bold uppercase tracking-wide text-emerald-400">🛒 Buy</h3>
-            <div className="space-y-1.5 max-h-[50vh] overflow-y-auto pr-1">
-              {shopItems.map((item) => {
-                const c = COLORS.rarity[item.rarity];
-                const canAfford = player.gold >= item.value;
-                return (
-                  <div key={item.id} className="flex items-center gap-2 rounded-lg border border-slate-700 bg-slate-900/60 p-2">
-                    <div className="flex h-10 w-10 items-center justify-center rounded text-2xl" style={{ background: `${c}22` }}>{item.icon}</div>
-                    <div className="min-w-0 flex-1">
-                      <div className="truncate text-sm font-bold" style={{ color: c }}>{item.name}</div>
-                      <div className="truncate text-[10px] text-slate-400">{item.description}</div>
-                      {item.stats && (
-                        <div className="flex gap-2 text-[9px]">
-                          {item.stats.attack ? <span className="text-orange-300">+{item.stats.attack} ATK</span> : null}
-                          {item.stats.defense ? <span className="text-cyan-300">+{item.stats.defense} DEF</span> : null}
-                          {item.stats.health ? <span className="text-emerald-300">+{item.stats.health} HP</span> : null}
-                        </div>
-                      )}
-                    </div>
-                    <button
-                      onClick={() => buyItem(item.id)}
-                      disabled={!canAfford}
-                      className={`shrink-0 rounded border px-2 py-1 text-xs font-bold ${
-                        canAfford ? "border-emerald-600 bg-emerald-700/60 text-emerald-100 hover:bg-emerald-600/70" : "border-slate-700 bg-slate-800 text-slate-500"
-                      }`}
-                    >
-                      {item.value}g
-                    </button>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Sell */}
-          <div>
-            <h3 className="mb-2 text-xs font-bold uppercase tracking-wide text-rose-400">💱 Sell (50% value)</h3>
-            <div className="space-y-1.5 max-h-[50vh] overflow-y-auto pr-1">
-              {sellable.length === 0 && (
-                <div className="py-8 text-center text-xs text-slate-500">Nothing to sell</div>
-              )}
-              {sellable.map((i) => {
-                const c = COLORS.rarity[i.def.rarity];
-                const price = Math.floor(i.def.value * 0.5);
-                return (
-                  <div key={i.itemId} className="flex items-center gap-2 rounded-lg border border-slate-700 bg-slate-900/60 p-2">
-                    <div className="flex h-10 w-10 items-center justify-center rounded text-2xl" style={{ background: `${c}22` }}>{i.def.icon}</div>
-                    <div className="min-w-0 flex-1">
-                      <div className="truncate text-sm font-bold" style={{ color: c }}>{i.def.name}</div>
-                      <div className="text-[10px] text-slate-400">Qty: {i.qty}</div>
-                    </div>
-                    <button
-                      onClick={() => sellItem(i.itemId, 1)}
-                      className="shrink-0 rounded border border-rose-600 bg-rose-700/40 px-2 py-1 text-xs font-bold text-rose-100 hover:bg-rose-600/50"
-                    >
-                      {price}g
-                    </button>
-                  </div>
-                );
-              })}
-            </div>
+        <div className="rounded-md border border-[var(--gold-3)] bg-[var(--gold-1)]/40 px-3 py-1 text-right">
+          <Eyebrow>Bourse</Eyebrow>
+          <div className="font-serif text-lg font-bold text-[var(--gold-3)]">
+            {player.gold} <span className="text-xs">po</span>
           </div>
         </div>
       </div>
-    </div>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        {/* Acheter */}
+        <div>
+          <Eyebrow><ShoppingCart className="mr-1 inline h-3 w-3 align-[-2px] text-[var(--gold-3)]" />Acheter</Eyebrow>
+          <div className="mt-2 space-y-2 max-h-[52vh] overflow-y-auto pr-1">
+            {shopItems.map((item) => {
+              const c = COLORS.rarity[item.rarity];
+              const canAfford = player.gold >= item.value;
+              return (
+                <div
+                  key={item.id}
+                  className="parchment-paper flex items-center gap-3 rounded-lg border-2 border-[var(--gold-3)] p-2.5"
+                >
+                  <ItemIcon item={item} lucideIcon={getItemIcon(item.id)} size="sm" />
+                  <div className="min-w-0 flex-1">
+                    <div className="truncate font-serif text-sm font-bold" style={{ color: c }}>
+                      {item.nameFr ?? item.name}
+                    </div>
+                    <div className="mt-0.5">
+                      <CategoryBadge category={item.category} />
+                    </div>
+                    <div className="truncate font-serif text-[10px] italic text-[var(--parchment-ink-soft)]">
+                      {item.description}
+                    </div>
+                    {item.stats && (
+                      <div className="mt-0.5 flex flex-wrap gap-2 font-serif text-[9px]">
+                        {item.stats.attack  ? <span style={{ color: "#c2563a" }}>+{item.stats.attack} ATQ</span> : null}
+                        {item.stats.defense ? <span style={{ color: "#3a7aa0" }}>+{item.stats.defense} DÉF</span> : null}
+                        {item.stats.health  ? <span style={{ color: "#3a7a3a" }}>+{item.stats.health} VIE</span> : null}
+                      </div>
+                    )}
+                  </div>
+                  <GoldButton onClick={() => buyItem(item.id)} disabled={!canAfford}>
+                    {item.value} po
+                  </GoldButton>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Vendre */}
+        <div>
+          <Eyebrow><ArrowLeftRight className="mr-1 inline h-3 w-3 align-[-2px] text-[var(--gold-3)]" />Vendre (50 % de la valeur)</Eyebrow>
+          <div className="mt-2 space-y-2 max-h-[52vh] overflow-y-auto pr-1">
+            {sellable.length === 0 && (
+              <EmptyState>Rien à vendre pour l'instant.</EmptyState>
+            )}
+            {sellable.map((i) => {
+              const c = COLORS.rarity[i.def.rarity];
+              const price = Math.floor(i.def.value * 0.5);
+              return (
+                <div
+                  key={i.itemId}
+                  className="parchment-paper flex items-center gap-3 rounded-lg border-2 border-[var(--gold-3)] p-2.5"
+                >
+                  <ItemIcon item={i.def} lucideIcon={getItemIcon(i.itemId)} size="sm" quantity={i.qty} />
+                  <div className="min-w-0 flex-1">
+                    <div className="truncate font-serif text-sm font-bold" style={{ color: c }}>
+                      {i.def.nameFr ?? i.def.name}
+                    </div>
+                    <div className="mt-0.5">
+                      <CategoryBadge category={i.def.category} />
+                    </div>
+                    <div className="font-serif text-[10px] text-[var(--parchment-ink-soft)]">
+                      Quantité&nbsp;: <span className="font-bold">{i.qty}</span>
+                    </div>
+                  </div>
+                  <InkButton onClick={() => sellItem(i.itemId, 1)}>
+                    {price} po
+                  </InkButton>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+      <GoldRule />
+    </ParchmentModal>
   );
 }

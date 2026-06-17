@@ -1,6 +1,13 @@
 "use client";
 
 import { useGame } from "../store";
+import {
+  ParchmentModal,
+  GoldButton,
+  InkButton,
+  GoldRule,
+  Eyebrow,
+} from "./parchment";
 
 export function MainMenu() {
   const status = useGame((s) => s.status);
@@ -11,103 +18,249 @@ export function MainMenu() {
   const resume = useGame((s) => s.resume);
   const saveGame = useGame((s) => s.saveGame);
 
-  if (status === "playing") return null;
+  if (status === "playing" || status === "intro") return null;
 
+  /* -------------------- Paused -------------------- */
   if (status === "paused") {
     return (
-      <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
-        <div className="w-full max-w-md rounded-2xl border border-amber-700/50 bg-slate-950/95 p-6 text-center shadow-2xl">
-          <h2 className="mb-2 text-3xl font-black text-amber-300">Paused</h2>
-          <p className="mb-6 text-sm text-slate-400">The adventure awaits.</p>
-          <div className="space-y-2">
-            <MenuBtn onClick={resume} primary>▶ Resume</MenuBtn>
-            <MenuBtn onClick={() => saveGame()}>💾 Save Game</MenuBtn>
-            <MenuBtn onClick={() => { startGame(); }}>🔄 Restart New Game</MenuBtn>
-          </div>
-          <p className="mt-4 text-[10px] text-slate-500">Press Esc to resume</p>
+      <ParchmentModal
+        eyebrow="Le voyage est suspendu"
+        title="En Pause"
+        onClose={resume}
+        width="max-w-md"
+      >
+        <p className="mb-5 text-center text-sm italic text-[var(--parchment-ink-soft)]">
+          « L'aventure vous attend, héros d'Eldoria. »
+        </p>
+        <div className="space-y-2.5">
+          <GoldButton onClick={resume} fullWidth>
+            ▶ Reprendre l'aventure
+          </GoldButton>
+          <InkButton onClick={() => saveGame()} fullWidth>
+            💾 Sauvegarder la partie
+          </InkButton>
+          <InkButton onClick={() => startGame()} fullWidth>
+            🔄 Nouvelle partie
+          </InkButton>
         </div>
-      </div>
+        <p className="mt-5 text-center text-[10px] tracking-wider text-[var(--parchment-ink-soft)] opacity-70">
+          Touche Échap · pour reprendre
+        </p>
+      </ParchmentModal>
     );
   }
 
+  /* -------------------- Game Over -------------------- */
   if (status === "gameover") {
     return (
-      <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md">
-        <div className="w-full max-w-md rounded-2xl border border-red-700/50 bg-slate-950/95 p-6 text-center shadow-2xl">
-          <div className="mb-3 text-6xl">💀</div>
-          <h2 className="mb-2 text-4xl font-black text-red-400" style={{ textShadow: "0 0 20px rgba(239,68,68,0.5)" }}>You Died</h2>
-          <p className="mb-1 text-sm text-slate-300">The hero has fallen...</p>
-          <div className="mb-6 mt-3 rounded-lg border border-slate-700 bg-slate-900/60 p-3 text-sm">
-            <div className="grid grid-cols-2 gap-2 text-left">
-              <div className="text-slate-400">Level reached:</div><div className="font-bold text-amber-300">{player.level}</div>
-              <div className="text-slate-400">Enemies slain:</div><div className="font-bold text-rose-300">{player.killCount}</div>
-              <div className="text-slate-400">Gold earned:</div><div className="font-bold text-amber-400">{player.gold}</div>
-            </div>
+      <div className="pointer-events-auto absolute inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md"
+           style={{ animation: "fadeIn 0.3s ease-out" }}>
+        <div
+          className="parchment-panel max-w-md p-6 text-[var(--parchment-ink)]"
+          style={{
+            animation: "panelIn 0.35s cubic-bezier(0.22, 1, 0.36, 1)",
+            borderColor: "var(--crimson)",
+            boxShadow:
+              "0 0 0 1px var(--crimson) inset, 0 0 0 6px rgba(161,58,42,0.15) inset, 0 12px 38px rgba(80, 10, 10, 0.55), 0 0 60px rgba(0,0,0,0.6)",
+          }}
+        >
+          <div className="mb-2 text-center text-6xl" style={{ animation: "pulseRed 1.4s ease-in-out infinite" }}>
+            💀
           </div>
-          <MenuBtn onClick={() => startGame()} primary>⚔ New Game</MenuBtn>
+          <Eyebrow>Fin de chapitre</Eyebrow>
+          <h2 className="mb-2 text-center font-serif text-3xl font-black text-[var(--crimson)]">
+            Vous êtes tombé
+          </h2>
+          <p className="mb-4 text-center text-sm italic text-[var(--parchment-ink-soft)]">
+            Le héros a succombé aux ténèbres…
+          </p>
+          <GoldRule />
+          <div className="mb-5 space-y-1 text-sm">
+            <StatRow k="Niveau atteint" v={String(player.level)} />
+            <StatRow k="Ennemis vaincus" v={String(player.killCount)} />
+            <StatRow k="Pièces d'or" v={`${player.gold} po`} />
+          </div>
+          <GoldButton onClick={() => startGame()} fullWidth>
+            ⚔ Tenter une nouvelle destinée
+          </GoldButton>
         </div>
       </div>
     );
   }
 
+  /* -------------------- Victory -------------------- */
   if (status === "victory") {
     return (
-      <div className="absolute inset-0 z-50 flex items-center justify-center bg-gradient-to-b from-amber-900/80 to-slate-950/95 backdrop-blur-md">
-        <div className="w-full max-w-md rounded-2xl border border-amber-400/60 bg-slate-950/95 p-6 text-center shadow-2xl">
-          <div className="mb-3 text-6xl" style={{ animation: "bounce 1s infinite" }}>🏆</div>
-          <h2 className="mb-2 text-4xl font-black text-amber-300" style={{ textShadow: "0 0 30px rgba(251,191,36,0.6)" }}>Victory!</h2>
-          <p className="mb-6 text-sm text-amber-100">Mordrak the Shadow Lord has been defeated. Eldoria is saved!</p>
-          <MenuBtn onClick={() => startGame()} primary>⚔ New Adventure</MenuBtn>
+      <div className="pointer-events-auto absolute inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md"
+           style={{ animation: "fadeIn 0.3s ease-out" }}>
+        <div
+          className="parchment-panel max-w-md p-6 text-[var(--parchment-ink)]"
+          style={{
+            animation: "panelIn 0.35s cubic-bezier(0.22, 1, 0.36, 1)",
+            boxShadow:
+              "0 0 0 1px var(--gold-2) inset, 0 0 0 6px rgba(246,217,124,0.12) inset, 0 0 30px rgba(246, 217, 124, 0.25), 0 12px 38px rgba(60,30,10,0.55), 0 0 60px rgba(0,0,0,0.55)",
+          }}
+        >
+          <div className="mb-2 text-center text-6xl" style={{ animation: "bounce 1.2s ease-in-out infinite" }}>
+            🏆
+          </div>
+          <Eyebrow>Fin de la quête</Eyebrow>
+          <h2 className="mb-3 text-center font-serif text-4xl font-black text-[var(--gold-3)]"
+              style={{ textShadow: "0 0 16px rgba(246, 217, 124, 0.55)" }}>
+            Victoire !
+          </h2>
+          <p className="mb-5 text-center text-sm italic text-[var(--parchment-ink-soft)]">
+            Mordrak le Seigneur des Ombres est vaincu. Eldoria est enfin libérée
+            du jumeau maléfique de l&apos;Arbre d&apos;Argent.
+          </p>
+          <GoldRule />
+          <p className="mb-4 text-center text-xs">
+            Votre nom sera chanté dans les tavernes de la Borderlands pendant
+            mille hivers.
+          </p>
+          <GoldButton onClick={() => startGame()} fullWidth>
+            ⚔ Entreprendre une nouvelle aventure
+          </GoldButton>
         </div>
       </div>
     );
   }
 
-  // menu
+  /* -------------------- Main splash -------------------- */
   return (
-    <div className="absolute inset-0 z-50 flex items-center justify-center bg-gradient-to-b from-slate-950/80 via-slate-900/70 to-amber-950/40 backdrop-blur-sm">
-      <div className="w-full max-w-lg px-6 text-center">
-        <div className="mb-2 text-7xl" style={{ animation: "float 3s ease-in-out infinite" }}>⚔️</div>
-        <h1 className="mb-1 text-5xl font-black tracking-tight text-amber-300 sm:text-6xl" style={{ textShadow: "0 4px 20px rgba(0,0,0,0.6), 0 0 30px rgba(251,191,36,0.3)" }}>
+    <div className="hero-root absolute inset-0 z-50 flex items-center justify-center overflow-hidden">
+      {/* --- Background layers --- */}
+      <div className="hero-bg" />
+      <div className="hero-vignette" />
+
+      {/* Light rays */}
+      <div className="hero-rays">
+        {[15, 35, 50, 65, 85].map((left, i) => (
+          <span key={i} className="hero-ray" style={{
+            left: `${left}%`,
+            height: `${50 + Math.random() * 25}%`,
+            transform: `rotate(${-8 + i * 4}deg)`,
+            animationDelay: `${i * 0.7}s`,
+            animationDuration: `${3 + Math.random() * 2}s`,
+            width: `${1 + Math.random()}px`,
+          }} />
+        ))}
+      </div>
+
+      {/* Starfield */}
+      <div className="hero-stars">
+        {Array.from({ length: 50 }).map((_, i) => (
+          <span key={i} className="hero-star" style={{
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            width: `${0.8 + Math.random() * 1.2}px`,
+            height: `${0.8 + Math.random() * 1.2}px`,
+            animationDelay: `${Math.random() * 6}s`,
+            animationDuration: `${3 + Math.random() * 4}s`,
+          }} />
+        ))}
+      </div>
+
+      {/* Floating embers */}
+      <div className="hero-particles">
+        {Array.from({ length: 22 }).map((_, i) => {
+          const size = 1.2 + Math.random() * 2;
+          const drift = -25 + Math.random() * 50;
+          return (
+            <span key={i} className="hero-particle" style={{
+              left: `${8 + Math.random() * 84}%`,
+              width: `${size}px`,
+              height: `${size}px`,
+              animationDelay: `${Math.random() * 12}s`,
+              animationDuration: `${9 + Math.random() * 8}s`,
+              ["--ember-drift" as string]: `${drift}px`,
+            }} />
+          );
+        })}
+      </div>
+
+      {/* --- Content --- */}
+      <div className="relative z-10 flex w-full max-w-3xl flex-col items-center px-6 py-8 text-center">
+
+        {/* Sword icon */}
+        <div className="hero-sword" style={{ animationDelay: "0.1s" }}>
+          <span className="text-5xl sm:text-6xl" style={{ animation: "float 4s ease-in-out infinite" }}>⚔️</span>
+        </div>
+
+        {/* Eyebrow */}
+        <div className="hero-fade" style={{ animationDelay: "0.3s" }}>
+          <Eyebrow className="!text-[0.65rem]">L&apos;Ombre du Seigneur Noir</Eyebrow>
+        </div>
+
+        {/* Title */}
+        <h1 className="hero-title hero-fade" style={{ animationDelay: "0.5s" }}>
           ELDORIA
         </h1>
-        <p className="mb-1 text-sm font-semibold uppercase tracking-[0.3em] text-amber-500/80">Shadow of the Dark Lord</p>
-        <p className="mb-8 text-sm text-slate-400">A 3D fantasy RPG adventure</p>
 
-        <div className="mx-auto max-w-sm space-y-2">
-          <MenuBtn onClick={() => startGame()} primary>⚔ New Game</MenuBtn>
-          {hasSave && <MenuBtn onClick={() => loadGame()}>📂 Continue</MenuBtn>}
+        {/* Decorative sword divider */}
+        <div className="hero-fade hero-divider" style={{ animationDelay: "0.7s" }}>
+          <span className="divider-line" />
+          <span className="divider-icon">⚜</span>
+          <span className="divider-line" />
         </div>
 
-        <div className="mx-auto mt-8 max-w-md rounded-lg border border-slate-700/50 bg-slate-950/60 p-4 text-left text-xs text-slate-400">
-          <div className="mb-2 font-bold text-amber-300">📖 The Tale</div>
-          <p className="leading-relaxed">
-            The land of Eldoria is besieged by monsters. Villagers cower behind stone walls
-            as the Shadow Lord Mordrak gathers his army in the frozen north. You are a lone
-            adventurer — the realm&apos;s last hope. Forge your legend, slay the darkness.
-          </p>
+        {/* Subtitle */}
+        <h2 className="hero-fade hero-subtitle" style={{ animationDelay: "0.85s" }}>
+          Chroniques de la Forêt d&apos;Argent
+        </h2>
+
+        {/* Tagline */}
+        <p className="hero-fade hero-tagline" style={{ animationDelay: "1s" }}>
+          Un RPG fantasy en trois dimensions
+        </p>
+
+        {/* Buttons */}
+        <div className="hero-fade mx-auto mt-6 mb-8 w-full max-w-xs space-y-3" style={{ animationDelay: "1.15s" }}>
+          <GoldButton onClick={() => startGame()} fullWidth>
+            Commencer une nouvelle quête
+          </GoldButton>
+          {hasSave && (
+            <InkButton onClick={() => loadGame()} fullWidth>
+              Reprendre le manuscrit
+            </InkButton>
+          )}
         </div>
 
-        <div className="mt-4 text-[10px] text-slate-500">
-          WASD to move · Mouse drag to look · Space to attack · E to interact
+        {/* Lore card */}
+        <div className="hero-fade hero-lore" style={{ animationDelay: "1.35s" }}>
+          <div className="parchment-paper rounded-xl p-5 text-left text-sm leading-relaxed text-[var(--parchment-ink)]">
+            <Eyebrow>◈ La Légende ◈</Eyebrow>
+            <p className="mt-2">
+              Autrefois, le royaume d&apos;Eldoria prospérait sous la lumière de
+              l&apos;<em>Arbre d&apos;Argent</em>. Mais voici trois hivers, le sorcier{' '}
+              <strong>Mordrak</strong> a brisé le sceau ancien et déchaîné ses
+               armées sur les terres des hommes. Les villages brûlent, les ombres
+              s&apos;allongent, et les héros d&apos;antan ont disparu. Vous êtes le dernier
+              porteur d&apos;espoir : forgez votre légende, terrassez les ténèbres, et
+              rendez la paix à Eldoria — ou périssez en essayant.
+            </p>
+          </div>
         </div>
+
+        {/* Controls hint */}
+        <p className="hero-fade mt-5 text-[10px] tracking-wider text-[var(--parchment-1)] opacity-60" style={{ animationDelay: "1.5s" }}>
+          <kbd className="kbd">WASD</kbd> Bouger
+          <span className="mx-1.5 opacity-40">·</span>
+          <kbd className="kbd">Espace</kbd> Attaquer
+          <span className="mx-1.5 opacity-40">·</span>
+          <kbd className="kbd">E</kbd> Interagir
+        </p>
       </div>
     </div>
   );
 }
 
-function MenuBtn({ onClick, primary, children }: { onClick: () => void; primary?: boolean; children: React.ReactNode }) {
+function StatRow({ k, v }: { k: string; v: string }) {
   return (
-    <button
-      onClick={onClick}
-      className={`w-full rounded-lg border px-6 py-3 text-base font-bold transition ${
-        primary
-          ? "border-amber-500 bg-gradient-to-r from-amber-700 to-amber-600 text-amber-50 shadow-lg hover:from-amber-600 hover:to-amber-500"
-          : "border-slate-600 bg-slate-800/70 text-slate-200 hover:border-amber-600 hover:bg-slate-700"
-      }`}
-    >
-      {children}
-    </button>
+    <div className="flex items-baseline justify-between border-b border-dotted border-[var(--gold-4)] py-1">
+      <span className="text-[var(--parchment-ink-soft)]">{k}</span>
+      <span className="font-serif text-base font-bold text-[var(--gold-3)]">{v}</span>
+    </div>
   );
 }
 
@@ -116,57 +269,59 @@ export function HelpPanel() {
   const closePanel = useGame((s) => s.closePanel);
   if (!show) return null;
   return (
-    <div className="pointer-events-auto absolute inset-0 z-40 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-lg rounded-xl border border-amber-700/40 bg-slate-950/95 shadow-2xl" style={{ animation: "panelIn 0.2s ease-out" }}>
-        <div className="flex items-center justify-between border-b border-amber-700/30 px-4 py-3">
-          <h2 className="text-lg font-bold text-amber-200">❓ How to Play</h2>
-          <button onClick={() => closePanel("help")} className="flex h-7 w-7 items-center justify-center rounded border border-slate-600 text-slate-300 hover:bg-slate-800 hover:text-white">✕</button>
+    <ParchmentModal
+      eyebrow="Manuel de l'aventurier"
+      title="Comment jouer"
+      onClose={() => closePanel("help")}
+      width="max-w-lg"
+    >
+      <div className="space-y-4 text-sm leading-relaxed">
+        <div>
+          <Eyebrow>◈ Contrôles</Eyebrow>
+          <div className="mt-2 grid grid-cols-[max-content_1fr] gap-x-4 gap-y-1.5">
+            <Key tag="W A S D" desc="Se déplacer" />
+            <Key tag="Maj" desc="Courir plus vite" />
+            <Key tag="Espace / J" desc="Attaquer avec votre arme" />
+            <Key tag="Clic souris" desc="Tourner la caméra" />
+            <Key tag="Molette" desc="Zoomer la caméra" />
+            <Key tag="[ ]" desc="Tourner la caméra au clavier" />
+            <Key tag="E" desc="Parler à un PNJ / ouvrir un magasin" />
+            <Key tag="1 2 3" desc="Utiliser une potion de la barre rapide" />
+          </div>
         </div>
-        <div className="space-y-4 p-4 text-sm">
-          <Section title="🎮 Controls">
-            <Row k="W A S D" v="Move (camera-relative)" />
-            <Row k="Shift" v="Run faster" />
-            <Row k="Space / J" v="Attack with equipped weapon" />
-            <Row k="Mouse Drag" v="Rotate camera" />
-            <Row k="Mouse Wheel" v="Zoom camera" />
-            <Row k="[ ]" v="Rotate camera with keys" />
-            <Row k="E" v="Talk to nearby NPC / open shop" />
-            <Row k="1 2 3" v="Use potion from hotbar" />
-          </Section>
-          <Section title="🎒 Panels">
-            <Row k="I" v="Open inventory" />
-            <Row k="Q" v="Open quest log" />
-            <Row k="C" v="Open character sheet" />
-            <Row k="H / ?" v="Toggle this help" />
-            <Row k="Esc" v="Close panel / Pause" />
-            <Row k="F5" v="Save game" />
-          </Section>
-          <Section title="💡 Tips">
-            <li>Equip weapons and armor to boost stats — click an item then Equip.</li>
-            <li>Defeat enemies to gain XP and gold; level up to increase stats.</li>
-            <li>Talk to NPCs (press E near them) to accept and turn in quests.</li>
-            <li>The Shadow Lord Mordrak waits beyond the northern dungeon gate.</li>
-            <li>Collect loot orbs (octahedrons) by walking over them.</li>
-          </Section>
+        <div>
+          <Eyebrow>◈ Panneaux</Eyebrow>
+          <div className="mt-2 grid grid-cols-[max-content_1fr] gap-x-4 gap-y-1.5">
+            <Key tag="I" desc="Ouvrir l'inventaire" />
+            <Key tag="Q" desc="Ouvrir le journal de quêtes" />
+            <Key tag="C" desc="Ouvrir la fiche du personnage" />
+            <Key tag="H / ?" desc="Afficher / masquer cette aide" />
+            <Key tag="Échap" desc="Fermer un panneau / mettre en pause" />
+            <Key tag="F5" desc="Sauvegarder" />
+          </div>
+        </div>
+        <div>
+          <Eyebrow>◈ Astuces du barde</Eyebrow>
+          <ul className="mt-2 list-disc space-y-1 pl-5 text-[var(--parchment-ink)]">
+            <li>Équipez armes et armures pour améliorer vos stats — cliquez sur un objet puis « Équiper ».</li>
+            <li>Vainquez des ennemis pour gagner de l'XP et de l'or ; montez de niveau pour devenir plus fort.</li>
+            <li>Parlez aux PNJ (touche E à proximité) pour accepter et rendre des quêtes.</li>
+            <li>Le Seigneur des Ombres Mordrak attend derrière la porte du donjon nord.</li>
+            <li>Ramassez les orbes de butin (octaèdres) en passant dessus.</li>
+          </ul>
         </div>
       </div>
-    </div>
+    </ParchmentModal>
   );
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Key({ tag, desc }: { tag: string; desc: string }) {
   return (
-    <div>
-      <h3 className="mb-1.5 text-xs font-bold uppercase tracking-wide text-amber-400">{title}</h3>
-      <ul className="space-y-1 text-slate-300">{children}</ul>
-    </div>
-  );
-}
-function Row({ k, v }: { k: string; v: string }) {
-  return (
-    <li className="flex items-center gap-2">
-      <kbd className="min-w-[80px] rounded border border-slate-600 bg-slate-800 px-2 py-0.5 text-center text-[10px] font-bold text-amber-200">{k}</kbd>
-      <span className="text-xs">{v}</span>
-    </li>
+    <>
+      <kbd className="rounded border border-[var(--gold-4)] bg-[rgba(255,245,215,0.45)] px-2 py-0.5 text-center font-serif text-[11px] font-bold tracking-wider text-[var(--parchment-ink)]">
+        {tag}
+      </kbd>
+      <span className="self-center text-sm text-[var(--parchment-ink-soft)]">{desc}</span>
+    </>
   );
 }

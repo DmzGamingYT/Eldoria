@@ -32,6 +32,7 @@ class AudioEngine {
   private sfxGain: GainNode | null = null;
   private musicTimer: number | null = null;
   private musicStep = 0;
+  private noiseBuffer: AudioBuffer | null = null;
   muted = false;
   musicEnabled = true;
 
@@ -50,6 +51,14 @@ class AudioEngine {
       this.musicGain = this.ctx.createGain();
       this.musicGain.gain.value = 0.18;
       this.musicGain.connect(this.masterGain);
+
+      // Pre-generate reusable noise buffer (0.5s of white noise)
+      const len = this.ctx.sampleRate * 0.5;
+      this.noiseBuffer = this.ctx.createBuffer(1, len, this.ctx.sampleRate);
+      const data = this.noiseBuffer.getChannelData(0);
+      for (let i = 0; i < len; i++) {
+        data[i] = Math.random() * 2 - 1;
+      }
     } catch {
       // audio not supported
     }
@@ -104,14 +113,9 @@ class AudioEngine {
   }
 
   private swordSwing(t: number) {
-    if (!this.ctx || !this.sfxGain) return;
+    if (!this.ctx || !this.sfxGain || !this.noiseBuffer) return;
     const noise = this.ctx.createBufferSource();
-    const buf = this.ctx.createBuffer(1, this.ctx.sampleRate * 0.15, this.ctx.sampleRate);
-    const data = buf.getChannelData(0);
-    for (let i = 0; i < data.length; i++) {
-      data[i] = (Math.random() * 2 - 1) * (1 - i / data.length);
-    }
-    noise.buffer = buf;
+    noise.buffer = this.noiseBuffer;
     const filter = this.ctx.createBiquadFilter();
     filter.type = "bandpass";
     filter.frequency.setValueAtTime(1800, t);
@@ -162,19 +166,18 @@ class AudioEngine {
     g.connect(this.sfxGain);
     osc.start(t);
     osc.stop(t + 0.4);
-    // noise burst
-    const noise = this.ctx.createBufferSource();
-    const buf = this.ctx.createBuffer(1, this.ctx.sampleRate * 0.3, this.ctx.sampleRate);
-    const data = buf.getChannelData(0);
-    for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / data.length);
-    noise.buffer = buf;
-    const ng = this.ctx.createGain();
-    ng.gain.setValueAtTime(0.2, t);
-    ng.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
-    noise.connect(ng);
-    ng.connect(this.sfxGain);
-    noise.start(t);
-    noise.stop(t + 0.3);
+    // noise burst (reuse pre-generated buffer)
+    if (this.noiseBuffer) {
+      const noise = this.ctx.createBufferSource();
+      noise.buffer = this.noiseBuffer;
+      const ng = this.ctx.createGain();
+      ng.gain.setValueAtTime(0.2, t);
+      ng.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
+      noise.connect(ng);
+      ng.connect(this.sfxGain);
+      noise.start(t);
+      noise.stop(t + 0.3);
+    }
   }
 
   private hurt(t: number) {
@@ -226,12 +229,9 @@ class AudioEngine {
   }
 
   private whoosh(t: number, from: number, to: number) {
-    if (!this.ctx || !this.sfxGain) return;
+    if (!this.ctx || !this.sfxGain || !this.noiseBuffer) return;
     const noise = this.ctx.createBufferSource();
-    const buf = this.ctx.createBuffer(1, this.ctx.sampleRate * 0.2, this.ctx.sampleRate);
-    const data = buf.getChannelData(0);
-    for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1);
-    noise.buffer = buf;
+    noise.buffer = this.noiseBuffer;
     const filter = this.ctx.createBiquadFilter();
     filter.type = "bandpass";
     filter.frequency.setValueAtTime(from, t);
@@ -263,12 +263,9 @@ class AudioEngine {
   }
 
   private explosion(t: number) {
-    if (!this.ctx || !this.sfxGain) return;
+    if (!this.ctx || !this.sfxGain || !this.noiseBuffer) return;
     const noise = this.ctx.createBufferSource();
-    const buf = this.ctx.createBuffer(1, this.ctx.sampleRate * 0.5, this.ctx.sampleRate);
-    const data = buf.getChannelData(0);
-    for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / data.length);
-    noise.buffer = buf;
+    noise.buffer = this.noiseBuffer;
     const filter = this.ctx.createBiquadFilter();
     filter.type = "lowpass";
     filter.frequency.setValueAtTime(800, t);

@@ -50,5 +50,16 @@ test
 prompt
 
 server.log
+.zscripts/dev.out
+.zscripts/dev.pid
+
 # Skills directory
 /skills/
+
+# Electron build output
+dist-electron/
+out/
+
+# Prisma database (local dev only)
+db/*.db
+prisma/db/*.db

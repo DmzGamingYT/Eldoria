@@ -1,21 +1,27 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Cinzel, EB_Garamond } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Cinzel for fantasy display headings — engraved-stone feel
+const cinzel = Cinzel({
+  variable: "--font-cinzel",
   subsets: ["latin"],
+  weight: ["500", "700", "900"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+// EB Garamond for body / readable serif
+const ebGaramond = EB_Garamond({
+  variable: "--font-garamond",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
   title: "Eldoria — 3D RPG Adventure",
-  description: "A 3D fantasy RPG. Explore the world of Eldoria, battle monsters, complete quests, and defeat the Shadow Lord Mordrak.",
+  description:
+    "A 3D fantasy RPG. Explore the world of Eldoria, battle monsters, complete quests, and defeat the Shadow Lord Mordrak.",
   keywords: ["RPG", "3D game", "fantasy", "Eldoria", "Three.js", "Next.js"],
   authors: [{ name: "Z.ai" }],
   icons: {
@@ -41,9 +47,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="fr" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
+        className={`${cinzel.variable} ${ebGaramond.variable} antialiased bg-background text-foreground`}
       >
         {children}
         <Toaster />

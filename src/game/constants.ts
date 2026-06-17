@@ -1,9 +1,18 @@
 export const WORLD = {
   size: 100, // half-size of terrain (so total 200x200)
   wallHeight: 4,
-  fogColor: "#a8c5d0",
-  fogNear: 25,
-  fogFar: 90,
+  /** Starting fog tint — overridden by the day/night cycle at runtime. */
+  fogColor: "#e8c89a",
+  fogNear: 40,
+  fogFar: 120,
+  /** Exponential fog density (FogExp2). ~0.012 gives a soft horizon haze. */
+  fogDensity: 0.012,
+  /** Length of one full day/night cycle, in seconds (~3 minutes). */
+  cycleSeconds: 180,
+  /** How far the sun mesh sits from the origin (units). */
+  sunDistance: 120,
+  /** Base radius of the sun fireball mesh (scaled up at the horizon). */
+  sunRadius: 6,
 };
 
 export const PLAYER = {
@@ -27,6 +36,12 @@ export const PLAYER = {
   collectRange: 1.6,
   height: 1.0,
   radius: 0.5,
+  /**
+   * Vertical offset from the player group's origin to the bottom of the
+   * procedural leg mesh. New model: bodyRef at y=0.94, boots bottom at y=0
+   * in group-local space → footOffset = 0.
+   */
+  footOffset: 0,
 };
 
 export const XP_CURVE = (level: number) => Math.floor(50 * Math.pow(level, 1.6));

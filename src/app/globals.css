@@ -6,8 +6,10 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* shadcn defaults left intact for legacy components */
+  --font-sans: var(--font-garamond);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-serif: var(--font-cinzel);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -41,114 +43,371 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  /* ===== Eldoria parchment-fantasy theme tokens ===== */
+  --parchment-1: #f3e7c6;     /* brightest paper */
+  --parchment-2: #ead7a8;     /* mid paper */
+  --parchment-3: #d8be83;     /* warm shadow */
+  --parchment-edge: #a07c3a;  /* vignette rim */
+  --parchment-ink: #3a2412;   /* body ink */
+  --parchment-ink-soft: #5a3a1f;
+  --gold-1: #f6d97c;          /* bright gold highlight */
+  --gold-2: #d8a942;          /* gold mid */
+  --gold-3: #a87a2a;          /* gold deep */
+  --gold-4: #6f4f1c;          /* gold shadow */
+  --crimson: #a13a2a;
+  --leaf: #5a8a3a;
+  --indigo: #5a4a8a;
 }
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --background: var(--parchment-1);
+  --foreground: var(--parchment-ink);
+  --card: var(--parchment-1);
+  --card-foreground: var(--parchment-ink);
+  --popover: var(--parchment-1);
+  --popover-foreground: var(--parchment-ink);
+  --primary: var(--gold-3);          /* primary action = deep gold */
+  --primary-foreground: var(--parchment-1);
+  --secondary: var(--parchment-2);
+  --secondary-foreground: var(--parchment-ink);
+  --muted: var(--parchment-2);
+  --muted-foreground: var(--parchment-ink-soft);
+  --accent: var(--gold-2);
+  --accent-foreground: var(--parchment-ink);
+  --destructive: var(--crimson);
+  --border: var(--gold-4);
+  --input: var(--gold-4);
+  --ring: var(--gold-2);
+  --chart-1: var(--gold-2);
+  --chart-2: var(--leaf);
+  --chart-3: var(--crimson);
+  --chart-4: var(--indigo);
+  --chart-5: var(--gold-3);
+  --sidebar: var(--parchment-2);
+  --sidebar-foreground: var(--parchment-ink);
+  --sidebar-primary: var(--gold-3);
+  --sidebar-primary-foreground: var(--parchment-1);
+  --sidebar-accent: var(--gold-1);
+  --sidebar-accent-foreground: var(--parchment-ink);
+  --sidebar-border: var(--gold-4);
+  --sidebar-ring: var(--gold-2);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* The dark variant is intentionally NOT used here; the parchment theme is the
+     only mood. Keeping the block so Tailwind's @custom-variant dark doesn't
+     conflict with anything. */
+  --background: var(--parchment-1);
+  --foreground: var(--parchment-ink);
 }
 
+/* ===========================================================
+   Parchemin-Fantasy reusable utilities
+   =========================================================== */
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-garamond), Georgia, serif;
   }
+  h1, h2, h3, h4 {
+    font-family: var(--font-cinzel), "Trajan Pro", Georgia, serif;
+    letter-spacing: 0.02em;
+  }
+}
+
+/* ----- Parchment paper texture (layered radial gradients + faint noise) ----- */
+.parchment-paper {
+  background-color: var(--parchment-2);
+  background-image:
+    radial-gradient(ellipse at top left, rgba(255, 240, 200, 0.55), transparent 55%),
+    radial-gradient(ellipse at bottom right, rgba(120, 75, 25, 0.30), transparent 55%),
+    radial-gradient(ellipse at center, rgba(255, 240, 200, 0.20), transparent 70%),
+    repeating-linear-gradient(
+      45deg,
+      rgba(110, 70, 25, 0.025) 0px,
+      rgba(110, 70, 25, 0.025) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+  box-shadow:
+    inset 0 0 60px rgba(120, 80, 30, 0.30),
+    inset 0 0 12px rgba(60, 30, 10, 0.20);
+}
+
+/* ----- The big central floating parchment panel (corners, gold border) ----- */
+.parchment-panel {
+  position: relative;
+  overflow: visible;
+  background-color: var(--parchment-2);
+  background-image:
+    radial-gradient(ellipse at top, rgba(255, 240, 200, 0.55), transparent 60%),
+    radial-gradient(ellipse at bottom, rgba(120, 75, 25, 0.30), transparent 60%),
+    repeating-linear-gradient(
+      45deg,
+      rgba(110, 70, 25, 0.025) 0px,
+      rgba(110, 70, 25, 0.025) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+  border: 3px solid var(--gold-3);
+  border-radius: 14px;
+  box-shadow:
+    0 0 0 1px var(--gold-4) inset,
+    0 0 0 6px rgba(168, 122, 42, 0.15) inset,
+    0 12px 38px rgba(40, 20, 10, 0.55),
+    0 0 60px rgba(0, 0, 0, 0.45);
+}
+.parchment-panel > * {
+  position: relative;
+  z-index: 1;
+}
+.parchment-panel::before,
+.parchment-panel::after {
+  content: "❦";
+  position: absolute;
+  z-index: 0;
+  font-family: var(--font-cinzel), Georgia, serif;
+  color: var(--gold-3);
+  opacity: 0.7;
+  font-size: 22px;
+  pointer-events: none;
+  text-shadow: 0 1px 0 rgba(255, 240, 200, 0.28);
+}
+.parchment-panel::before {
+  top: 8px;
+  left: 12px;
+}
+.parchment-panel::after {
+  bottom: 8px;
+  right: 12px;
+  transform: rotate(180deg);
+}
+
+/* Vertical banner style used for HUD elements (transparent corners) */
+.parchment-banner {
+  background-color: rgba(234, 215, 168, 0.94);
+  background-image:
+    radial-gradient(ellipse at top left, rgba(255, 240, 200, 0.55), transparent 60%),
+    radial-gradient(ellipse at bottom right, rgba(120, 75, 25, 0.25), transparent 60%);
+  border: 2px solid var(--gold-3);
+  border-radius: 10px;
+  box-shadow:
+    inset 0 0 0 1px var(--gold-4),
+    0 6px 22px rgba(40, 20, 10, 0.45);
+  backdrop-filter: blur(1px);
+}
+
+/* Decorative gold bar used as a heading underline */
+.parchment-rule {
+  height: 3px;
+  background:
+    linear-gradient(
+      to right,
+      transparent 0%,
+      var(--gold-3) 15%,
+      var(--gold-1) 50%,
+      var(--gold-3) 85%,
+      transparent 100%
+    );
+  margin: 8px auto 12px;
+  border-radius: 2px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset;
+}
+
+/* Gold button (beveled, parchment illusion) */
+.gold-btn {
+  position: relative;
+  font-family: var(--font-cinzel), Georgia, serif;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--parchment-ink);
+  background: linear-gradient(180deg, var(--gold-1) 0%, var(--gold-2) 50%, var(--gold-3) 100%);
+  border: 1px solid var(--gold-4);
+  border-radius: 8px;
+  padding: 0.5rem 1.1rem;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 250, 220, 0.7),
+    inset 0 -2px 4px rgba(110, 70, 20, 0.35),
+    0 2px 6px rgba(40, 20, 10, 0.45);
+  transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+  cursor: pointer;
+}
+.gold-btn:hover:not(:disabled) {
+  filter: brightness(1.07);
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 250, 220, 0.8),
+    inset 0 -2px 4px rgba(110, 70, 20, 0.4),
+    0 4px 12px rgba(40, 20, 10, 0.55);
+}
+.gold-btn:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 2px 4px rgba(110, 70, 20, 0.5),
+    0 1px 3px rgba(40, 20, 10, 0.45);
+}
+.gold-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  filter: grayscale(0.3);
+}
+
+/* Brass / darker button variant */
+.brass-btn {
+  position: relative;
+  font-family: var(--font-cinzel), Georgia, serif;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--parchment-1);
+  background: linear-gradient(180deg, var(--gold-3) 0%, var(--gold-4) 100%);
+  border: 1px solid var(--gold-4);
+  border-radius: 8px;
+  padding: 0.5rem 1.1rem;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 230, 160, 0.35),
+    0 2px 6px rgba(40, 20, 10, 0.45);
+  transition: filter 120ms ease, transform 120ms ease;
+  cursor: pointer;
+}
+.brass-btn:hover:not(:disabled) { filter: brightness(1.1); transform: translateY(-1px); }
+.brass-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Outline-only button (used on parchment backgrounds) */
+.ink-btn {
+  font-family: var(--font-cinzel), Georgia, serif;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--parchment-ink);
+  background: rgba(255, 245, 215, 0.25);
+  border: 1.5px solid var(--gold-4);
+  border-radius: 8px;
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+  transition: background 120ms ease, transform 120ms ease;
+}
+.ink-btn:hover {
+  background: rgba(255, 245, 215, 0.55);
+  transform: translateY(-1px);
+}
+
+/* Health / mana bar that sits over parchment (warm red/sky) */
+.parchment-bar {
+  position: relative;
+  height: 14px;
+  background: linear-gradient(180deg, rgba(60,30,10,0.5), rgba(60,30,10,0.25));
+  border: 1.5px solid var(--gold-4);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.4);
+}
+.parchment-bar > .parchment-bar-fill {
+  height: 100%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.25) 0%, transparent 50%);
+  transition: width 220ms ease;
+}
+.parchment-bar.hp > .parchment-bar-fill { background: linear-gradient(180deg, #e85a4a, #a32a1a); }
+.parchment-bar.hp > .parchment-bar-fill-color { background: rgba(255,255,255,0.25); }
+.parchment-bar > .parchment-bar-fill-color { /* fallback no-op */ }
+.parchment-bar.mp > .parchment-bar-fill { background: linear-gradient(180deg, #5aaae8, #2a5a98); }
+.parchment-bar.xp > .parchment-bar-fill {
+  background: linear-gradient(180deg, var(--gold-1) 0%, var(--gold-2) 100%);
+}
+
+/* Hole punch "scroll" look for panels with open top corners */
+.parchment-strip {
+  background:
+    linear-gradient(180deg, var(--parchment-2), var(--parchment-3));
+  border-top: 1px solid var(--gold-4);
+  border-bottom: 1px solid var(--gold-4);
+}
+
+/* Tactical subtitle / overline (small caps Cinzel gold) */
+.eyebrow {
+  font-family: var(--font-cinzel), Georgia, serif;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--gold-3);
+  font-weight: 600;
+  font-size: 0.72rem;
 }
 
 /* RPG game animations */
 @keyframes slideIn {
-  from { opacity: 0; transform: translate(-50%, -10px); }
-  to { opacity: 1; transform: translate(-50%, 0); }
+  from { opacity: 0; transform: translate(-50%, -14px) scale(0.96); }
+  to   { opacity: 1; transform: translate(-50%, 0) scale(1); }
+}
+@keyframes slideOut {
+  from { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  to   { opacity: 0; transform: translate(-50%, -12px) scale(0.94); }
 }
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideDown {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(16px); }
 }
 @keyframes panelIn {
-  from { opacity: 0; transform: scale(0.96); }
-  to { opacity: 1; transform: scale(1); }
+  from { opacity: 0; transform: scale(0.94) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes panelOut {
+  from { opacity: 1; transform: scale(1) translateY(0); }
+  to   { opacity: 0; transform: scale(0.94) translateY(8px); }
+}
+@keyframes toastSlideIn {
+  from { opacity: 0; transform: translate(-50%, -20px) scale(0.92); }
+  to   { opacity: 1; transform: translate(-50%, 0) scale(1); }
+}
+@keyframes toastSlideOut {
+  from { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  to   { opacity: 0; transform: translate(-50%, -16px) scale(0.92); }
 }
 @keyframes pulseRed {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
+  0%, 100% { opacity: 0.5; }
+  50%      { opacity: 1; }
 }
 @keyframes float {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
+  50%      { transform: translateY(-12px); }
 }
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
+  50%      { transform: translateY(-20px); }
 }
 @keyframes spin {
   from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes legendShimmer {
+  0%   { transform: translateX(-120%); }
+  60%  { transform: translateX(120%); }
+  100% { transform: translateX(120%); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+/* Hit shake — applied to the canvas wrapper on damage. Re-mounted via key
+   = lastDamageTime so the animation restarts cleanly. */
+@keyframes hitShake {
+  0%   { transform: translate(0, 0); }
+  15%  { transform: translate(-7px, 4px); }
+  30%  { transform: translate(6px, -3px); }
+  45%  { transform: translate(-4px, 2px); }
+  60%  { transform: translate(3px, -1px); }
+  80%  { transform: translate(-1px, 1px); }
+  100% { transform: translate(0, 0); }
 }
 
 html, body {
@@ -165,18 +424,594 @@ canvas:active {
   cursor: grabbing;
 }
 
-/* custom scrollbar */
+/* custom scrollbar — warm brass over parchment */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.6);
+  background: rgba(110, 75, 25, 0.15);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(180, 83, 9, 0.5);
+  background: linear-gradient(180deg, var(--gold-2), var(--gold-3));
   border-radius: 4px;
+  border: 1px solid var(--gold-4);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(217, 119, 6, 0.7);
+  background: linear-gradient(180deg, var(--gold-1), var(--gold-2));
+}
+
+/* ===========================================================
+   Hero Screen — Cinematic title screen
+   =========================================================== */
+
+.hero-root {
+  background: #0c0a07;
+  overflow: hidden;
+}
+
+/* Central ambient glow — warm halo that breathes */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 50% 40% at 50% 40%, rgba(180, 140, 70, 0.09) 0%, transparent 100%),
+    radial-gradient(ellipse 70% 55% at 50% 45%, rgba(80, 50, 18, 0.10) 0%, transparent 100%);
+  animation: heroBgBreathe 6s ease-in-out infinite;
+}
+
+@keyframes heroBgBreathe {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.8; transform: scale(1.03); }
+}
+
+/* Soft vignette */
+.hero-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 65% 60% at 50% 46%, transparent 45%, rgba(5, 3, 1, 0.7) 100%);
+  pointer-events: none;
+}
+
+/* --- Light rays from above --- */
+.hero-rays {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0.04;
+}
+
+.hero-ray {
+  position: absolute;
+  top: -10%;
+  width: 2px;
+  height: 70%;
+  background: linear-gradient(180deg, var(--gold-1), transparent);
+  transform-origin: top center;
+  animation: rayShimmer 4s ease-in-out infinite;
+}
+
+@keyframes rayShimmer {
+  0%, 100% { opacity: 0.4; }
+  50%      { opacity: 1; }
+}
+
+/* --- Starfield (tiny static dots) --- */
+.hero-stars {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.hero-star {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--gold-1);
+  animation: starTwinkle ease-in-out infinite;
+}
+
+@keyframes starTwinkle {
+  0%, 100% { opacity: 0.2; }
+  50%      { opacity: 0.7; }
+}
+
+/* --- Floating ember particles --- */
+.hero-particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.hero-particle {
+  position: absolute;
+  bottom: -6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--gold-1) 0%, var(--gold-2) 60%, transparent 100%);
+  opacity: 0;
+  animation: emberFloat linear infinite;
+  box-shadow: 0 0 4px 1px rgba(246, 217, 124, 0.3);
+}
+
+@keyframes emberFloat {
+  0% {
+    opacity: 0;
+    transform: translateY(0) translateX(0) scale(1);
+  }
+  8% {
+    opacity: 0.9;
+  }
+  40% {
+    opacity: 0.5;
+  }
+  75% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-105vh) translateX(var(--ember-drift, 20px)) scale(0.3);
+  }
+}
+
+/* --- Fade-in animation for each section --- */
+.hero-fade {
+  opacity: 0;
+  animation: heroFadeIn 0.8s ease-out forwards;
+}
+
+@keyframes heroFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Sword icon entrance --- */
+.hero-sword {
+  opacity: 0;
+  animation: heroSwordIn 0.6s ease-out forwards;
+}
+
+@keyframes heroSwordIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.8) rotate(-10deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+}
+
+/* --- Title --- */
+.hero-title {
+  font-family: var(--font-cinzel), "Trajan Pro", Georgia, serif;
+  font-weight: 900;
+  font-size: clamp(3rem, 8vw, 6rem);
+  letter-spacing: 0.12em;
+  line-height: 1;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+  background: linear-gradient(
+    180deg,
+    var(--gold-1) 0%,
+    var(--gold-2) 40%,
+    var(--gold-3) 70%,
+    var(--gold-4) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 2px 8px rgba(168, 122, 42, 0.5));
+  text-shadow: none;
+  position: relative;
+}
+
+.hero-title::after {
+  content: "ELDORIA";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(246, 217, 124, 0.25) 0%,
+    transparent 60%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: titleGlow 3s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+/* --- Divider --- */
+.hero-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 260px;
+  margin: 0.4rem auto 0.5rem;
+}
+
+.divider-line {
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold-3), transparent);
+  box-shadow: 0 0 6px rgba(168, 122, 42, 0.3);
+}
+
+.divider-icon {
+  color: var(--gold-3);
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+/* --- Subtitle --- */
+.hero-subtitle {
+  font-family: var(--font-cinzel), Georgia, serif;
+  font-style: italic;
+  font-size: clamp(0.8rem, 2vw, 1.05rem);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: var(--parchment-3);
+  margin-bottom: 0.15rem;
+}
+
+/* --- Tagline --- */
+.hero-tagline {
+  font-family: var(--font-garamond), Georgia, serif;
+  font-style: italic;
+  font-size: 0.82rem;
+  color: rgba(216, 190, 131, 0.6);
+  margin-bottom: 0;
+}
+
+/* --- Lore card --- */
+.hero-lore {
+  max-width: 28rem;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* --- Keyboard shortcuts --- */
+.kbd {
+  display: inline-block;
+  border: 1px solid var(--gold-4);
+  background: rgba(10, 6, 4, 0.6);
+  color: var(--gold-1);
+  border-radius: 4px;
+  padding: 0.1em 0.45em;
+  font-family: var(--font-cinzel), monospace;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* ===========================================================
+   Intro Screen — Cinematic text sequence
+   =========================================================== */
+
+.intro-root {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0c0a07;
+  animation: introFadeIn 1.2s ease-out;
+}
+
+.intro-fadeout {
+  animation: introFadeOut 1s ease-in forwards;
+}
+
+@keyframes introFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes introFadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+.intro-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 50% 40% at 50% 45%, rgba(160, 120, 50, 0.06) 0%, transparent 100%);
+}
+
+.intro-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 55% at 50% 50%, transparent 40%, rgba(5, 3, 1, 0.75) 100%);
+  pointer-events: none;
+}
+
+/* Intro particles */
+.intro-particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.intro-particle {
+  position: absolute;
+  bottom: -4px;
+  width: 2px;
+  height: 2px;
+  background: var(--gold-1);
+  border-radius: 50%;
+  opacity: 0;
+  animation: introParticleDrift linear infinite;
+  box-shadow: 0 0 6px 1px rgba(246, 217, 124, 0.2);
+}
+
+@keyframes introParticleDrift {
+  0% {
+    opacity: 0;
+    transform: translateY(0) translateX(0);
+  }
+  15% { opacity: 0.5; }
+  50% { opacity: 0.25; }
+  85% { opacity: 0.1; }
+  100% {
+    opacity: 0;
+    transform: translateY(-100vh) translateX(12px);
+  }
+}
+
+/* Text container */
+.intro-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  max-width: 34rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.intro-spacer {
+  height: 1.2rem;
+}
+
+.intro-line {
+  font-family: var(--font-garamond), Georgia, serif;
+  font-size: clamp(1rem, 2.5vw, 1.35rem);
+  line-height: 1.7;
+  color: var(--parchment-3);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+}
+
+.intro-line-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.intro-line-current {
+  color: var(--parchment-2);
+}
+
+/* Last visible line pulses subtly */
+.intro-line-current:last-of-type {
+  color: var(--gold-2);
+}
+
+/* Continue prompt */
+.intro-continue {
+  position: absolute;
+  bottom: 4.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  animation: introContinuePulse 2s ease-in-out infinite;
+}
+
+.intro-continue-text {
+  font-family: var(--font-cinzel), Georgia, serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: var(--parchment-3);
+  opacity: 0.55;
+}
+
+.intro-continue-arrow {
+  color: var(--gold-3);
+  font-size: 0.85rem;
+  opacity: 0.6;
+}
+
+@keyframes introContinuePulse {
+  0%, 100% { opacity: 0.5; }
+  50%      { opacity: 1; }
+}
+
+/* Start button (after all lines shown) */
+.intro-start-btn {
+  position: absolute;
+  bottom: 4.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  font-family: var(--font-cinzel), Georgia, serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  color: var(--parchment-ink);
+  background: linear-gradient(180deg, var(--gold-1) 0%, var(--gold-2) 50%, var(--gold-3) 100%);
+  border: 1px solid var(--gold-4);
+  border-radius: 8px;
+  padding: 0.6rem 1.8rem;
+  cursor: pointer;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 250, 220, 0.7),
+    inset 0 -2px 4px rgba(110, 70, 20, 0.35),
+    0 2px 8px rgba(40, 20, 10, 0.5);
+  animation: introStartBtnIn 0.6s ease-out;
+  transition: transform 0.15s, filter 0.15s;
+}
+
+.intro-start-btn:hover {
+  filter: brightness(1.07);
+  transform: translateX(-50%) translateY(-1px);
+}
+
+.intro-start-btn:active {
+  transform: translateX(-50%) translateY(1px);
+}
+
+@keyframes introStartBtnIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(12px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* Skip button */
+.intro-skip {
+  position: absolute;
+  bottom: 2.5rem;
+  right: 2.5rem;
+  z-index: 20;
+  font-family: var(--font-cinzel), Georgia, serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--parchment-3);
+  background: none;
+  border: 1px solid rgba(168, 122, 42, 0.25);
+  border-radius: 6px;
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.intro-skip:hover {
+  opacity: 1;
+  border-color: var(--gold-3);
+  color: var(--gold-2);
+}
+
+/* Bottom ornament */
+.intro-ornament {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--gold-4);
+  font-size: 1.1rem;
+  opacity: 0.35;
+  animation: introOrnamentPulse 3s ease-in-out infinite;
+}
+
+@keyframes introOrnamentPulse {
+  0%, 100% { opacity: 0.25; }
+  50%      { opacity: 0.5; }
+}
+
+/* ===========================================================
+   Menu polish — shared transitions & hover effects
+   =========================================================== */
+
+/* Parchment panels entrance */
+.parchment-panel {
+  transition: box-shadow 0.2s ease;
+}
+
+/* Gold button hover glow */
+.gold-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.gold-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+
+.gold-btn:hover::after {
+  opacity: 1;
+}
+
+/* Ink button focus ring */
+.ink-btn:focus-visible {
+  outline: 2px solid var(--gold-2);
+  outline-offset: 2px;
+}
+
+/* Parchment paper cards hover lift */
+.parchment-paper {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Quest log cards */
+.parchment-paper:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 0 60px rgba(120, 80, 30, 0.30),
+    inset 0 0 12px rgba(60, 30, 10, 0.20),
+    0 4px 12px rgba(40, 20, 10, 0.25);
+}
+
+/* Stat allocation buttons */
+ AllocBtn {
+  transition: transform 0.12s ease, background 0.12s ease;
+}
+
+/* Category filter buttons */
+.cat-btn {
+  transition: all 0.15s ease;
+}
+
+/* Inventory grid item hover */
+.group:hover .item-icon {
+  filter: brightness(1.1);
+}
+
+/* Toast animations enhancement */
+.toast-success {
+  border-color: var(--leaf) !important;
+}
+
+.toast-error {
+  border-color: var(--crimson) !important;
+}
+
+/* Smooth panel scroll */
+.parchment-panel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.parchment-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.parchment-panel::-webkit-scrollbar-thumb {
+  background: var(--gold-4);
+  border-radius: 3px;
 }

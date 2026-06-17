@@ -1,17 +1,27 @@
 "use client";
 
 import { useGame } from "../store";
-import { ITEMS } from "../data/items";
+import { ITEMS, getItemIcon } from "../data/items";
 import { COLORS } from "../constants";
 import type { ItemCategory } from "../types";
-import { useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
+import {
+  ParchmentModal,
+  Eyebrow,
+  GoldButton,
+  InkButton,
+  GoldRule,
+  StatLine,
+  EmptyState,
+} from "./parchment";
+import { ItemIcon, RarityPips, CategoryBadge } from "./ItemIcon";
 
 const CATEGORY_LABEL: Record<ItemCategory, string> = {
-  weapon: "Weapons",
-  armor: "Armor",
+  weapon: "Armes",
+  armor: "Armures",
   potion: "Potions",
-  material: "Materials",
-  key: "Key Items",
+  material: "Matériaux",
+  key: "Objets de quête",
 };
 
 export function Inventory() {
@@ -26,184 +36,334 @@ export function Inventory() {
   const [filter, setFilter] = useState<ItemCategory | "all">("all");
   const [selected, setSelected] = useState<string | null>(null);
 
-  const items = inventory
-    .map((i) => ({ ...i, def: ITEMS[i.itemId] }))
-    .filter((i) => i.def)
-    .filter((i) => filter === "all" || i.def.category === filter);
+  const items = useMemo(
+    () =>
+      inventory
+        .map((i) => ({ ...i, def: ITEMS[i.itemId] }))
+        .filter((i) => i.def)
+        .filter((i) => filter === "all" || i.def.category === filter),
+    [inventory, filter]
+  );
+
+  // Counters per category (for the filter buttons).
+  const counts = useMemo(() => {
+    const m: Record<string, number> = { all: 0 };
+    for (const c of Object.keys(CATEGORY_LABEL) as ItemCategory[]) m[c] = 0;
+    for (const slot of inventory) {
+      const def = ITEMS[slot.itemId];
+      if (!def) continue;
+      m.all += slot.qty;
+      m[def.category] = (m[def.category] ?? 0) + slot.qty;
+    }
+    return m;
+  }, [inventory]);
+
+  // Total gold value of everything in the bag (excluding unsellable keys).
+  const totalValue = useMemo(
+    () =>
+      inventory.reduce(
+        (acc, slot) => acc + (ITEMS[slot.itemId]?.value ?? 0) * slot.qty,
+        0
+      ),
+    [inventory]
+  );
 
   const sel = selected ? items.find((i) => i.itemId === selected) : null;
 
   return (
-    <PanelShell title="🎒 Inventory" onClose={() => closePanel("inventory")} width="max-w-2xl">
-      <div className="flex flex-col gap-3 sm:flex-row">
-        {/* item grid */}
+    <ParchmentModal
+      eyebrow="Le sac d'aventures"
+      title="Inventaire"
+      onClose={() => closePanel("inventory")}
+      width="max-w-3xl"
+    >
+      <div className="flex flex-col gap-4 sm:flex-row">
+        {/* grille d'objets */}
         <div className="flex-1">
-          <div className="mb-2 flex flex-wrap gap-1">
-            <CatBtn active={filter === "all"} onClick={() => setFilter("all")}>All</CatBtn>
+          <div className="mb-2 flex flex-wrap gap-1.5">
+            <CatBtn active={filter === "all"} onClick={() => setFilter("all")}>
+              Tout ({counts.all})
+            </CatBtn>
             {(Object.keys(CATEGORY_LABEL) as ItemCategory[]).map((c) => (
-              <CatBtn key={c} active={filter === c} onClick={() => setFilter(c)}>
-                {CATEGORY_LABEL[c]}
+              <CatBtn
+                key={c}
+                active={filter === c}
+                onClick={() => setFilter(c)}
+              >
+                {CATEGORY_LABEL[c]} ({counts[c] ?? 0})
               </CatBtn>
             ))}
           </div>
-          <div className="grid max-h-[50vh] grid-cols-4 gap-2 overflow-y-auto pr-1 sm:grid-cols-6">
-            {items.length === 0 && (
-              <div className="col-span-full py-8 text-center text-sm text-slate-500">No items</div>
-            )}
-            {items.map((i) => {
-              const c = COLORS.rarity[i.def.rarity];
-              const isEquipped = equipment.weapon === i.itemId || equipment.armor === i.itemId;
-              return (
-                <button
-                  key={i.itemId + i.qty}
-                  onClick={() => setSelected(i.itemId)}
-                  className={`relative flex aspect-square items-center justify-center rounded-lg border-2 bg-slate-900/70 text-2xl transition hover:bg-slate-800 ${
-                    selected === i.itemId ? "ring-2 ring-amber-400" : ""
-                  }`}
-                  style={{ borderColor: c }}
-                  title={i.def.name}
-                >
-                  <span className="drop-shadow">{i.def.icon}</span>
-                  {i.qty > 1 && (
-                    <span className="absolute bottom-0 right-1 rounded bg-black/70 px-1 text-[10px] font-bold text-white">
-                      {i.qty}
-                    </span>
-                  )}
-                  {isEquipped && (
-                    <span className="absolute left-0 top-0 rounded bg-emerald-600 px-1 text-[8px] font-bold text-white">E</span>
-                  )}
-                </button>
-              );
-            })}
+          <div className="parchment-paper rounded-lg border-2 border-[var(--gold-3)] p-2">
+            <div className="grid max-h-[52vh] grid-cols-4 gap-2 overflow-y-auto pr-1 sm:grid-cols-6">
+              {items.length === 0 && (
+                <EmptyState className="col-span-full">Le sac est vide…</EmptyState>
+              )}
+              {items.map((i) => {
+                const isEquipped =
+                  equipment.weapon === i.itemId ||
+                  equipment.armor === i.itemId;
+                return (
+                  <button
+                    key={i.itemId + i.qty}
+                    onClick={() => setSelected(i.itemId)}
+                    className="group relative transition hover:scale-[1.04]"
+                    title={i.def.nameFr ?? i.def.name}
+                  >
+                    <ItemIcon
+                      item={i.def}
+                      lucideIcon={getItemIcon(i.itemId)}
+                      size="md"
+                      equipped={isEquipped}
+                      selected={selected === i.itemId}
+                      quantity={i.qty}
+                      className="w-full"
+                    />
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
 
-        {/* detail */}
-        <div className="w-full sm:w-64">
+        {/* détail */}
+        <div className="w-full sm:w-72">
           {sel ? (
-            <div className="rounded-lg border border-slate-700 bg-slate-900/60 p-3">
-              <div className="mb-2 flex items-center gap-2">
-                <span className="text-3xl">{sel.def.icon}</span>
-                <div>
-                  <div className="font-bold" style={{ color: COLORS.rarity[sel.def.rarity] }}>{sel.def.name}</div>
-                  <div className="text-[10px] uppercase tracking-wide" style={{ color: COLORS.rarity[sel.def.rarity] }}>{sel.def.rarity} · {sel.def.category}</div>
+            <div className="parchment-paper rounded-lg border-2 border-[var(--gold-3)] p-4">
+              <div className="mb-3 flex items-start gap-3">
+                <ItemIcon
+                  item={sel.def}
+                  lucideIcon={getItemIcon(sel.itemId)}
+                  size="lg"
+                  equipped={
+                    equipment.weapon === sel.itemId ||
+                    equipment.armor === sel.itemId
+                  }
+                />
+                <div className="min-w-0 flex-1">
+                  <div
+                    className="font-serif text-base font-bold leading-tight"
+                    style={{ color: COLORS.rarity[sel.def.rarity] }}
+                  >
+                    {sel.def.nameFr ?? sel.def.name}
+                  </div>
+                  <div className="mt-1">
+                    <RarityPips rarity={sel.def.rarity} size="sm" />
+                  </div>
+                  <div className="mt-1.5">
+                    <CategoryBadge category={sel.def.category} />
+                  </div>
                 </div>
               </div>
-              <p className="mb-2 text-xs text-slate-300">{sel.def.description}</p>
+              <p className="mb-3 font-serif text-sm italic leading-relaxed text-[var(--parchment-ink-soft)]">
+                {sel.def.description}
+              </p>
               {sel.def.stats && (
-                <div className="mb-2 space-y-0.5 text-xs">
-                  {sel.def.stats.attack ? <div className="text-red-300">⚔️ +{sel.def.stats.attack} Attack</div> : null}
-                  {sel.def.stats.defense ? <div className="text-sky-300">🛡️ +{sel.def.stats.defense} Defense</div> : null}
-                  {sel.def.stats.health ? <div className="text-emerald-300">❤️ +{sel.def.stats.health} Health</div> : null}
-                  {sel.def.stats.mana ? <div className="text-blue-300">✨ +{sel.def.stats.mana} Mana</div> : null}
+                <div className="mb-3 space-y-0.5 font-serif text-xs">
+                  {sel.def.stats.attack ? (
+                    <StatLine
+                      k="⚔ Attaque"
+                      v={`+${sel.def.stats.attack}`}
+                      color="#c2563a"
+                    />
+                  ) : null}
+                  {sel.def.stats.defense ? (
+                    <StatLine
+                      k="▰ Défense"
+                      v={`+${sel.def.stats.defense}`}
+                      color="#3a7aa0"
+                    />
+                  ) : null}
+                  {sel.def.stats.health ? (
+                    <StatLine
+                      k="❤ Vie"
+                      v={`+${sel.def.stats.health}`}
+                      color="#3a7a3a"
+                    />
+                  ) : null}
+                  {sel.def.stats.mana ? (
+                    <StatLine
+                      k="✦ Mana"
+                      v={`+${sel.def.stats.mana}`}
+                      color="#5a4a8a"
+                    />
+                  ) : null}
                 </div>
               )}
               {sel.def.effect && (
-                <div className="mb-2 text-xs text-amber-300">
-                  ✨ {sel.def.effect.type === "heal" ? `Restores ${sel.def.effect.amount} HP` : sel.def.effect.type === "mana" ? `Restores ${sel.def.effect.amount} MP` : "Buff"}
+                <div className="mb-3 rounded border border-[var(--gold-3)] bg-[rgba(255,245,215,0.5)] px-2 py-1.5 font-serif text-xs text-[var(--gold-3)]">
+                  ✦{" "}
+                  {sel.def.effect.type === "heal"
+                    ? `Restaure ${sel.def.effect.amount} PV`
+                    : sel.def.effect.type === "mana"
+                      ? `Restaure ${sel.def.effect.amount} PM`
+                      : "Bonus"}
                 </div>
               )}
-              <div className="mb-3 text-xs text-slate-400">Value: {sel.def.value}g · Qty: {sel.qty}</div>
-              <div className="flex flex-col gap-1.5">
-                {sel.def.category === "weapon" || sel.def.category === "armor" ? (
-                  <ActionBtn onClick={() => { equipItem(sel.itemId); setSelected(null); }} color="amber">
-                    {equipment.weapon === sel.itemId || equipment.armor === sel.itemId ? "Equipped" : "Equip"}
-                  </ActionBtn>
+              <div className="mb-3 flex justify-between font-serif text-[11px] text-[var(--parchment-ink-soft)]">
+                <span>
+                  Valeur&nbsp;:{" "}
+                  <span className="font-bold text-[var(--gold-3)]">
+                    {sel.def.value} po
+                  </span>
+                </span>
+                <span>
+                  Quantité&nbsp;:{" "}
+                  <span className="font-bold text-[var(--parchment-ink)]">
+                    {sel.qty}
+                  </span>
+                </span>
+              </div>
+              <div className="space-y-2">
+                {sel.def.category === "weapon" ||
+                sel.def.category === "armor" ? (
+                  <GoldButton
+                    onClick={() => {
+                      equipItem(sel.itemId);
+                      setSelected(null);
+                    }}
+                    fullWidth
+                  >
+                    {equipment.weapon === sel.itemId ||
+                    equipment.armor === sel.itemId
+                      ? "★ Équipé"
+                      : "♦ Équiper"}
+                  </GoldButton>
                 ) : null}
                 {sel.def.category === "potion" ? (
-                  <ActionBtn onClick={() => { consumeItem(sel.itemId); }} color="emerald">Use</ActionBtn>
+                  <GoldButton
+                    onClick={() => {
+                      consumeItem(sel.itemId);
+                    }}
+                    fullWidth
+                  >
+                    ✦ Utiliser
+                  </GoldButton>
                 ) : null}
-                <ActionBtn onClick={() => sellItem(sel.itemId, 1)} color="slate">
-                  Sell ({Math.floor(sel.def.value * 0.5)}g)
-                </ActionBtn>
+                {sel.def.value > 0 && (
+                  <InkButton
+                    onClick={() => sellItem(sel.itemId, 1)}
+                    fullWidth
+                  >
+                    ✦ Vendre ({Math.floor(sel.def.value * 0.5)} po)
+                  </InkButton>
+                )}
               </div>
             </div>
           ) : (
-            <div className="flex h-full min-h-[200px] items-center justify-center rounded-lg border border-slate-700 bg-slate-900/40 text-xs text-slate-500">
-              Select an item
-            </div>
+            <EmptyState className="min-h-[220px]">
+              Choisissez un objet dans le sac
+            </EmptyState>
           )}
         </div>
       </div>
 
-      {/* Equipment slots */}
-      <div className="mt-3 border-t border-slate-700 pt-3">
-        <div className="mb-2 text-xs font-bold uppercase tracking-wide text-amber-300">Equipped</div>
-        <div className="flex gap-3">
-          <EquipSlot label="Weapon" item={equipment.weapon ? ITEMS[equipment.weapon] : null} onUnequip={() => unequipItem("weapon")} />
-          <EquipSlot label="Armor" item={equipment.armor ? ITEMS[equipment.armor] : null} onUnequip={() => unequipItem("armor")} />
-          <div className="ml-auto flex flex-col justify-center rounded-lg border border-slate-700 bg-slate-900/40 px-4 text-right">
-            <div className="text-[10px] uppercase text-slate-400">Gold</div>
-            <div className="text-lg font-bold text-amber-300">{player.gold}g</div>
+      <GoldRule ornament />
+
+      {/* Emplacements d'équipement */}
+      <div>
+        <Eyebrow>◈ Équipement ◈</Eyebrow>
+        <div className="mt-2 flex items-center gap-3">
+          <EquipSlot
+            label="Arme"
+            id={equipment.weapon}
+            item={equipment.weapon ? ITEMS[equipment.weapon] : null}
+            onUnequip={() => unequipItem("weapon")}
+          />
+          <EquipSlot
+            label="Armure"
+            id={equipment.armor}
+            item={equipment.armor ? ITEMS[equipment.armor] : null}
+            onUnequip={() => unequipItem("armor")}
+          />
+          <div className="ml-auto flex flex-col justify-center rounded-lg border-2 border-[var(--gold-3)] bg-[rgba(255,245,215,0.55)] px-4 py-2 text-right">
+            <Eyebrow>Bourse</Eyebrow>
+            <div className="font-serif text-xl font-bold text-[var(--gold-3)]">
+              {player.gold} <span className="text-sm">po</span>
+            </div>
+            <div className="font-serif text-[9px] text-[var(--parchment-ink-soft)]">
+              Sac&nbsp;: <span className="font-bold">{totalValue} po</span>
+            </div>
           </div>
         </div>
       </div>
-    </PanelShell>
+    </ParchmentModal>
   );
 }
 
-function EquipSlot({ label, item, onUnequip }: { label: string; item: { name: string; icon: string; rarity: string } | null; onUnequip: () => void }) {
+function EquipSlot({
+  label,
+  id,
+  item,
+  onUnequip,
+}: {
+  label: string;
+  id: string | null;
+  item:
+    | {
+        name: string;
+        nameFr?: string;
+        icon: string;
+        rarity: string;
+        category: ItemCategory;
+      }
+    | null;
+  onUnequip: () => void;
+}) {
   if (!item) {
     return (
-      <div className="flex h-20 w-20 flex-col items-center justify-center rounded-lg border-2 border-dashed border-slate-700 bg-slate-900/40 text-center">
-        <span className="text-2xl opacity-30">—</span>
-        <span className="text-[9px] text-slate-500">{label}</span>
+      <div className="parchment-paper flex h-20 w-20 flex-col items-center justify-center rounded-lg border-2 border-dashed border-[var(--gold-4)] text-center">
+        <span className="font-serif text-2xl opacity-40">—</span>
+        <span className="font-serif text-[9px] uppercase tracking-wider text-[var(--parchment-ink-soft)]">
+          {label}
+        </span>
       </div>
     );
   }
-  const c = COLORS.rarity[item.rarity as keyof typeof COLORS.rarity];
   return (
     <button
       onClick={onUnequip}
-      className="relative flex h-20 w-20 flex-col items-center justify-center rounded-lg border-2 bg-slate-900/70"
-      style={{ borderColor: c }}
-      title={`Click to unequip ${item.name}`}
+      className="group relative h-20 w-20 transition hover:scale-[1.04]"
+      title={`Cliquez pour déséquiper ${item.nameFr ?? item.name}`}
     >
-      <span className="text-3xl">{item.icon}</span>
-      <span className="text-[9px] text-slate-400">{label}</span>
-      <span className="absolute right-1 top-1 text-[8px] text-red-300">✕</span>
+      <ItemIcon
+        item={{
+          icon: item.icon,
+          rarity: item.rarity,
+          category: item.category,
+        }}
+        lucideIcon={getItemIcon(id)}
+        size="lg"
+      />
+      <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 rounded bg-[var(--parchment-2)] px-1.5 font-serif text-[9px] uppercase leading-none tracking-wider text-[var(--parchment-ink-soft)] shadow">
+        {label}
+      </span>
+      <span className="absolute bottom-1 right-1 rounded bg-[rgba(60,30,10,0.85)] px-1 font-serif text-[9px] font-bold leading-none text-[var(--parchment-1)]">
+        ✕
+      </span>
     </button>
   );
 }
 
-function CatBtn({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
+function CatBtn({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: ReactNode;
+}) {
   return (
     <button
       onClick={onClick}
-      className={`rounded px-2 py-1 text-[10px] font-semibold transition ${
-        active ? "bg-amber-700 text-amber-100" : "bg-slate-800 text-slate-400 hover:bg-slate-700"
+      className={`rounded-md border px-2.5 py-1 font-serif text-[10px] font-bold uppercase tracking-wider transition ${
+        active
+          ? "border-[var(--gold-2)] bg-[var(--gold-2)]/40 text-[var(--parchment-ink)]"
+          : "border-[var(--gold-4)] bg-[rgba(255,245,215,0.35)] text-[var(--parchment-ink-soft)] hover:bg-[rgba(255,245,215,0.6)] hover:text-[var(--parchment-ink)]"
       }`}
     >
       {children}
     </button>
-  );
-}
-
-function ActionBtn({ onClick, color, children }: { onClick: () => void; color: "amber" | "emerald" | "slate"; children: React.ReactNode }) {
-  const colors = {
-    amber: "border-amber-600 bg-amber-700/60 hover:bg-amber-600/70 text-amber-100",
-    emerald: "border-emerald-600 bg-emerald-700/60 hover:bg-emerald-600/70 text-emerald-100",
-    slate: "border-slate-600 bg-slate-800 hover:bg-slate-700 text-slate-200",
-  };
-  return (
-    <button onClick={onClick} className={`rounded border px-3 py-1.5 text-xs font-bold transition ${colors[color]}`}>
-      {children}
-    </button>
-  );
-}
-
-export function PanelShell({ title, onClose, children, width = "max-w-lg" }: { title: string; onClose: () => void; children: React.ReactNode; width?: string }) {
-  return (
-    <div className="pointer-events-auto absolute inset-0 z-40 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
-      <div className={`w-full ${width} rounded-xl border border-amber-700/40 bg-slate-950/95 shadow-2xl`} style={{ animation: "panelIn 0.2s ease-out" }}>
-        <div className="flex items-center justify-between border-b border-amber-700/30 px-4 py-3">
-          <h2 className="text-lg font-bold text-amber-200">{title}</h2>
-          <button onClick={onClose} className="flex h-7 w-7 items-center justify-center rounded border border-slate-600 text-slate-300 hover:bg-slate-800 hover:text-white">
-            ✕
-          </button>
-        </div>
-        <div className="p-4">{children}</div>
-      </div>
-    </div>
   );
 }

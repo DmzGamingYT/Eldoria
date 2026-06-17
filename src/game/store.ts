@@ -25,6 +25,7 @@ import {
 } from "./data/enemies";
 import { ITEMS, getItem } from "./data/items";
 import { PLAYER, xpForLevel, ENEMY_RESPAWN_TIME } from "./constants";
+import { terrainHeight } from "./world/World";
 import {
   SKILLS,
   CRAFT_RECIPES,
@@ -82,6 +83,12 @@ function buildInitialEnemies(): EnemyInstance[] {
 }
 
 function makeInitialPlayer(): PlayerState {
+  // Spawn at the village centre (0, 8) where the terrain is essentially flat.
+  // Compute the feet Y (= terrainHeight - footOffset) so the rendered group
+  // anchors immediately at ground level on frame 1.
+  const spawnX = 0;
+  const spawnZ = 8;
+  const spawnFeetY = terrainHeight(spawnX, spawnZ) - PLAYER.footOffset;
   return {
     level: 1,
     xp: 0,
@@ -95,7 +102,7 @@ function makeInitialPlayer(): PlayerState {
     speed: PLAYER.baseSpeed,
     gold: 25,
     statPoints: 0,
-    position: [0, 0, 8],
+    position: [spawnX, spawnFeetY, spawnZ],
     rotation: 0,
     isAttacking: false,
     attackCooldown: 0,
@@ -260,7 +267,7 @@ export const useGame = create<GameStore>((set, get) => ({
     const fresh = makeInitialPlayer();
     const d = recomputeDerived(fresh, { weapon: null, armor: null });
     set({
-      status: "playing",
+      status: "intro",
       player: fresh,
       enemies: buildInitialEnemies(),
       inventory: [
@@ -312,10 +319,14 @@ export const useGame = create<GameStore>((set, get) => ({
     px = Math.max(-bound, Math.min(bound, px));
     pz = Math.max(-bound, Math.min(bound, pz));
     const rot = Math.atan2(worldDx, worldDz);
+    // Keep player.position[1] in lockstep with the terrain — the visual group
+    // snaps to it every frame, so the character stays glued to the ground on
+    // every step (no more per-frame drift / floating in the air).
+    const feetY = terrainHeight(px, pz) - PLAYER.footOffset;
     set((st) => ({
       player: {
         ...st.player,
-        position: [px, st.player.position[1], pz],
+        position: [px, feetY, pz],
         rotation: rot,
         isMoving: true,
         facingDir: [Math.sin(rot), 0, Math.cos(rot)],
@@ -332,8 +343,11 @@ export const useGame = create<GameStore>((set, get) => ({
       },
     })),
 
-  setPlayerMoving: (m) =>
-    set((st) => ({ player: { ...st.player, isMoving: m } })),
+  setPlayerMoving: (m) => {
+    const cur = get().player.isMoving;
+    if (cur === m) return;
+    set((st) => ({ player: { ...st.player, isMoving: m } }));
+  },
 
   playerAttack: () => {
     const s = get();
@@ -381,57 +395,82 @@ export const useGame = create<GameStore>((set, get) => ({
       setTimeout(() => {
         const cur = get();
         const now = performance.now() / 1000;
+        let goldGained = 0;
+        let kills = 0;
+        let levelUps = 0;
+        const newLoot = [...cur.loot];
+        let newQuests = cur.quests;
+        const newFloatingTexts = [...cur.floatingTexts];
+        const newParticles = [...cur.particles];
+        const initialLevel = cur.player.level;
+
         const updated = cur.enemies.map((e) => {
           if (!e.isDead && e.health <= 0) {
             const def = ENEMIES[e.type];
-            get().grantXp(def.xpReward);
+            // XP — accumulate level-ups
+            let xpLeft = def.xpReward;
+            let xp = cur.player.xp + xpLeft;
+            let lvl = cur.player.level;
+            let xpToNext = cur.player.xpToNext;
+            let maxHp = cur.player.maxHealth;
+            let maxMp = cur.player.maxMana;
+            let atk = cur.player.attack;
+            let def_ = cur.player.defense;
+            let hp = cur.player.health;
+            let mp = cur.player.mana;
+            let sp = cur.player.statPoints;
+            while (xp >= xpToNext) {
+              xp -= xpToNext;
+              lvl += 1;
+              xpToNext = xpForLevel(lvl);
+              maxHp += 12;
+              maxMp += 6;
+              atk += 2;
+              def_ += 1;
+              hp = maxHp;
+              mp = maxMp;
+              sp += 3;
+              levelUps += 1;
+              const lvlId = `ft_${performance.now()}_lvl_${e.id}`;
+              newFloatingTexts.push({ id: lvlId, position: [e.position[0], 2.0, e.position[2]], text: `NIVEAU SUP\u00c9RIEUR !`, color: "#fbbf24", born: performance.now(), duration: 1100 });
+            }
+            // gold
             const gold = Math.floor(rand(def.goldReward[0], def.goldReward[1] + 1));
-            set((st2) => ({
-              player: { ...st2.player, gold: st2.player.gold + gold, killCount: st2.player.killCount + 1 },
-            }));
-            get().addFloatingText(
-              [e.position[0], e.position[1] + e.scale * 1.6, e.position[2]],
-              `+${def.xpReward} XP`,
-              "#a3e635"
-            );
-            get().addFloatingText(
-              [e.position[0] + 0.4, e.position[1] + e.scale * 1.6, e.position[2]],
-              `+${gold}g`,
-              "#fbbf24"
-            );
-            get().addParticleBurst([e.position[0], e.position[1] + e.scale * 0.6, e.position[2]], def.color, 14);
+            goldGained += gold;
+            kills += 1;
+            // floating texts
+            const xpId = `ft_${performance.now()}_xp_${e.id}`;
+            newFloatingTexts.push({ id: xpId, position: [e.position[0], e.position[1] + e.scale * 1.6, e.position[2]], text: `+${def.xpReward} XP`, color: "#a3e635", born: performance.now(), duration: 1100 });
+            const goldId = `ft_${performance.now()}_gold_${e.id}`;
+            newFloatingTexts.push({ id: goldId, position: [e.position[0] + 0.4, e.position[1] + e.scale * 1.6, e.position[2]], text: `+${gold} po`, color: "#fbbf24", born: performance.now(), duration: 1100 });
+            // particle burst
+            const pbId = `pb_${performance.now()}_death_${e.id}`;
+            newParticles.push({ id: pbId, position: [e.position[0], e.position[1] + e.scale * 0.6, e.position[2]], color: def.color, born: performance.now(), duration: 700, count: 8 });
             // drops
             for (const drop of def.drops) {
               if (Math.random() < drop.chance) {
                 const qty = drop.qty ? Math.floor(rand(drop.qty[0], drop.qty[1] + 1)) : 1;
                 const lootId = `loot_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
-                set((st2) => ({
-                  loot: [
-                    ...st2.loot,
-                    {
-                      id: lootId,
-                      itemId: drop.itemId,
-                      qty,
-                      position: [
-                        e.position[0] + rand(-0.6, 0.6),
-                        0.3,
-                        e.position[2] + rand(-0.6, 0.6),
-                      ],
-                      born: now,
-                    },
+                newLoot.push({
+                  id: lootId,
+                  itemId: drop.itemId,
+                  qty,
+                  position: [
+                    e.position[0] + rand(-0.6, 0.6),
+                    0.3,
+                    e.position[2] + rand(-0.6, 0.6),
                   ],
-                }));
+                  born: now,
+                });
               }
             }
             // quest progress
-            const qState = get().quests;
-            const newQuests = qState.map((q) => {
+            newQuests = newQuests.map((q) => {
               if (q.status === "active") {
                 const def2 = QUESTS.find((qd) => qd.id === q.id);
                 if (def2 && def2.objective.type === "kill" && def2.objective.target === e.type) {
                   const np = Math.min(q.progress + 1, def2.objective.count);
                   if (np >= def2.objective.count) {
-                    get().showToast(`Quest complete: ${def2.title}`, "success");
                     return { ...q, progress: np, status: "completed" as const };
                   }
                   return { ...q, progress: np };
@@ -439,12 +478,42 @@ export const useGame = create<GameStore>((set, get) => ({
               }
               return q;
             });
-            set({ quests: newQuests });
+            // Update accumulated player state for next iteration
+            cur.player.xp = xp;
+            cur.player.level = lvl;
+            cur.player.xpToNext = xpToNext;
+            cur.player.maxHealth = maxHp;
+            cur.player.maxMana = maxMp;
+            cur.player.attack = atk;
+            cur.player.defense = def_;
+            cur.player.health = hp;
+            cur.player.mana = mp;
+            cur.player.statPoints = sp;
             return { ...e, isDead: true, state: "dead" as const, deathTime: now };
           }
           return e;
         });
-        set({ enemies: updated });
+        // Build final player object with gold and killCount
+        const finalPlayer = {
+          ...cur.player,
+          gold: cur.player.gold + goldGained,
+          killCount: cur.player.killCount + kills,
+        };
+        const d = recomputeDerived(finalPlayer, cur.equipment);
+        // Batch all state changes into one set() call
+        set({
+          enemies: updated,
+          player: { ...finalPlayer, health: Math.min(finalPlayer.health, d.derivedMaxHealth), mana: Math.min(finalPlayer.mana, d.derivedMaxMana) },
+          ...d,
+          floatingTexts: newFloatingTexts.slice(-20),
+          particles: newParticles.slice(-10),
+          loot: newLoot,
+          quests: newQuests,
+        });
+        // Show level up toasts after the set — only if level actually changed
+        if (finalPlayer.level > initialLevel) {
+          setTimeout(() => get().showToast(`Niveau sup\u00e9rieur ! Niveau ${finalPlayer.level}`, "success"), 0);
+        }
       }, 30);
     }
     setTimeout(() => {
@@ -564,6 +633,18 @@ export const useGame = create<GameStore>((set, get) => ({
         newPos[1],
         Math.max(-bound, Math.min(bound, newPos[2])),
       ];
+      // Only create new object if something actually changed
+      if (
+        newPos === e.position &&
+        newRot === e.rotation &&
+        newState === e.state &&
+        newWanderTarget === e.wanderTarget &&
+        newWanderCooldown === e.wanderCooldown &&
+        newAttackCooldown === e.attackCooldown &&
+        newHurtUntil === e.hurtUntil
+      ) {
+        return e;
+      }
       return {
         ...e,
         position: newPos,
@@ -575,7 +656,11 @@ export const useGame = create<GameStore>((set, get) => ({
         hurtUntil: newHurtUntil,
       };
     });
-    set({ enemies: updated });
+    // Only update if something actually changed
+    const enemiesChanged = updated.some((e, i) => e !== s.enemies[i]);
+    if (enemiesChanged) {
+      set({ enemies: updated });
+    }
     if (playerTookDamage && !playerDead) {
       get().applyDamageToPlayer(damageToPlayer, damageSource);
     }
@@ -589,7 +674,7 @@ export const useGame = create<GameStore>((set, get) => ({
       if (ld < PLAYER.collectRange) {
         get().addItem(l.itemId, l.qty);
         const it = getItem(l.itemId);
-        if (it) get().showToast(`Picked up ${it.name} x${l.qty}`, "success");
+        if (it) get().showToast(`Ramass\u00e9 : ${it.nameFr ?? it.name} x${l.qty}`, "success");
       } else if (now - l.born < 60) {
         remainingLoot.push(l);
       }
@@ -609,10 +694,12 @@ export const useGame = create<GameStore>((set, get) => ({
   },
 
   tickCooldowns: (dt) => {
+    const cd = get().player.attackCooldown;
+    if (cd <= 0) return;
     set((st) => ({
       player: {
         ...st.player,
-        attackCooldown: Math.max(0, st.player.attackCooldown - dt),
+        attackCooldown: Math.max(0, cd - dt),
       },
     }));
   },
@@ -632,14 +719,14 @@ export const useGame = create<GameStore>((set, get) => ({
         "#22c55e"
       );
       set((st) => ({ player: { ...st.player, health: newHp } }));
-      get().showToast(`Used ${item.name}`, "success");
+      get().showToast(`Utilis\u00e9 : ${item.nameFr ?? item.name}`, "success");
     } else if (item.effect?.type === "mana") {
       const amount = item.effect.amount ?? 0;
       const newMp = Math.min(s.derivedMaxMana, s.player.mana + amount);
       set((st) => ({ player: { ...st.player, mana: newMp } }));
-      get().showToast(`Used ${item.name}`, "success");
+      get().showToast(`Utilis\u00e9 : ${item.nameFr ?? item.name}`, "success");
     } else {
-      get().showToast(`Cannot use ${item.name}`, "info");
+      get().showToast(`Impossible d'utiliser ${item.nameFr ?? item.name}`, "info");
       return;
     }
     get().removeItem(itemId, 1);
@@ -651,20 +738,70 @@ export const useGame = create<GameStore>((set, get) => ({
     if (!item) return;
     if (item.category === "weapon") {
       const prev = s.equipment.weapon;
-      set((st) => ({ equipment: { ...st.equipment, weapon: itemId } }));
+      const newInv = [...s.inventory];
+      // Remove item being equipped
+      const rmIdx = newInv.findIndex((i) => i.itemId === itemId);
+      if (rmIdx >= 0) {
+        if (item.stackable && newInv[rmIdx].qty > 1) {
+          newInv[rmIdx] = { ...newInv[rmIdx], qty: newInv[rmIdx].qty - 1 };
+        } else {
+          newInv.splice(rmIdx, 1);
+        }
+      }
+      // Add previous weapon back
+      if (prev) {
+        const pi = newInv.findIndex((i) => i.itemId === prev);
+        if (pi >= 0) {
+          const prevItem = getItem(prev);
+          if (prevItem?.stackable) {
+            newInv[pi] = { ...newInv[pi], qty: newInv[pi].qty + 1 };
+          } else {
+            newInv.push({ itemId: prev, qty: 1 });
+          }
+        } else {
+          newInv.push({ itemId: prev, qty: 1 });
+        }
+      }
       const d = recomputeDerived(s.player, { weapon: itemId, armor: s.equipment.armor });
-      set({ ...d, player: { ...s.player, health: Math.min(s.player.health, d.derivedMaxHealth), mana: Math.min(s.player.mana, d.derivedMaxMana) } });
-      get().removeItem(itemId, 1);
-      if (prev) get().addItem(prev, 1);
-      get().showToast(`Equipped ${item.name}`, "success");
+      set({
+        equipment: { ...s.equipment, weapon: itemId },
+        inventory: newInv,
+        ...d,
+        player: { ...s.player, health: Math.min(s.player.health, d.derivedMaxHealth), mana: Math.min(s.player.mana, d.derivedMaxMana) },
+      });
+      get().showToast(`\u00c9quip\u00e9 : ${item.nameFr ?? item.name}`, "success");
     } else if (item.category === "armor") {
       const prev = s.equipment.armor;
-      set((st) => ({ equipment: { ...st.equipment, armor: itemId } }));
+      const newInv = [...s.inventory];
+      const rmIdx = newInv.findIndex((i) => i.itemId === itemId);
+      if (rmIdx >= 0) {
+        if (item.stackable && newInv[rmIdx].qty > 1) {
+          newInv[rmIdx] = { ...newInv[rmIdx], qty: newInv[rmIdx].qty - 1 };
+        } else {
+          newInv.splice(rmIdx, 1);
+        }
+      }
+      if (prev) {
+        const pi = newInv.findIndex((i) => i.itemId === prev);
+        if (pi >= 0) {
+          const prevItem = getItem(prev);
+          if (prevItem?.stackable) {
+            newInv[pi] = { ...newInv[pi], qty: newInv[pi].qty + 1 };
+          } else {
+            newInv.push({ itemId: prev, qty: 1 });
+          }
+        } else {
+          newInv.push({ itemId: prev, qty: 1 });
+        }
+      }
       const d = recomputeDerived(s.player, { weapon: s.equipment.weapon, armor: itemId });
-      set({ ...d, player: { ...s.player, health: Math.min(s.player.health, d.derivedMaxHealth), mana: Math.min(s.player.mana, d.derivedMaxMana) } });
-      get().removeItem(itemId, 1);
-      if (prev) get().addItem(prev, 1);
-      get().showToast(`Equipped ${item.name}`, "success");
+      set({
+        equipment: { ...s.equipment, armor: itemId },
+        inventory: newInv,
+        ...d,
+        player: { ...s.player, health: Math.min(s.player.health, d.derivedMaxHealth), mana: Math.min(s.player.mana, d.derivedMaxMana) },
+      });
+      get().showToast(`\u00c9quip\u00e9 : ${item.nameFr ?? item.name}`, "success");
     } else {
       get().useItem(itemId);
     }
@@ -675,14 +812,25 @@ export const useGame = create<GameStore>((set, get) => ({
     const id = s.equipment[slot];
     if (!id) return;
     const item = getItem(id);
-    set((st) => ({ equipment: { ...st.equipment, [slot]: null } }));
+    const newInv = [...s.inventory];
+    // Add item back to inventory
+    const existingIdx = newInv.findIndex((i) => i.itemId === id);
+    if (existingIdx >= 0 && item?.stackable) {
+      newInv[existingIdx] = { ...newInv[existingIdx], qty: newInv[existingIdx].qty + 1 };
+    } else {
+      newInv.push({ itemId: id, qty: 1 });
+    }
     const d = recomputeDerived(s.player, {
       weapon: slot === "weapon" ? null : s.equipment.weapon,
       armor: slot === "armor" ? null : s.equipment.armor,
     });
-    set({ ...d, player: { ...s.player, health: Math.min(s.player.health, d.derivedMaxHealth), mana: Math.min(s.player.mana, d.derivedMaxMana) } });
-    get().addItem(id, 1);
-    if (item) get().showToast(`Unequipped ${item.name}`, "info");
+    set({
+      equipment: { ...s.equipment, [slot]: null },
+      inventory: newInv,
+      ...d,
+      player: { ...s.player, health: Math.min(s.player.health, d.derivedMaxHealth), mana: Math.min(s.player.mana, d.derivedMaxMana) },
+    });
+    if (item) get().showToast(`D\u00e9sequip\u00e9 : ${item.nameFr ?? item.name}`, "info");
   },
 
   addItem: (itemId, qty = 1) => {
@@ -721,12 +869,12 @@ export const useGame = create<GameStore>((set, get) => ({
     const item = getItem(itemId);
     if (!item) return;
     if (s.player.gold < item.value) {
-      get().showToast("Not enough gold", "error");
+      get().showToast("Pas assez d'or", "error");
       return;
     }
     set((st) => ({ player: { ...st.player, gold: st.player.gold - item.value } }));
     get().addItem(itemId, 1);
-    get().showToast(`Bought ${item.name}`, "success");
+    get().showToast(`Achet\u00e9 : ${item.nameFr ?? item.name}`, "success");
   },
 
   sellItem: (itemId, qty = 1) => {
@@ -738,7 +886,7 @@ export const useGame = create<GameStore>((set, get) => ({
     const sellPrice = Math.floor(item.value * 0.5);
     set((st) => ({ player: { ...st.player, gold: st.player.gold + sellPrice * qty } }));
     get().removeItem(itemId, qty);
-    get().showToast(`Sold ${item.name} x${qty}`, "success");
+    get().showToast(`Vendu : ${item.nameFr ?? item.name} x${qty}`, "success");
   },
 
   acceptQuest: (questId) => {
@@ -748,7 +896,7 @@ export const useGame = create<GameStore>((set, get) => ({
       ),
     }));
     const q = QUESTS.find((q) => q.id === questId);
-    if (q) get().showToast(`Quest accepted: ${q.title}`, "info");
+    if (q) get().showToast(`Qu\u00eate accept\u00e9e : ${q.title}`, "info");
   },
 
   turnInQuest: (questId) => {
@@ -765,7 +913,7 @@ export const useGame = create<GameStore>((set, get) => ({
       ),
     }));
     if (def.reward.item) get().addItem(def.reward.item, 1);
-    get().showToast(`Quest complete: ${def.title} (+${def.reward.xp} XP, +${def.reward.gold}g)`, "success");
+    get().showToast(`Qu\u00eate termin\u00e9e : ${def.title} (+${def.reward.xp} XP, +${def.reward.gold} po)`, "success");
     // unlock next quests if shadow_lord becomes available
     if (questId === "skeleton_hunt") {
       set((st) => ({
@@ -839,14 +987,14 @@ export const useGame = create<GameStore>((set, get) => ({
     if (s.player.isDead) return;
     const now = performance.now() / 1000;
     if (now < s.player.invulnerableUntil) return;
-    const mitigated = Math.max(1, damage - s.derivedDefense * 0.5);
+    const mitigated = Math.max(1, damage);
     const newHp = s.player.health - mitigated;
     if (newHp <= 0) {
       set((st) => ({
         player: { ...st.player, health: 0, isDead: true },
         status: "gameover",
       }));
-      get().showToast(`You were slain by ${source}`, "error");
+      get().showToast(`Vous avez \u00e9t\u00e9 terrass\u00e9 par ${source}`, "error");
     } else {
       set((st) => ({
         player: {
@@ -870,16 +1018,15 @@ export const useGame = create<GameStore>((set, get) => ({
         player.maxMana += 6;
         player.attack += 2;
         player.defense += 1;
-        player.health = player.maxHealth + (player.health - player.maxHealth + 12);
         player.health = player.maxHealth;
         player.mana = player.maxMana;
         player.statPoints += 3;
         // show toast outside
         setTimeout(() => {
-          get().showToast(`Level Up! Now level ${player.level}`, "success");
+          get().showToast(`Niveau sup\u00e9rieur ! Vous \u00eates maintenant niveau ${player.level}`, "success");
           get().addFloatingText(
             [player.position[0], 2.0, player.position[2]],
-            `LEVEL UP!`,
+            `NIVEAU SUP\u00c9RIEUR !`,
             "#fbbf24"
           );
         }, 0);
@@ -890,22 +1037,22 @@ export const useGame = create<GameStore>((set, get) => ({
   },
 
   addFloatingText: (pos, text, color) => {
-    const id = `ft_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+    const id = `ft_${performance.now()}_${Math.random().toString(36).slice(2, 6)}`;
     set((st) => ({
       floatingTexts: [
         ...st.floatingTexts,
-        { id, position: pos, text, color, born: Date.now(), duration: 1100 },
-      ].slice(-40),
+        { id, position: pos, text, color, born: performance.now(), duration: 1100 },
+      ].slice(-20),
     }));
   },
 
-  addParticleBurst: (pos, color, count = 10) => {
-    const id = `pb_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+  addParticleBurst: (pos, color, count = 6) => {
+    const id = `pb_${performance.now()}_${Math.random().toString(36).slice(2, 6)}`;
     set((st) => ({
       particles: [
         ...st.particles,
-        { id, position: pos, color, born: Date.now(), duration: 700, count },
-      ].slice(-20),
+        { id, position: pos, color, born: performance.now(), duration: 700, count },
+      ].slice(-10),
     }));
   },
 
@@ -920,9 +1067,9 @@ export const useGame = create<GameStore>((set, get) => ({
     };
     try {
       localStorage.setItem("rpg_save_v1", JSON.stringify(data));
-      get().showToast("Game saved", "success");
+      get().showToast("Partie sauvegard\u00e9e", "success");
     } catch {
-      get().showToast("Failed to save", "error");
+      get().showToast("\u00c9chec de la sauvegarde", "error");
     }
   },
 
@@ -932,7 +1079,16 @@ export const useGame = create<GameStore>((set, get) => ({
       if (!raw) return false;
       const data = JSON.parse(raw);
       const fresh = makeInitialPlayer();
-      const player = { ...fresh, ...data.player };
+      const merged = { ...fresh, ...data.player };
+      // Normalise stored Y from older saves (when position[1] was always 0)
+      // to the new "feet Y" convention so loading doesn't drop the character
+      // below the terrain or re-introduce the floating bug.
+      const feetY =
+        terrainHeight(merged.position[0], merged.position[2]) - PLAYER.footOffset;
+      const player = {
+        ...merged,
+        position: [merged.position[0], feetY, merged.position[2]],
+      };
       const d = recomputeDerived(player, data.equipment || { weapon: null, armor: null });
       set({
         status: "playing",
@@ -947,7 +1103,7 @@ export const useGame = create<GameStore>((set, get) => ({
         ui: { inventory: false, quests: false, character: false, help: false, dialogue: null, shop: null, toast: null },
         ...d,
       });
-      get().showToast("Game loaded", "success");
+      get().showToast("Partie charg\u00e9e", "success");
       return true;
     } catch {
       return false;

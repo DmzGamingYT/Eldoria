@@ -1,6 +1,6 @@
 // Core game types
 
-export type GameStatus = "menu" | "playing" | "paused" | "gameover" | "victory";
+export type GameStatus = "menu" | "intro" | "playing" | "paused" | "gameover" | "victory";
 
 export type Vec3 = [number, number, number];
 
@@ -76,6 +76,11 @@ export interface ItemDef {
   };
   value: number;
   stackable: boolean;
+  // Optional localized French variants (kept optional so the type remains
+  // backward-compatible with anything that only supplies `name`).
+  nameFr?: string;
+  rarityFr?: string;
+  categoryFr?: string;
 }
 
 export interface InventoryItem {

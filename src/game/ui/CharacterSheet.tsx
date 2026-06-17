@@ -1,9 +1,12 @@
 "use client";
 
 import { useGame } from "../store";
-import { ITEMS } from "../data/items";
+import { ITEMS, getItemIcon } from "../data/items";
 import { COLORS } from "../constants";
-import { PanelShell } from "./Inventory";
+import type { ItemCategory } from "../types";
+import { PanelShell, Eyebrow, GoldButton, InkButton, GoldRule, Medallion } from "./parchment";
+import { ItemIcon, RarityPips } from "./ItemIcon";
+import { Wand2 } from "lucide-react";
 
 export function CharacterSheet() {
   const player = useGame((s) => s.player);
@@ -21,7 +24,7 @@ export function CharacterSheet() {
   const allocStat = (stat: "attack" | "defense" | "maxHealth" | "maxMana") => {
     const s = useGame.getState();
     if (s.player.statPoints <= 0) {
-      showToast("No stat points available", "error");
+      showToast("Aucun point de statistique disponible", "error");
       return;
     }
     useGame.setState((st) => {
@@ -48,91 +51,146 @@ export function CharacterSheet() {
         derivedMaxMana: player.maxMana + bonusMana,
       };
     });
-    showToast(`+1 ${stat}`, "success");
+    const labels: Record<string, string> = { attack: "Attaque", defense: "Défense", maxHealth: "Vie max.", maxMana: "Mana max." };
+    showToast(`+1 ${labels[stat] ?? stat}`, "success");
   };
 
   const stats = [
-    { label: "Level", value: player.level, base: player.level, color: "text-amber-300" },
-    { label: "Experience", value: `${player.xp} / ${player.xpToNext}`, base: 0, color: "text-amber-200" },
-    { label: "Health", value: `${Math.ceil(player.health)} / ${derivedMaxHealth}`, base: player.maxHealth, color: "text-red-300" },
-    { label: "Mana", value: `${Math.ceil(player.mana)} / ${derivedMaxMana}`, base: player.maxMana, color: "text-sky-300" },
-    { label: "Attack", value: derivedAttack, base: player.attack, color: "text-orange-300" },
-    { label: "Defense", value: derivedDefense, base: player.defense, color: "text-cyan-300" },
-    { label: "Speed", value: player.speed.toFixed(1), base: player.speed, color: "text-emerald-300" },
-    { label: "Gold", value: player.gold, base: player.gold, color: "text-amber-400" },
-    { label: "Kills", value: player.killCount, base: player.killCount, color: "text-rose-300" },
+    { label: "Niveau", value: player.level, base: player.level, color: "var(--gold-3)" },
+    { label: "Expérience", value: `${player.xp} / ${player.xpToNext}`, base: 0, color: "var(--gold-3)" },
+    { label: "Vie", value: `${Math.ceil(player.health)} / ${derivedMaxHealth}`, base: player.maxHealth, color: "#c2563a" },
+    { label: "Mana", value: `${Math.ceil(player.mana)} / ${derivedMaxMana}`, base: player.maxMana, color: "#3a7aa0" },
+    { label: "Attaque", value: derivedAttack, base: player.attack, color: "#c2563a" },
+    { label: "Défense", value: derivedDefense, base: player.defense, color: "#3a7aa0" },
+    { label: "Vitesse", value: player.speed.toFixed(1), base: player.speed, color: "var(--leaf)" },
+    { label: "Or", value: player.gold, base: player.gold, color: "var(--gold-3)" },
+    { label: "Victoires", value: player.killCount, base: player.killCount, color: "var(--crimson)" },
   ];
 
   return (
-    <PanelShell title="🧙 Character" onClose={() => closePanel("character")} width="max-w-lg">
+    <PanelShell title="🧙 Fiche du Héros" onClose={() => closePanel("character")} width="max-w-lg">
+      {/* Emblem */}
       <div className="mb-4 flex items-center gap-4">
-        <div className="flex h-20 w-20 items-center justify-center rounded-xl border-2 border-amber-500 bg-gradient-to-br from-amber-700 to-amber-900 text-4xl">
-          🧙
-        </div>
+        <Medallion size="lg">
+          <Wand2 className="h-10 w-10 text-[var(--parchment-ink)] drop-shadow" strokeWidth={1.6} />
+        </Medallion>
         <div className="flex-1">
-          <div className="text-xl font-bold text-amber-100">Hero of Eldoria</div>
-          <div className="text-sm text-amber-300">Level {player.level} Adventurer</div>
-          <div className="mt-1 text-xs text-slate-400">
-            Stat Points: <span className="font-bold text-amber-300">{player.statPoints}</span> available
+          <div className="font-serif text-xl font-bold text-[var(--parchment-ink)]">
+            Héros d'Eldoria
+          </div>
+          <div className="font-serif text-sm not-italic text-[var(--gold-3)]">
+            Aventurier de niveau {player.level}
+          </div>
+          <div className="mt-1 font-serif text-xs text-[var(--parchment-ink-soft)]">
+            Points disponibles&nbsp;:{" "}
+            <span className="font-bold text-[var(--gold-3)]">{player.statPoints}</span>
           </div>
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-2">
         {stats.map((s) => (
-          <div key={s.label} className="rounded-lg border border-slate-700 bg-slate-900/60 px-3 py-2">
-            <div className="text-[10px] uppercase tracking-wide text-slate-400">{s.label}</div>
-            <div className={`text-base font-bold ${s.color}`}>{s.value}</div>
+          <div
+            key={s.label}
+            className="parchment-paper rounded-md border-2 border-[var(--gold-3)] px-3 py-2"
+          >
+            <Eyebrow>{s.label}</Eyebrow>
+            <div
+              className="mt-0.5 font-serif text-lg font-bold leading-tight"
+              style={{ color: s.color }}
+            >
+              {s.value}
+            </div>
           </div>
         ))}
       </div>
 
-      {/* Equipment */}
-      <div className="mt-4">
-        <h3 className="mb-2 text-xs font-bold uppercase tracking-wide text-amber-400">Equipment</h3>
-        <div className="grid grid-cols-2 gap-2">
-          <EquipDisplay label="Weapon" item={weapon} />
-          <EquipDisplay label="Armor" item={armor} />
-        </div>
+      <GoldRule />
+
+      {/* Équipement */}
+      <Eyebrow>◈ Équipement ◈</Eyebrow>
+      <div className="mt-2 grid grid-cols-2 gap-2">
+        <EquipDisplay label="Arme" id={equipment.weapon} item={weapon} />
+        <EquipDisplay label="Armure" id={equipment.armor} item={armor} />
       </div>
 
-      {/* Stat allocation */}
+      {/* Allocation des points */}
       {player.statPoints > 0 && (
-        <div className="mt-4">
-          <h3 className="mb-2 text-xs font-bold uppercase tracking-wide text-amber-400">Allocate Stat Points ({player.statPoints})</h3>
-          <div className="grid grid-cols-4 gap-2">
-            <AllocBtn label="ATK" desc="+1 Attack" onClick={() => allocStat("attack")} color="border-orange-500 text-orange-300 hover:bg-orange-900/40" />
-            <AllocBtn label="DEF" desc="+1 Defense" onClick={() => allocStat("defense")} color="border-cyan-500 text-cyan-300 hover:bg-cyan-900/40" />
-            <AllocBtn label="HP" desc="+10 Health" onClick={() => allocStat("maxHealth")} color="border-red-500 text-red-300 hover:bg-red-900/40" />
-            <AllocBtn label="MP" desc="+5 Mana" onClick={() => allocStat("maxMana")} color="border-sky-500 text-sky-300 hover:bg-sky-900/40" />
+        <div className="mt-4 rounded-lg border-2 border-[var(--gold-3)] bg-[var(--gold-1)]/30 p-3">
+          <Eyebrow>
+            ◈ Répartir les points ({player.statPoints}) ◈
+          </Eyebrow>
+          <div className="mt-2 grid grid-cols-4 gap-2">
+            <AllocBtn label="ATQ" desc="+1 Attaque" onClick={() => allocStat("attack")} color="border-[#c2563a] text-[#c2563a] hover:bg-[rgba(225,180,170,0.5)]" />
+            <AllocBtn label="DÉF" desc="+1 Défense" onClick={() => allocStat("defense")} color="border-[#3a7aa0] text-[#3a7aa0] hover:bg-[rgba(180,210,225,0.5)]" />
+            <AllocBtn label="VIE" desc="+10 Vie" onClick={() => allocStat("maxHealth")} color="border-[#c2563a] text-[#c2563a] hover:bg-[rgba(225,180,170,0.5)]" />
+            <AllocBtn label="MANA" desc="+5 Mana" onClick={() => allocStat("maxMana")} color="border-[#3a7aa0] text-[#3a7aa0] hover:bg-[rgba(180,210,225,0.5)]" />
           </div>
+          <p className="mt-2 text-center font-serif text-[10px] italic text-[var(--parchment-ink-soft)]">
+            « Chaque point acquis rapproche le héros de sa légende. »
+          </p>
         </div>
       )}
     </PanelShell>
   );
 }
 
-function EquipDisplay({ label, item }: { label: string; item: { name: string; icon: string; rarity: string; stats?: { attack?: number; defense?: number; health?: number; mana?: number } } | null }) {
+function EquipDisplay({
+  label,
+  id,
+  item,
+}: {
+  label: string;
+  id: string | null;
+  item:
+    | {
+        name: string;
+        nameFr?: string;
+        icon: string;
+        rarity: string;
+        category: ItemCategory;
+        stats?: { attack?: number; defense?: number; health?: number; mana?: number };
+      }
+    | null;
+}) {
   if (!item) {
     return (
-      <div className="flex items-center gap-2 rounded-lg border border-dashed border-slate-700 bg-slate-900/40 p-2">
-        <div className="flex h-10 w-10 items-center justify-center text-2xl opacity-30">—</div>
+      <div className="parchment-paper flex items-center gap-2 rounded-lg border-2 border-dashed border-[var(--gold-4)] p-2.5">
+        <div className="flex h-10 w-10 items-center justify-center rounded-md border border-[var(--gold-4)] bg-[rgba(255,245,215,0.4)] font-serif text-2xl opacity-40">—</div>
         <div>
-          <div className="text-[10px] uppercase text-slate-500">{label}</div>
-          <div className="text-xs text-slate-500">Empty</div>
+          <Eyebrow>{label}</Eyebrow>
+          <div className="font-serif text-xs italic text-[var(--parchment-ink-soft)]">Vide</div>
         </div>
       </div>
     );
   }
   const c = COLORS.rarity[item.rarity as keyof typeof COLORS.rarity];
   return (
-    <div className="flex items-center gap-2 rounded-lg border bg-slate-900/60 p-2" style={{ borderColor: c }}>
-      <div className="flex h-10 w-10 items-center justify-center text-2xl">{item.icon}</div>
+    <div
+      className="parchment-paper flex items-center gap-2.5 rounded-lg border-2 p-2.5"
+      style={{ borderColor: c }}
+    >
+      <ItemIcon
+        item={{
+          icon: item.icon,
+          rarity: item.rarity,
+          category: item.category,
+        }}
+        lucideIcon={getItemIcon(id)}
+        size="sm"
+      />
       <div className="min-w-0 flex-1">
-        <div className="text-[10px] uppercase text-slate-400">{label}</div>
-        <div className="truncate text-xs font-bold" style={{ color: c }}>{item.name}</div>
-        {item.stats?.attack ? <div className="text-[9px] text-orange-300">+{item.stats.attack} ATK</div> : null}
-        {item.stats?.defense ? <div className="text-[9px] text-cyan-300">+{item.stats.defense} DEF</div> : null}
+        <Eyebrow>{label}</Eyebrow>
+        <div className="truncate font-serif text-xs font-bold" style={{ color: c }}>
+          {item.nameFr ?? item.name}
+        </div>
+        <div className="mt-0.5">
+          <RarityPips rarity={item.rarity} size="sm" showLabel={false} />
+        </div>
+        <div className="font-serif text-[9px] text-[var(--parchment-ink-soft)]">
+          {item.stats?.attack ? <span className="text-[#c2563a]">+{item.stats.attack} ATQ</span> : null}{" "}
+          {item.stats?.defense ? <span className="text-[#3a7aa0]">+{item.stats.defense} DÉF</span> : null}
+        </div>
       </div>
     </div>
   );
@@ -140,9 +198,12 @@ function EquipDisplay({ label, item }: { label: string; item: { name: string; ic
 
 function AllocBtn({ label, desc, onClick, color }: { label: string; desc: string; onClick: () => void; color: string }) {
   return (
-    <button onClick={onClick} className={`rounded-lg border-2 bg-slate-900/60 px-2 py-2 text-center transition ${color}`}>
-      <div className="text-sm font-bold">{label}</div>
-      <div className="text-[9px] opacity-80">{desc}</div>
+    <button
+      onClick={onClick}
+      className={`rounded-lg border-2 bg-[rgba(255,245,215,0.5)] px-2 py-2 text-center transition ${color}`}
+    >
+      <div className="font-serif text-sm font-bold tracking-wide">{label}</div>
+      <div className="font-serif text-[9px] opacity-90 italic">{desc}</div>
     </button>
   );
 }

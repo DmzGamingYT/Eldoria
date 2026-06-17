@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useGame } from "../store";
 import { NPCS, QUESTS } from "../data/enemies";
+import { GoldButton, InkButton, Medallion, Eyebrow, GoldRule } from "./parchment";
 
 export function DialogueBox() {
   const npcId = useGame((s) => s.ui.dialogue);
@@ -31,62 +32,91 @@ export function DialogueBox() {
       setLine((l) => l + 1);
       return;
     }
-    // end of dialogue
     if (npc.isShopkeeper) {
       openShop(npc.id);
       return;
     }
     if (questDef && questState) {
-      if (questState.status === "available") {
-        acceptQuest(questDef.id);
-      } else if (questState.status === "completed") {
-        turnInQuest(questDef.id);
-      }
+      if (questState.status === "available") acceptQuest(questDef.id);
+      else if (questState.status === "completed") turnInQuest(questDef.id);
     }
     closeDialogue();
   };
 
+  const npcEmoji = npc.id === "elder" ? "🧙" : npc.id === "merchant" ? "💰" : npc.id === "hunter" ? "🏹" : "🔮";
+
   return (
     <div className="pointer-events-auto absolute inset-x-0 bottom-0 z-40 p-4">
-      <div className="mx-auto max-w-2xl rounded-xl border border-amber-700/50 bg-slate-950/95 shadow-2xl backdrop-blur-md" style={{ animation: "slideUp 0.25s ease-out" }}>
-        <div className="flex items-start gap-3 p-4">
-          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg border-2 text-3xl" style={{ borderColor: npc.color, background: `${npc.color}22` }}>
-            {npc.id === "elder" ? "🧙" : npc.id === "merchant" ? "💰" : npc.id === "hunter" ? "🏹" : "🔮"}
+      <div
+        className="parchment-paper mx-auto flex max-w-2xl items-start gap-4 rounded-2xl p-5 text-[var(--parchment-ink)]"
+        style={{
+          borderColor: npc.color,
+          borderWidth: 3,
+          boxShadow: `0 0 0 1px var(--gold-4) inset, 0 0 0 8px ${npc.color}22 inset, 0 14px 40px rgba(40,20,10,0.55), 0 0 50px rgba(0,0,0,0.45)`,
+          animation: "slideUp 0.25s ease-out",
+        }}
+      >
+        {/* Portrait medallion */}
+        <Medallion size="md" className="mt-0.5">
+          <span className="text-2xl">{npcEmoji}</span>
+        </Medallion>
+
+        <div className="flex-1 min-w-0">
+          {/* Name + tags row */}
+          <div className="mb-1.5 flex flex-wrap items-center gap-2">
+            <span className="font-serif text-lg font-bold" style={{ color: npc.color }}>
+              {npc.name}
+            </span>
+            {npc.isShopkeeper && (
+              <span className="rounded border border-[var(--gold-3)] bg-[rgba(255,245,215,0.6)] px-1.5 py-0.5 font-serif text-[9px] uppercase tracking-wider text-[var(--gold-3)]">
+                Marchand
+              </span>
+            )}
+            {questState?.status === "available" && (
+              <span className="rounded border border-[var(--crimson)] bg-[rgba(225,180,170,0.6)] px-1.5 py-0.5 font-serif text-[9px] uppercase tracking-wider text-[var(--crimson)]">
+                ❀ Quête
+              </span>
+            )}
+            {questState?.status === "completed" && (
+              <span className="rounded border border-[var(--gold-3)] bg-[var(--gold-1)]/65 px-1.5 py-0.5 font-serif text-[9px] uppercase tracking-wider text-[var(--gold-3)]">
+                ★ Prête
+              </span>
+            )}
+            {questState?.status === "active" && (
+              <span className="rounded border border-[var(--gold-4)] bg-[rgba(255,245,215,0.5)] px-1.5 py-0.5 font-serif text-[9px] uppercase tracking-wider text-[var(--parchment-ink-soft)]">
+                En cours
+              </span>
+            )}
           </div>
-          <div className="flex-1">
-            <div className="mb-1 flex items-center gap-2">
-              <span className="font-bold text-amber-200">{npc.name}</span>
-              {npc.isShopkeeper && <span className="rounded bg-sky-900/50 px-1.5 text-[9px] text-sky-300">MERCHANT</span>}
-              {questState?.status === "available" && <span className="rounded bg-red-900/50 px-1.5 text-[9px] text-red-300">QUEST</span>}
-              {questState?.status === "completed" && <span className="rounded bg-amber-900/50 px-1.5 text-[9px] text-amber-300">READY</span>}
-              {questState?.status === "active" && <span className="rounded bg-slate-800 px-1.5 text-[9px] text-slate-300">IN PROGRESS</span>}
-            </div>
-            <p className="text-sm text-slate-200 leading-relaxed min-h-[2.5rem]">
-              {npc.dialogue[line]}
-              <span className="ml-1 inline-block h-4 w-0.5 animate-pulse bg-amber-400 align-middle" />
-            </p>
-            <div className="mt-3 flex flex-wrap items-center gap-2">
-              <button
-                onClick={handleAction}
-                className="rounded-lg border border-amber-600 bg-amber-700/60 px-4 py-1.5 text-xs font-bold text-amber-100 hover:bg-amber-600/70"
-              >
-                {isLast
-                  ? npc.isShopkeeper
-                    ? "Open Shop →"
-                    : questState?.status === "available"
-                    ? "Accept Quest"
-                    : questState?.status === "completed"
-                    ? "Turn In Quest"
-                    : "Goodbye"
-                  : "Next →"}
-              </button>
-              {!isLast && (
-                <span className="text-[10px] text-slate-500">{line + 1} / {npc.dialogue.length}</span>
-              )}
-              <button onClick={closeDialogue} className="ml-auto text-[10px] text-slate-500 hover:text-slate-300">
-                Close [Esc]
-              </button>
-            </div>
+
+          <GoldRule ornament={false} />
+
+          {/* Body text */}
+          <p className="min-h-[36px] font-serif text-base leading-relaxed text-[var(--parchment-ink)]">
+            « {npc.dialogue[line]} »
+            <span className="ml-1 inline-block h-4 w-1 animate-pulse bg-[var(--gold-3)] align-middle" />
+          </p>
+
+          <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-dotted border-[var(--gold-4)] pt-3">
+            <GoldButton onClick={handleAction}>
+              {isLast
+                ? npc.isShopkeeper
+                  ? "Visiter l'étal →"
+                  : questState?.status === "available"
+                  ? "✦ Accepter la quête"
+                  : questState?.status === "completed"
+                  ? "★ Rendre la quête"
+                  : "Au revoir ✦"
+                : "Suite →"}
+            </GoldButton>
+            {!isLast && (
+              <span className="font-serif text-[10px] italic text-[var(--parchment-ink-soft)]">
+                réplique {line + 1} / {npc.dialogue.length}
+              </span>
+            )}
+            <InkButton onClick={closeDialogue}>
+              Fermer [Échap]
+            </InkButton>
           </div>
         </div>
       </div>

@@ -3,8 +3,8 @@ import type { SkillDef, CraftRecipe } from "../types";
 export const SKILLS: SkillDef[] = [
   {
     id: "fireball",
-    name: "Fireball",
-    description: "Hurls a ball of fire that explodes on impact, dealing area damage to nearby enemies.",
+    name: "Boule de Feu",
+    description: "Lance une boule de feu qui explose à l'impact, infligeant des dégâts de zone aux ennemis proches.",
     icon: "🔥",
     manaCost: 15,
     cooldown: 1.2,
@@ -15,8 +15,8 @@ export const SKILLS: SkillDef[] = [
   },
   {
     id: "heal",
-    name: "Lesser Heal",
-    description: "Channels divine energy to restore 50 HP instantly.",
+    name: "Soin Léger",
+    description: "Canalise l'énergie divine pour restaurer 50 points de vie instantanément.",
     icon: "✨",
     manaCost: 20,
     cooldown: 3.0,
@@ -27,8 +27,8 @@ export const SKILLS: SkillDef[] = [
   },
   {
     id: "lightning",
-    name: "Chain Lightning",
-    description: "Strikes the nearest enemy with lightning, dealing heavy damage.",
+    name: "Chaîne d'Éclairs",
+    description: "Frappe l'ennemi le plus proche d'un éclair, infligeant de lourds dégâts.",
     icon: "⚡",
     manaCost: 25,
     cooldown: 2.0,
@@ -39,20 +39,20 @@ export const SKILLS: SkillDef[] = [
   },
   {
     id: "shield",
-    name: "Arcane Shield",
-    description: "Conjures a protective barrier that halves incoming damage for 8 seconds.",
+    name: "Bouelier Arcanique",
+    description: "Conjure une barrière protectrice qui réduit de moitié les dégâts reçus pendant 8 secondes.",
     icon: "🛡️",
     manaCost: 18,
     cooldown: 12.0,
     type: "shield",
-    power: 0.5, // damage reduction fraction
+    power: 0.5, // fraction de réduction des dégâts
     unlockLevel: 2,
     color: "#38bdf8",
   },
   {
     id: "frost",
-    name: "Frost Nova",
-    description: "Releases a wave of ice, damaging and slowing all nearby enemies.",
+    name: "Nova de Givre",
+    description: "Libère une vague de glace qui blesse et ralentit tous les ennemis proches.",
     icon: "❄️",
     manaCost: 22,
     cooldown: 4.0,
@@ -121,7 +121,7 @@ export const CRAFT_RECIPES: CraftRecipe[] = [
   },
 ];
 
-// Treasure chest spawn points with loot tables
+// Points d'apparition des coffres au trésor avec tables de butin
 export const CHEST_SPAWNS: { id: string; position: [number, number, number]; loot: { itemId: string; qty: number }[] }[] = [
   {
     id: "chest_village",
@@ -166,7 +166,7 @@ export const CHEST_SPAWNS: { id: string; position: [number, number, number]; loo
   },
 ];
 
-// Convert gold placeholder into a gold reward
+// Convertir l'or placeholder en récompense d'or du coffre
 export function getChestGold(chestId: string): number {
   switch (chestId) {
     case "chest_village": return 30;
