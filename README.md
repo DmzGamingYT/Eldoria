@@ -2,7 +2,7 @@
 <p align="center">
   <a href="public/banner/eldoria-banner.svg">
     <picture>
-      <img src="public/banner/eldoria-banner.svg" alt="Eldoria — Chroniques de la Forêt d'Argent" width="100%">
+      <img src="/public/banner/eldoria-banner.svg" alt="Eldoria — Chroniques de la Forêt d'Argent" width="100%">
     </picture>
   </a>
 </p>
@@ -162,7 +162,7 @@
 <td width="50%" align="center" valign="top">
 
 <a href="public/screenshots/01-main-menu.png">
-  <img src="public/screenshots/01-main-menu.png" alt="Menu principal d'Eldoria — fond cinématique, ambres flottants" width="100%" style="max-width:600px; display:block; border-radius:2px; border:2px solid #a07c3a; box-shadow:0 4px 16px rgba(0,0,0,0.45);">
+  <img src="/public/screenshots/01-main-menu.png" alt="Menu principal d'Eldoria — fond cinématique, ambres flottants" width="100%" style="max-width:600px; display:block; border-radius:2px; border:2px solid #a07c3a; box-shadow:0 4px 16px rgba(0,0,0,0.45);">
 </a>
 
 <!-- Animated title cartouche (gaM) -->
@@ -198,7 +198,7 @@
 <td width="50%" align="center" valign="top">
 
 <a href="public/screenshots/03-game-world.png">
-  <img src="public/screenshots/03-game-world.png" alt="Terrain procédural d'Eldoria — biome 200×200, cycle jour/nuit" width="100%" style="max-width:600px; display:block; border-radius:2px; border:2px solid #a07c3a; box-shadow:0 4px 16px rgba(0,0,0,0.45);">
+  <img src="/public/screenshots/03-game-world.png" alt="Terrain procédural d'Eldoria — biome 200×200, cycle jour/nuit" width="100%" style="max-width:600px; display:block; border-radius:2px; border:2px solid #a07c3a; box-shadow:0 4px 16px rgba(0,0,0,0.45);">
 </a>
 
 <!-- Animated title cartouche (gaW) -->
@@ -237,7 +237,7 @@
 <td width="50%" align="center" valign="top">
 
 <a href="public/screenshots/04-gameplay-hud.png">
-  <img src="public/screenshots/04-gameplay-hud.png" alt="HUD parchemin d'Eldoria — barres de vie/mana/XP, minimap, barre rapide" width="100%" style="max-width:600px; display:block; border-radius:2px; border:2px solid #a07c3a; box-shadow:0 4px 16px rgba(0,0,0,0.45);">
+  <img src="/public/screenshots/04-gameplay-hud.png" alt="HUD parchemin d'Eldoria — barres de vie/mana/XP, minimap, barre rapide" width="100%" style="max-width:600px; display:block; border-radius:2px; border:2px solid #a07c3a; box-shadow:0 4px 16px rgba(0,0,0,0.45);">
 </a>
 
 <!-- Animated title cartouche (gaC) -->
@@ -273,7 +273,7 @@
 <td width="50%" align="center" valign="top">
 
 <a href="public/screenshots/02-intro-sequence.png">
-  <img src="public/screenshots/02-intro-sequence.png" alt="Cinématique d'introduction — l'histoire de Mordrak contée en travelling 3D" width="100%" style="max-width:600px; display:block; border-radius:2px; border:2px solid #a07c3a; box-shadow:0 4px 16px rgba(0,0,0,0.45);">
+  <img src="/public/screenshots/02-intro-sequence.png" alt="Cinématique d'introduction — l'histoire de Mordrak contée en travelling 3D" width="100%" style="max-width:600px; display:block; border-radius:2px; border:2px solid #a07c3a; box-shadow:0 4px 16px rgba(0,0,0,0.45);">
 </a>
 
 <!-- Animated title cartouche (gaT) -->
@@ -346,7 +346,7 @@
 <p align="center">
   <a href="public/banner/sceau-capot.svg">
     <picture>
-      <img src="public/banner/sceau-capot.svg" alt="Le Grand Sceau d'Eldoria — emblème cinématique du royaume" width="100%">
+      <img src="/public/banner/sceau-capot.svg" alt="Le Grand Sceau d'Eldoria — emblème cinématique du royaume" width="100%">
     </picture>
   </a>
 </p>
@@ -603,341 +603,9 @@
 
 <!-- ============ LA CARTE CINEMATIQUE ============ : top-down 1100x720 SVG with compass, paths, 7 medallions -->
 <p align="center">
-  <svg viewBox="0 0 1100 720" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:1100px">
-    <defs>
-      <linearGradient id="wmBg" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#1a0838"/><stop offset="55%" stop-color="#2a1438"/><stop offset="100%" stop-color="#3a2412"/>
-      </linearGradient>
-      <linearGradient id="wmParch" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#ead7a8"/><stop offset="100%" stop-color="#d8be83"/>
-      </linearGradient>
-      <radialGradient id="wmVillage" cx="0.5" cy="0.5" r="0.5">
-        <stop offset="0%" stop-color="#fff4c2" stop-opacity="0.95"/>
-        <stop offset="55%" stop-color="#f6d97c" stop-opacity="0.45"/>
-        <stop offset="100%" stop-color="#f6d97c" stop-opacity="0"/>
-      </radialGradient>
-      <radialGradient id="wmSlime" cx="0.5" cy="0.5" r="0.5">
-        <stop offset="0%" stop-color="#7afd7a" stop-opacity="0.85"/>
-        <stop offset="100%" stop-color="#1a4a1a" stop-opacity="0"/>
-      </radialGradient>
-      <radialGradient id="wmGobelin" cx="0.5" cy="0.5" r="0.5">
-        <stop offset="0%" stop-color="#c0854a" stop-opacity="0.85"/>
-        <stop offset="100%" stop-color="#3a2412" stop-opacity="0"/>
-      </radialGradient>
-      <radialGradient id="wmLoup" cx="0.5" cy="0.5" r="0.5">
-        <stop offset="0%" stop-color="#9aa3b0" stop-opacity="0.85"/>
-        <stop offset="100%" stop-color="#1a1a2a" stop-opacity="0"/>
-      </radialGradient>
-      <radialGradient id="wmSkeleton" cx="0.5" cy="0.5" r="0.5">
-        <stop offset="0%" stop-color="#f5f5f5" stop-opacity="0.85"/>
-        <stop offset="100%" stop-color="#3a3a3a" stop-opacity="0"/>
-      </radialGradient>
-      <radialGradient id="wmOgre" cx="0.5" cy="0.5" r="0.5">
-        <stop offset="0%" stop-color="#b07ac8" stop-opacity="0.85"/>
-        <stop offset="100%" stop-color="#1a0838" stop-opacity="0"/>
-      </radialGradient>
-      <radialGradient id="wmMordrak" cx="0.5" cy="0.5" r="0.5">
-        <stop offset="0%" stop-color="#ff5468" stop-opacity="0.9"/>
-        <stop offset="100%" stop-color="#1a0808" stop-opacity="0"/>
-      </radialGradient>
-      <radialGradient id="wmSun" cx="0.5" cy="0.5" r="0.5">
-        <stop offset="0%" stop-color="#fff4a0" stop-opacity="0.9"/>
-        <stop offset="60%" stop-color="#ffd680" stop-opacity="0.4"/>
-        <stop offset="100%" stop-color="#ffd680" stop-opacity="0"/>
-      </radialGradient>
-      <linearGradient id="wmPath" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0%" stop-color="#f6d97c" stop-opacity="0"/>
-        <stop offset="50%" stop-color="#f6d97c" stop-opacity="0.9"/>
-        <stop offset="100%" stop-color="#f6d97c" stop-opacity="0"/>
-      </linearGradient>
-      <pattern id="wmTerrain" patternUnits="userSpaceOnUse" width="36" height="36">
-        <rect width="36" height="36" fill="transparent"/>
-        <circle cx="6" cy="8" r="0.7" fill="#f6d97c" opacity="0.25"/>
-        <circle cx="22" cy="14" r="0.5" fill="#a07c3a" opacity="0.3"/>
-        <circle cx="14" cy="26" r="0.6" fill="#f6d97c" opacity="0.2"/>
-        <circle cx="30" cy="30" r="0.4" fill="#a07c3a" opacity="0.25"/>
-      </pattern>
-      <filter id="wmBlur"><feGaussianBlur stdDeviation="1.4"/></filter>
-    </defs>
-
-    <!-- BACKDROP -->
-    <rect width="1100" height="720" rx="14" fill="url(#wmBg)"/>
-    <rect x="6" y="6" width="1088" height="708" fill="none" stroke="url(#wmGoldCine)" stroke-width="2" opacity="0.6" rx="12"/>
-    <rect x="14" y="14" width="1072" height="692" fill="none" stroke="#f6d97c" stroke-width="0.5" opacity="0.4" rx="10"/>
-    <text x="20" y="40" font-family="Georgia, serif" font-size="20" fill="#a07c3a">❦</text>
-    <text x="1080" y="40" font-family="Georgia, serif" font-size="20" fill="#a07c3a" text-anchor="end">❧</text>
-    <text x="20" y="700" font-family="Georgia, serif" font-size="20" fill="#a07c3a">❧</text>
-    <text x="1080" y="700" font-family="Georgia, serif" font-size="20" fill="#a07c3a" text-anchor="end">❦</text>
-
-    <!-- Twinkling stars in background -->
-    <g fill="#f6d97c">
-      <circle cx="120" cy="120" r="1.4"><animate attributeName="opacity" values="0.2;1;0.2" dur="3s" begin="0s" repeatCount="indefinite"/></circle>
-      <circle cx="200" cy="180" r="1.2"><animate attributeName="opacity" values="0.2;1;0.2" dur="3s" begin="0.4s" repeatCount="indefinite"/></circle>
-      <circle cx="900" cy="140" r="1.4"><animate attributeName="opacity" values="0.2;1;0.2" dur="3s" begin="0.8s" repeatCount="indefinite"/></circle>
-      <circle cx="980" cy="220" r="1.2"><animate attributeName="opacity" values="0.2;1;0.2" dur="3s" begin="1.2s" repeatCount="indefinite"/></circle>
-      <circle cx="80" cy="540" r="1.4"><animate attributeName="opacity" values="0.2;1;0.2" dur="3s" begin="1.6s" repeatCount="indefinite"/></circle>
-      <circle cx="1020" cy="500" r="1.4"><animate attributeName="opacity" values="0.2;1;0.2" dur="3s" begin="2.0s" repeatCount="indefinite"/></circle>
-      <circle cx="160" cy="640" r="1.2"><animate attributeName="opacity" values="0.2;1;0.2" dur="3s" begin="2.4s" repeatCount="indefinite"/></circle>
-      <circle cx="940" cy="640" r="1.2"><animate attributeName="opacity" values="0.2;1;0.2" dur="3s" begin="2.8s" repeatCount="indefinite"/></circle>
-    </g>
-
-    <!-- EYEBROW header -->
-    <g transform="translate(550 28)" text-anchor="middle">
-      <ellipse cx="0" cy="6" rx="340" ry="14" fill="url(#wmVillage)" opacity="0.4"/>
-      <text font-family="Georgia, serif" font-size="11" fill="#f6d97c" letter-spacing="6" font-weight="bold">◆ TOPOGRAPHIE DU ROYAUME — 200 × 200 UNITÉS ◆</text>
-    </g>
-
-    <!-- Day/Night cycle indicator (top-right) -->
-    <g transform="translate(990 70)">
-      <circle r="34" fill="#1a0838" stroke="url(#wmGoldCine)" stroke-width="2"/>
-      <circle r="34" fill="url(#wmTerrain)" opacity="0.5"/>
-      <!-- Sun arc on left half -->
-      <path d="M-26,0 A26,26 0 0 1 26,0" fill="none" stroke="url(#wmGoldCine)" stroke-width="1.5" opacity="0.7"/>
-      <circle cx="-26" cy="0" r="4" fill="#fff4a0"><animate attributeName="cx" values="-26;26;-26" dur="6s" repeatCount="indefinite"/><animate attributeName="cy" values="0;0;0" dur="6s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite"/></circle>
-      <!-- Phase label -->
-      <text y="56" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#f6d97c" letter-spacing="2">CYCLE 180 s</text>
-      <text y="70" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#a07c3a" font-style="italic">jour → crépuscule → nuit</text>
-    </g>
-
-    <!-- COMPASS ROSE (top-left, slow rotation) -->
-    <g transform="translate(110 360)">
-      <g>
-        <circle r="58" fill="none" stroke="#a07c3a" stroke-width="1" opacity="0.6"/>
-        <circle r="46" fill="none" stroke="#f6d97c" stroke-width="0.5" opacity="0.5"/>
-        <g>
-          <animateTransform attributeName="transform" type="rotate" values="0;360" dur="60s" repeatCount="indefinite"/>
-          <!-- N arrow -->
-          <polygon points="0,-54 -6,0 0,-10 6,0" fill="#f6d97c" stroke="#a07c3a" stroke-width="0.6"/>
-          <text x="0" y="-62" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#f6d97c" font-weight="bold">N</text>
-          <!-- E arrow -->
-          <polygon points="54,0 0,-6 10,0 0,6" fill="#a07c3a" opacity="0.85"/>
-          <text x="62" y="4" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#a07c3a">E</text>
-          <!-- S arrow -->
-          <polygon points="0,54 -6,0 0,10 6,0" fill="#a07c3a" opacity="0.85"/>
-          <text x="0" y="68" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#a07c3a">S</text>
-          <!-- W arrow -->
-          <polygon points="-54,0 0,-6 -10,0 0,6" fill="#a07c3a" opacity="0.85"/>
-          <text x="-62" y="4" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#a07c3a">W</text>
-        </g>
-        <circle r="4" fill="#f6d97c"/>
-      </g>
-      <text y="86" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#a07c3a" font-style="italic" letter-spacing="2">rose des vents</text>
-    </g>
-
-    <!-- =========== THE MAP ITSELF =========== -->
-    <!-- Outer parchment "world" square, slightly tilted -->
-    <g transform="translate(550 380)">
-      <!-- Tilted square outline representation of 200x200 -->
-      <polygon points="-260,-220 260,-220 220,220 -220,220" fill="url(#wmParch)" stroke="url(#wmGoldCine)" stroke-width="3" opacity="0.92"/>
-      <polygon points="-260,-220 260,-220 220,220 -220,220" fill="url(#wmTerrain)" opacity="0.85"/>
-      <!-- Inner border (parchment grain) -->
-      <polygon points="-244,-204 244,-204 204,204 -204,204" fill="none" stroke="#a07c3a" stroke-width="0.6" opacity="0.6"/>
-      <!-- Corner mini cartouches (compass marks) -->
-      <g fill="#a07c3a">
-        <circle cx="-250" cy="-210" r="2"/>
-        <circle cx="250" cy="-210" r="2"/>
-        <circle cx="210" cy="210" r="2"/>
-        <circle cx="-210" cy="210" r="2"/>
-      </g>
-      <!-- Latitude/Longitude hints -->
-      <text x="0" y="-228" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#a07c3a" letter-spacing="4" font-style="italic">— +NORD —</text>
-      <text x="0" y="240" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#a07c3a" letter-spacing="4" font-style="italic">— −SUD —</text>
-
-      <!-- Faint biome footprints on the parchment (matching the medallion positions) -->
-      <ellipse cx="0" cy="-110" rx="80" ry="70" fill="url(#wmSkeleton)" opacity="0.55"/>
-      <ellipse cx="0" cy="-180" rx="50" ry="50" fill="url(#wmMordrak)" opacity="0.7"/>
-      <ellipse cx="160" cy="-80" rx="80" ry="60" fill="url(#wmLoup)" opacity="0.55"/>
-      <ellipse cx="170" cy="120" rx="80" ry="60" fill="url(#wmGobelin)" opacity="0.55"/>
-      <ellipse cx="0" cy="170" rx="80" ry="40" fill="url(#wmSlime)" opacity="0.5"/>
-      <ellipse cx="-170" cy="100" rx="80" ry="60" fill="url(#wmOgre)" opacity="0.65"/>
-
-      <!-- Fog of war at the W edge -->
-      <rect x="-244" y="-204" width="80" height="408" fill="url(#wmBg)" opacity="0.55"/>
-      <text x="-200" y="0" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#a07c3a" letter-spacing="3" font-style="italic" opacity="0.75" transform="rotate(-90, -200, 0)">non cartographié</text>
-    </g>
-
-    <!-- =========== PATHS (village radial spokes) =========== -->
-    <g fill="none" stroke="url(#wmPath)" stroke-width="2" stroke-dasharray="6 4" opacity="0.85">
-      <!-- Village (550,380) to Mordrak (550,180) -->
-      <line x1="550" y1="380" x2="550" y2="218">
-        <animate attributeName="stroke-dashoffset" values="0;-20" dur="2s" repeatCount="indefinite"/>
-      </line>
-      <!-- Village to Ruines squelettes (550,260) -->
-      <line x1="550" y1="380" x2="550" y2="298">
-        <animate attributeName="stroke-dashoffset" values="0;-20" dur="2s" begin="0.2s" repeatCount="indefinite"/>
-      </line>
-      <!-- Village to Bois loups (720,300) -->
-      <line x1="550" y1="380" x2="700" y2="312">
-        <animate attributeName="stroke-dashoffset" values="0;-20" dur="2s" begin="0.4s" repeatCount="indefinite"/>
-      </line>
-      <!-- Village to Forêt gobelin (720,500) -->
-      <line x1="550" y1="380" x2="700" y2="488">
-        <animate attributeName="stroke-dashoffset" values="0;-20" dur="2s" begin="0.6s" repeatCount="indefinite"/>
-      </line>
-      <!-- Village to Slimes (550,560) -->
-      <line x1="550" y1="380" x2="550" y2="538">
-        <animate attributeName="stroke-dashoffset" values="0;-20" dur="2s" begin="0.8s" repeatCount="indefinite"/>
-      </line>
-      <!-- Village to Cavernes ogres (380,500) -->
-      <line x1="550" y1="380" x2="400" y2="488">
-        <animate attributeName="stroke-dashoffset" values="0;-20" dur="2s" begin="1.0s" repeatCount="indefinite"/>
-      </line>
-    </g>
-
-    <!-- =========== THE VILLAGE - central hub =========== -->
-    <g transform="translate(550 380)">
-      <!-- Pulsing radial halo -->
-      <circle r="100" fill="url(#wmVillage)">
-        <animate attributeName="r" values="80;115;80" dur="3.6s" repeatCount="indefinite"/>
-        <animate attributeName="opacity" values="0.5;0.95;0.5" dur="3.6s" repeatCount="indefinite"/>
-      </circle>
-      <!-- Cartouche medallion -->
-      <circle r="56" fill="#161b22" stroke="url(#wmGoldCine)" stroke-width="3"/>
-      <circle r="50" fill="none" stroke="#f6d97c" stroke-width="0.6" opacity="0.6"/>
-      <!-- Mini houses silhouette -->
-      <g transform="translate(0 -4)" fill="#a07c3a" stroke="#3a2412" stroke-width="0.6">
-        <polygon points="-22,12 -22,-2 -8,-12 6,-2 6,12"/>
-        <polygon points="-4,18 -4,8 14,8 14,18 18,8 22,18"/>
-        <rect x="20" y="-6" width="10" height="14"/>
-        <polygon points="20,-6 25,-14 30,-6"/>
-      </g>
-      <!-- "Foyer" label inside the medallion (above houses) -->
-      <text y="-22" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#f6d97c" letter-spacing="2" font-weight="bold">FOYER</text>
-      <!-- Pulsing center dot -->
-      <circle r="4" fill="#ff5722" filter="url(#wmBlur)">
-        <animate attributeName="r" values="3;6;3" dur="1.4s" repeatCount="indefinite"/>
-      </circle>
-    </g>
-    <text x="550" y="468" text-anchor="middle" font-family="Georgia, serif" font-size="11" font-weight="bold" fill="#fff4c2" letter-spacing="3">♕ LE VILLAGE CENTRAL ♕</text>
-
-    <!-- =========== MORDRAL (far north) =========== -->
-    <g transform="translate(550 180)">
-      <circle r="80" fill="url(#wmMordrak)">
-        <animate attributeName="r" values="70;90;70" dur="2.4s" repeatCount="indefinite"/>
-        <animate attributeName="opacity" values="0.5;1;0.5" dur="2.4s" repeatCount="indefinite"/>
-      </circle>
-      <polygon points="-44,-30 44,-30 56,0 44,30 -44,30 -56,0" fill="#1a0808" stroke="#ff3344" stroke-width="2"/>
-      <polygon points="-44,-30 44,-30 56,0 44,30 -44,30 -56,0" fill="none" stroke="#ff8a96" stroke-width="0.6" opacity="0.5"/>
-      <!-- Skull crown -->
-      <ellipse cx="0" cy="-2" rx="14" ry="18" fill="#f5e6c8" stroke="#ff3344" stroke-width="1"/>
-      <ellipse cx="-5" cy="-2" rx="3" ry="4" fill="#ff3344"><animate attributeName="opacity" values="0.5;1;0.5" dur="1.1s" repeatCount="indefinite"/></ellipse>
-      <ellipse cx="5" cy="-2" rx="3" ry="4" fill="#ff3344"><animate attributeName="opacity" values="0.5;1;0.5" dur="1.1s" begin="0.3s" repeatCount="indefinite"/></ellipse>
-    </g>
-    <text x="550" y="124" text-anchor="middle" font-family="Georgia, serif" font-size="11" font-weight="bold" fill="#ff8a96" letter-spacing="3">⚔ DONJON DE MORDRAK ⚔</text>
-    <text x="550" y="140" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#ff5468" font-style="italic" letter-spacing="2">PV 600 · ATQ 40 · ✦✦✦ BOSS</text>
-
-    <!-- =========== RUINES SQUELETTES (NNW) =========== -->
-    <g transform="translate(550 260)">
-      <circle r="56" fill="url(#wmSkeleton)">
-        <animate attributeName="r" values="50;62;50" dur="3.6s" begin="0s" repeatCount="indefinite"/>
-        <animate attributeName="opacity" values="0.55;0.9;0.55" dur="3.6s" begin="0s" repeatCount="indefinite"/>
-      </circle>
-      <circle r="38" fill="#161b22" stroke="#a07c3a" stroke-width="2"/>
-      <!-- Tombstone silhouette -->
-      <g fill="#e8e8e8" stroke="#3a2412" stroke-width="0.6" transform="translate(0 2)">
-        <rect x="-12" y="-2" width="10" height="14"/>
-        <path d="M-12,-2 Q-7,-14 -2,-2 Z"/>
-        <rect x="2" y="-6" width="10" height="18"/>
-        <path d="M2,-6 Q7,-20 12,-6 Z"/>
-      </g>
-    </g>
-    <text x="550" y="332" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-weight="bold" fill="#fff4c2" letter-spacing="2">💀 LES RUINES DU NORD</text>
-    <text x="550" y="346" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#a07c3a" font-style="italic" letter-spacing="2">squelettes ★★★★</text>
-
-    <!-- =========== BOIS SINISTRES (E) =========== -->
-    <g transform="translate(720 300)">
-      <circle r="56" fill="url(#wmLoup)">
-        <animate attributeName="r" values="50;62;50" dur="3.6s" begin="0.3s" repeatCount="indefinite"/>
-        <animate attributeName="opacity" values="0.55;0.9;0.55" dur="3.6s" begin="0.3s" repeatCount="indefinite"/>
-      </circle>
-      <circle r="38" fill="#0a1422" stroke="#a07c3a" stroke-width="2"/>
-      <!-- Wolf silhouette -->
-      <g fill="#6b6b6b" transform="translate(0 2)">
-        <ellipse cx="-6" cy="2" rx="14" ry="8"/>
-        <ellipse cx="8" cy="-2" rx="9" ry="7"/>
-        <polygon points="2,-9 5,-12 7,-9"/>
-        <polygon points="11,-9 14,-12 16,-9"/>
-        <circle cx="14" cy="-2" r="1.5" fill="#fbbf24"><animate attributeName="opacity" values="0.6;1;0.6" dur="1.6s" repeatCount="indefinite"/></circle>
-      </g>
-    </g>
-    <text x="720" y="372" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-weight="bold" fill="#fff4c2" letter-spacing="2">🐺 LES BOIS SINISTRES</text>
-    <text x="720" y="386" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#a07c3a" font-style="italic" letter-spacing="2">loups ★★★</text>
-
-    <!-- =========== FORÊT PROFONDE (SE) =========== -->
-    <g transform="translate(720 500)">
-      <circle r="56" fill="url(#wmGobelin)">
-        <animate attributeName="r" values="50;62;50" dur="3.6s" begin="0.6s" repeatCount="indefinite"/>
-        <animate attributeName="opacity" values="0.55;0.9;0.55" dur="3.6s" begin="0.6s" repeatCount="indefinite"/>
-      </circle>
-      <circle r="38" fill="#1a2412" stroke="#a07c3a" stroke-width="2"/>
-      <!-- Pine trees silhouette -->
-      <g transform="translate(-10 4)">
-        <polygon points="0,-2 -10,16 10,16" fill="#3a5a2b" stroke="#1a2a12" stroke-width="0.6"/>
-        <polygon points="0,-12 -8,4 8,4" fill="#3a5a2b" stroke="#1a2a12" stroke-width="0.6"/>
-        <rect x="-2" y="14" width="4" height="6" fill="#3a2412"/>
-      </g>
-      <g transform="translate(8 -2)">
-        <polygon points="0,-2 -10,18 10,18" fill="#5a7a3b" stroke="#1a2a12" stroke-width="0.6"/>
-        <polygon points="0,-12 -8,4 8,4" fill="#5a7a3b" stroke="#1a2a12" stroke-width="0.6"/>
-        <rect x="-2" y="16" width="4" height="6" fill="#3a2412"/>
-      </g>
-    </g>
-    <text x="720" y="572" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-weight="bold" fill="#fff4c2" letter-spacing="2">🌲 LA FORÊT PROFONDE</text>
-    <text x="720" y="586" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#a07c3a" font-style="italic" letter-spacing="2">gobelins ★★</text>
-
-    <!-- =========== CHAMPS DE L'EST (S) — slimes =========== -->
-    <g transform="translate(550 560)">
-      <circle r="56" fill="url(#wmSlime)">
-        <animate attributeName="r" values="50;62;50" dur="3.6s" begin="0.9s" repeatCount="indefinite"/>
-        <animate attributeName="opacity" values="0.55;0.9;0.55" dur="3.6s" begin="0.9s" repeatCount="indefinite"/>
-      </circle>
-      <circle r="38" fill="#0a2a0a" stroke="#a07c3a" stroke-width="2"/>
-      <!-- Slime silhouette -->
-      <g transform="translate(0 4)">
-        <ellipse cx="0" cy="6" rx="18" ry="8" fill="#5fd35f"/>
-        <ellipse cx="0" cy="0" rx="14" ry="12" fill="#5fd35f"/>
-        <ellipse cx="0" cy="-4" rx="10" ry="3" fill="#fff" opacity="0.6"/>
-        <ellipse cx="-4" cy="0" rx="2" ry="3" fill="#1a1a1a"/>
-        <ellipse cx="4" cy="0" rx="2" ry="3" fill="#1a1a1a"/>
-      </g>
-    </g>
-    <text x="550" y="632" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-weight="bold" fill="#fff4c2" letter-spacing="2">🌾 LES CHAMPS DE L'EST</text>
-    <text x="550" y="646" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#a07c3a" font-style="italic" letter-spacing="2">slimes ★</text>
-
-    <!-- =========== CAVERNES DE L'OUEST (SW) =========== -->
-    <g transform="translate(380 500)">
-      <circle r="56" fill="url(#wmOgre)">
-        <animate attributeName="r" values="50;62;50" dur="3.6s" begin="1.2s" repeatCount="indefinite"/>
-        <animate attributeName="opacity" values="0.55;0.9;0.55" dur="3.6s" begin="1.2s" repeatCount="indefinite"/>
-      </circle>
-      <circle r="38" fill="#1a0838" stroke="#7a4f8b" stroke-width="2"/>
-      <!-- Ogre silhouette -->
-      <g transform="translate(0 6)">
-        <ellipse cx="0" cy="0" rx="20" ry="22" fill="#7a4f8b"/>
-        <circle cx="0" cy="-18" r="11" fill="#9b6fc6"/>
-        <circle cx="-4" cy="-18" r="1.6" fill="#fff"/>
-        <circle cx="4" cy="-18" r="1.6" fill="#fff"/>
-        <rect x="18" y="-6" width="3" height="22" fill="#b8860b"/>
-      </g>
-    </g>
-    <text x="380" y="572" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-weight="bold" fill="#fff4c2" letter-spacing="2">🪨 LES CAVERNES DE L'OUEST</text>
-    <text x="380" y="586" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#a07c3a" font-style="italic" letter-spacing="2">ogres ★★★★★</text>
-
-    <!-- =========== BOTTOM LEGEND BAR =========== -->
-    <g transform="translate(550 690)" text-anchor="middle">
-      <rect x="-460" y="-22" width="920" height="44" rx="6" fill="url(#wmDarkCine)" stroke="url(#wmGoldCine)" stroke-width="1.2" opacity="0.95"/>
-      <rect x="-454" y="-16" width="908" height="32" rx="4" fill="none" stroke="#f6d97c" stroke-width="0.4" opacity="0.5"/>
-      <text x="0" y="-4" font-family="Georgia, serif" font-size="10" fill="#f6d97c" letter-spacing="4" font-weight="bold">◈ ÉCHELLE DE DIFFICULTÉ ◈</text>
-      <g font-family="Georgia, serif" font-size="10">
-        <text x="-380" y="16" fill="#5fd35f">★</text><text x="-370" y="16" fill="#a07c3a">☆☆☆☆ · slimes</text>
-        <text x="-220" y="16" fill="#c0854a">★★</text><text x="-200" y="16" fill="#a07c3a">☆☆☆ · gobelins</text>
-        <text x="-50" y="16" fill="#9aa3b0">★★★</text><text x="-22" y="16" fill="#a07c3a">☆☆ · loups</text>
-        <text x="120" y="16" fill="#f5f5f5">★★★★</text><text x="148" y="16" fill="#a07c3a">☆ · squelettes</text>
-        <text x="290" y="16" fill="#b07ac8">★★★★★</text><text x="328" y="16" fill="#a07c3a">· ogres</text>
-        <text x="410" y="16" fill="#ff3344">✦✦✦</text><text x="430" y="16" fill="#a07c3a">· Mordrak</text>
-      </g>
-    </g>
-  </svg>
+  <a href="public/banner/carte-monde.svg">
+    <img src="/public/banner/carte-monde.svg" alt="Carte du monde d'Eldoria — sept biomes rayonnant depuis le Village central" width="100%">
+  </a>
 </p>
 
 <p align="center"><em>🗺️ Chaque biome rayonne depuis le <strong>Village central</strong>, foyer du porteur d'espoir ; plus l'aura s'assombrit, plus l'ennemi gagne en férocité. Le <strong>Donjon de Mordrak</strong>, au nord, attend le héros qui aura purifié les cinq territoires.</em></p>
@@ -949,7 +617,7 @@
 <p align="center">
   <a href="public/banner/quest-chain.svg">
     <picture>
-      <img src="public/banner/quest-chain.svg" alt="Chaîne des quêtes" width="100%">
+      <img src="/public/banner/quest-chain.svg" alt="Chaîne des quêtes" width="100%">
     </picture>
   </a>
 </p>
@@ -1920,7 +1588,7 @@ Les bannières et illustrations SVG du README sont dérivées de l'identité vis
 <p align="center">
   <a href="public/banner/footer-flourish.svg">
     <picture>
-      <img src="public/banner/footer-flourish.svg" alt="Signature Eldoria" width="100%">
+      <img src="/public/banner/footer-flourish.svg" alt="Signature Eldoria" width="100%">
     </picture>
   </a>
 </p>
