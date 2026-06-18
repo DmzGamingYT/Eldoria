@@ -321,113 +321,634 @@
 
 ## 🗡️ Ce qu'Eldoria a sous le capot
 
-<!-- Animated stats grid -->
-<table align="center">
-  <tr>
-    <td align="center" width="16%">
-      <svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" width="100%">
-        <defs><linearGradient id="gA" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="100%" stop-color="#d8be83"/></linearGradient></defs>
-        <rect x="6" y="6" width="128" height="128" rx="14" fill="url(#gA)" stroke="#a07c3a" stroke-width="2"/>
-        <rect x="10" y="10" width="120" height="120" rx="11" fill="none" stroke="#a07c3a" stroke-width="0.6" opacity="0.5"/>
-        <text x="70" y="70" text-anchor="middle" font-family="Georgia, serif" font-size="38" font-weight="900" fill="#a13a2a">6</text>
-        <text x="70" y="98" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#5a3a1f" letter-spacing="2">ENNEMIS</text>
-        <text x="70" y="116" text-anchor="middle" font-size="12">🟢🟤🐺💀🪨💀</text>
-        <circle cx="70" cy="50" r="2.5" fill="#c2563a">
-          <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"/>
-        </circle>
-      </svg>
-    </td>
-    <td align="center" width="16%">
-      <svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" width="100%">
-        <defs><linearGradient id="gB" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="100%" stop-color="#d8be83"/></linearGradient></defs>
-        <rect x="6" y="6" width="128" height="128" rx="14" fill="url(#gB)" stroke="#a07c3a" stroke-width="2"/>
-        <rect x="10" y="10" width="120" height="120" rx="11" fill="none" stroke="#a07c3a" stroke-width="0.6" opacity="0.5"/>
-        <text x="70" y="70" text-anchor="middle" font-family="Georgia, serif" font-size="38" font-weight="900" fill="#a13a2a">5</text>
-        <text x="70" y="98" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#5a3a1f" letter-spacing="2">QUÊTES</text>
-        <text x="70" y="116" text-anchor="middle" font-size="12">📜 📜 📜 📜 ⚔️</text>
-        <circle cx="70" cy="50" r="2.5" fill="#c2563a">
-          <animate attributeName="opacity" values="0;1;0" dur="2s" begin="0.3s" repeatCount="indefinite"/>
-        </circle>
-      </svg>
-    </td>
-    <td align="center" width="16%">
-      <svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" width="100%">
-        <defs><linearGradient id="gC" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="100%" stop-color="#d8be83"/></linearGradient></defs>
-        <rect x="6" y="6" width="128" height="128" rx="14" fill="url(#gC)" stroke="#a07c3a" stroke-width="2"/>
-        <rect x="10" y="10" width="120" height="120" rx="11" fill="none" stroke="#a07c3a" stroke-width="0.6" opacity="0.5"/>
-        <text x="70" y="70" text-anchor="middle" font-family="Georgia, serif" font-size="38" font-weight="900" fill="#a13a2a">5</text>
-        <text x="70" y="98" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#5a3a1f" letter-spacing="2">COMPÉTENCES</text>
-        <text x="70" y="116" text-anchor="middle" font-size="12">🔥 ✨ ⚡ 🛡️ ❄️</text>
-        <circle cx="70" cy="50" r="2.5" fill="#c2563a">
-          <animate attributeName="opacity" values="0;1;0" dur="2s" begin="0.6s" repeatCount="indefinite"/>
-        </circle>
-      </svg>
-    </td>
-    <td align="center" width="16%">
-      <svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" width="100%">
-        <defs><linearGradient id="gD" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="100%" stop-color="#d8be83"/></linearGradient></defs>
-        <rect x="6" y="6" width="128" height="128" rx="14" fill="url(#gD)" stroke="#a07c3a" stroke-width="2"/>
-        <rect x="10" y="10" width="120" height="120" rx="11" fill="none" stroke="#a07c3a" stroke-width="0.6" opacity="0.5"/>
-        <text x="70" y="70" text-anchor="middle" font-family="Georgia, serif" font-size="38" font-weight="900" fill="#a13a2a">16+</text>
-        <text x="70" y="98" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#5a3a1f" letter-spacing="2">OBJETS</text>
-        <text x="70" y="116" text-anchor="middle" font-size="12">🗡️ 🛡️ 🧪 🦴 🗝️</text>
-        <circle cx="70" cy="50" r="2.5" fill="#c2563a">
-          <animate attributeName="opacity" values="0;1;0" dur="2s" begin="0.9s" repeatCount="indefinite"/>
-        </circle>
-      </svg>
-    </td>
-    <td align="center" width="16%">
-      <svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" width="100%">
-        <defs><linearGradient id="gE" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="100%" stop-color="#d8be83"/></linearGradient></defs>
-        <rect x="6" y="6" width="128" height="128" rx="14" fill="url(#gE)" stroke="#a07c3a" stroke-width="2"/>
-        <rect x="10" y="10" width="120" height="120" rx="11" fill="none" stroke="#a07c3a" stroke-width="0.6" opacity="0.5"/>
-        <text x="70" y="70" text-anchor="middle" font-family="Georgia, serif" font-size="38" font-weight="900" fill="#a13a2a">4</text>
-        <text x="70" y="98" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#5a3a1f" letter-spacing="2">PNJ</text>
-        <text x="70" y="116" text-anchor="middle" font-size="12">👴 🛒 🏹 🔮</text>
-        <circle cx="70" cy="50" r="2.5" fill="#c2563a">
-          <animate attributeName="opacity" values="0;1;0" dur="2s" begin="1.2s" repeatCount="indefinite"/>
-        </circle>
-      </svg>
-    </td>
-    <td align="center" width="16%">
-      <svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" width="100%">
-        <defs><linearGradient id="gF" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="100%" stop-color="#d8be83"/></linearGradient></defs>
-        <rect x="6" y="6" width="128" height="128" rx="14" fill="url(#gF)" stroke="#a07c3a" stroke-width="2"/>
-        <rect x="10" y="10" width="120" height="120" rx="11" fill="none" stroke="#a07c3a" stroke-width="0.6" opacity="0.5"/>
-        <text x="70" y="70" text-anchor="middle" font-family="Georgia, serif" font-size="38" font-weight="900" fill="#a13a2a">7</text>
-        <text x="70" y="98" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#5a3a1f" letter-spacing="2">COFFRES</text>
-        <text x="70" y="116" text-anchor="middle" font-size="12">💰 💰 💰 💰 💰 💰 💰</text>
-        <circle cx="70" cy="50" r="2.5" fill="#c2563a">
-          <animate attributeName="opacity" values="0;1;0" dur="2s" begin="1.5s" repeatCount="indefinite"/>
-        </circle>
-      </svg>
-    </td>
-  </tr>
+<!-- Animated cinebar — grand opening -->
+<p align="center">
+  <svg viewBox="0 0 940 110" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:940px">
+    <defs>
+      <linearGradient id="capGold" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#fff4c2"/><stop offset="50%" stop-color="#f6d97c"/><stop offset="100%" stop-color="#a07c3a"/>
+      </linearGradient>
+      <linearGradient id="capDark" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#1a0e2e"/><stop offset="100%" stop-color="#3a2412"/>
+      </linearGradient>
+    </defs>
+    <rect x="80" y="20" width="780" height="78" fill="url(#capDark)" stroke="url(#capGold)" stroke-width="2" rx="8"/>
+    <rect x="86" y="26" width="768" height="66" fill="none" stroke="#f6d97c" stroke-width="0.5" rx="6" opacity="0.5"/>
+    <text x="100" y="68" fill="#f6d97c" font-family="Georgia, serif" font-size="24" opacity="0.9">❦</text>
+    <text x="840" y="68" fill="#f6d97c" font-family="Georgia, serif" font-size="24" opacity="0.9" text-anchor="end">❧</text>
+    <text x="470" y="44" text-anchor="middle" fill="#f6d97c" font-family="Georgia, serif" font-size="11" letter-spacing="6" font-weight="bold">◈ LE GRAND GRIMOIRE D'ELDORIA ◈</text>
+    <text x="470" y="76" text-anchor="middle" fill="#fff4c2" font-family="Georgia, serif" font-size="18" font-style="italic">
+      Sous le capot — un royaume tissé de chiffres, de sorts et de cendres…
+      <animate attributeName="opacity" values="0;1" dur="1.6s" fill="freeze"/>
+    </text>
+    <circle cx="100" cy="36" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" repeatCount="indefinite"/></circle>
+    <circle cx="840" cy="36" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" begin="0.6s" repeatCount="indefinite"/></circle>
+    <circle cx="100" cy="106" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" begin="1.2s" repeatCount="indefinite"/></circle>
+    <circle cx="840" cy="106" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" begin="1.8s" repeatCount="indefinite"/></circle>
+  </svg>
+</p>
+
+<br/>
+
+<!-- ============== THE GRAND SCEAU ============== : central rotating emblem with 6 radiating "rayons" -->
+<p align="center">
+  <a href="public/banner/sceau-capot.svg">
+    <picture>
+      <img src="public/banner/sceau-capot.svg" alt="Le Grand Sceau d'Eldoria — emblème cinématique du royaume" width="100%">
+    </picture>
+  </a>
+</p>
+
+<br/>
+
+<!-- ============ LES CARRÉS DU SAVOIR ============ : 6 thematic knowledge tiles ============ -->
+<table align="center" cellpadding="0" cellspacing="0">
+<tr>
+<td width="33%" align="center" valign="top" style="padding:8px">
+
+<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:320px">
+  <defs>
+    <linearGradient id="cs1Bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="100%" stop-color="#d8be83"/></linearGradient>
+    <linearGradient id="cs1Dark" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a0e2e"/><stop offset="100%" stop-color="#3a2412"/></linearGradient>
+  </defs>
+  <rect x="4" y="4" width="312" height="192" rx="10" fill="url(#cs1Bg)" stroke="#a07c3a" stroke-width="1.5">
+    <animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="0s" repeatCount="indefinite"/>
+  </rect>
+  <rect x="10" y="10" width="300" height="180" rx="8" fill="none" stroke="#a07c3a" stroke-width="0.5" opacity="0.4"/>
+  <text x="160" y="34" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#a13a2a" letter-spacing="5" font-weight="bold">I · LE MONDE</text>
+  <line x1="80" y1="44" x2="240" y2="44" stroke="url(#capGold)" stroke-width="0.8" opacity="0.7"/>
+  <text x="160" y="74" text-anchor="middle" font-family="Georgia, serif" font-size="26" font-weight="900" fill="#3a2412">200 × 200</text>
+  <text x="160" y="96" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#5a3a1f" font-style="italic">unités de monde ouvert</text>
+  <g font-family="Georgia, serif" font-size="10" fill="#5a3a1f">
+    <text x="160" y="124" text-anchor="middle">☀ cycle jour/nuit · 180 s</text>
+    <text x="160" y="142" text-anchor="middle">🌫 brouillard exponentiel</text>
+    <text x="160" y="160" text-anchor="middle">🏞 six biomes reliés au village</text>
+  </g>
+  <rect x="14" y="170" width="292" height="22" fill="url(#cs1Dark)" stroke="#f6d97c" stroke-width="1" rx="3">
+    <animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.2s" fill="freeze"/>
+  </rect>
+  <text x="160" y="185" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-weight="bold" fill="#f6d97c" letter-spacing="3">❦ UN SANCTUAIRE À EXPLORER ❦</text>
+</svg>
+
+</td>
+<td width="33%" align="center" valign="top" style="padding:8px">
+
+<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:320px">
+  <defs>
+    <linearGradient id="cs2Bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="100%" stop-color="#d8be83"/></linearGradient>
+    <linearGradient id="cs2Dark" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a0e2e"/><stop offset="100%" stop-color="#3a2412"/></linearGradient>
+  </defs>
+  <rect x="4" y="4" width="312" height="192" rx="10" fill="url(#cs2Bg)" stroke="#a07c3a" stroke-width="1.5">
+    <animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="0.3s" repeatCount="indefinite"/>
+  </rect>
+  <rect x="10" y="10" width="300" height="180" rx="8" fill="none" stroke="#a07c3a" stroke-width="0.5" opacity="0.4"/>
+  <text x="160" y="34" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#a13a2a" letter-spacing="5" font-weight="bold">II · L'ARSENAL</text>
+  <line x1="80" y1="44" x2="240" y2="44" stroke="url(#capGold)" stroke-width="0.8" opacity="0.7"/>
+  <!-- Mini sword silhouette -->
+  <g transform="translate(160 76)">
+    <line x1="0" y1="-32" x2="0" y2="20" stroke="#3a2412" stroke-width="3"/>
+    <polygon points="-7,20 7,20 4,30 -4,30" fill="#a07c3a"/>
+    <rect x="-16" y="-6" width="32" height="6" fill="#a07c3a"/>
+    <circle cx="0" cy="-6" r="3" fill="#f6d97c"/>
+  </g>
+  <text x="160" y="124" text-anchor="middle" font-family="Georgia, serif" font-size="22" font-weight="900" fill="#3a2412">17 objets</text>
+  <g font-family="Georgia, serif" font-size="10" fill="#5a3a1f">
+    <text x="160" y="144" text-anchor="middle">⚔ 5 armes · 🛡 3 armures · 🧪 3 potions</text>
+    <text x="160" y="160" text-anchor="middle">🦴 5 matériaux · 🗝 1 clé de quête</text>
+  </g>
+  <rect x="14" y="170" width="292" height="22" fill="url(#cs2Dark)" stroke="#f6d97c" stroke-width="1" rx="3">
+    <animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.5s" fill="freeze"/>
+  </rect>
+  <text x="160" y="185" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-weight="bold" fill="#f6d97c" letter-spacing="3">❦ DU COMMUN AU LÉGENDAIRE ❦</text>
+</svg>
+
+</td>
+<td width="33%" align="center" valign="top" style="padding:8px">
+
+<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:320px">
+  <defs>
+    <linearGradient id="cs3Bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="100%" stop-color="#d8be83"/></linearGradient>
+    <linearGradient id="cs3Dark" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a0e2e"/><stop offset="100%" stop-color="#3a2412"/></linearGradient>
+    <radialGradient id="cs3Fire" cx="0.5" cy="0.5" r="0.5"><stop offset="0%" stop-color="#fff"/><stop offset="60%" stop-color="#ff8a96"/><stop offset="100%" stop-color="#7a1c0a" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect x="4" y="4" width="312" height="192" rx="10" fill="url(#cs3Bg)" stroke="#a07c3a" stroke-width="1.5">
+    <animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="0.6s" repeatCount="indefinite"/>
+  </rect>
+  <rect x="10" y="10" width="300" height="180" rx="8" fill="none" stroke="#a07c3a" stroke-width="0.5" opacity="0.4"/>
+  <text x="160" y="34" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#a13a2a" letter-spacing="5" font-weight="bold">III · LE COMBAT</text>
+  <line x1="80" y1="44" x2="240" y2="44" stroke="url(#capGold)" stroke-width="0.8" opacity="0.7"/>
+  <!-- Mini fireball glow -->
+  <circle cx="160" cy="78" r="32" fill="url(#cs3Fire)" opacity="0.8">
+    <animate attributeName="r" values="28;36;28" dur="2.4s" repeatCount="indefinite"/>
+  </circle>
+  <text x="160" y="84" text-anchor="middle" font-size="22">🔥</text>
+  <g font-family="Georgia, serif" fill="#5a3a1f">
+    <text x="160" y="124" text-anchor="middle" font-size="11">arc d'attaque · combo · i-frames</text>
+    <text x="160" y="142" text-anchor="middle" font-size="11" font-style="italic">particules &amp; screen-shake sur impact</text>
+    <text x="160" y="160" text-anchor="middle" font-size="11">5 sorts cycliques · mana &amp; cooldown</text>
+  </g>
+  <rect x="14" y="170" width="292" height="22" fill="url(#cs3Dark)" stroke="#f6d97c" stroke-width="1" rx="3">
+    <animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.8s" fill="freeze"/>
+  </rect>
+  <text x="160" y="185" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-weight="bold" fill="#f6d97c" letter-spacing="3">❦ MORT OU GLOIRE ❦</text>
+</svg>
+
+</td>
+</tr>
+<tr><td colspan="3" height="6"></td></tr>
+<tr>
+<td width="33%" align="center" valign="top" style="padding:8px">
+
+<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:320px">
+  <defs>
+    <linearGradient id="cs4Bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="100%" stop-color="#d8be83"/></linearGradient>
+    <linearGradient id="cs4Dark" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a0e2e"/><stop offset="100%" stop-color="#3a2412"/></linearGradient>
+    <radialGradient id="cs4Loot" cx="0.5" cy="0.5" r="0.5"><stop offset="0%" stop-color="#f6d97c"/><stop offset="100%" stop-color="#a07c3a" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect x="4" y="4" width="312" height="192" rx="10" fill="url(#cs4Bg)" stroke="#a07c3a" stroke-width="1.5">
+    <animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="0.9s" repeatCount="indefinite"/>
+  </rect>
+  <rect x="10" y="10" width="300" height="180" rx="8" fill="none" stroke="#a07c3a" stroke-width="0.5" opacity="0.4"/>
+  <text x="160" y="34" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#a13a2a" letter-spacing="5" font-weight="bold">IV · LE BUTIN</text>
+  <line x1="80" y1="44" x2="240" y2="44" stroke="url(#capGold)" stroke-width="0.8" opacity="0.7"/>
+  <!-- Mini chest icon -->
+  <g transform="translate(160 80)">
+    <rect x="-26" y="-2" width="52" height="32" fill="#7a4f2b" stroke="#3a2412" stroke-width="1.5"/>
+    <path d="M-26,-2 Q0,-30 26,-2 L26,8 L-26,8 Z" fill="#a07c3a" stroke="#3a2412" stroke-width="1.5"/>
+    <rect x="-6" y="6" width="12" height="12" fill="#f6d97c"/>
+    <circle cx="0" cy="12" r="3" fill="#a13a2a"/>
+    <circle cx="0" cy="-14" r="18" fill="url(#cs4Loot)" opacity="0.85">
+      <animate attributeName="r" values="14;22;14" dur="2.4s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="2.4s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  <g font-family="Georgia, serif" font-size="10" fill="#5a3a1f">
+    <text x="160" y="124" text-anchor="middle">7 coffres · 5 raretés · tables de loot</text>
+    <text x="160" y="142" text-anchor="middle" font-style="italic">or de coffre + jet aléatoire</text>
+    <text x="160" y="160" text-anchor="middle">revente boutique à 50 % de la valeur</text>
+  </g>
+  <rect x="14" y="170" width="292" height="22" fill="url(#cs4Dark)" stroke="#f6d97c" stroke-width="1" rx="3">
+    <animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="1.1s" fill="freeze"/>
+  </rect>
+  <text x="160" y="185" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-weight="bold" fill="#f6d97c" letter-spacing="3">❦ À CHACUN SON TRÉSOR ❦</text>
+</svg>
+
+</td>
+<td width="33%" align="center" valign="top" style="padding:8px">
+
+<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:320px">
+  <defs>
+    <linearGradient id="cs5Bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="100%" stop-color="#d8be83"/></linearGradient>
+    <linearGradient id="cs5Dark" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a0e2e"/><stop offset="100%" stop-color="#3a2412"/></linearGradient>
+  </defs>
+  <rect x="4" y="4" width="312" height="192" rx="10" fill="url(#cs5Bg)" stroke="#a07c3a" stroke-width="1.5">
+    <animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="1.2s" repeatCount="indefinite"/>
+  </rect>
+  <rect x="10" y="10" width="300" height="180" rx="8" fill="none" stroke="#a07c3a" stroke-width="0.5" opacity="0.4"/>
+  <text x="160" y="34" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#a13a2a" letter-spacing="5" font-weight="bold">V · LA PROUESSE</text>
+  <line x1="80" y1="44" x2="240" y2="44" stroke="url(#capGold)" stroke-width="0.8" opacity="0.7"/>
+  <!-- Progression chart -->
+  <g transform="translate(36 78)">
+    <polyline points="0,80 28,68 56,54 84,42 112,30 140,20 168,12 196,6" fill="none" stroke="#a13a2a" stroke-width="2.5"/>
+    <polyline points="0,80 28,68 56,54 84,42 112,30 140,20 168,12 196,6" fill="none" stroke="#f6d97c" stroke-width="1" opacity="0.7"/>
+    <circle cx="0" cy="80" r="3" fill="#a13a2a"/>
+    <circle cx="56" cy="54" r="3" fill="#a13a2a"/>
+    <circle cx="112" cy="30" r="3" fill="#a13a2a"/>
+    <circle cx="196" cy="6" r="4" fill="#f6d97c">
+      <animate attributeName="r" values="3;5;3" dur="2.4s" repeatCount="indefinite"/>
+    </circle>
+    <line x1="0" y1="86" x2="196" y2="86" stroke="#a07c3a" stroke-width="0.6"/>
+    <line x1="0" y1="86" x2="0" y2="-4" stroke="#a07c3a" stroke-width="0.6"/>
+  </g>
+  <g font-family="Georgia, serif" font-size="10" fill="#5a3a1f">
+    <text x="160" y="124" text-anchor="middle" font-weight="bold">XP = ⌊50 × level<sup>1.6</sup>⌋</text>
+    <text x="160" y="142" text-anchor="middle" font-style="italic">3 points de stats allouables par palier</text>
+    <text x="160" y="160" text-anchor="middle">sauvegarde auto · reprise locale &amp; Prisma</text>
+  </g>
+  <rect x="14" y="170" width="292" height="22" fill="url(#cs5Dark)" stroke="#f6d97c" stroke-width="1" rx="3">
+    <animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="1.4s" fill="freeze"/>
+  </rect>
+  <text x="160" y="185" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-weight="bold" fill="#f6d97c" letter-spacing="3">❦ L'ASCENSION DU HÉROS ❦</text>
+</svg>
+
+</td>
+<td width="33%" align="center" valign="top" style="padding:8px">
+
+<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:320px">
+  <defs>
+    <linearGradient id="cs6Bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="100%" stop-color="#d8be83"/></linearGradient>
+    <linearGradient id="cs6Dark" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a0e2e"/><stop offset="100%" stop-color="#3a2412"/></linearGradient>
+  </defs>
+  <rect x="4" y="4" width="312" height="192" rx="10" fill="url(#cs6Bg)" stroke="#a07c3a" stroke-width="1.5">
+    <animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="1.5s" repeatCount="indefinite"/>
+  </rect>
+  <rect x="10" y="10" width="300" height="180" rx="8" fill="none" stroke="#a07c3a" stroke-width="0.5" opacity="0.4"/>
+  <text x="160" y="34" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#a13a2a" letter-spacing="5" font-weight="bold">VI · LA SCÈNE</text>
+  <line x1="80" y1="44" x2="240" y2="44" stroke="url(#capGold)" stroke-width="0.8" opacity="0.7"/>
+  <!-- Triple platform dots representing Web/Desktop/Stack -->
+  <g transform="translate(160 78)">
+    <rect x="-58" y="-16" width="36" height="32" rx="6" fill="none" stroke="#a07c3a" stroke-width="1.5"/>
+    <text x="-40" y="6" text-anchor="middle" font-size="16">🌐</text>
+    <rect x="-18" y="-16" width="36" height="32" rx="6" fill="none" stroke="#a07c3a" stroke-width="1.5"/>
+    <text x="0" y="6" text-anchor="middle" font-size="16">🖥</text>
+    <rect x="22" y="-16" width="36" height="32" rx="6" fill="none" stroke="#a07c3a" stroke-width="1.5"/>
+    <text x="40" y="6" text-anchor="middle" font-size="16">⚙</text>
+    <line x1="-58" y1="32" x2="58" y2="32" stroke="#f6d97c" stroke-width="1" opacity="0.6"/>
+    <text font-family="Georgia, serif" font-size="9" fill="#5a3a1f" letter-spacing="2">
+      <text x="-40" y="46" text-anchor="middle">Web</text>
+      <text x="0" y="46" text-anchor="middle">Electron</text>
+      <text x="40" y="46" text-anchor="middle">R3F</text>
+    </text>
+  </g>
+  <g font-family="Georgia, serif" font-size="10" fill="#5a3a1f">
+    <text x="160" y="142" text-anchor="middle">Next.js · Three.js · Zustand · Prisma</text>
+    <text x="160" y="160" text-anchor="middle" font-style="italic">Bloom, God Rays, vignette, audio FM</text>
+  </g>
+  <rect x="14" y="170" width="292" height="22" fill="url(#cs6Dark)" stroke="#f6d97c" stroke-width="1" rx="3">
+    <animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="1.7s" fill="freeze"/>
+  </rect>
+  <text x="160" y="185" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-weight="bold" fill="#f6d97c" letter-spacing="3">❦ UN SEUL DéPÔT, TOUTES LES PORTES ❦</text>
+</svg>
+
+</td>
+</tr>
 </table>
+
+<p align="center"><em>🗝 Chaque pilier — monde, arsenal, combat, butin, prouesse, scène — rayonne vers le sceau central ; le héros, lui, rayonne vers chacun d'eux.</em></p>
 
 ---
 
 ## 🌍 Le monde d'Eldoria
 
+<!-- Animated cinebar — cinematic intro -->
 <p align="center">
-  <a href="public/banner/world-map.svg">
-    <picture>
-      <img src="public/banner/world-map.svg" alt="Carte d'Eldoria" width="100%">
-    </picture>
-  </a>
+  <svg viewBox="0 0 940 110" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:940px">
+    <defs>
+      <linearGradient id="wmGoldCine" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#fff4c2"/><stop offset="50%" stop-color="#f6d97c"/><stop offset="100%" stop-color="#a07c3a"/>
+      </linearGradient>
+      <linearGradient id="wmDarkCine" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#1a0e2e"/><stop offset="100%" stop-color="#3a2412"/>
+      </linearGradient>
+    </defs>
+    <rect x="80" y="20" width="780" height="78" fill="url(#wmDarkCine)" stroke="url(#wmGoldCine)" stroke-width="2" rx="8"/>
+    <rect x="86" y="26" width="768" height="66" fill="none" stroke="#f6d97c" stroke-width="0.5" rx="6" opacity="0.5"/>
+    <text x="100" y="68" fill="#f6d97c" font-family="Georgia, serif" font-size="24" opacity="0.9">❦</text>
+    <text x="840" y="68" fill="#f6d97c" font-family="Georgia, serif" font-size="24" opacity="0.9" text-anchor="end">❧</text>
+    <text x="470" y="44" text-anchor="middle" fill="#f6d97c" font-family="Georgia, serif" font-size="11" letter-spacing="6" font-weight="bold">◈ LA CARTE D'ELDORIA ◈</text>
+    <text x="470" y="76" text-anchor="middle" fill="#fff4c2" font-family="Georgia, serif" font-size="18" font-style="italic">
+      Deux cents unités de mystère — du foyer du joueur au trône de Mordrak…
+      <animate attributeName="opacity" values="0;1" dur="1.6s" fill="freeze"/>
+    </text>
+    <circle cx="100" cy="36" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" repeatCount="indefinite"/></circle>
+    <circle cx="840" cy="36" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" begin="0.6s" repeatCount="indefinite"/></circle>
+    <circle cx="100" cy="106" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" begin="1.2s" repeatCount="indefinite"/></circle>
+    <circle cx="840" cy="106" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" begin="1.8s" repeatCount="indefinite"/></circle>
+  </svg>
 </p>
 
-Un monde ouvert de <strong>200×200 unités</strong> baigné dans une atmosphère de cycle jour/nuit (180 s). Six factions ennemies s'épanouissent dans six territoires distincts, tous reliés au <em>village central</em>.
+<br/>
 
-| Lieu | Biome | Ennemis | Difficulté |
-|---|---|---|---|
-| 🏘️ **Le Village central** | Plaine, foyer du joueur | (refuge) | — |
-| 🌾 **Les Champs de l'Est** | Herbes hautes & rochers | <span style="color:#5fd35f">🟢 Slimes</span> | ★☆☆ |
-| 🌲 **La Forêt profonde** | Sapins & brume | <span style="color:#8b5a2b">🟤 Gobelins</span> | ★★☆ |
-| 🐺 **Les Bois sinistres** | Loups en meutes | <span style="color:#6b6b6b">🐺 Loups</span> | ★★★ |
-| 🏚️ **Les Ruines du Nord** | Cimetière effrité | <span style="color:#e8e8e8">💀 Squelettes</span> | ★★★★ |
-| 🪨 **Les Cavernes de l'Ouest** | Antres brumeuses | <span style="color:#7a4f8b">🪨 Ogres</span> | ★★★★★ |
-| 🏰 **Le Donjon de Mordrak** | Noirceur abyssale | <span style="color:#ff3344">💀 Mordrak (boss)</span> | ✦✦✦ |
+<!-- ============ LA CARTE CINEMATIQUE ============ : top-down 1100x720 SVG with compass, paths, 7 medallions -->
+<p align="center">
+  <svg viewBox="0 0 1100 720" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:1100px">
+    <defs>
+      <linearGradient id="wmBg" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#1a0838"/><stop offset="55%" stop-color="#2a1438"/><stop offset="100%" stop-color="#3a2412"/>
+      </linearGradient>
+      <linearGradient id="wmParch" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#ead7a8"/><stop offset="100%" stop-color="#d8be83"/>
+      </linearGradient>
+      <radialGradient id="wmVillage" cx="0.5" cy="0.5" r="0.5">
+        <stop offset="0%" stop-color="#fff4c2" stop-opacity="0.95"/>
+        <stop offset="55%" stop-color="#f6d97c" stop-opacity="0.45"/>
+        <stop offset="100%" stop-color="#f6d97c" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="wmSlime" cx="0.5" cy="0.5" r="0.5">
+        <stop offset="0%" stop-color="#7afd7a" stop-opacity="0.85"/>
+        <stop offset="100%" stop-color="#1a4a1a" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="wmGobelin" cx="0.5" cy="0.5" r="0.5">
+        <stop offset="0%" stop-color="#c0854a" stop-opacity="0.85"/>
+        <stop offset="100%" stop-color="#3a2412" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="wmLoup" cx="0.5" cy="0.5" r="0.5">
+        <stop offset="0%" stop-color="#9aa3b0" stop-opacity="0.85"/>
+        <stop offset="100%" stop-color="#1a1a2a" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="wmSkeleton" cx="0.5" cy="0.5" r="0.5">
+        <stop offset="0%" stop-color="#f5f5f5" stop-opacity="0.85"/>
+        <stop offset="100%" stop-color="#3a3a3a" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="wmOgre" cx="0.5" cy="0.5" r="0.5">
+        <stop offset="0%" stop-color="#b07ac8" stop-opacity="0.85"/>
+        <stop offset="100%" stop-color="#1a0838" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="wmMordrak" cx="0.5" cy="0.5" r="0.5">
+        <stop offset="0%" stop-color="#ff5468" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="#1a0808" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="wmSun" cx="0.5" cy="0.5" r="0.5">
+        <stop offset="0%" stop-color="#fff4a0" stop-opacity="0.9"/>
+        <stop offset="60%" stop-color="#ffd680" stop-opacity="0.4"/>
+        <stop offset="100%" stop-color="#ffd680" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="wmPath" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#f6d97c" stop-opacity="0"/>
+        <stop offset="50%" stop-color="#f6d97c" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="#f6d97c" stop-opacity="0"/>
+      </linearGradient>
+      <pattern id="wmTerrain" patternUnits="userSpaceOnUse" width="36" height="36">
+        <rect width="36" height="36" fill="transparent"/>
+        <circle cx="6" cy="8" r="0.7" fill="#f6d97c" opacity="0.25"/>
+        <circle cx="22" cy="14" r="0.5" fill="#a07c3a" opacity="0.3"/>
+        <circle cx="14" cy="26" r="0.6" fill="#f6d97c" opacity="0.2"/>
+        <circle cx="30" cy="30" r="0.4" fill="#a07c3a" opacity="0.25"/>
+      </pattern>
+      <filter id="wmBlur"><feGaussianBlur stdDeviation="1.4"/></filter>
+    </defs>
+
+    <!-- BACKDROP -->
+    <rect width="1100" height="720" rx="14" fill="url(#wmBg)"/>
+    <rect x="6" y="6" width="1088" height="708" fill="none" stroke="url(#wmGoldCine)" stroke-width="2" opacity="0.6" rx="12"/>
+    <rect x="14" y="14" width="1072" height="692" fill="none" stroke="#f6d97c" stroke-width="0.5" opacity="0.4" rx="10"/>
+    <text x="20" y="40" font-family="Georgia, serif" font-size="20" fill="#a07c3a">❦</text>
+    <text x="1080" y="40" font-family="Georgia, serif" font-size="20" fill="#a07c3a" text-anchor="end">❧</text>
+    <text x="20" y="700" font-family="Georgia, serif" font-size="20" fill="#a07c3a">❧</text>
+    <text x="1080" y="700" font-family="Georgia, serif" font-size="20" fill="#a07c3a" text-anchor="end">❦</text>
+
+    <!-- Twinkling stars in background -->
+    <g fill="#f6d97c">
+      <circle cx="120" cy="120" r="1.4"><animate attributeName="opacity" values="0.2;1;0.2" dur="3s" begin="0s" repeatCount="indefinite"/></circle>
+      <circle cx="200" cy="180" r="1.2"><animate attributeName="opacity" values="0.2;1;0.2" dur="3s" begin="0.4s" repeatCount="indefinite"/></circle>
+      <circle cx="900" cy="140" r="1.4"><animate attributeName="opacity" values="0.2;1;0.2" dur="3s" begin="0.8s" repeatCount="indefinite"/></circle>
+      <circle cx="980" cy="220" r="1.2"><animate attributeName="opacity" values="0.2;1;0.2" dur="3s" begin="1.2s" repeatCount="indefinite"/></circle>
+      <circle cx="80" cy="540" r="1.4"><animate attributeName="opacity" values="0.2;1;0.2" dur="3s" begin="1.6s" repeatCount="indefinite"/></circle>
+      <circle cx="1020" cy="500" r="1.4"><animate attributeName="opacity" values="0.2;1;0.2" dur="3s" begin="2.0s" repeatCount="indefinite"/></circle>
+      <circle cx="160" cy="640" r="1.2"><animate attributeName="opacity" values="0.2;1;0.2" dur="3s" begin="2.4s" repeatCount="indefinite"/></circle>
+      <circle cx="940" cy="640" r="1.2"><animate attributeName="opacity" values="0.2;1;0.2" dur="3s" begin="2.8s" repeatCount="indefinite"/></circle>
+    </g>
+
+    <!-- EYEBROW header -->
+    <g transform="translate(550 28)" text-anchor="middle">
+      <ellipse cx="0" cy="6" rx="340" ry="14" fill="url(#wmVillage)" opacity="0.4"/>
+      <text font-family="Georgia, serif" font-size="11" fill="#f6d97c" letter-spacing="6" font-weight="bold">◆ TOPOGRAPHIE DU ROYAUME — 200 × 200 UNITÉS ◆</text>
+    </g>
+
+    <!-- Day/Night cycle indicator (top-right) -->
+    <g transform="translate(990 70)">
+      <circle r="34" fill="#1a0838" stroke="url(#wmGoldCine)" stroke-width="2"/>
+      <circle r="34" fill="url(#wmTerrain)" opacity="0.5"/>
+      <!-- Sun arc on left half -->
+      <path d="M-26,0 A26,26 0 0 1 26,0" fill="none" stroke="url(#wmGoldCine)" stroke-width="1.5" opacity="0.7"/>
+      <circle cx="-26" cy="0" r="4" fill="#fff4a0"><animate attributeName="cx" values="-26;26;-26" dur="6s" repeatCount="indefinite"/><animate attributeName="cy" values="0;0;0" dur="6s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite"/></circle>
+      <!-- Phase label -->
+      <text y="56" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#f6d97c" letter-spacing="2">CYCLE 180 s</text>
+      <text y="70" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#a07c3a" font-style="italic">jour → crépuscule → nuit</text>
+    </g>
+
+    <!-- COMPASS ROSE (top-left, slow rotation) -->
+    <g transform="translate(110 360)">
+      <g>
+        <circle r="58" fill="none" stroke="#a07c3a" stroke-width="1" opacity="0.6"/>
+        <circle r="46" fill="none" stroke="#f6d97c" stroke-width="0.5" opacity="0.5"/>
+        <g>
+          <animateTransform attributeName="transform" type="rotate" values="0;360" dur="60s" repeatCount="indefinite"/>
+          <!-- N arrow -->
+          <polygon points="0,-54 -6,0 0,-10 6,0" fill="#f6d97c" stroke="#a07c3a" stroke-width="0.6"/>
+          <text x="0" y="-62" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#f6d97c" font-weight="bold">N</text>
+          <!-- E arrow -->
+          <polygon points="54,0 0,-6 10,0 0,6" fill="#a07c3a" opacity="0.85"/>
+          <text x="62" y="4" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#a07c3a">E</text>
+          <!-- S arrow -->
+          <polygon points="0,54 -6,0 0,10 6,0" fill="#a07c3a" opacity="0.85"/>
+          <text x="0" y="68" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#a07c3a">S</text>
+          <!-- W arrow -->
+          <polygon points="-54,0 0,-6 -10,0 0,6" fill="#a07c3a" opacity="0.85"/>
+          <text x="-62" y="4" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#a07c3a">W</text>
+        </g>
+        <circle r="4" fill="#f6d97c"/>
+      </g>
+      <text y="86" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#a07c3a" font-style="italic" letter-spacing="2">rose des vents</text>
+    </g>
+
+    <!-- =========== THE MAP ITSELF =========== -->
+    <!-- Outer parchment "world" square, slightly tilted -->
+    <g transform="translate(550 380)">
+      <!-- Tilted square outline representation of 200x200 -->
+      <polygon points="-260,-220 260,-220 220,220 -220,220" fill="url(#wmParch)" stroke="url(#wmGoldCine)" stroke-width="3" opacity="0.92"/>
+      <polygon points="-260,-220 260,-220 220,220 -220,220" fill="url(#wmTerrain)" opacity="0.85"/>
+      <!-- Inner border (parchment grain) -->
+      <polygon points="-244,-204 244,-204 204,204 -204,204" fill="none" stroke="#a07c3a" stroke-width="0.6" opacity="0.6"/>
+      <!-- Corner mini cartouches (compass marks) -->
+      <g fill="#a07c3a">
+        <circle cx="-250" cy="-210" r="2"/>
+        <circle cx="250" cy="-210" r="2"/>
+        <circle cx="210" cy="210" r="2"/>
+        <circle cx="-210" cy="210" r="2"/>
+      </g>
+      <!-- Latitude/Longitude hints -->
+      <text x="0" y="-228" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#a07c3a" letter-spacing="4" font-style="italic">— +NORD —</text>
+      <text x="0" y="240" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#a07c3a" letter-spacing="4" font-style="italic">— −SUD —</text>
+
+      <!-- Faint biome footprints on the parchment (matching the medallion positions) -->
+      <ellipse cx="0" cy="-110" rx="80" ry="70" fill="url(#wmSkeleton)" opacity="0.55"/>
+      <ellipse cx="0" cy="-180" rx="50" ry="50" fill="url(#wmMordrak)" opacity="0.7"/>
+      <ellipse cx="160" cy="-80" rx="80" ry="60" fill="url(#wmLoup)" opacity="0.55"/>
+      <ellipse cx="170" cy="120" rx="80" ry="60" fill="url(#wmGobelin)" opacity="0.55"/>
+      <ellipse cx="0" cy="170" rx="80" ry="40" fill="url(#wmSlime)" opacity="0.5"/>
+      <ellipse cx="-170" cy="100" rx="80" ry="60" fill="url(#wmOgre)" opacity="0.65"/>
+
+      <!-- Fog of war at the W edge -->
+      <rect x="-244" y="-204" width="80" height="408" fill="url(#wmBg)" opacity="0.55"/>
+      <text x="-200" y="0" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#a07c3a" letter-spacing="3" font-style="italic" opacity="0.75" transform="rotate(-90, -200, 0)">non cartographié</text>
+    </g>
+
+    <!-- =========== PATHS (village radial spokes) =========== -->
+    <g fill="none" stroke="url(#wmPath)" stroke-width="2" stroke-dasharray="6 4" opacity="0.85">
+      <!-- Village (550,380) to Mordrak (550,180) -->
+      <line x1="550" y1="380" x2="550" y2="218">
+        <animate attributeName="stroke-dashoffset" values="0;-20" dur="2s" repeatCount="indefinite"/>
+      </line>
+      <!-- Village to Ruines squelettes (550,260) -->
+      <line x1="550" y1="380" x2="550" y2="298">
+        <animate attributeName="stroke-dashoffset" values="0;-20" dur="2s" begin="0.2s" repeatCount="indefinite"/>
+      </line>
+      <!-- Village to Bois loups (720,300) -->
+      <line x1="550" y1="380" x2="700" y2="312">
+        <animate attributeName="stroke-dashoffset" values="0;-20" dur="2s" begin="0.4s" repeatCount="indefinite"/>
+      </line>
+      <!-- Village to Forêt gobelin (720,500) -->
+      <line x1="550" y1="380" x2="700" y2="488">
+        <animate attributeName="stroke-dashoffset" values="0;-20" dur="2s" begin="0.6s" repeatCount="indefinite"/>
+      </line>
+      <!-- Village to Slimes (550,560) -->
+      <line x1="550" y1="380" x2="550" y2="538">
+        <animate attributeName="stroke-dashoffset" values="0;-20" dur="2s" begin="0.8s" repeatCount="indefinite"/>
+      </line>
+      <!-- Village to Cavernes ogres (380,500) -->
+      <line x1="550" y1="380" x2="400" y2="488">
+        <animate attributeName="stroke-dashoffset" values="0;-20" dur="2s" begin="1.0s" repeatCount="indefinite"/>
+      </line>
+    </g>
+
+    <!-- =========== THE VILLAGE - central hub =========== -->
+    <g transform="translate(550 380)">
+      <!-- Pulsing radial halo -->
+      <circle r="100" fill="url(#wmVillage)">
+        <animate attributeName="r" values="80;115;80" dur="3.6s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.5;0.95;0.5" dur="3.6s" repeatCount="indefinite"/>
+      </circle>
+      <!-- Cartouche medallion -->
+      <circle r="56" fill="#161b22" stroke="url(#wmGoldCine)" stroke-width="3"/>
+      <circle r="50" fill="none" stroke="#f6d97c" stroke-width="0.6" opacity="0.6"/>
+      <!-- Mini houses silhouette -->
+      <g transform="translate(0 -4)" fill="#a07c3a" stroke="#3a2412" stroke-width="0.6">
+        <polygon points="-22,12 -22,-2 -8,-12 6,-2 6,12"/>
+        <polygon points="-4,18 -4,8 14,8 14,18 18,8 22,18"/>
+        <rect x="20" y="-6" width="10" height="14"/>
+        <polygon points="20,-6 25,-14 30,-6"/>
+      </g>
+      <!-- "Foyer" label inside the medallion (above houses) -->
+      <text y="-22" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#f6d97c" letter-spacing="2" font-weight="bold">FOYER</text>
+      <!-- Pulsing center dot -->
+      <circle r="4" fill="#ff5722" filter="url(#wmBlur)">
+        <animate attributeName="r" values="3;6;3" dur="1.4s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+    <text x="550" y="468" text-anchor="middle" font-family="Georgia, serif" font-size="11" font-weight="bold" fill="#fff4c2" letter-spacing="3">♕ LE VILLAGE CENTRAL ♕</text>
+
+    <!-- =========== MORDRAL (far north) =========== -->
+    <g transform="translate(550 180)">
+      <circle r="80" fill="url(#wmMordrak)">
+        <animate attributeName="r" values="70;90;70" dur="2.4s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="2.4s" repeatCount="indefinite"/>
+      </circle>
+      <polygon points="-44,-30 44,-30 56,0 44,30 -44,30 -56,0" fill="#1a0808" stroke="#ff3344" stroke-width="2"/>
+      <polygon points="-44,-30 44,-30 56,0 44,30 -44,30 -56,0" fill="none" stroke="#ff8a96" stroke-width="0.6" opacity="0.5"/>
+      <!-- Skull crown -->
+      <ellipse cx="0" cy="-2" rx="14" ry="18" fill="#f5e6c8" stroke="#ff3344" stroke-width="1"/>
+      <ellipse cx="-5" cy="-2" rx="3" ry="4" fill="#ff3344"><animate attributeName="opacity" values="0.5;1;0.5" dur="1.1s" repeatCount="indefinite"/></ellipse>
+      <ellipse cx="5" cy="-2" rx="3" ry="4" fill="#ff3344"><animate attributeName="opacity" values="0.5;1;0.5" dur="1.1s" begin="0.3s" repeatCount="indefinite"/></ellipse>
+    </g>
+    <text x="550" y="124" text-anchor="middle" font-family="Georgia, serif" font-size="11" font-weight="bold" fill="#ff8a96" letter-spacing="3">⚔ DONJON DE MORDRAK ⚔</text>
+    <text x="550" y="140" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#ff5468" font-style="italic" letter-spacing="2">PV 600 · ATQ 40 · ✦✦✦ BOSS</text>
+
+    <!-- =========== RUINES SQUELETTES (NNW) =========== -->
+    <g transform="translate(550 260)">
+      <circle r="56" fill="url(#wmSkeleton)">
+        <animate attributeName="r" values="50;62;50" dur="3.6s" begin="0s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.55;0.9;0.55" dur="3.6s" begin="0s" repeatCount="indefinite"/>
+      </circle>
+      <circle r="38" fill="#161b22" stroke="#a07c3a" stroke-width="2"/>
+      <!-- Tombstone silhouette -->
+      <g fill="#e8e8e8" stroke="#3a2412" stroke-width="0.6" transform="translate(0 2)">
+        <rect x="-12" y="-2" width="10" height="14"/>
+        <path d="M-12,-2 Q-7,-14 -2,-2 Z"/>
+        <rect x="2" y="-6" width="10" height="18"/>
+        <path d="M2,-6 Q7,-20 12,-6 Z"/>
+      </g>
+    </g>
+    <text x="550" y="332" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-weight="bold" fill="#fff4c2" letter-spacing="2">💀 LES RUINES DU NORD</text>
+    <text x="550" y="346" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#a07c3a" font-style="italic" letter-spacing="2">squelettes ★★★★</text>
+
+    <!-- =========== BOIS SINISTRES (E) =========== -->
+    <g transform="translate(720 300)">
+      <circle r="56" fill="url(#wmLoup)">
+        <animate attributeName="r" values="50;62;50" dur="3.6s" begin="0.3s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.55;0.9;0.55" dur="3.6s" begin="0.3s" repeatCount="indefinite"/>
+      </circle>
+      <circle r="38" fill="#0a1422" stroke="#a07c3a" stroke-width="2"/>
+      <!-- Wolf silhouette -->
+      <g fill="#6b6b6b" transform="translate(0 2)">
+        <ellipse cx="-6" cy="2" rx="14" ry="8"/>
+        <ellipse cx="8" cy="-2" rx="9" ry="7"/>
+        <polygon points="2,-9 5,-12 7,-9"/>
+        <polygon points="11,-9 14,-12 16,-9"/>
+        <circle cx="14" cy="-2" r="1.5" fill="#fbbf24"><animate attributeName="opacity" values="0.6;1;0.6" dur="1.6s" repeatCount="indefinite"/></circle>
+      </g>
+    </g>
+    <text x="720" y="372" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-weight="bold" fill="#fff4c2" letter-spacing="2">🐺 LES BOIS SINISTRES</text>
+    <text x="720" y="386" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#a07c3a" font-style="italic" letter-spacing="2">loups ★★★</text>
+
+    <!-- =========== FORÊT PROFONDE (SE) =========== -->
+    <g transform="translate(720 500)">
+      <circle r="56" fill="url(#wmGobelin)">
+        <animate attributeName="r" values="50;62;50" dur="3.6s" begin="0.6s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.55;0.9;0.55" dur="3.6s" begin="0.6s" repeatCount="indefinite"/>
+      </circle>
+      <circle r="38" fill="#1a2412" stroke="#a07c3a" stroke-width="2"/>
+      <!-- Pine trees silhouette -->
+      <g transform="translate(-10 4)">
+        <polygon points="0,-2 -10,16 10,16" fill="#3a5a2b" stroke="#1a2a12" stroke-width="0.6"/>
+        <polygon points="0,-12 -8,4 8,4" fill="#3a5a2b" stroke="#1a2a12" stroke-width="0.6"/>
+        <rect x="-2" y="14" width="4" height="6" fill="#3a2412"/>
+      </g>
+      <g transform="translate(8 -2)">
+        <polygon points="0,-2 -10,18 10,18" fill="#5a7a3b" stroke="#1a2a12" stroke-width="0.6"/>
+        <polygon points="0,-12 -8,4 8,4" fill="#5a7a3b" stroke="#1a2a12" stroke-width="0.6"/>
+        <rect x="-2" y="16" width="4" height="6" fill="#3a2412"/>
+      </g>
+    </g>
+    <text x="720" y="572" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-weight="bold" fill="#fff4c2" letter-spacing="2">🌲 LA FORÊT PROFONDE</text>
+    <text x="720" y="586" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#a07c3a" font-style="italic" letter-spacing="2">gobelins ★★</text>
+
+    <!-- =========== CHAMPS DE L'EST (S) — slimes =========== -->
+    <g transform="translate(550 560)">
+      <circle r="56" fill="url(#wmSlime)">
+        <animate attributeName="r" values="50;62;50" dur="3.6s" begin="0.9s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.55;0.9;0.55" dur="3.6s" begin="0.9s" repeatCount="indefinite"/>
+      </circle>
+      <circle r="38" fill="#0a2a0a" stroke="#a07c3a" stroke-width="2"/>
+      <!-- Slime silhouette -->
+      <g transform="translate(0 4)">
+        <ellipse cx="0" cy="6" rx="18" ry="8" fill="#5fd35f"/>
+        <ellipse cx="0" cy="0" rx="14" ry="12" fill="#5fd35f"/>
+        <ellipse cx="0" cy="-4" rx="10" ry="3" fill="#fff" opacity="0.6"/>
+        <ellipse cx="-4" cy="0" rx="2" ry="3" fill="#1a1a1a"/>
+        <ellipse cx="4" cy="0" rx="2" ry="3" fill="#1a1a1a"/>
+      </g>
+    </g>
+    <text x="550" y="632" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-weight="bold" fill="#fff4c2" letter-spacing="2">🌾 LES CHAMPS DE L'EST</text>
+    <text x="550" y="646" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#a07c3a" font-style="italic" letter-spacing="2">slimes ★</text>
+
+    <!-- =========== CAVERNES DE L'OUEST (SW) =========== -->
+    <g transform="translate(380 500)">
+      <circle r="56" fill="url(#wmOgre)">
+        <animate attributeName="r" values="50;62;50" dur="3.6s" begin="1.2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.55;0.9;0.55" dur="3.6s" begin="1.2s" repeatCount="indefinite"/>
+      </circle>
+      <circle r="38" fill="#1a0838" stroke="#7a4f8b" stroke-width="2"/>
+      <!-- Ogre silhouette -->
+      <g transform="translate(0 6)">
+        <ellipse cx="0" cy="0" rx="20" ry="22" fill="#7a4f8b"/>
+        <circle cx="0" cy="-18" r="11" fill="#9b6fc6"/>
+        <circle cx="-4" cy="-18" r="1.6" fill="#fff"/>
+        <circle cx="4" cy="-18" r="1.6" fill="#fff"/>
+        <rect x="18" y="-6" width="3" height="22" fill="#b8860b"/>
+      </g>
+    </g>
+    <text x="380" y="572" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-weight="bold" fill="#fff4c2" letter-spacing="2">🪨 LES CAVERNES DE L'OUEST</text>
+    <text x="380" y="586" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#a07c3a" font-style="italic" letter-spacing="2">ogres ★★★★★</text>
+
+    <!-- =========== BOTTOM LEGEND BAR =========== -->
+    <g transform="translate(550 690)" text-anchor="middle">
+      <rect x="-460" y="-22" width="920" height="44" rx="6" fill="url(#wmDarkCine)" stroke="url(#wmGoldCine)" stroke-width="1.2" opacity="0.95"/>
+      <rect x="-454" y="-16" width="908" height="32" rx="4" fill="none" stroke="#f6d97c" stroke-width="0.4" opacity="0.5"/>
+      <text x="0" y="-4" font-family="Georgia, serif" font-size="10" fill="#f6d97c" letter-spacing="4" font-weight="bold">◈ ÉCHELLE DE DIFFICULTÉ ◈</text>
+      <g font-family="Georgia, serif" font-size="10">
+        <text x="-380" y="16" fill="#5fd35f">★</text><text x="-370" y="16" fill="#a07c3a">☆☆☆☆ · slimes</text>
+        <text x="-220" y="16" fill="#c0854a">★★</text><text x="-200" y="16" fill="#a07c3a">☆☆☆ · gobelins</text>
+        <text x="-50" y="16" fill="#9aa3b0">★★★</text><text x="-22" y="16" fill="#a07c3a">☆☆ · loups</text>
+        <text x="120" y="16" fill="#f5f5f5">★★★★</text><text x="148" y="16" fill="#a07c3a">☆ · squelettes</text>
+        <text x="290" y="16" fill="#b07ac8">★★★★★</text><text x="328" y="16" fill="#a07c3a">· ogres</text>
+        <text x="410" y="16" fill="#ff3344">✦✦✦</text><text x="430" y="16" fill="#a07c3a">· Mordrak</text>
+      </g>
+    </g>
+  </svg>
+</p>
+
+<p align="center"><em>🗺️ Chaque biome rayonne depuis le <strong>Village central</strong>, foyer du porteur d'espoir ; plus l'aura s'assombrit, plus l'ennemi gagne en férocité. Le <strong>Donjon de Mordrak</strong>, au nord, attend le héros qui aura purifié les cinq territoires.</em></p>
 
 ---
 
@@ -914,19 +1435,225 @@ Quatre marchands, mentors et gardiens du village — chacun avec son dialogue, s
 
 ## 💎 Fonctionnalités
 
-- 🌍 **Monde 3D procédural** de 200×200 unités, cycle jour/nuit (180 s), brouillard exponentiel, ciel animé
-- ⚔️ **Combat en temps réel** avec arc d'attaque, combo, invincibilité temporaire et effets de particules
-- 👹 **6 types d'ennemis + 1 boss** resurrected toutes les 30 s avec IA de patrouille/chase/attack
-- 🎭 **4 PNJ** avec dialogues ramifiés, quêtes, boutique, marqueurs flottants
-- 📜 **5 quêtes chainées** + 7 coffres au trésor cachés dans le monde
-- 🎒 **Inventaire filtrable** de 16+ objets, avec 5 niveaux de rareté (commun → légendaire)
-- ⚒️ **Crafting** : 7 recettes pour forger armes, armures et potions
-- 🏪 **Boutique** : achat / vente auprès de Brynn la Marchande (prix d'achat = 50% de la valeur)
-- 🔮 **5 compétences magiques** : Boule de Feu, Soin, Éclair, Bouclier, Nova de Givre
-- 📈 **Système de niveau** : courbe XP `floor(50 × level^1.6)`, points de statistiques allouables
-- 💾 **Sauvegarde** automatique + reprise de partie (localStorage / Prisma + SQLite)
-- 🖥️ **Multiplateforme** : navigateur web **+** application desktop Electron (Windows, macOS, Linux)
-- 🎨 **Direction artistique parchemin** : typographies Cinzel/EB Garamond, bordures dorées, post-processing Bloom + God Rays + Vignette
+<!-- Animated cinebar — features intro -->
+<p align="center">
+<svg viewBox="0 0 920 80" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:920px">
+  <defs>
+    <linearGradient id="featGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="50%" stop-color="#f6d97c"/><stop offset="100%" stop-color="#a07c3a"/></linearGradient>
+    <linearGradient id="featDark" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a0e2e"/><stop offset="100%" stop-color="#3a2412"/></linearGradient>
+  </defs>
+  <rect x="80" y="10" width="760" height="60" fill="url(#featDark)" stroke="url(#featGold)" stroke-width="2" rx="8"/>
+  <rect x="86" y="16" width="748" height="48" fill="none" stroke="#f6d97c" stroke-width="0.5" rx="6" opacity="0.5"/>
+  <text x="100" y="48" fill="#f6d97c" font-family="Georgia, serif" font-size="20" opacity="0.9">❦</text>
+  <text x="820" y="48" fill="#f6d97c" font-family="Georgia, serif" font-size="20" opacity="0.9" text-anchor="end">❧</text>
+  <text x="460" y="30" text-anchor="middle" fill="#f6d97c" font-family="Georgia, serif" font-size="11" letter-spacing="6" font-weight="bold">◆ TREIZE PILIERS ◆</text>
+  <text x="460" y="54" text-anchor="middle" fill="#fff4c2" font-family="Georgia, serif" font-size="16" font-style="italic">
+    Chaque facette du royaume tient en une carte…
+    <animate attributeName="opacity" values="0;1" dur="1.6s" fill="freeze"/>
+  </text>
+  <circle cx="100" cy="22" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" repeatCount="indefinite"/></circle>
+  <circle cx="820" cy="22" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" begin="0.6s" repeatCount="indefinite"/></circle>
+  <circle cx="100" cy="74" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" begin="1.2s" repeatCount="indefinite"/></circle>
+  <circle cx="820" cy="74" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" begin="1.8s" repeatCount="indefinite"/></circle>
+</svg>
+</p>
+
+<table align="center" cellpadding="0" cellspacing="0">
+<tr>
+<!-- Row 1 -->
+<td align="center" width="20%" valign="top">
+<svg viewBox="0 0 200 168" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:200px">
+  <defs><linearGradient id="cp1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="100%" stop-color="#d8be83"/></linearGradient></defs>
+  <rect x="4" y="4" width="192" height="160" rx="8" fill="url(#cp1)" stroke="#a07c3a" stroke-width="1.5"><animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="0s" repeatCount="indefinite"/></rect>
+  <rect x="9" y="9" width="182" height="150" rx="6" fill="none" stroke="#a07c3a" stroke-width="0.4" opacity="0.4"/>
+  <text x="100" y="56" font-size="36" text-anchor="middle">🌍</text>
+  <rect x="14" y="116" width="172" height="22" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.1s" fill="freeze"/></rect>
+  <text x="100" y="131" font-size="11" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="2">❦ MONDE 3D ❦</text>
+  <text x="100" y="151" font-size="9" text-anchor="middle" font-family="Georgia, serif" fill="#5a3a1f" font-style="italic">200×200, cycle 180 s, brouillard</text>
+</svg>
+</td>
+<td align="center" width="20%" valign="top">
+<svg viewBox="0 0 200 168" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:200px">
+  <defs><linearGradient id="cp2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="100%" stop-color="#d8be83"/></linearGradient></defs>
+  <rect x="4" y="4" width="192" height="160" rx="8" fill="url(#cp2)" stroke="#a07c3a" stroke-width="1.5"><animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="0.2s" repeatCount="indefinite"/></rect>
+  <rect x="9" y="9" width="182" height="150" rx="6" fill="none" stroke="#a07c3a" stroke-width="0.4" opacity="0.4"/>
+  <text x="100" y="58" font-size="38" text-anchor="middle">⚔️</text>
+  <rect x="14" y="116" width="172" height="22" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.2s" fill="freeze"/></rect>
+  <text x="100" y="131" font-size="11" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="2">❦ COMBAT ❦</text>
+  <text x="100" y="151" font-size="9" text-anchor="middle" font-family="Georgia, serif" fill="#5a3a1f" font-style="italic">arc, combo, i-frames, particules</text>
+</svg>
+</td>
+<td align="center" width="20%" valign="top">
+<svg viewBox="0 0 200 168" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:200px">
+  <defs><linearGradient id="cp3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="100%" stop-color="#d8be83"/></linearGradient></defs>
+  <rect x="4" y="4" width="192" height="160" rx="8" fill="url(#cp3)" stroke="#a07c3a" stroke-width="1.5"><animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="0.4s" repeatCount="indefinite"/></rect>
+  <rect x="9" y="9" width="182" height="150" rx="6" fill="none" stroke="#a07c3a" stroke-width="0.4" opacity="0.4"/>
+  <text x="100" y="58" font-size="38" text-anchor="middle">👹</text>
+  <rect x="14" y="116" width="172" height="22" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.3s" fill="freeze"/></rect>
+  <text x="100" y="131" font-size="11" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="2">❦ BESTIAIRE ❦</text>
+  <text x="100" y="151" font-size="9" text-anchor="middle" font-family="Georgia, serif" fill="#5a3a1f" font-style="italic">6 + 1 boss, IA, respawn 30 s</text>
+</svg>
+</td>
+<td align="center" width="20%" valign="top">
+<svg viewBox="0 0 200 168" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:200px">
+  <defs><linearGradient id="cp4" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="100%" stop-color="#d8be83"/></linearGradient></defs>
+  <rect x="4" y="4" width="192" height="160" rx="8" fill="url(#cp4)" stroke="#a07c3a" stroke-width="1.5"><animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="0.6s" repeatCount="indefinite"/></rect>
+  <rect x="9" y="9" width="182" height="150" rx="6" fill="none" stroke="#a07c3a" stroke-width="0.4" opacity="0.4"/>
+  <text x="100" y="58" font-size="38" text-anchor="middle">🎭</text>
+  <rect x="14" y="116" width="172" height="22" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.4s" fill="freeze"/></rect>
+  <text x="100" y="131" font-size="11" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="2">❦ PNJ ❦</text>
+  <text x="100" y="151" font-size="9" text-anchor="middle" font-family="Georgia, serif" fill="#5a3a1f" font-style="italic">4 mentors, dialogues, boutique</text>
+</svg>
+</td>
+<td align="center" width="20%" valign="top">
+<svg viewBox="0 0 200 168" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:200px">
+  <defs><linearGradient id="cp5" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="100%" stop-color="#d8be83"/></linearGradient></defs>
+  <rect x="4" y="4" width="192" height="160" rx="8" fill="url(#cp5)" stroke="#a07c3a" stroke-width="1.5"><animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="0.8s" repeatCount="indefinite"/></rect>
+  <rect x="9" y="9" width="182" height="150" rx="6" fill="none" stroke="#a07c3a" stroke-width="0.4" opacity="0.4"/>
+  <text x="100" y="58" font-size="38" text-anchor="middle">📜</text>
+  <rect x="14" y="116" width="172" height="22" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.5s" fill="freeze"/></rect>
+  <text x="100" y="131" font-size="11" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="2">❦ QUÊTES ❦</text>
+  <text x="100" y="151" font-size="9" text-anchor="middle" font-family="Georgia, serif" fill="#5a3a1f" font-style="italic">5 chapitres + 7 coffres</text>
+</svg>
+</td>
+</tr>
+<tr>
+<!-- Row 2 -->
+<td align="center" valign="top">
+<svg viewBox="0 0 200 168" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:200px">
+  <defs><linearGradient id="cp6" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="100%" stop-color="#d8be83"/></linearGradient></defs>
+  <rect x="4" y="4" width="192" height="160" rx="8" fill="url(#cp6)" stroke="#a07c3a" stroke-width="1.5"><animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="1.0s" repeatCount="indefinite"/></rect>
+  <rect x="9" y="9" width="182" height="150" rx="6" fill="none" stroke="#a07c3a" stroke-width="0.4" opacity="0.4"/>
+  <text x="100" y="58" font-size="38" text-anchor="middle">🎒</text>
+  <rect x="14" y="116" width="172" height="22" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.6s" fill="freeze"/></rect>
+  <text x="100" y="131" font-size="11" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="2">❦ INVENTAIRE ❦</text>
+  <text x="100" y="151" font-size="9" text-anchor="middle" font-family="Georgia, serif" fill="#5a3a1f" font-style="italic">16+ objets, 5 raretés</text>
+</svg>
+</td>
+<td align="center" valign="top">
+<svg viewBox="0 0 200 168" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:200px">
+  <defs><linearGradient id="cp7" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="100%" stop-color="#d8be83"/></linearGradient></defs>
+  <rect x="4" y="4" width="192" height="160" rx="8" fill="url(#cp7)" stroke="#a07c3a" stroke-width="1.5"><animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="1.2s" repeatCount="indefinite"/></rect>
+  <rect x="9" y="9" width="182" height="150" rx="6" fill="none" stroke="#a07c3a" stroke-width="0.4" opacity="0.4"/>
+  <text x="100" y="58" font-size="38" text-anchor="middle">⚒️</text>
+  <rect x="14" y="116" width="172" height="22" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.7s" fill="freeze"/></rect>
+  <text x="100" y="131" font-size="11" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="2">❦ CRAFTING ❦</text>
+  <text x="100" y="151" font-size="9" text-anchor="middle" font-family="Georgia, serif" fill="#5a3a1f" font-style="italic">7 recettes armes/armures/potions</text>
+</svg>
+</td>
+<td align="center" valign="top">
+<svg viewBox="0 0 200 168" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:200px">
+  <defs><linearGradient id="cp8" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="100%" stop-color="#d8be83"/></linearGradient></defs>
+  <rect x="4" y="4" width="192" height="160" rx="8" fill="url(#cp8)" stroke="#a07c3a" stroke-width="1.5"><animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="1.4s" repeatCount="indefinite"/></rect>
+  <rect x="9" y="9" width="182" height="150" rx="6" fill="none" stroke="#a07c3a" stroke-width="0.4" opacity="0.4"/>
+  <text x="100" y="58" font-size="38" text-anchor="middle">🏪</text>
+  <rect x="14" y="116" width="172" height="22" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.8s" fill="freeze"/></rect>
+  <text x="100" y="131" font-size="11" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="2">❦ BOUTIQUE ❦</text>
+  <text x="100" y="151" font-size="9" text-anchor="middle" font-family="Georgia, serif" fill="#5a3a1f" font-style="italic">achat/vente, revente 50 % valeur</text>
+</svg>
+</td>
+<td align="center" valign="top">
+<svg viewBox="0 0 200 168" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:200px">
+  <defs>
+    <linearGradient id="cp9" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="100%" stop-color="#d8be83"/></linearGradient>
+    <radialGradient id="mp9" cx="0.5" cy="0.5" r="0.5"><stop offset="0%" stop-color="#ff5722"/><stop offset="100%" stop-color="#7a1c0a" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect x="4" y="4" width="192" height="160" rx="8" fill="url(#cp9)" stroke="#a07c3a" stroke-width="1.5"><animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="1.6s" repeatCount="indefinite"/></rect>
+  <rect x="9" y="9" width="182" height="150" rx="6" fill="none" stroke="#a07c3a" stroke-width="0.4" opacity="0.4"/>
+  <circle cx="100" cy="62" r="34" fill="url(#mp9)" opacity="0.8"><animate attributeName="r" values="28;36;28" dur="2.4s" repeatCount="indefinite"/></circle>
+  <text x="100" y="72" font-size="32" text-anchor="middle">🔮</text>
+  <rect x="14" y="116" width="172" height="22" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.9s" fill="freeze"/></rect>
+  <text x="100" y="131" font-size="11" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="2">❦ MAGIE ❦</text>
+  <text x="100" y="151" font-size="9" text-anchor="middle" font-family="Georgia, serif" fill="#5a3a1f" font-style="italic">5 sorts, mana, ciblage</text>
+</svg>
+</td>
+<td align="center" valign="top">
+<svg viewBox="0 0 200 168" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:200px">
+  <defs><linearGradient id="cp10" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="100%" stop-color="#d8be83"/></linearGradient></defs>
+  <rect x="4" y="4" width="192" height="160" rx="8" fill="url(#cp10)" stroke="#a07c3a" stroke-width="1.5"><animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="1.8s" repeatCount="indefinite"/></rect>
+  <rect x="9" y="9" width="182" height="150" rx="6" fill="none" stroke="#a07c3a" stroke-width="0.4" opacity="0.4"/>
+  <text x="100" y="58" font-size="34" text-anchor="middle">📈</text>
+  <rect x="14" y="116" width="172" height="22" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="1.0s" fill="freeze"/></rect>
+  <text x="100" y="131" font-size="11" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="2">❦ PROGRESSION ❦</text>
+  <text x="100" y="151" font-size="9" text-anchor="middle" font-family="Georgia, serif" fill="#5a3a1f" font-style="italic">XP level^1.6, 3 pts/niveau</text>
+</svg>
+</td>
+</tr>
+<tr>
+<!-- Row 3 -->
+<td align="center" valign="top">
+<svg viewBox="0 0 200 168" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:200px">
+  <defs><linearGradient id="cp11" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="100%" stop-color="#d8be83"/></linearGradient></defs>
+  <rect x="4" y="4" width="192" height="160" rx="8" fill="url(#cp11)" stroke="#a07c3a" stroke-width="1.5"><animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="2.0s" repeatCount="indefinite"/></rect>
+  <rect x="9" y="9" width="182" height="150" rx="6" fill="none" stroke="#a07c3a" stroke-width="0.4" opacity="0.4"/>
+  <text x="100" y="58" font-size="38" text-anchor="middle">💾</text>
+  <rect x="14" y="116" width="172" height="22" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="1.1s" fill="freeze"/></rect>
+  <text x="100" y="131" font-size="11" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="2">❦ SAUVEGARDE ❦</text>
+  <text x="100" y="151" font-size="9" text-anchor="middle" font-family="Georgia, serif" fill="#5a3a1f" font-style="italic">localStorage + Prisma/SQLite</text>
+</svg>
+</td>
+<td align="center" valign="top">
+<svg viewBox="0 0 200 168" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:200px">
+  <defs><linearGradient id="cp12" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="100%" stop-color="#d8be83"/></linearGradient></defs>
+  <rect x="4" y="4" width="192" height="160" rx="8" fill="url(#cp12)" stroke="#a07c3a" stroke-width="1.5"><animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="2.2s" repeatCount="indefinite"/></rect>
+  <rect x="9" y="9" width="182" height="150" rx="6" fill="none" stroke="#a07c3a" stroke-width="0.4" opacity="0.4"/>
+  <text x="100" y="58" font-size="36" text-anchor="middle">🖥️</text>
+  <rect x="14" y="116" width="172" height="22" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="1.2s" fill="freeze"/></rect>
+  <text x="100" y="131" font-size="11" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="2">❦ DESKTOP ❦</text>
+  <text x="100" y="151" font-size="9" text-anchor="middle" font-family="Georgia, serif" fill="#5a3a1f" font-style="italic">Web + Electron Win/Mac/Linux</text>
+</svg>
+</td>
+<td align="center" valign="top">
+<svg viewBox="0 0 200 168" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:200px">
+  <defs>
+    <linearGradient id="cp13" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="100%" stop-color="#d8be83"/></linearGradient>
+    <radialGradient id="gp13" cx="0.5" cy="0.5" r="0.5"><stop offset="0%" stop-color="#fff4c2" stop-opacity="0.7"/><stop offset="100%" stop-color="#fff4c2" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect x="4" y="4" width="192" height="160" rx="8" fill="url(#cp13)" stroke="#a07c3a" stroke-width="1.5"><animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="2.4s" repeatCount="indefinite"/></rect>
+  <rect x="9" y="9" width="182" height="150" rx="6" fill="none" stroke="#a07c3a" stroke-width="0.4" opacity="0.4"/>
+  <circle cx="100" cy="62" r="38" fill="url(#gp13)"><animate attributeName="r" values="34;42;34" dur="3s" repeatCount="indefinite"/></circle>
+  <text x="100" y="72" font-size="32" text-anchor="middle">🎨</text>
+  <rect x="14" y="116" width="172" height="22" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="1.3s" fill="freeze"/></rect>
+  <text x="100" y="131" font-size="11" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="2">❦ DA PARCHEMIN ❦</text>
+  <text x="100" y="151" font-size="9" text-anchor="middle" font-family="Georgia, serif" fill="#5a3a1f" font-style="italic">Cinzel+Garamond, Bloom, GodRays</text>
+</svg>
+</td>
+<td align="center" valign="top">
+<svg viewBox="0 0 200 168" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:200px">
+  <defs>
+    <linearGradient id="cpE" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a0838"/><stop offset="100%" stop-color="#3a2412"/></linearGradient>
+    <radialGradient id="gaE" cx="0.5" cy="0.5" r="0.5"><stop offset="0%" stop-color="#fff4c2" stop-opacity="0.5"/><stop offset="100%" stop-color="#fff4c2" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect x="4" y="4" width="192" height="160" rx="8" fill="url(#cpE)" stroke="#f6d97c" stroke-width="1.5"><animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="2.6s" repeatCount="indefinite"/></rect>
+  <rect x="9" y="9" width="182" height="150" rx="6" fill="none" stroke="#f6d97c" stroke-width="0.4" opacity="0.4"/>
+  <circle cx="100" cy="62" r="38" fill="url(#gaE)"><animate attributeName="r" values="34;42;34" dur="3.6s" repeatCount="indefinite"/></circle>
+  <text x="100" y="50" text-anchor="middle" fill="#f6d97c" font-family="Georgia, serif" font-size="9" letter-spacing="2" font-weight="bold">◆ EN UN COUP D'ŒIL ◆</text>
+  <text x="100" y="72" text-anchor="middle" fill="#fff4c2" font-family="Georgia, serif" font-size="14" font-style="italic">13 piliers</text>
+  <text x="100" y="90" text-anchor="middle" fill="#fff4c2" font-family="Georgia, serif" font-size="11">1 cathédrale</text>
+  <rect x="14" y="116" width="172" height="22" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="1.4s" fill="freeze"/></rect>
+  <text x="100" y="131" font-size="10" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="2">❦ COHÉRENT ❦</text>
+  <text x="100" y="151" font-size="9" text-anchor="middle" font-family="Georgia, serif" fill="#a07c3a" font-style="italic">De A à Z · 1 seul dépôt</text>
+</svg>
+</td>
+<td align="center" valign="top">
+<svg viewBox="0 0 200 168" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:200px">
+  <defs>
+    <linearGradient id="cpF" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a0838"/><stop offset="100%" stop-color="#3a2412"/></linearGradient>
+    <radialGradient id="gaF" cx="0.5" cy="0.5" r="0.5"><stop offset="0%" stop-color="#fff4c2" stop-opacity="0.5"/><stop offset="100%" stop-color="#fff4c2" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect x="4" y="4" width="192" height="160" rx="8" fill="url(#cpF)" stroke="#f6d97c" stroke-width="1.5"><animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="2.8s" repeatCount="indefinite"/></rect>
+  <rect x="9" y="9" width="182" height="150" rx="6" fill="none" stroke="#f6d97c" stroke-width="0.4" opacity="0.4"/>
+  <circle cx="100" cy="62" r="40" fill="url(#gaF)"><animate attributeName="r" values="36;44;36" dur="3.6s" begin="0.6s" repeatCount="indefinite"/></circle>
+  <text x="100" y="50" text-anchor="middle" fill="#f6d97c" font-family="Georgia, serif" font-size="9" letter-spacing="2" font-weight="bold">◆ UN SEUL ◆</text>
+  <text x="100" y="72" text-anchor="middle" fill="#fff4c2" font-family="Georgia, serif" font-size="14" font-style="italic">dépôt</text>
+  <text x="100" y="90" text-anchor="middle" fill="#fff4c2" font-family="Georgia, serif" font-size="11">architectural</text>
+  <rect x="14" y="116" width="172" height="22" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="1.6s" fill="freeze"/></rect>
+  <text x="100" y="131" font-size="10" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="2">❦ AUTONOME ❦</text>
+  <text x="100" y="151" font-size="9" text-anchor="middle" font-family="Georgia, serif" fill="#a07c3a" font-style="italic">Web + Desktop · 1 commande</text>
+</svg>
+</td>
+</tr>
+</table>
 
 ---
 
@@ -975,54 +1702,120 @@ bun run screenshots
 # → génère public/screenshots/{01..04}*.png via Playwright
 ```
 
+### Générer le trailer GIF cinématique
+
+```bash
+bun run trailer
+# → capture 10 s de gameplay dans public/illustrations/trailer.gif (12 fps)
+# + version WebM 1080p dans public/illustrations/trailer.webm
+#
+# Prérequis supplémentaires :
+#   • ffmpeg ≥ 5.0 installé (brew install ffmpeg / apt install ffmpeg)
+```
 ---
 
 ## 🏗️ Architecture technique
 
-```
-eldoria/
-├── .github/                       # CI/CD, templates issues/PR
-├── electron/                      # Application desktop
-│   ├── main.js                    # Process principal
-│   └── preload.js
-├── public/
-│   ├── banner/                    # 🆕 Assets cinématiques du README
-│   │   ├── eldoria-banner.svg     # 🆕 Bannière hero animé
-│   │   ├── world-map.svg          # 🆕 Carte du monde animé
-│   │   ├── quest-chain.svg        # 🆕 Chaîne des quêtes animé
-│   │   └── footer-flourish.svg    # 🆕 Footer animé
-│   ├── screenshots/               # Captures du jeu pour le README
-│   ├── illustrations/             # Illustrations du projet
-│   └── assets/characters/         # Modèles 3D Quaternius (CC0)
-├── src/
-│   ├── app/                       # Routes Next.js (App Router)
-│   ├── components/                # Composants UI (shadcn/ui)
-│   └── game/                      # 🎮 Cœur du jeu
-│       ├── Game.tsx               # Composant racine
-│       ├── store.ts               # ⭐ État global Zustand
-│       ├── types.ts               # Types TS du domaine
-│       ├── constants.ts           # WORLD/PLAYER/XP_CURVE/COLORS
-│       ├── audio.ts               # Gestionnaire audio
-│       ├── data/                  # Données de jeu (ennemis, skills, items)
-│       ├── player/                # Joueur, PNJ, contrôles
-│       ├── enemies/               # IA et rendu des ennemis
-│       ├── effects/               # Post-processing (Bloom, God Rays)
-│       ├── world/                 # Terrain, Sky, cycle jour/nuit
-│       └── ui/                    # 🖼️ ParchmentUI (12 panneaux)
-│           ├── HUD.tsx
-│           ├── Inventory.tsx
-│           ├── Shop.tsx
-│           ├── QuestLog.tsx
-│           ├── CharacterSheet.tsx
-│           ├── DialogueBox.tsx
-│           ├── MainMenu.tsx
-│           ├── Intro.tsx
-│           └── parchment.tsx       # Design system commun
-├── prisma/                        # Schéma SQLite
-└── scripts/
-    ├── generate-placeholders.mjs  # Placeholders GLB Quaternius
-    └── capture-screenshots.mjs    # Capture auto pour README
-```
+<p align="center">
+<svg viewBox="0 0 1100 660" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:1100px">
+  <defs>
+    <linearGradient id="bgA" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a0838"/><stop offset="100%" stop-color="#3a2412"/></linearGradient>
+    <linearGradient id="ga" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="50%" stop-color="#f6d97c"/><stop offset="100%" stop-color="#a07c3a"/></linearGradient>
+    <linearGradient id="pa" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff4c2"/><stop offset="100%" stop-color="#d8be83"/></linearGradient>
+    <radialGradient id="ha" cx="0.5" cy="0.5" r="0.5"><stop offset="0%" stop-color="#fff4c2" stop-opacity="0.55"/><stop offset="100%" stop-color="#fff4c2" stop-opacity="0"/></radialGradient>
+    <marker id="aH" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto"><polygon points="0,0 10,5 0,10" fill="#f6d97c"/></marker>
+  </defs>
+  <rect width="1100" height="660" fill="url(#bgA)" rx="8"/>
+  <rect x="6" y="6" width="1088" height="648" fill="none" stroke="url(#ga)" stroke-width="2" opacity="0.6" rx="8"/>
+  <rect x="14" y="14" width="1072" height="632" fill="none" stroke="#f6d97c" stroke-width="0.5" opacity="0.4" rx="6"/>
+  <g transform="translate(550 30)" text-anchor="middle">
+    <ellipse cx="0" cy="8" rx="340" ry="20" fill="url(#ha)"/>
+    <text font-family="Georgia, serif" font-size="13" fill="#f6d97c" letter-spacing="6" font-weight="bold">◈ ARCHITECTURE EN COUCHES ◈</text>
+    <text y="20" font-family="Georgia, serif" font-size="11" fill="#a07c3a" font-style="italic">Du joueur vers la persistance — chaque flèche pulse au rythme du moteur.</text>
+  </g>
+  <g font-family="Georgia, serif" fill="#f6d97c" font-size="10" letter-spacing="3" font-weight="bold">
+    <text x="22" y="100">HÔTES</text>
+    <text x="22" y="190">SHELL WEB</text>
+    <text x="22" y="280">RENDU 3D</text>
+    <text x="22" y="370">MOTEUR JEU</text>
+    <text x="22" y="430">ÉTAT GLOBAL</text>
+    <text x="22" y="500">MODULES</text>
+    <text x="22" y="608">PERSISTENCE</text>
+  </g>
+
+  <!-- L1: HÔTES -->
+  <g transform="translate(120 70)">
+    <g transform="translate(0 0)"><rect width="240" height="44" rx="6" fill="url(#pa)" stroke="#a07c3a" stroke-width="1.5"/><circle cx="22" cy="22" r="14" fill="#5fd35f"><animate attributeName="r" values="11;15;11" dur="3s" repeatCount="indefinite"/></circle><text x="22" y="27" font-family="Georgia,serif" font-size="14" text-anchor="middle">🌍</text><text x="135" y="22" text-anchor="middle" font-family="Georgia,serif" font-size="13" font-weight="bold" fill="#3a2412">NAVIGATEUR</text><text x="135" y="36" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#5a3a1f" font-style="italic">Chrome • Firefox • Safari</text></g>
+    <g transform="translate(280 0)"><rect width="240" height="44" rx="6" fill="url(#pa)" stroke="#a07c3a" stroke-width="1.5"/><circle cx="22" cy="22" r="14" fill="#38bdf8"><animate attributeName="r" values="11;15;11" dur="3s" begin="0.4s" repeatCount="indefinite"/></circle><text x="22" y="27" font-family="Georgia,serif" font-size="14" text-anchor="middle">🖥️</text><text x="135" y="22" text-anchor="middle" font-family="Georgia,serif" font-size="13" font-weight="bold" fill="#3a2412">DESKTOP ELECTRON</text><text x="135" y="36" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#5a3a1f" font-style="italic">Windows • macOS • Linux</text></g>
+  </g>
+  <line x1="400" y1="116" x2="400" y2="146" stroke="#f6d97c" stroke-width="2.5" marker-end="url(#aH)"><animate attributeName="opacity" values="0.4;1;0.4" dur="2.4s" repeatCount="indefinite"/></line>
+  <line x1="680" y1="116" x2="680" y2="146" stroke="#f6d97c" stroke-width="2.5" marker-end="url(#aH)" opacity="0.75"><animate attributeName="opacity" values="0.3;0.9;0.3" dur="2.4s" begin="0.4s" repeatCount="indefinite"/></line>
+
+  <!-- L2: SHELL WEB -->
+  <g transform="translate(120 150)">
+    <g transform="translate(0 0)"><rect width="200" height="44" rx="6" fill="url(#pa)" stroke="#a07c3a" stroke-width="1.5"/><text x="100" y="22" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="bold" fill="#3a2412">NEXT.JS 16</text><text x="100" y="36" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#5a3a1f" font-style="italic">SSR • RSC • routing</text></g>
+    <g transform="translate(220 0)"><rect width="180" height="44" rx="6" fill="url(#pa)" stroke="#a07c3a" stroke-width="1.5"/><text x="90" y="22" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="bold" fill="#3a2412">/API</text><text x="90" y="36" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#5a3a1f" font-style="italic">route.ts • Prisma</text></g>
+    <g transform="translate(420 0)"><rect width="320" height="44" rx="6" fill="url(#pa)" stroke="#a07c3a" stroke-width="1.5"/><text x="160" y="22" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="bold" fill="#3a2412">APP/ + GAME/</text><text x="160" y="36" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#5a3a1f" font-style="italic">page.tsx → composant racine</text></g>
+  </g>
+  <line x1="540" y1="196" x2="540" y2="226" stroke="#f6d97c" stroke-width="2.5" marker-end="url(#aH)"><animate attributeName="opacity" values="0.4;1;0.4" dur="2.4s" begin="0.3s" repeatCount="indefinite"/></line>
+
+  <!-- L3: RENDU 3D -->
+  <g transform="translate(120 230)">
+    <g transform="translate(0 0)"><rect width="220" height="44" rx="6" fill="url(#pa)" stroke="#a07c3a" stroke-width="1.5"/><text x="110" y="22" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="bold" fill="#3a2412">REACT + R3F 9</text><text x="110" y="36" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#5a3a1f" font-style="italic">déclaratif • hooks natifs</text></g>
+    <g transform="translate(240 0)"><rect width="220" height="44" rx="6" fill="url(#pa)" stroke="#a07c3a" stroke-width="1.5"/><text x="110" y="22" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="bold" fill="#3a2412">THREE.JS 0.184</text><text x="110" y="36" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#5a3a1f" font-style="italic">scène • mesh • shaders</text></g>
+    <g transform="translate(480 0)"><rect width="260" height="44" rx="6" fill="url(#pa)" stroke="#a07c3a" stroke-width="1.5"/><text x="130" y="22" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="bold" fill="#3a2412">DREI + POSTFX</text><text x="130" y="36" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#5a3a1f" font-style="italic">Bloom • God Rays • Vignette</text></g>
+  </g>
+  <line x1="540" y1="276" x2="540" y2="306" stroke="#f6d97c" stroke-width="2.5" marker-end="url(#aH)"><animate attributeName="opacity" values="0.4;1;0.4" dur="2.4s" begin="0.6s" repeatCount="indefinite"/></line>
+
+  <!-- L4: MOTEUR JEU -->
+  <g transform="translate(120 310)">
+    <rect width="780" height="44" rx="6" fill="url(#pa)" stroke="#a13a2a" stroke-width="2"/>
+    <rect width="780" height="44" rx="6" fill="none" stroke="#a13a2a" stroke-width="0.5" opacity="0.4"/>
+    <circle cx="174" cy="22" r="4" fill="#c2563a"><animate attributeName="opacity" values="0.4;1;0.4" dur="1.4s" repeatCount="indefinite"/></circle>
+    <circle cx="606" cy="22" r="4" fill="#c2563a"><animate attributeName="opacity" values="0.4;1;0.4" dur="1.4s" begin="0.4s" repeatCount="indefinite"/></circle>
+    <text x="390" y="22" text-anchor="middle" font-family="Georgia,serif" font-size="14" font-weight="900" fill="#a13a2a">⚡ GAME.TSX ⚡ ORCHESTRATEUR ⚡</text>
+    <text x="390" y="37" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#5a3a1f" font-style="italic">boucle useFrame • contrôles • HUD overlay</text>
+  </g>
+  <line x1="540" y1="356" x2="540" y2="386" stroke="#f6d97c" stroke-width="2.5" marker-end="url(#aH)"><animate attributeName="opacity" values="0.4;1;0.4" dur="2.4s" begin="0.9s" repeatCount="indefinite"/></line>
+
+  <!-- L5: ÉTAT GLOBAL -->
+  <g transform="translate(120 390)">
+    <g transform="translate(0 0)"><rect width="240" height="44" rx="6" fill="url(#pa)" stroke="#a07c3a" stroke-width="1.5"/><text x="120" y="22" text-anchor="middle" font-family="Georgia,serif" font-size="13" font-weight="900" fill="#a13a2a">✦ ZUSTAND ✦</text><text x="120" y="36" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#5a3a1f" font-style="italic">store.ts • selectors</text></g>
+    <g transform="translate(260 0)"><rect width="240" height="44" rx="6" fill="url(#pa)" stroke="#a07c3a" stroke-width="1.5"/><text x="120" y="22" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="bold" fill="#3a2412">TYPES + CONSTANTS</text><text x="120" y="36" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#5a3a1f" font-style="italic">types.ts • constants.ts</text></g>
+    <g transform="translate(520 0)"><rect width="260" height="44" rx="6" fill="url(#pa)" stroke="#a07c3a" stroke-width="1.5"/><text x="130" y="22" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="bold" fill="#3a2412">AUDIO</text><text x="130" y="36" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#5a3a1f" font-style="italic">audio.ts • musique + SFX</text></g>
+  </g>
+  <line x1="540" y1="436" x2="540" y2="450" stroke="#f6d97c" stroke-width="2.5"/>
+  <line x1="190" y1="450" x2="190" y2="476" stroke="#f6d97c" stroke-width="2" marker-end="url(#aH)" opacity="0.75"><animate attributeName="opacity" values="0.3;0.9;0.3" dur="2.4s" begin="0s" repeatCount="indefinite"/></line>
+  <line x1="340" y1="450" x2="340" y2="476" stroke="#f6d97c" stroke-width="2" marker-end="url(#aH)" opacity="0.75"><animate attributeName="opacity" values="0.3;0.9;0.3" dur="2.4s" begin="0.2s" repeatCount="indefinite"/></line>
+  <line x1="490" y1="450" x2="490" y2="476" stroke="#f6d97c" stroke-width="2" marker-end="url(#aH)" opacity="0.75"><animate attributeName="opacity" values="0.3;0.9;0.3" dur="2.4s" begin="0.4s" repeatCount="indefinite"/></line>
+  <line x1="640" y1="450" x2="640" y2="476" stroke="#f6d97c" stroke-width="2" marker-end="url(#aH)" opacity="0.75"><animate attributeName="opacity" values="0.3;0.9;0.3" dur="2.4s" begin="0.6s" repeatCount="indefinite"/></line>
+  <line x1="790" y1="450" x2="790" y2="476" stroke="#f6d97c" stroke-width="2" marker-end="url(#aH)" opacity="0.75"><animate attributeName="opacity" values="0.3;0.9;0.3" dur="2.4s" begin="0.8s" repeatCount="indefinite"/></line>
+
+  <!-- L6: MODULES -->
+  <g transform="translate(120 480)">
+    <g transform="translate(0 0)"><rect width="120" height="44" rx="6" fill="#ead7a8" stroke="#a07c3a" stroke-width="1.5"/><text x="60" y="22" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="bold" fill="#a13a2a">PLAYER 👤</text><text x="60" y="36" text-anchor="middle" font-family="Georgia,serif" font-size="9" fill="#5a3a1f" font-style="italic">Player.tsx</text></g>
+    <g transform="translate(150 0)"><rect width="120" height="44" rx="6" fill="#ead7a8" stroke="#a07c3a" stroke-width="1.5"/><text x="60" y="22" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="bold" fill="#a13a2a">ENEMIES 👹</text><text x="60" y="36" text-anchor="middle" font-family="Georgia,serif" font-size="9" fill="#5a3a1f" font-style="italic">Enemy.tsx</text></g>
+    <g transform="translate(300 0)"><rect width="120" height="44" rx="6" fill="#ead7a8" stroke="#a07c3a" stroke-width="1.5"/><text x="60" y="22" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="bold" fill="#a13a2a">WORLD 🌍</text><text x="60" y="36" text-anchor="middle" font-family="Georgia,serif" font-size="9" fill="#5a3a1f" font-style="italic">World.tsx</text></g>
+    <g transform="translate(450 0)"><rect width="120" height="44" rx="6" fill="#ead7a8" stroke="#a07c3a" stroke-width="1.5"/><text x="60" y="22" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="bold" fill="#a13a2a">EFFECTS ✨</text><text x="60" y="36" text-anchor="middle" font-family="Georgia,serif" font-size="9" fill="#5a3a1f" font-style="italic">PostFX</text></g>
+    <g transform="translate(600 0)"><rect width="120" height="44" rx="6" fill="#ead7a8" stroke="#a07c3a" stroke-width="1.5"/><text x="60" y="22" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="bold" fill="#a13a2a">UI 🖼️</text><text x="60" y="36" text-anchor="middle" font-family="Georgia,serif" font-size="9" fill="#5a3a1f" font-style="italic">12 panneaux</text></g>
+    <g transform="translate(750 0)"><rect width="120" height="44" rx="6" fill="#ead7a8" stroke="#a07c3a" stroke-width="1.5"/><text x="60" y="22" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="bold" fill="#a13a2a">DATA 📊</text><text x="60" y="36" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#5a3a1f" font-style="italic">items/skills</text></g>
+  </g>
+
+  <!-- L7: PERSISTENCE / ASSETS -->
+  <g transform="translate(120 580)">
+    <g transform="translate(0 0)"><rect width="180" height="38" rx="6" fill="#1a0838" stroke="#f6d97c" stroke-width="1.5"/><text x="90" y="24" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="bold" fill="#f6d97c">💾 PRISMA + SQLITE</text></g>
+    <g transform="translate(200 0)"><rect width="180" height="38" rx="6" fill="#1a0838" stroke="#f6d97c" stroke-width="1.5"/><text x="90" y="24" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="bold" fill="#f6d97c">🎨 QUATERNIUS CC0</text></g>
+    <g transform="translate(400 0)"><rect width="220" height="38" rx="6" fill="#1a0838" stroke="#f6d97c" stroke-width="1.5"/><text x="110" y="24" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="bold" fill="#f6d97c">📜 BANNERS SVG CINÉMATIQUES</text></g>
+    <g transform="translate(640 0)"><rect width="140" height="38" rx="6" fill="#1a0838" stroke="#f6d97c" stroke-width="1.5"/><text x="70" y="24" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="bold" fill="#f6d97c">⚙ SCRIPTS</text></g>
+  </g>
+  <circle cx="22" cy="22" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0;1;0" dur="2.4s" begin="0s" repeatCount="indefinite"/></circle>
+  <circle cx="1078" cy="22" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0;1;0" dur="2.4s" begin="0.3s" repeatCount="indefinite"/></circle>
+  <circle cx="22" cy="638" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0;1;0" dur="2.4s" begin="0.6s" repeatCount="indefinite"/></circle>
+  <circle cx="1078" cy="638" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0;1;0" dur="2.4s" begin="0.9s" repeatCount="indefinite"/></circle>
+</svg>
+</p>
+
+> **Du joueur vers la persistance**, sept strates empilées communiquent par flèches pulsantes : les **HÔTES** (navigateur ou Electron) projettent le **SHELL WEB** (Next.js 16 + App Router), qui active le **RENDU 3D** (React + R3F + Three.js + post-fx). Le **MOTEUR JEU** (`Game.tsx`) orchestre la boucle d'affichage et s'appuie sur l'**ÉTAT GLOBAL** Zustand (`store.ts`, types, audio). Six **MODULES** métier (`player`, `enemies`, `world`, `effects`, `ui`, `data`) reçoivent les ordres du store. Sous le capot : **Prisma + SQLite** pour la persistance, **modèles Quaternius CC0** pour les assets 3D, **banners SVG cinématiques** pour le README, et un dossier **scripts/** pour la capture / génération.
 
 ### Stack technique
 

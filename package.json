@@ -17,7 +17,8 @@
     "electron:build:win": "bun run db:generate && bun run build && electron-builder --win --publish never",
     "electron:build:mac": "bun run db:generate && bun run build && electron-builder --mac --publish never",
     "electron:build:linux": "bun run db:generate && bun run build && electron-builder --linux --publish never",
-    "screenshots": "node scripts/capture-screenshots.mjs"
+    "screenshots": "node scripts/capture-screenshots.mjs",
+    "trailer": "node scripts/capture-trailer.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
