@@ -2,7 +2,7 @@
 <p align="center">
   <a href="public/banner/eldoria-banner.svg">
     <picture>
-      <img src="/public/banner/eldoria-banner.svg" alt="Eldoria — Chroniques de la Forêt d'Argent" width="100%">
+      <img src="public/banner/eldoria-banner.svg" alt="Eldoria — Chroniques de la Forêt d'Argent" width="100%">
     </picture>
   </a>
 </p>
@@ -346,7 +346,7 @@
 <p align="center">
   <a href="public/banner/sceau-capot.svg">
     <picture>
-      <img src="/public/banner/sceau-capot.svg" alt="Le Grand Sceau d'Eldoria — emblème cinématique du royaume" width="100%">
+      <img src="public/banner/sceau-capot.svg" alt="Le Grand Sceau d'Eldoria — emblème cinématique du royaume" width="100%">
     </picture>
   </a>
 </p>
@@ -604,7 +604,7 @@
 <!-- ============ LA CARTE CINEMATIQUE ============ : top-down 1100x720 SVG with compass, paths, 7 medallions -->
 <p align="center">
   <a href="public/banner/carte-monde.svg">
-    <img src="/public/banner/carte-monde.svg" alt="Carte du monde d'Eldoria — sept biomes rayonnant depuis le Village central" width="100%">
+    <img src="public/banner/carte-monde.svg" alt="Carte du monde d'Eldoria — sept biomes rayonnant depuis le Village central" width="100%">
   </a>
 </p>
 
@@ -617,7 +617,7 @@
 <p align="center">
   <a href="public/banner/quest-chain.svg">
     <picture>
-      <img src="/public/banner/quest-chain.svg" alt="Chaîne des quêtes" width="100%">
+      <img src="public/banner/quest-chain.svg" alt="Chaîne des quêtes" width="100%">
     </picture>
   </a>
 </p>
@@ -1588,7 +1588,7 @@ Les bannières et illustrations SVG du README sont dérivées de l'identité vis
 <p align="center">
   <a href="public/banner/footer-flourish.svg">
     <picture>
-      <img src="/public/banner/footer-flourish.svg" alt="Signature Eldoria" width="100%">
+      <img src="public/banner/footer-flourish.svg" alt="Signature Eldoria" width="100%">
     </picture>
   </a>
 </p>
