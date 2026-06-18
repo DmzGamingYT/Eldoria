@@ -147,20 +147,41 @@ jobs:
           echo "=== Total installeurs ==="
           find artifacts -type f | wc -l
 
+      - name: 📝 Génération du corps de la release (body Markdown)
+        # On génère release-body.md via un script Node dédié au lieu d'un
+        # heredoc inline dans le workflow :
+        #   1. Le langage d'expressions GitHub Actions n'a PAS de filtre
+        #      `replace` (Jinja2/Liquid). Un `${{ ... | replace }}` dans le body
+        #      fait REFUSER la compilation du workflow entier ("workflow file
+        #      issue", 0s). On calcule donc la version sans 'v' en JS.
+        #   2. Un heredoc indenté dans `run: |` YAML est cassé (délimiteur de
+        #      fin doit être en colonne 0 + le contenu garde l'indentation).
+        # Le script lit TAG/REPO depuis env (fournis ci-dessous), lit aussi la
+        # version dans package.json en fallback, et écrit release-body.md que
+        # l'étape suivante consomme via `body_path`.
+        env:
+          TAG: ${{ github.ref_name }}
+          REPO: ${{ github.repository }}
+        run: node scripts/generate-release-body.mjs
+
+      - name: 🔍 Aperçu du body généré (debug)
+        run: |
+          echo "=== release-body.md ==="
+          cat release-body.md
+
       - name: 🚀 Création de la GitHub Release + attachement des installeurs
         uses: softprops/action-gh-release@v2
         with:
           # Le tag déclencheur devient le nom de la release
           tag_name: ${{ github.ref_name }}
           name: Eldoria ${{ github.ref_name }}
-          # Body custom : table de téléchargements par plate-forme EN Markdown.
-          # generate_release_notes: false est obligatoire car l'API GitHub fait
-          # passer l'auto-gen AVANT le body — sans ça, mon body serait écrasé.
-          # Le body template les filenames via `github.ref_name | replace: 'v', ''`
-          # (qui eval à `0.2.1` pour le tag `v0.2.1`). Le `package.json` doit
-          # être bumpé à la même valeur avant que le tag soit pushé (sinon les
-          # artifacts générés par electron-builder sont nommées d'après la
-          # version du package.json, pas du tag — les liens seraient 404).
+          # Body chargé depuis release-body.md (généré par l'étape précédente).
+          # On n'utilise PAS d'expressions `${{ ... | replace: ... }}` dans le
+          # body : le filtre `replace` n'existe pas dans le langage d'expressions
+          # GitHub Actions (c'est du Jinja2/Liquid), ce qui fait REFUSER la
+          # compilation du workflow entier ("workflow file issue", 0s). On calcule
+          # donc la version sans le 'v' en shell dans l'étape précédente.
+          body_path: release-body.md
           generate_release_notes: false
           draft: false
           prerelease: ${{ contains(github.ref_name, '-') }}
@@ -174,43 +195,6 @@ jobs:
             artifacts/**/*.rpm
             artifacts/**/*.blockmap
           fail_on_unmatched_files: true
-          # Body custom : table de téléchargements par plate-forme, + nota bene
-          # installeurs non signés. Désactive auto-gen au-dessus pour ne pas
-          # être effacer.
-          body: |
-            ## ⚔️ Eldoria ${{ github.ref_name }}
-            
-            Installeurs natifs **Windows / macOS / Linux** générés par la CI sur les runneurs natifs (`windows-latest`, `macos-latest`, `ubuntu-latest`) au commit pinné sur ce tag.
-            
-            ### 📥 Téléchargements directs
-            
-            | Plateforme | Installeur | Lien direct |
-            |:--|:--|:--|
-            | 🪟 **Windows** 10 / 11 | NSIS installer (x64) | [`Eldoria-${{ github.ref_name | replace: 'v', '' }}-win-x64.exe`](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/Eldoria-${{ github.ref_name | replace: 'v', '' }}-win-x64.exe) — double-clic, menu Démarrer, raccourci bureau |
-            | 🍎 **macOS** Apple Silicon (≥ M1) | DMG ARM64 + ZIP | [`.dmg`](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/Eldoria-${{ github.ref_name | replace: 'v', '' }}-mac-arm64.dmg) · [`.zip`](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/Eldoria-${{ github.ref_name | replace: 'v', '' }}-mac-arm64.zip) — glisser dans `/Applications` |
-            | 🍎 **macOS** Intel x64 | DMG x64 + ZIP | [`.dmg`](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/Eldoria-${{ github.ref_name | replace: 'v', '' }}-mac-x64.dmg) · [`.zip`](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/Eldoria-${{ github.ref_name | replace: 'v', '' }}-mac-x64.zip) — glisser dans `/Applications` |
-            | 🐧 **Linux** (universal) | AppImage x64 | [`Eldoria-${{ github.ref_name | replace: 'v', '' }}-linux-x64.AppImage`](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/Eldoria-${{ github.ref_name | replace: 'v', '' }}-linux-x64.AppImage) — `chmod +x` puis double-clic |
-            | 🐧 **Debian / Ubuntu / Mint / Pop!_OS** | `.deb` package | [`eldoria_${{ github.ref_name | replace: 'v', '' }}_amd64.deb`](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/eldoria_${{ github.ref_name | replace: 'v', '' }}_amd64.deb) — `sudo dpkg -i …` |
-            | 🐧 **Fedora / RHEL / openSUSE / Nobara** | `.rpm` package | [`Eldoria-${{ github.ref_name | replace: 'v', '' }}-linux-x64.rpm`](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/Eldoria-${{ github.ref_name | replace: 'v', '' }}-linux-x64.rpm) — `sudo rpm -i …` |
-            
-            ### ⚠️ Installeurs **non signés** pour cette version (${{ github.ref_name }})
-            
-            * 🪟 **Windows** : SmartScreen affichera un avertissement au premier lancement → *Informations complémentaires → Exécuter quand même*.
-            * 🍎 **macOS** : Gatekeeper refusera → *Clic droit sur `Eldoria.app` → Ouvrir* (une fois).
-            * 🐧 **Linux** : aucune incidence, les `AppImage` / `.deb` / `.rpm` s'installent directement.
-            
-            Signature code Apple Developer ID + Authenticode EV prévue pour **v0.3.0** ([Voir la Roadmap](https://github.com/${{ github.repository }}#-roadmap)).
-            
-            ### 🔨 Compiler cette version vous-même
-            
-            ```bash
-            # 1. bumper la version dans package.json, ajouter une entrée CHANGELOG
-            # 2. commit + push le tag : release.yml construit + attache
-            git tag ${{ github.ref_name }}
-            git push origin main ${{ github.ref_name }}
-            ```
-            
-            Pour + d'options d'installation (Homebrew Cask, winget, Flatpak), voir la section [📥 Téléchargements du README](https://github.com/${{ github.repository }}#-téléchargements).
 
 
   # ── (Optionnel) Build CI séparé pour valider sans tag ─────────
