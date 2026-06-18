@@ -42,6 +42,13 @@ ajoute les formats manquants.
 - `.rpm` utilise le format cohérent : `Eldoria-0.2.2-linux-x64.rpm`
 - Config `artifactName` séparée par format dans `electron-builder.yml`
 
+### 🐛 Correction — Icônes de l'application
+
+- Remplacement des icônes d'app (`.ico` Windows + `.icns` macOS) par les
+  bonnes icônes finales
+- Ajout du set complet d'icônes PNG : 16×16, 32×32, 48×48, 256×256
+  (nécessaires pour les installeurs Linux et les icônes système)
+
 ### 🔧 Maintenance
 
 - `package.json` `name` renommé `nextjs_tailwind_shadcn_ts` → `eldoria`
