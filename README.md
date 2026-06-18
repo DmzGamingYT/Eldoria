@@ -633,63 +633,14 @@ bun run trailer
 ## 🗺️ Roadmap
 
 <p align="center">
-  <svg viewBox="0 0 1000 200" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:1000px">
-    <defs>
-      <linearGradient id="rl" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0%" stop-color="#3a7a3a"/>
-        <stop offset="50%" stop-color="#f6d97c"/>
-        <stop offset="100%" stop-color="#ff5468"/>
-      </linearGradient>
-    </defs>
-
-    <line x1="60" y1="100" x2="940" y2="100" stroke="url(#rl)" stroke-width="6" stroke-linecap="round"/>
-
-    <!-- Phase 1: MVP ✅ shipped -->
-    <g transform="translate(110 100)">
-      <circle r="22" fill="#3a7a3a" stroke="#fff4c2" stroke-width="2"/>
-      <text y="6" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#fff4c2">✓</text>
-      <text y="-40" text-anchor="middle" font-family="Georgia, serif" font-size="13" font-weight="bold" fill="#3a7a3a">MVP v0.1</text>
-      <text y="50"  text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#5a3a1f" font-style="italic">Monoïde 3D, 6 ennemis,</text>
-      <text y="65"  text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#5a3a1f" font-style="italic">5 quêtes, base Electron</text>
-    </g>
-
-    <!-- Phase 2: en cours -->
-    <g transform="translate(330 100)">
-      <circle r="22" fill="#f6d97c" stroke="#3a2412" stroke-width="2">
-        <animate attributeName="r" values="20;25;20" dur="2.4s" repeatCount="indefinite"/>
-      </circle>
-      <text y="6" text-anchor="middle" font-family="Georgia, serif" font-size="16" font-weight="bold" fill="#3a2412">⚒</text>
-      <text y="-40" text-anchor="middle" font-family="Georgia, serif" font-size="13" font-weight="bold" fill="#f6d97c">v0.2 — en cours</text>
-      <text y="50"  text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#5a3a1f" font-style="italic">Modèles Quaternius réels,</text>
-      <text y="65"  text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#5a3a1f" font-style="italic">animations, audio complet</text>
-    </g>
-
-    <!-- Phase 3: competences arbre -->
-    <g transform="translate(550 100)">
-      <circle r="22" fill="#3a2412" stroke="#a07c3a" stroke-width="2"/>
-      <text y="6" text-anchor="middle" font-family="Georgia, serif" font-size="14" font-weight="bold" fill="#f6d97c">✦</text>
-      <text y="-40" text-anchor="middle" font-family="Georgia, serif" font-size="13" font-weight="bold" fill="#a07c3a">v0.3 — à venir</text>
-      <text y="50"  text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#5a3a1f" font-style="italic">Arbre de compétences,</text>
-      <text y="65"  text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#5a3a1f" font-style="italic">PNJ secondaire, météo</text>
-    </g>
-
-    <!-- Phase 4: multijoueur -->
-    <g transform="translate(770 100)">
-      <circle r="22" fill="#3a2412" stroke="#a07c3a" stroke-width="2"/>
-      <text y="6" text-anchor="middle" font-family="Georgia, serif" font-size="14" font-weight="bold" fill="#f6d97c">⚔</text>
-      <text y="-40" text-anchor="middle" font-family="Georgia, serif" font-size="13" font-weight="bold" fill="#a07c3a">v1.0 — rêve</text>
-      <text y="50"  text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#5a3a1f" font-style="italic">Multijoueur coopératif,</text>
-      <text y="65"  text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#5a3a1f" font-style="italic">guildes, raids</text>
-    </g>
-
-    <!-- Phase 5: monde persistant -->
-    <g transform="translate(920 100)">
-      <circle r="14" fill="none" stroke="#ff5468" stroke-width="1.5" opacity="0.5"/>
-      <text y="4" text-anchor="middle" font-family="Georgia, serif" font-size="12" fill="#ff5468">∞</text>
-      <text y="-40" text-anchor="middle" font-family="Georgia, serif" font-size="12" fill="#ff5468">+ loin</text>
-    </g>
-  </svg>
+  <a href="public/banner/roadmap-hero.svg">
+    <img src="public/banner/roadmap-hero.svg" alt="Roadmap cinématique d'Eldoria — cinq jalons du MVP livré au monde multijoueur persistant" width="100%">
+  </a>
 </p>
+
+**❦ Cinq jalons · du prototype livré au rêve multijoueur ❦**
+
+> *Vert du MVP, or du chantier en cours, brun des phases à venir, rouge de l'au-delà — la route d'Eldoria se dessine par pulsations, comme un cœur qui apprend à battre.*
 
 ---
 
