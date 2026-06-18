@@ -153,11 +153,15 @@ jobs:
           # Le tag déclencheur devient le nom de la release
           tag_name: ${{ github.ref_name }}
           name: Eldoria ${{ github.ref_name }}
-          # Génération automatique des release notes à partir des PRs mergées
-          # depuis la dernière release. (Si on voulait un body custom fixe, on
-          # désactiverait ça et fournirait `body:` — les deux sont mutuellement
-          # exclusifs côté GitHub API : auto-gen écrase body.)
-          generate_release_notes: true
+          # Body custom : table de téléchargements par plate-forme EN Markdown.
+          # generate_release_notes: false est obligatoire car l'API GitHub fait
+          # passer l'auto-gen AVANT le body — sans ça, mon body serait écrasé.
+          # Le body template les filenames via `github.ref_name | replace: 'v', ''`
+          # (qui eval à `0.2.1` pour le tag `v0.2.1`). Le `package.json` doit
+          # être bumpé à la même valeur avant que le tag soit pushé (sinon les
+          # artifacts générés par electron-builder sont nommées d'après la
+          # version du package.json, pas du tag — les liens seraient 404).
+          generate_release_notes: false
           draft: false
           prerelease: ${{ contains(github.ref_name, '-') }}
           # Files : tous les installeurs reçus
@@ -170,6 +174,43 @@ jobs:
             artifacts/**/*.rpm
             artifacts/**/*.blockmap
           fail_on_unmatched_files: true
+          # Body custom : table de téléchargements par plate-forme, + nota bene
+          # installeurs non signés. Désactive auto-gen au-dessus pour ne pas
+          # être effacer.
+          body: |
+            ## ⚔️ Eldoria ${{ github.ref_name }}
+            
+            Installeurs natifs **Windows / macOS / Linux** générés par la CI sur les runneurs natifs (`windows-latest`, `macos-latest`, `ubuntu-latest`) au commit pinné sur ce tag.
+            
+            ### 📥 Téléchargements directs
+            
+            | Plateforme | Installeur | Lien direct |
+            |:--|:--|:--|
+            | 🪟 **Windows** 10 / 11 | NSIS installer (x64) | [`Eldoria-${{ github.ref_name | replace: 'v', '' }}-win-x64.exe`](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/Eldoria-${{ github.ref_name | replace: 'v', '' }}-win-x64.exe) — double-clic, menu Démarrer, raccourci bureau |
+            | 🍎 **macOS** Apple Silicon (≥ M1) | DMG ARM64 + ZIP | [`.dmg`](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/Eldoria-${{ github.ref_name | replace: 'v', '' }}-mac-arm64.dmg) · [`.zip`](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/Eldoria-${{ github.ref_name | replace: 'v', '' }}-mac-arm64.zip) — glisser dans `/Applications` |
+            | 🍎 **macOS** Intel x64 | DMG x64 + ZIP | [`.dmg`](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/Eldoria-${{ github.ref_name | replace: 'v', '' }}-mac-x64.dmg) · [`.zip`](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/Eldoria-${{ github.ref_name | replace: 'v', '' }}-mac-x64.zip) — glisser dans `/Applications` |
+            | 🐧 **Linux** (universal) | AppImage x64 | [`Eldoria-${{ github.ref_name | replace: 'v', '' }}-linux-x64.AppImage`](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/Eldoria-${{ github.ref_name | replace: 'v', '' }}-linux-x64.AppImage) — `chmod +x` puis double-clic |
+            | 🐧 **Debian / Ubuntu / Mint / Pop!_OS** | `.deb` package | [`eldoria_${{ github.ref_name | replace: 'v', '' }}_amd64.deb`](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/eldoria_${{ github.ref_name | replace: 'v', '' }}_amd64.deb) — `sudo dpkg -i …` |
+            | 🐧 **Fedora / RHEL / openSUSE / Nobara** | `.rpm` package | [`Eldoria-${{ github.ref_name | replace: 'v', '' }}-linux-x64.rpm`](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/Eldoria-${{ github.ref_name | replace: 'v', '' }}-linux-x64.rpm) — `sudo rpm -i …` |
+            
+            ### ⚠️ Installeurs **non signés** pour cette version (${{ github.ref_name }})
+            
+            * 🪟 **Windows** : SmartScreen affichera un avertissement au premier lancement → *Informations complémentaires → Exécuter quand même*.
+            * 🍎 **macOS** : Gatekeeper refusera → *Clic droit sur `Eldoria.app` → Ouvrir* (une fois).
+            * 🐧 **Linux** : aucune incidence, les `AppImage` / `.deb` / `.rpm` s'installent directement.
+            
+            Signature code Apple Developer ID + Authenticode EV prévue pour **v0.3.0** ([Voir la Roadmap](https://github.com/${{ github.repository }}#-roadmap)).
+            
+            ### 🔨 Compiler cette version vous-même
+            
+            ```bash
+            # 1. bumper la version dans package.json, ajouter une entrée CHANGELOG
+            # 2. commit + push le tag : release.yml construit + attache
+            git tag ${{ github.ref_name }}
+            git push origin main ${{ github.ref_name }}
+            ```
+            
+            Pour + d'options d'installation (Homebrew Cask, winget, Flatpak), voir la section [📥 Téléchargements du README](https://github.com/${{ github.repository }}#-téléchargements).
 
 
   # ── (Optionnel) Build CI séparé pour valider sans tag ─────────

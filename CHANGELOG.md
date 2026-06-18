@@ -16,6 +16,67 @@ le projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
 ---
 
+## [0.2.1] — 2026-06-18 — Correctifs chaîne de release multiplateforme
+
+Le pipeline release de la **0.2.0** (commit `4cd0cf5`) n'arrivait à publier
+des installeurs fonctionnels QUE pour macOS — Windows + Linux cassaient
+sur deux points distincts. **Cette 0.2.1** fixe les deux causes racines
+sans toucher au gameplay ni à l'UI.
+
+### 🐛 Cause #1 — bash `cp -r` cassait sur windows-latest
+
+L'étape `next build && cp -r .next/static …` invoquait `cp -r` dans un
+shell (`msys/Git-Bash`) qui refuse l'option `-r`. Erreur exacte :
+`cp: illegal option -- r`.
+
+**Fix** : nouveau script `scripts/copy-standalone-assets.mjs` qui
+utilise `node:fs/promises` `cp(src, dest, { recursive: true, errorMode: "throw" })`
+— cross-platform garanti, erreurs propagées par exit code ≠ 0.
+
+### 🐛 Cause #2 — Debian refusait les .deb sans `Author:` / `Description:`
+
+electron-builder a planté Linux avec :
+`Please specify author 'email' in the application package.json`.
+
+**Fix** : ajout de 4 champs top-level dans `package.json` :
+- `description` (Debian control field)
+- `author` (objet avec `name` + `email` — la forme string est
+  silencieusement ignorée par le parseur .deb/.rpm)
+- `homepage` (utile pour Apple notarization future)
+- `desktopName` (entry name du fichier `.desktop` Ubuntu/Fedora)
+
+### 🐛 Cause #3 — `node:` absent sur les CI runners (cassé invisible depuis Mac dev)
+
+Le script `copy-standalone-assets.mjs` était invoqué par
+`node scripts/…` mais `ci.yml` + `release.yml` installent UNIQUEMENT Bun
+via `oven-sh/setup-bun@v2`. Sur les runners Linux/macOS/Windows GitHub,
+`node: command not found`. Mac dev local a node via Homebrew → invisible
+pour le développeur.
+
+**Fix** : `node scripts/copy-standalone-assets.mjs` → 
+`bun scripts/copy-standalone-assets.mjs` dans la commande `build`.
+Bun est déjà sur le PATH des runners (premier step setup).
+
+### ✨ Amélioration — Table de téléchargements dans la GitHub Release
+
+Le workflow `.github/workflows/release.yml` ajoute maintenant un `body:`
+Markdown qui liste exhaustivement chaque installeur (filenames + lien
+direct par plate-forme), avec l'avertissement de non-signature en pied
+de page. Désactive `generate_release_notes: true` pour ne pas être
+effacé par l'auto-génération GitHub.
+
+### 🔧 Maintenance
+
+- Bump `package.json` version `0.2.0` → `0.2.1` pour aligner le tag
+  Git `v0.2.1` et les artefacts publiés par electron-builder
+  (`Eldoria-…-win-x64.exe`, `…-mac-arm64.dmg`, `…-linux-x64.AppImage`,
+  `eldoria_…_amd64.deb`, etc.).
+- Outputs finale de la matrix (3 runneurs natifs) : 5 installers +
+  blockmaps. Visible sur
+  [github.com/DmzGamingYT/Eldoria/releases/tag/v0.2.1](https://github.com/DmzGamingYT/Eldoria/releases/tag/v0.2.1).
+
+---
+
 ## [0.2.0] — 2026-06-18 — MVP Monoïde 3D
 
 Première version installable du jeu. C'est le pivot entre le prototype
