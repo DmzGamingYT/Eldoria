@@ -1,11 +1,18 @@
-{
-  "name": "nextjs_tailwind_shadcn_ts",
+{  "name": "nextjs_tailwind_shadcn_ts",
   "version": "0.2.0",
   "private": true,
   "main": "electron/main.js",
+  "description": "Eldoria — un RPG fantasy 3D jouable dans le navigateur et installable sur Windows, macOS et Linux. Monde procédural, combat en temps réel, 5 sorts, 6 ennemis + boss, 5 quêtes.",
+  "author": {
+    "name": "DmzGamingYT",
+    "email": "noreply@eldoria.example"
+  },
+  "homepage": "https://github.com/DmzGamingYT/Eldoria",
+  "desktopName": "Eldoria",
   "scripts": {
+
     "dev": "next dev -p 3000 2>&1 | tee dev.log",
-    "build": "next build && cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/",
+    "build": "next build && node scripts/copy-standalone-assets.mjs",
     "start": "NODE_ENV=production bun .next/standalone/server.js 2>&1 | tee server.log",
     "lint": "eslint .",
     "db:push": "prisma db push",
