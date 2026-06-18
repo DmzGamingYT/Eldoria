@@ -162,7 +162,7 @@
 <td width="50%" align="center" valign="top">
 
 <a href="public/screenshots/01-main-menu.png">
-  <img src="/public/screenshots/01-main-menu.png" alt="Menu principal d'Eldoria — fond cinématique, ambres flottants" width="100%" style="max-width:600px; display:block; border-radius:2px; border:2px solid #a07c3a; box-shadow:0 4px 16px rgba(0,0,0,0.45);">
+  <img src="public/screenshots/01-main-menu.png" alt="Menu principal d'Eldoria — fond cinématique, ambres flottants" width="100%" style="max-width:600px; display:block; border-radius:2px; border:2px solid #a07c3a; box-shadow:0 4px 16px rgba(0,0,0,0.45);">
 </a>
 
 <!-- Animated title cartouche (gaM) -->
@@ -198,7 +198,7 @@
 <td width="50%" align="center" valign="top">
 
 <a href="public/screenshots/03-game-world.png">
-  <img src="/public/screenshots/03-game-world.png" alt="Terrain procédural d'Eldoria — biome 200×200, cycle jour/nuit" width="100%" style="max-width:600px; display:block; border-radius:2px; border:2px solid #a07c3a; box-shadow:0 4px 16px rgba(0,0,0,0.45);">
+  <img src="public/screenshots/03-game-world.png" alt="Terrain procédural d'Eldoria — biome 200×200, cycle jour/nuit" width="100%" style="max-width:600px; display:block; border-radius:2px; border:2px solid #a07c3a; box-shadow:0 4px 16px rgba(0,0,0,0.45);">
 </a>
 
 <!-- Animated title cartouche (gaW) -->
@@ -237,7 +237,7 @@
 <td width="50%" align="center" valign="top">
 
 <a href="public/screenshots/04-gameplay-hud.png">
-  <img src="/public/screenshots/04-gameplay-hud.png" alt="HUD parchemin d'Eldoria — barres de vie/mana/XP, minimap, barre rapide" width="100%" style="max-width:600px; display:block; border-radius:2px; border:2px solid #a07c3a; box-shadow:0 4px 16px rgba(0,0,0,0.45);">
+  <img src="public/screenshots/04-gameplay-hud.png" alt="HUD parchemin d'Eldoria — barres de vie/mana/XP, minimap, barre rapide" width="100%" style="max-width:600px; display:block; border-radius:2px; border:2px solid #a07c3a; box-shadow:0 4px 16px rgba(0,0,0,0.45);">
 </a>
 
 <!-- Animated title cartouche (gaC) -->
@@ -273,7 +273,7 @@
 <td width="50%" align="center" valign="top">
 
 <a href="public/screenshots/02-intro-sequence.png">
-  <img src="/public/screenshots/02-intro-sequence.png" alt="Cinématique d'introduction — l'histoire de Mordrak contée en travelling 3D" width="100%" style="max-width:600px; display:block; border-radius:2px; border:2px solid #a07c3a; box-shadow:0 4px 16px rgba(0,0,0,0.45);">
+  <img src="public/screenshots/02-intro-sequence.png" alt="Cinématique d'introduction — l'histoire de Mordrak contée en travelling 3D" width="100%" style="max-width:600px; display:block; border-radius:2px; border:2px solid #a07c3a; box-shadow:0 4px 16px rgba(0,0,0,0.45);">
 </a>
 
 <!-- Animated title cartouche (gaT) -->
