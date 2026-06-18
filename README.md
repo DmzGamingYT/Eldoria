@@ -463,7 +463,7 @@ Le destin du porteur d'espoir est tracé en cinq chapitres — chacun se conclut
 
 <p align="center">
   <a href="public/banner/competences-hero.svg">
-    <img src="public/banner/competences-hero.svg" alt="Cinq arts arcaniques — Boule de Feu, Soin Léger, Éclair, Bouclier, Nova de Givre" width="100%">
+    <img src="public/banner/competences-hero.svg" alt="Cinq arts arcaniques — Boule de Feu, Soin Léger, Éclair, Bouclier, Givre" width="100%" style="max-width:780px">
   </a>
 </p>
 
