@@ -20,7 +20,7 @@
 #              Sinon les DMG sont livrés non signés (Gatekeeper "non identifié").
 #   - Windows : secrets CSC_LINK + CSC_KEY_PASSWORD pour un certificat Authenticode.
 #              Sinon NSIS affiche un avertissement SmartScreen à l'installation.
-#   - Linux : pas de signature requise (AppImage/.deb/.rpm s'installent direct).
+#   - Linux : pas de signature requise (AppImage s'installe direct).
 #
 # Pour activer la signature plus tard :
 #   gh secret set CSC_LINK --body@certificate-base64.txt
@@ -64,13 +64,13 @@ jobs:
         include:
           - os: windows-latest
             target: win
-            label: Windows (NSIS + portable)
+            label: Windows (NSIS installer)
           - os: macos-latest
             target: mac
-            label: macOS (DMG + ZIP — Intel + Apple Silicon)
+            label: macOS (DMG — Intel + Apple Silicon)
           - os: ubuntu-latest
             target: linux
-            label: Linux (AppImage + .deb + .rpm)
+            label: Linux (AppImage)
 
     steps:
       - name: 📥 Récupération du code (full history pour le tag)
@@ -107,15 +107,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: eldoria-installer-${{ matrix.target }}
-          # Glob récursif : capture tous les installeurs produits
           path: |
             dist-electron/*.exe
             dist-electron/*.dmg
-            dist-electron/*.zip
             dist-electron/*.AppImage
-            dist-electron/*.deb
-            dist-electron/*.rpm
-            dist-electron/*.blockmap
           if-no-files-found: error
           retention-days: 14
 
@@ -185,15 +180,11 @@ jobs:
           generate_release_notes: false
           draft: false
           prerelease: ${{ contains(github.ref_name, '-') }}
-          # Files : tous les installeurs reçus
+          # Files : un installeur par plateforme
           files: |
             artifacts/**/*.exe
             artifacts/**/*.dmg
-            artifacts/**/*.zip
             artifacts/**/*.AppImage
-            artifacts/**/*.deb
-            artifacts/**/*.rpm
-            artifacts/**/*.blockmap
           fail_on_unmatched_files: true
 
 

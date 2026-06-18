@@ -17,8 +17,7 @@ node_modules
 /.next/
 /out/
 
-# production
-/build
+# production (Next.js output is in .next/, electron output in dist-electron/)
 
 # misc
 .DS_Store

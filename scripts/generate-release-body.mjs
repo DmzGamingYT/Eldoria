@@ -62,10 +62,8 @@ const VERSION = TAG.replace(/^v/, ""); // ex: v0.2.1 → 0.2.1
 // Les noms de fichiers DOIVENT matcher l'artifactName d'electron-builder
 // (voir electron-builder.yml) :
 //   win:   "Eldoria-${version}-win-${arch}.${ext}"   → Eldoria-0.2.1-win-x64.exe
-//   mac:   "Eldoria-${version}-mac-${arch}.${ext}"   → Eldoria-0.2.1-mac-arm64.dmg
+//   mac:   "Eldoria-${version}-mac-${arch}.${ext}"   → Eldoria-0.2.1-mac-arm64.dmg / mac-x64.dmg
 //   linux: "Eldoria-${version}-linux-${arch}.${ext}" → Eldoria-0.2.1-linux-x64.AppImage
-// Exception : electron-builder nomme le .deb en minuscules via fpm :
-//   "eldoria_${version}_amd64.deb" → eldoria_0.2.1_amd64.deb
 const url = (file) =>
   `https://github.com/${REPO}/releases/download/${TAG}/${file}`;
 
@@ -77,18 +75,16 @@ Installeurs natifs **Windows / macOS / Linux** générés par la CI sur les runn
 
 | Plateforme | Installeur | Lien direct |
 |:--|:--|:--|
-| 🪟 **Windows** 10 / 11 | NSIS installer (x64) | [\`Eldoria-${VERSION}-win-x64.exe\`](${url(`Eldoria-${VERSION}-win-x64.exe`)}) — double-clic, menu Démarrer, raccourci bureau |
-| 🍎 **macOS** Apple Silicon (≥ M1) | DMG ARM64 + ZIP | [\`.dmg\`](${url(`Eldoria-${VERSION}-mac-arm64.dmg`)}) · [\`.zip\`](${url(`Eldoria-${VERSION}-mac-arm64.zip`)}) — glisser dans \`/Applications\` |
-| 🍎 **macOS** Intel x64 | DMG x64 + ZIP | [\`.dmg\`](${url(`Eldoria-${VERSION}-mac-x64.dmg`)}) · [\`.zip\`](${url(`Eldoria-${VERSION}-mac-x64.zip`)}) — glisser dans \`/Applications\` |
-| 🐧 **Linux** (universal) | AppImage x64 | [\`Eldoria-${VERSION}-linux-x64.AppImage\`](${url(`Eldoria-${VERSION}-linux-x64.AppImage`)}) — \`chmod +x\` puis double-clic |
-| 🐧 **Debian / Ubuntu / Mint / Pop!_OS** | \`.deb\` package | [\`eldoria_${VERSION}_amd64.deb\`](${url(`eldoria_${VERSION}_amd64.deb`)}) — \`sudo dpkg -i …\` |
-| 🐧 **Fedora / RHEL / openSUSE / Nobara** | \`.rpm\` package | [\`Eldoria-${VERSION}-linux-x64.rpm\`](${url(`Eldoria-${VERSION}-linux-x64.rpm`)}) — \`sudo rpm -i …\` |
+| 🪟 **Windows** 10 / 11 | Installateur NSIS (x64) | [\`Eldoria-${VERSION}-win-x64.exe\`](${url(`Eldoria-${VERSION}-win-x64.exe`)}) — double-clic pour installer |
+| 🍎 **macOS** Apple Silicon (M1+) | DMG arm64 | [\`Eldoria-${VERSION}-mac-arm64.dmg\`](${url(`Eldoria-${VERSION}-mac-arm64.dmg`)}) — glisser dans \`/Applications\` |
+| 🍎 **macOS** Intel | DMG x64 | [\`Eldoria-${VERSION}-mac-x64.dmg\`](${url(`Eldoria-${VERSION}-mac-x64.dmg`)}) — glisser dans \`/Applications\` |
+| 🐧 **Linux** (toutes distros) | AppImage x64 | [\`Eldoria-${VERSION}-linux-x64.AppImage\`](${url(`Eldoria-${VERSION}-linux-x64.AppImage`)}) — \`chmod +x\` puis double-clic |
 
 ### ⚠️ Installeurs **non signés** pour cette version (${TAG})
 
 * 🪟 **Windows** : SmartScreen affichera un avertissement au premier lancement → *Informations complémentaires → Exécuter quand même*.
 * 🍎 **macOS** : Gatekeeper refusera → *Clic droit sur \`Eldoria.app\` → Ouvrir* (une fois).
-* 🐧 **Linux** : aucune incidence, les \`AppImage\` / \`.deb\` / \`.rpm\` s'installent directement.
+* 🐧 **Linux** : aucune incidence, l'\`AppImage\` s'exécute directement.
 
 Signature code Apple Developer ID + Authenticode EV prévue pour **v0.3.0** ([Voir la Roadmap](https://github.com/${REPO}#-roadmap)).
 
