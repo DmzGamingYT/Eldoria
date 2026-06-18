@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg viewBox="0 0 1064 244" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:1064px">
+<svg viewBox="0 0 1064 260" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:1064px">
   <defs>
     <!-- Shared parchment palette reused across all 5 skill cards -->
     <linearGradient id="comParch" x1="0" y1="0" x2="0" y2="1">
@@ -43,10 +43,10 @@
 
   <!-- ==================== CARD 1 — BOULE DE FEU ==================== -->
   <g transform="translate(8 8)">
-    <rect x="6" y="6" width="188" height="208" rx="10" fill="url(#comParch)" stroke="#a07c3a" stroke-width="2">
+    <rect x="6" y="6" width="188" height="224" rx="10" fill="url(#comParch)" stroke="#a07c3a" stroke-width="2">
       <animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="0s" repeatCount="indefinite"/>
     </rect>
-    <rect x="10" y="10" width="180" height="200" rx="8" fill="none" stroke="#a07c3a" stroke-width="0.5" opacity="0.4"/>
+    <rect x="10" y="10" width="180" height="216" rx="8" fill="none" stroke="#a07c3a" stroke-width="0.5" opacity="0.4"/>
     <!-- Flame aura -->
     <circle cx="100" cy="80" r="70" fill="url(#sFire)" opacity="0.6">
       <animate attributeName="r" values="60;75;60" dur="2.4s" repeatCount="indefinite"/>
@@ -60,16 +60,16 @@
       <animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.4s" fill="freeze"/>
     </rect>
     <text x="100" y="155" font-size="15" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="2">❦ BOULE DE FEU ❦</text>
-    <text x="100" y="170" font-size="12" text-anchor="middle" font-family="Georgia, serif" fill="#5a3a1f">♦ 15 mana</text>
-    <text x="100" y="190" font-size="11" text-anchor="middle" font-family="Georgia, serif" fill="#a07c3a" font-style="italic">dégâts AoE</text>
+    <text x="100" y="186" font-size="12" text-anchor="middle" font-family="Georgia, serif" fill="#5a3a1f">♦ 15 mana</text>
+    <text x="100" y="210" font-size="11" text-anchor="middle" font-family="Georgia, serif" fill="#a07c3a" font-style="italic">dégâts AoE</text>
   </g>
 
   <!-- ==================== CARD 2 — SOIN LÉGER ==================== -->
   <g transform="translate(220 8)">
-    <rect x="6" y="6" width="188" height="208" rx="10" fill="url(#comParch)" stroke="#a07c3a" stroke-width="2">
+    <rect x="6" y="6" width="188" height="224" rx="10" fill="url(#comParch)" stroke="#a07c3a" stroke-width="2">
       <animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="0.2s" repeatCount="indefinite"/>
     </rect>
-    <rect x="10" y="10" width="180" height="200" rx="8" fill="none" stroke="#a07c3a" stroke-width="0.4" opacity="0.4"/>
+    <rect x="10" y="10" width="180" height="216" rx="8" fill="none" stroke="#a07c3a" stroke-width="0.4" opacity="0.4"/>
     <!-- Healing aura -->
     <circle cx="100" cy="80" r="60" fill="url(#sHeal)" opacity="0.7">
       <animate attributeName="r" values="50;65;50" dur="3s" repeatCount="indefinite"/>
@@ -97,16 +97,16 @@
       <animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.6s" fill="freeze"/>
     </rect>
     <text x="100" y="155" font-size="15" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="2">❦ SOIN LÉGER ❦</text>
-    <text x="100" y="170" font-size="12" text-anchor="middle" font-family="Georgia, serif" fill="#5a3a1f">♦ 20 mana</text>
-    <text x="100" y="190" font-size="11" text-anchor="middle" font-family="Georgia, serif" fill="#a07c3a" font-style="italic">+50 PV instantanés</text>
+    <text x="100" y="186" font-size="12" text-anchor="middle" font-family="Georgia, serif" fill="#5a3a1f">♦ 20 mana</text>
+    <text x="100" y="210" font-size="11" text-anchor="middle" font-family="Georgia, serif" fill="#a07c3a" font-style="italic">+50 PV instantanés</text>
   </g>
 
   <!-- ==================== CARD 3 — ÉCLAIR (fork-shaped bolt + sparks) ==================== -->
   <g transform="translate(432 8)">
-    <rect x="6" y="6" width="188" height="208" rx="10" fill="url(#comParch)" stroke="#a07c3a" stroke-width="2">
+    <rect x="6" y="6" width="188" height="224" rx="10" fill="url(#comParch)" stroke="#a07c3a" stroke-width="2">
       <animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="0.4s" repeatCount="indefinite"/>
     </rect>
-    <rect x="10" y="10" width="180" height="200" rx="8" fill="none" stroke="#a07c3a" stroke-width="0.5" opacity="0.4"/>
+    <rect x="10" y="10" width="180" height="216" rx="8" fill="none" stroke="#a07c3a" stroke-width="0.5" opacity="0.4"/>
     <!-- Golden electric aura -->
     <circle cx="100" cy="80" r="60" fill="url(#sBolt)" opacity="0.6">
       <animate attributeName="r" values="50;68;50" dur="1.8s" repeatCount="indefinite"/>
@@ -136,16 +136,16 @@
       <animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.8s" fill="freeze"/>
     </rect>
     <text x="100" y="155" font-size="15" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="2">❦ ÉCLAIR ❦</text>
-    <text x="100" y="170" font-size="12" text-anchor="middle" font-family="Georgia, serif" fill="#5a3a1f">♦ 25 mana</text>
-    <text x="100" y="190" font-size="11" text-anchor="middle" font-family="Georgia, serif" fill="#a07c3a" font-style="italic">frappe ciblée</text>
+    <text x="100" y="186" font-size="12" text-anchor="middle" font-family="Georgia, serif" fill="#5a3a1f">♦ 25 mana</text>
+    <text x="100" y="210" font-size="11" text-anchor="middle" font-family="Georgia, serif" fill="#a07c3a" font-style="italic">frappe ciblée</text>
   </g>
 
   <!-- ==================== CARD 4 — BOUCLIER (heraldic heater shield + star emblem) ==================== -->
   <g transform="translate(644 8)">
-    <rect x="6" y="6" width="188" height="208" rx="10" fill="url(#comParch)" stroke="#a07c3a" stroke-width="2">
+    <rect x="6" y="6" width="188" height="224" rx="10" fill="url(#comParch)" stroke="#a07c3a" stroke-width="2">
       <animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="0.6s" repeatCount="indefinite"/>
     </rect>
-    <rect x="10" y="10" width="180" height="200" rx="8" fill="none" stroke="#a07c3a" stroke-width="0.5" opacity="0.4"/>
+    <rect x="10" y="10" width="180" height="216" rx="8" fill="none" stroke="#a07c3a" stroke-width="0.5" opacity="0.4"/>
     <!-- Golden aura (matches parchment palette) -->
     <circle cx="100" cy="80" r="58" fill="url(#sShield)" opacity="0.5">
       <animate attributeName="r" values="50;64;50" dur="2.4s" repeatCount="indefinite"/>
@@ -174,16 +174,16 @@
       <animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="1.0s" fill="freeze"/>
     </rect>
     <text x="100" y="155" font-size="15" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="2">❦ BOUCLIER ❦</text>
-    <text x="100" y="170" font-size="12" text-anchor="middle" font-family="Georgia, serif" fill="#5a3a1f">♦ 18 mana</text>
-    <text x="100" y="190" font-size="11" text-anchor="middle" font-family="Georgia, serif" fill="#a07c3a" font-style="italic">absorbe 80 dmg</text>
+    <text x="100" y="186" font-size="12" text-anchor="middle" font-family="Georgia, serif" fill="#5a3a1f">♦ 18 mana</text>
+    <text x="100" y="210" font-size="11" text-anchor="middle" font-family="Georgia, serif" fill="#a07c3a" font-style="italic">absorbe 80 dmg</text>
   </g>
 
   <!-- ==================== CARD 5 — GIVRE (6-arm snowflake + crystalline crown) ==================== -->
   <g transform="translate(856 8)">
-    <rect x="6" y="6" width="188" height="208" rx="10" fill="url(#comParch)" stroke="#a07c3a" stroke-width="2">
+    <rect x="6" y="6" width="188" height="224" rx="10" fill="url(#comParch)" stroke="#a07c3a" stroke-width="2">
       <animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="0.8s" repeatCount="indefinite"/>
     </rect>
-    <rect x="10" y="10" width="180" height="200" rx="8" fill="none" stroke="#a07c3a" stroke-width="0.4" opacity="0.4"/>
+    <rect x="10" y="10" width="180" height="216" rx="8" fill="none" stroke="#a07c3a" stroke-width="0.4" opacity="0.4"/>
     <!-- Glacial aura -->
     <circle cx="100" cy="80" r="60" fill="url(#sFrost)" opacity="0.7">
       <animate attributeName="r" values="55;72;55" dur="3s" repeatCount="indefinite"/>
@@ -218,7 +218,7 @@
       <animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="1.2s" fill="freeze"/>
     </rect>
     <text x="100" y="155" font-size="15" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="2">❦ GIVRE ❦</text>
-    <text x="100" y="170" font-size="12" text-anchor="middle" font-family="Georgia, serif" fill="#5a3a1f">♦ 30 mana</text>
-    <text x="100" y="190" font-size="11" text-anchor="middle" font-family="Georgia, serif" fill="#a07c3a" font-style="italic">ralentit &amp; gèle</text>
+    <text x="100" y="186" font-size="12" text-anchor="middle" font-family="Georgia, serif" fill="#5a3a1f">♦ 30 mana</text>
+    <text x="100" y="210" font-size="11" text-anchor="middle" font-family="Georgia, serif" fill="#a07c3a" font-style="italic">ralentit &amp; gèle</text>
   </g>
 </svg>
