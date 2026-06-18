@@ -86,6 +86,25 @@ jobs:
       - name: 📦 Installation des dépendances
         run: bun install --frozen-lockfile
 
+      - name: 🐍 Installation de Python (pour la régénération des icônes)
+        # Pillow sérialise correctement un ICO multi-résolutions au format
+        # ICONDIR + ICONDIRENTRY (Pillow.save(format='ICO', sizes=...) n'est
+        # pas fiable — cf. scripts/build-icons.py module docstring). Étape
+        # identique sur les 3 runners Windows/macOS/Linux.
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Installation de Pillow
+        run: python3 -m pip install --quiet --upgrade Pillow
+
+      - name: 🎨 Régénération des icônes multi-résolutions
+        # Régénère build/icon.ico depuis le set de PNG (16/32/48/64/128/256)
+        # pour éviter `Icon is not a valid ICO file` côté electron-builder
+        # sur le runner Windows. Le script est idempotent : si quelqu'un
+        # commit un ICO cassé, la CI le corrige automatiquement.
+        run: python3 scripts/build-icons.py
+
       - name: 🗄️ Génération du client Prisma
         run: bun run db:generate
 
