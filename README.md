@@ -38,6 +38,7 @@
       </filter>
     </defs>
   </svg>
+  <a href="https://github.com/DmzGamingYT/Eldoria/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/release/DmzGamingYT/Eldoria?style=for-the-badge&logo=github&logoColor=white&label=Latest%20Release&color=3a2412" /></a>
   <img alt="Next.js" src="https://img.shields.io/badge/Next.js-16-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" />
   <img alt="React Three Fiber" src="https://img.shields.io/badge/React_Three_Fiber-9-049ef4?style=for-the-badge&logo=three.js&logoColor=white" />
   <img alt="Three.js" src="https://img.shields.io/badge/Three.js-0.184-049ef4?style=for-the-badge&logo=threedotjs&logoColor=white" />
