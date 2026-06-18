@@ -35,13 +35,20 @@ Puis upload-les sur itch.io dans la section **Uploads** :
 
 | Fichier GitHub | Nom sur itch.io | Plateforme itch.io |
 |---|---|---|
-| `Eldoria-0.2.1-win-x64.exe` | `Eldoria-v0.2.1-Windows-x64.exe` | 🪟 Windows |
-| `Eldoria-0.2.1-mac-x64.dmg` | `Eldoria-v0.2.1-macOS-Intel.dmg` | 🍎 macOS (Intel) |
-| `Eldoria-0.2.1-mac-arm64.dmg` | `Eldoria-v0.2.1-macOS-AppleSilicon.dmg` | 🍎 macOS (Apple Silicon) |
-| `Eldoria-0.2.1-linux-x64.AppImage` | `Eldoria-v0.2.1-Linux-x64.AppImage` | 🐧 Linux |
+| `Eldoria-0.2.2-win-x64.exe` | `Eldoria-v0.2.2-Windows-x64.exe` | 🪟 Windows |
+| `Eldoria-0.2.2-mac-x64.dmg` | `Eldoria-v0.2.2-macOS-Intel.dmg` | 🍎 macOS (Intel) |
+| `Eldoria-0.2.2-mac-arm64.dmg` | `Eldoria-v0.2.2-macOS-AppleSilicon.dmg` | 🍎 macOS (Apple Silicon) |
+| `Eldoria-0.2.2-mac-x64.zip` | `Eldoria-v0.2.2-macOS-Intel.zip` | 🍎 macOS (Intel) |
+| `Eldoria-0.2.2-mac-arm64.zip` | `Eldoria-v0.2.2-macOS-AppleSilicon.zip` | 🍎 macOS (Apple Silicon) |
+| `Eldoria-0.2.2-linux-x64.AppImage` | `Eldoria-v0.2.2-Linux-x64.AppImage` | 🐧 Linux |
+| `eldoria_0.2.2_amd64.deb` | `Eldoria-v0.2.2-Linux-amd64.deb` | 🐧 Linux |
+| `Eldoria-0.2.2-linux-x64.rpm` | `Eldoria-v0.2.2-Linux-x64.rpm` | 🐧 Linux |
 
 > ⚠️ **IMPORTANT** : Chaque fichier doit avoir un **nom différent** et la bonne **case plateforme** cochée.
-> Si tu upload deux fichiers avec le même nom, le第二个 écrase le premier.
+> itch.io permet plusieurs fichiers par plateforme — les utilisateurs verront un menu déroulant pour choisir le format.
+>
+> 💡 **Astuce** : Les `.zip` macOS sont une alternative légère au `.dmg` (pas de montage disque nécessaire).
+> Les `.deb` et `.rpm` sont pour les utilisateurs Linux qui préfèrent un installateur système natif.
 
 ### Champs pour chaque upload
 
@@ -103,9 +110,13 @@ Autrefois, le royaume d'Eldoria prospérait sous la lumière de l'Arbre d'Argent
 ## 📥 Installation
 
 1. Téléchargez le fichier correspondant à votre plateforme
-2. **Windows** : double-cliquez sur l'installeur → suivant → terminé
+2. **Windows** : double-cliquez sur l'installeur (.exe) → suivant → terminé
 3. **macOS** : ouvrez le .dmg → glissez Eldoria.app dans Applications
-4. **Linux** : `chmod +x Eldoria*.AppImage && ./Eldoria*.AppImage`
+   - Alternative : décompressez le .zip et copiez Eldoria.app dans Applications
+4. **Linux** :
+   - AppImage (universal) : `chmod +x Eldoria*.AppImage && ./Eldoria*.AppImage`
+   - Debian/Ubuntu/Mint : `sudo dpkg -i eldoria_0.2.2_amd64.deb`
+   - Fedora/RHEL/openSUSE : `sudo rpm -i Eldoria-0.2.2-linux-x64.rpm`
 
 > ⚠️ Les installeurs ne sont pas signés numériquement. Vous devrez accepter l'avertissement de sécurité au premier lancement (normal pour un indie game).
 
@@ -236,7 +247,7 @@ Ajoute un lien vers ta page itch.io dans ton README.md :
 
 - [ ] Compte itch.io créé
 - [ ] Projet "Eldoria" créé avec le bon titre et URL
-- [ ] 4 fichiers uploadés (Win, Mac Intel, Mac ARM, Linux) avec bons noms et plateformes
+- [ ] 8 fichiers uploadés (Win, Mac DMG×2, Mac ZIP×2, Linux AppImage/deb/rpm) avec bons noms et plateformes
 - [ ] Cover image 630×500 uploadée
 - [ ] 4 screenshots uploadés
 - [ ] Description copiée-collée
