@@ -265,7 +265,7 @@
       <!-- Plaque + stats (260px plaque — extra room for ⚔ MORDRAK ⚔ + ✦✦✦ BOSS FINAL ✦✦✦ ornaments) -->
       <rect x="-30" y="180" width="260" height="28" fill="#1a0808" stroke="#ff3344" stroke-width="2" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.3s" fill="freeze"/></rect>
       <text x="100" y="199" text-anchor="middle" font-family="Georgia, serif" font-size="14" font-weight="bold" fill="#ff8a96" letter-spacing="1">⚔ MORDRAK ⚔</text>
-      <text x="100" y="219" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#ff8a96">PV 600 • ATQ 40</text>
-      <text x="100" y="243" text-anchor="middle" font-family="Georgia, serif" font-size="11" font-style="italic" fill="#ff5468">✦✦✦ BOSS FINAL ✦✦✦</text>
+      <text x="100" y="224" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#ff8a96">PV 600 • ATQ 40</text>
+      <text x="100" y="250" text-anchor="middle" font-family="Georgia, serif" font-size="11" font-style="italic" fill="#ff5468">✦✦✦ BOSS FINAL ✦✦✦</text>
     </g>
   </svg>
