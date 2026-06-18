@@ -1,0 +1,177 @@
+# ═══════════════════════════════════════════════════════════════
+# Eldoria — Release : installeurs Windows / macOS / Linux
+# ═══════════════════════════════════════════════════════════════
+#
+# Déclenchement : `git tag vX.Y.Z && git push origin vX.Y.Z`
+# (ou via l'UI GitHub Releases → "Generate release" qui push le tag)
+#
+# Pipeline :
+#   build (matrix 3 OS)
+#     ├── checkout → bun → install → prisma generate
+#     ├── next build (production standalone)
+#     └── electron-builder --<target>  → artefact par OS
+#   release (Ubuntu, dépend de build)
+#     └── télécharger tous les artefacts → softprops/action-gh-release@v2
+#         → crée la GitHub Release + joint les installeurs
+#
+# Signature de code (optionnelle) :
+#   - macOS :  secrets CSC_LINK (base64 .p12) + CSC_KEY_PASSWORD
+#              + secrets Apple : APPLE_ID, APPLE_APP_SPECIFIC_PASSWORD, APPLE_TEAM_ID
+#              Sinon les DMG sont livrés non signés (Gatekeeper "non identifié").
+#   - Windows : secrets CSC_LINK + CSC_KEY_PASSWORD pour un certificat Authenticode.
+#              Sinon NSIS affiche un avertissement SmartScreen à l'installation.
+#   - Linux : pas de signature requise (AppImage/.deb/.rpm s'installent direct).
+#
+# Pour activer la signature plus tard :
+#   gh secret set CSC_LINK --body@certificate-base64.txt
+#   gh secret set CSC_KEY_PASSWORD --body'<mot-de-passe>'
+#   electron-builder lira ces secrets automatiquement.
+# ═══════════════════════════════════════════════════════════════
+
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  # Permet aussi un déclenchement manuel depuis l'UI Actions
+  workflow_dispatch:
+
+# Annule une release en cours si un nouveau tag est poussé pendant qu'elle tourne
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+# Permissions minimales : on a besoin d'écrire la release
+permissions:
+  contents: write
+
+env:
+  BUN_VERSION: '1'
+  # Désactive la télémétrie Next.js pendant le build (accélère + moins de logs)
+  NEXT_TELEMETRY_DISABLED: 1
+
+jobs:
+  # ── Build matrice 3 OS ─────────────────────────────────────────
+  build:
+    name: 🔨 Build ${{ matrix.label }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      # On ne fail-fast pas : si Linux casse, on veut quand même les artefacts Win/Mac
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            target: win
+            label: Windows (NSIS + portable)
+          - os: macos-latest
+            target: mac
+            label: macOS (DMG + ZIP — Intel + Apple Silicon)
+          - os: ubuntu-latest
+            target: linux
+            label: Linux (AppImage + .deb + .rpm)
+
+    steps:
+      - name: 📥 Récupération du code (full history pour le tag)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🟢 Installation de Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: 📦 Installation des dépendances
+        run: bun install --frozen-lockfile
+
+      - name: 🗄️ Génération du client Prisma
+        run: bun run db:generate
+
+      - name: 🔨 Build Next.js (production standalone)
+        run: bun run build
+
+      - name: 📦 Construction des installeurs (${{ matrix.target }})
+        # --publish never = pas de tentative d'upload auto sur GitHub ici,
+        # c'est le job `release` qui s'en charge proprement.
+        run: bun run electron-builder --${{ matrix.target }} --publish never
+
+      - name: 📋 Inventaire des artefacts produits
+        # Pour debug : liste ce que electron-builder a sorti
+        run: |
+          echo "=== Artefacts dans dist-electron/ ==="
+          ls -lh dist-electron/ 2>&1 || dir dist-electron\ 2>nul
+
+      - name: 📤 Upload des artefacts (pour le job `release`)
+        uses: actions/upload-artifact@v4
+        with:
+          name: eldoria-installer-${{ matrix.target }}
+          # Glob récursif : capture tous les installeurs produits
+          path: |
+            dist-electron/*.exe
+            dist-electron/*.dmg
+            dist-electron/*.zip
+            dist-electron/*.AppImage
+            dist-electron/*.deb
+            dist-electron/*.rpm
+            dist-electron/*.blockmap
+          if-no-files-found: error
+          retention-days: 14
+
+  # ── Release : attache tout à la GitHub Release ────────────────
+  release:
+    name: 📦 Publication de la release
+    needs: build
+    runs-on: ubuntu-latest
+
+    # Garde-fou : le job release ne s'exécute que pour un vrai push de tag.
+    # Sans cette condition, un déclenchement manuel depuis l'UI Actions
+    # sur main/HEAD essaierait d'attacher les artefacts à "main" (qui n'est
+    # pas une release GitHub valide).
+    if: startsWith(github.ref, 'refs/tags/')
+
+    steps:
+      - name: 📥 Téléchargement de tous les artefacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          # `merge-multiple: true` (par défaut sur v4) combine tous les jobs
+          # dans un seul dossier `artifacts/`.
+
+      - name: 📋 Vérification des installeurs reçus
+        run: |
+          echo "=== Arborescence reçue ==="
+          find artifacts -type f -printf '%p  (%s octets)\n' | sort
+          echo ""
+          echo "=== Total installeurs ==="
+          find artifacts -type f | wc -l
+
+      - name: 🚀 Création de la GitHub Release + attachement des installeurs
+        uses: softprops/action-gh-release@v2
+        with:
+          # Le tag déclencheur devient le nom de la release
+          tag_name: ${{ github.ref_name }}
+          name: Eldoria ${{ github.ref_name }}
+          # Génération automatique des release notes à partir des PRs mergées
+          # depuis la dernière release. (Si on voulait un body custom fixe, on
+          # désactiverait ça et fournirait `body:` — les deux sont mutuellement
+          # exclusifs côté GitHub API : auto-gen écrase body.)
+          generate_release_notes: true
+          draft: false
+          prerelease: ${{ contains(github.ref_name, '-') }}
+          # Files : tous les installeurs reçus
+          files: |
+            artifacts/**/*.exe
+            artifacts/**/*.dmg
+            artifacts/**/*.zip
+            artifacts/**/*.AppImage
+            artifacts/**/*.deb
+            artifacts/**/*.rpm
+            artifacts/**/*.blockmap
+          fail_on_unmatched_files: true
+
+
+  # ── (Optionnel) Build CI séparé pour valider sans tag ─────────
+  # Le job `build` est déjà exécuté en CI via `ci.yml` sur chaque push.
+  # Ce workflow `release.yml` ne sert explicitement qu'à publier.

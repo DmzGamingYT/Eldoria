@@ -542,9 +542,72 @@ Quatre marchands, mentors et gardiens du village — chacun avec son dialogue, s
 
 ---
 
+## 📥 Téléchargements
+
+> **Dernière version stable : [v0.2.0 ▸ Page Releases](https://github.com/DmzGamingYT/Eldoria/releases/latest)**
+>
+> Installeurs natifs générés automatiquement par la CI à chaque tag `v*`.
+> Aucune installation de Node.js ou Bun requise pour les joueurs.
+
+| Plateforme | Format | Installation |
+|:--:|:--|:--|
+| 🪟 **Windows** 10 / 11 | `Eldoria-0.2.0-win-x64.exe` (~120 Mo, NSIS) + version portable | Double-clic sur l'installeur · Menu Démarrer + raccourci bureau créés |
+| 🍎 **macOS** 11+ (Big Sur) | `Eldoria-0.2.0-mac-x64.dmg` + `…-mac-arm64.dmg` (~140 Mo) | Glisser `Eldoria.app` dans `/Applications` |
+| 🐧 **Linux** (toutes distros) | `Eldoria-0.2.0-linux-x64.AppImage` + `.deb` + `.rpm` (~130 Mo) | AppImage : `chmod +x` puis double-clic · Debian/Ubuntu : `sudo dpkg -i …deb` · Fedora/RHEL : `sudo rpm -i …rpm` |
+
+> 📋 Le téléchargement direct vers le dernier installeur :
+> - 🪟 [`…-win-x64.exe`](https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.0-win-x64.exe)
+> - 🍎 [`…-mac-x64.dmg`](https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.0-mac-x64.dmg) · [`…-mac-arm64.dmg`](https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.0-mac-arm64.dmg)
+> - 🐧 [`…-linux-x64.AppImage`](https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.0-linux-x64.AppImage)
+
+### Installation rapide (Linux AppImage — universelle)
+
+```bash
+wget https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.0-linux-x64.AppImage
+chmod +x Eldoria-0.2.0-linux-x64.AppImage
+./Eldoria-0.2.0-linux-x64.AppImage
+```
+
+### Installation rapide (Linux Debian / Fedora)
+
+```bash
+# Debian · Ubuntu · Linux Mint · Pop!_OS …
+wget https://github.com/DmzGamingYT/Eldoria/releases/latest/download/eldoria_0.2.0_amd64.deb
+sudo dpkg -i eldoria_0.2.0_amd64.deb
+
+# Fedora · RHEL · openSUSE · Nobara …
+sudo rpm -i https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.0-linux-x64.rpm
+```
+
+> **⚠️ Installeurs non signés pour cette version v0.2.0**
+>
+> Cette première release livrée publiquement est **non signée** numériquement, par limitation pratique (coût annuel des certificats Apple Developer ID + EV Authenticode). Vous rencontrerez :
+>
+> - 🪟 **Windows** : SmartScreen affichera « Windows a protégé votre ordinateur » au premier lancement → *Informations complémentaires → Exécuter quand même*.
+> - 🍎 **macOS** : Gatekeeper refusera l'ouverture du `.dmg` → *Clic droit sur `Eldoria.app` → Ouvrir* (une seule fois, ensuite l'app est de confiance).
+> - 🐧 **Linux** : aucune incidence, l'AppImage / `.deb` / `.rpm` s'exécute ou s'installe directement.
+>
+> La **signature automatique** (certificat EV Authenticode pour Windows + Apple Developer ID + notarisation pour macOS) est planifiée pour la **v0.3.0** ([voir la Roadmap](#-roadmap)). Pour une utilisation de jeu normale, ces avertissements ne bloquent pas l'installation.
+
+### Publier une nouvelle release (pour les mainteneurs)
+
+```bash
+# 1. Bumper la version dans package.json (champ "version") + ajouter une entrée dans CHANGELOG.md
+# 2. Committer sur main (déclenche ci.yml : lint + typecheck + build)
+git add . && git commit -m "chore(release): prepare v0.X.Y"
+
+# 3. Tagger + pusher le tag → déclenche automatiquement release.yml (build 3 OS + GitHub Release)
+git tag v0.X.Y
+git push origin main v0.X.Y
+```
+
+→ Le workflow [`.github/workflows/release.yml`](.github/workflows/release.yml) construit les installeurs en parallèle sur 3 runners natifs (**Windows + macOS + Linux**), puis un job `release` les télécharge tous et les attache automatiquement à la **GitHub Release**.
+
+---
+
 ## 🚀 Démarrage rapide
 
-### Prérequis
+### Prérequis pour le développement
 
 - **[Bun](https://bun.sh/) ≥ 1.0** (gestionnaire de paquets et runtime)
 - **[Node.js](https://nodejs.org/) ≥ 18** (requis par Next.js et Prisma)
