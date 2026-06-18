@@ -76,9 +76,11 @@ Installeurs natifs **Windows / macOS / Linux** générés par la CI sur les runn
 | Plateforme | Installeur | Lien direct |
 |:--|:--|:--|
 | 🪟 **Windows** 10 / 11 | Installateur NSIS (x64) | [\`Eldoria-${VERSION}-win-x64.exe\`](${url(`Eldoria-${VERSION}-win-x64.exe`)}) — double-clic pour installer |
-| 🍎 **macOS** Apple Silicon (M1+) | DMG arm64 | [\`Eldoria-${VERSION}-mac-arm64.dmg\`](${url(`Eldoria-${VERSION}-mac-arm64.dmg`)}) — glisser dans \`/Applications\` |
-| 🍎 **macOS** Intel | DMG x64 | [\`Eldoria-${VERSION}-mac-x64.dmg\`](${url(`Eldoria-${VERSION}-mac-x64.dmg`)}) — glisser dans \`/Applications\` |
+| 🍎 **macOS** Apple Silicon (M1+) | DMG + ZIP arm64 | [\`Eldoria-${VERSION}-mac-arm64.dmg\`](${url(`Eldoria-${VERSION}-mac-arm64.dmg`)}) · [\`.zip\`](${url(`Eldoria-${VERSION}-mac-arm64.zip`)}) |
+| 🍎 **macOS** Intel | DMG + ZIP x64 | [\`Eldoria-${VERSION}-mac-x64.dmg\`](${url(`Eldoria-${VERSION}-mac-x64.dmg`)}) · [\`.zip\`](${url(`Eldoria-${VERSION}-mac-x64.zip`)}) |
 | 🐧 **Linux** (toutes distros) | AppImage x64 | [\`Eldoria-${VERSION}-linux-x64.AppImage\`](${url(`Eldoria-${VERSION}-linux-x64.AppImage`)}) — \`chmod +x\` puis double-clic |
+| 🐧 **Debian / Ubuntu / Mint** | .deb x64 | [\`eldoria_${VERSION}_amd64.deb\`](${url(`eldoria_${VERSION}_amd64.deb`)}) — \`sudo dpkg -i\` |
+| 🐧 **Fedora / RHEL / openSUSE** | .rpm x64 | [\`Eldoria-${VERSION}-linux-x64.rpm\`](${url(`Eldoria-${VERSION}-linux-x64.rpm`)}) — \`sudo rpm -i\` |
 
 ### ⚠️ Installeurs **non signés** pour cette version (${TAG})
 

@@ -110,7 +110,12 @@ jobs:
           path: |
             dist-electron/*.exe
             dist-electron/*.dmg
+            dist-electron/*.zip
             dist-electron/*.AppImage
+            dist-electron/*.deb
+            dist-electron/*.rpm
+            dist-electron/*.blockmap
+            dist-electron/latest*.yml
           if-no-files-found: error
           retention-days: 14
 
@@ -157,7 +162,7 @@ jobs:
         env:
           TAG: ${{ github.ref_name }}
           REPO: ${{ github.repository }}
-        run: node scripts/generate-release-body.mjs
+        run: bun scripts/generate-release-body.mjs
 
       - name: 🔍 Aperçu du body généré (debug)
         run: |
@@ -180,11 +185,18 @@ jobs:
           generate_release_notes: false
           draft: false
           prerelease: ${{ contains(github.ref_name, '-') }}
-          # Files : un installeur par plateforme
+          # Files : installeurs + métadonnées electron-updater
+          # electron-updater a besoin de latest*.yml + .blockmap pour
+          # le téléchargement différentiel et la validation SHA-512.
           files: |
             artifacts/**/*.exe
             artifacts/**/*.dmg
+            artifacts/**/*.zip
             artifacts/**/*.AppImage
+            artifacts/**/*.deb
+            artifacts/**/*.rpm
+            artifacts/**/*.blockmap
+            artifacts/**/latest*.yml
           fail_on_unmatched_files: true
 
 

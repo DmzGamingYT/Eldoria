@@ -1,12 +1,23 @@
-const { app, BrowserWindow, shell } = require("electron");
+const { app, BrowserWindow, shell, ipcMain } = require("electron");
 const path = require("path");
 const fs = require("fs");
 const { fork } = require("child_process");
+const { autoUpdater } = require("electron-updater");
+const log = require("electron-log");
 
 // Disable GPU sandbox on Linux where it can cause issues with some distros
 if (process.platform === "linux") {
   app.commandLine.appendSwitch("no-sandbox");
 }
+
+// ─── electron-log configuration ──────────────────────────
+// Logs are written to:
+//   macOS  : ~/Library/Logs/Eldoria/main.log
+//   Windows: %USERPROFILE%\AppData\Roaming\Eldoria\logs\main.log
+//   Linux  : ~/.config/Eldoria/logs/main.log
+log.transports.file.level = "info";
+log.transports.console.level = isDev ? "debug" : "info";
+log.transports.file.format = "[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}]{scope} {text}";
 
 let mainWindow = null;
 let serverProcess = null;
@@ -74,7 +85,7 @@ function startServer() {
 
     serverProcess.stdout.on("data", (data) => {
       const output = data.toString();
-      console.log("[Eldoria Server]", output);
+      log.info("[Server]", output.trim());
 
       // Next.js standalone prints "Ready on http://localhost:<port>"
       const match = output.match(/Ready on (https?:\/\/localhost:(\d+))/);
@@ -85,11 +96,11 @@ function startServer() {
     });
 
     serverProcess.stderr.on("data", (data) => {
-      console.error("[Eldoria Server Error]", data.toString());
+      log.error("[Server Error]", data.toString().trim());
     });
 
     serverProcess.on("error", (err) => {
-      console.error("Failed to start server:", err);
+      log.error("Failed to start server:", err);
       if (!resolved) {
         resolved = true;
         reject(err);
@@ -97,7 +108,7 @@ function startServer() {
     });
 
     serverProcess.on("exit", (code) => {
-      console.log(`Server exited with code ${code}`);
+      log.info(`Server exited with code ${code}`);
       if (!resolved) {
         resolved = true;
         reject(new Error(`Server exited with code ${code}`));
@@ -154,26 +165,32 @@ function createWindow(url) {
   mainWindow.on("closed", () => {
     mainWindow = null;
   });
+
+  // ─── Auto-updater: forward events to the renderer ──────────
+  if (!isDev) {
+    initAutoUpdater();
+  }
 }
 
 // ─── App lifecycle ───────────────────────────────────────────────
 
 app.whenReady().then(async () => {
+  log.info(`Eldoria v${app.getVersion()} starting (${isDev ? "dev" : "production"})`);
   try {
     if (isDev) {
       // In dev mode, the Next.js dev server is already running on port 3000
       // (started by concurrently via 'bun dev'). Just connect to it.
       resolvedUrl = "http://localhost:3000";
-      console.log(`[Eldoria Dev] Connecting to dev server at ${resolvedUrl}`);
+      log.info(`Connecting to dev server at ${resolvedUrl}`);
     } else {
       // In production, fork the standalone server ourselves
       const url = await startServer();
       resolvedUrl = url;
-      console.log(`Eldoria server ready at ${url}`);
+      log.info(`Server ready at ${url}`);
     }
     createWindow(resolvedUrl);
   } catch (err) {
-    console.error("Failed to start Eldoria server:", err);
+    log.error("Failed to start Eldoria server:", err);
     app.quit();
   }
 });
@@ -191,6 +208,90 @@ app.on("before-quit", () => {
     serverProcess.kill();
     serverProcess = null;
   }
+});
+
+// ─── Auto-updater ──────────────────────────────────────────
+// Only runs in packaged (production) builds.
+// Uses GitHub Releases as the update source (publish config in electron-builder.yml).
+autoUpdater.autoDownload = true;
+autoUpdater.autoInstallOnAppQuit = true;
+
+function initAutoUpdater() {
+  // Wire electron-log into autoUpdater for persistent file logging
+  autoUpdater.logger = log;
+
+  autoUpdater.on("checking-for-update", () => {
+    log.info("[Update] Checking for update...");
+  });
+
+  autoUpdater.on("update-available", (info) => {
+    log.info(`[Update] Available: v${info.version}`);
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.webContents.send("update-available", {
+        version: info.version,
+        releaseDate: info.releaseDate,
+      });
+    }
+  });
+
+  autoUpdater.on("update-not-available", () => {
+    log.info("[Update] App is up to date.");
+  });
+
+  autoUpdater.on("download-progress", (progress) => {
+    log.info(
+      `[Update] Downloading: ${Math.round(progress.percent)}% ` +
+        `(${Math.round(progress.bytesPerSecond / 1024)} KB/s)`
+    );
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.webContents.send("update-download-progress", {
+        percent: progress.percent,
+        bytesPerSecond: progress.bytesPerSecond,
+        transferred: progress.transferred,
+        total: progress.total,
+      });
+    }
+  });
+
+  autoUpdater.on("update-downloaded", (info) => {
+    log.info(`[Update] Downloaded: v${info.version} — ready to install.`);
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.webContents.send("update-downloaded", {
+        version: info.version,
+        releaseDate: info.releaseDate,
+      });
+    }
+  });
+
+  autoUpdater.on("error", (err) => {
+    log.error("[Update] Error:", err.message);
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.webContents.send("update-error", {
+        message: err.message,
+      });
+    }
+  });
+
+  // Check for updates 3 seconds after the window is ready (non-blocking)
+  setTimeout(() => {
+    autoUpdater.checkForUpdates().catch((err) => {
+      log.error("[Update] Check failed:", err.message);
+    });
+  }, 3000);
+}
+
+// IPC: renderer requests a manual update check
+ipcMain.on("check-for-updates", () => {
+  if (!isDev) {
+    autoUpdater.checkForUpdates().catch((err) => {
+      log.error("[Update] Manual check failed:", err.message);
+    });
+  }
+});
+
+// IPC: renderer requests quit & install
+ipcMain.on("quit-and-install", () => {
+  autoUpdater.quitAndInstall(false, true);
 });
 
 // Re-create window on macOS dock click

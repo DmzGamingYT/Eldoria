@@ -20,6 +20,8 @@ import { DialogueBox } from "./ui/DialogueBox";
 import { Shop } from "./ui/Shop";
 import { MainMenu, HelpPanel } from "./ui/MainMenu";
 import { Intro } from "./ui/Intro";
+import { UpdateNotifier } from "./ui/UpdateNotifier";
+import { Options } from "./ui/Options";
 
 export function Game() {
   const status = useGame((s) => s.status);
@@ -116,8 +118,10 @@ export function Game() {
       {ui.dialogue && <DialogueBox />}
       {ui.shop && <Shop />}
       {ui.help && <HelpPanel />}
+      {ui.options && <Options />}
       <MainMenu />
       <Intro />
+      <UpdateNotifier />
 
       {/* Low HP vignette */}
       {status === "playing" && player.health > 0 && player.health / derivedMaxHealth < 0.3 && (

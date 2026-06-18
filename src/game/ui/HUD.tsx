@@ -16,6 +16,7 @@ import {
   ScrollText,
   Crown,
   HelpCircle,
+  Settings,
   type LucideIcon,
 } from "lucide-react";
 import {
@@ -172,6 +173,7 @@ export function HUD() {
         <PanelButton active={ui.quests} onClick={() => togglePanel("quests")} Icon={ScrollText} label="Quêtes" hotkey="Q" />
         <PanelButton active={ui.character} onClick={() => togglePanel("character")} Icon={Crown} label="Héros" hotkey="C" />
         <PanelButton active={ui.help} onClick={() => togglePanel("help")} Icon={HelpCircle} label="Aide" hotkey="H" />
+        <PanelButton active={ui.options} onClick={() => togglePanel("options")} Icon={Settings} label="Options" hotkey="O" />
       </div>
 
       {/* ===== Toast ===== */}

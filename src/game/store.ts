@@ -153,6 +153,7 @@ export interface GameStore {
     quests: boolean;
     character: boolean;
     help: boolean;
+    options: boolean;
     dialogue: string | null; // npc id
     shop: string | null; // npc id
     toast: { id: number; message: string; type: "info" | "success" | "error" } | null;
@@ -185,8 +186,8 @@ export interface GameStore {
   sellItem: (itemId: string, qty?: number) => void;
   acceptQuest: (questId: string) => void;
   turnInQuest: (questId: string) => void;
-  togglePanel: (panel: "inventory" | "quests" | "character" | "help") => void;
-  closePanel: (panel: "inventory" | "quests" | "character" | "help") => void;
+  togglePanel: (panel: "inventory" | "quests" | "character" | "help" | "options") => void;
+  closePanel: (panel: "inventory" | "quests" | "character" | "help" | "options") => void;
   openDialogue: (npcId: string) => void;
   closeDialogue: () => void;
   openShop: (npcId: string) => void;
@@ -252,6 +253,7 @@ export const useGame = create<GameStore>((set, get) => ({
     quests: false,
     character: false,
     help: false,
+    options: false,
     dialogue: null,
     shop: null,
     toast: null,
@@ -280,7 +282,7 @@ export const useGame = create<GameStore>((set, get) => ({
       floatingTexts: [],
       particles: [],
       loot: [],
-      ui: { inventory: false, quests: false, character: false, help: false, dialogue: null, shop: null, toast: null },
+      ui: { inventory: false, quests: false, character: false, help: false, options: false, dialogue: null, shop: null, toast: null },
       ...d,
     });
   },
@@ -1100,7 +1102,7 @@ export const useGame = create<GameStore>((set, get) => ({
         floatingTexts: [],
         particles: [],
         loot: [],
-        ui: { inventory: false, quests: false, character: false, help: false, dialogue: null, shop: null, toast: null },
+        ui: { inventory: false, quests: false, character: false, help: false, options: false, dialogue: null, shop: null, toast: null },
         ...d,
       });
       get().showToast("Partie charg\u00e9e", "success");

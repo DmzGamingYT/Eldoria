@@ -1,0 +1,26 @@
+docs(readme): alléger 'Les Compétences du Héros' via asset competences-hero
+
+La section '⚡ Les Compétences du Héros' contenait 5 cartes SVG
+200×220 inline (Boule de Feu, Soin Léger, Éclair, Bouclier, Givre)
+dans une `<table>` markdown — ~130 lignes d'inline SVG répétitif
+alourdissant la lecture sur GitHub.
+
+Restructure atomique, calquée sur la refonte précédente des
+'Carrés du Savoir' (commit 7c808b4) :
+
+1. Asset autonome `public/banner/competences-hero.svg` (1064×244
+   viewBox, 22 animations SMIL préservées, IDs `comParch`,
+   `comPlaque`, `sFire`, `sHeal`, `sFrost`, `lyGlow` tous uniques
+   au fichier).
+2. README : bloc `<table>` + 5 duplications `<svg viewBox="0 0 200
+   220">` remplacé par **un seul** `<img src="public/banner/
+   competences-hero.svg" alt="Cinq arts arcaniques — Boule de Feu,
+   Soin Léger, Éclair, Bouclier, Nova de Givre">` cliquable.
+3. Le cinebar d'ouverture ('CINQ ARTS ARCANIQUES') est conservé
+   intact ; les `<td width="20%">` et le whitespace du tableau
+   disparaissent avec lui.
+
+Bénéfice : -10 267 octets sur README.md, 0 inline SVG 200×220
+restant, 1 référence asset nette. Total cumulé avec
+'Carrés du Savoir' (commit précédent) : **-25 293 octets** sur
+README.md.

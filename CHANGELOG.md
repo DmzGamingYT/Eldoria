@@ -16,6 +16,42 @@ le projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
 ---
 
+## [0.2.2] — 2026-06-18 — Pipeline complet + tous les installeurs
+
+Le workflow CI de la **0.2.1** ne publiait que les installeurs de base
+(1×exe, 2×dmg, 1×AppImage). Les liens .deb, .rpm et .zip du README
+donnaient des 404. **Cette 0.2.2** corrige le pipeline complet et
+ajoute les formats manquants.
+
+### ✨ Amélioration — Tous les formats d'installeur
+
+- **macOS** : ajout du `.zip` en plus du `.dmg` (Intel + Apple Silicon)
+- **Linux** : ajout du `.deb` (Debian/Ubuntu/Mint) et `.rpm` (Fedora/RHEL/openSUSE)
+  en plus de l'AppImage universel
+- **8 installeurs** au total publiés automatiquement par la CI
+
+### 🐛 Correction — Script de body de release
+
+- `generate-release-body.mjs` invoqué avec `bun` au lieu de `node`
+  (les runners CI n'ont pas node dans leur PATH)
+- Tableau de téléchargement enrichi avec .deb, .rpm et .zip
+
+### 🐛 Correction — Nommage .deb et .rpm
+
+- `.deb` suit la convention Debian : `eldoria_0.2.2_amd64.deb`
+- `.rpm` utilise le format cohérent : `Eldoria-0.2.2-linux-x64.rpm`
+- Config `artifactName` séparée par format dans `electron-builder.yml`
+
+### 🔧 Maintenance
+
+- `package.json` `name` renommé `nextjs_tailwind_shadcn_ts` → `eldoria`
+- README : badge CI ajouté, descriptions dupliquées supprimées,
+  lien RPM version corrigée (0.2.0 → 0.2.2), liens .zip macOS ajoutés
+- Workflow `release.yml` : patterns `*.zip`, `*.deb`, `*.rpm` ajoutés
+  aux étapes upload-artifact et release files
+
+---
+
 ## [0.2.1] — 2026-06-18 — Correctifs chaîne de release multiplateforme
 
 Le pipeline release de la **0.2.0** (commit `4cd0cf5`) n'arrivait à publier

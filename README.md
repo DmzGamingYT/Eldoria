@@ -39,6 +39,7 @@
     </defs>
   </svg>
   <a href="https://github.com/DmzGamingYT/Eldoria/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/release/DmzGamingYT/Eldoria?style=for-the-badge&logo=github&logoColor=white&label=Latest%20Release&color=3a2412" /></a>
+  <a href="https://github.com/DmzGamingYT/Eldoria/actions/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/DmzGamingYT/Eldoria/ci.yml?style=for-the-badge&logo=githubactions&logoColor=white&label=CI&color=3a2412" /></a>
   <img alt="Next.js" src="https://img.shields.io/badge/Next.js-16-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" />
   <img alt="React Three Fiber" src="https://img.shields.io/badge/React_Three_Fiber-9-049ef4?style=for-the-badge&logo=three.js&logoColor=white" />
   <img alt="Three.js" src="https://img.shields.io/badge/Three.js-0.184-049ef4?style=for-the-badge&logo=threedotjs&logoColor=white" />
@@ -193,7 +194,6 @@
 </svg>
 
 <p align="center" style="max-width:600px"><em>🏰 Le portail de l'aventure — fond cinématique, ambres flottants, rayons divins.</em></p>
-<p align="center" style="max-width:600px"><em>🏰 Le portail de l'aventure — fond cinématique, ambres flottants, rayons divins.</em></p>
 
 </td>
 <td width="50%" align="center" valign="top">
@@ -228,7 +228,6 @@
   <circle cx="586" cy="10" r="2" fill="#f6d97c"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" begin="1.8s" repeatCount="indefinite"/></circle>
 </svg>
 
-<p align="center" style="max-width:600px"><em>🌲 Terrain procédural 200×200, cycle jour/nuit, brouillard atmosphérique.</em></p>
 <p align="center" style="max-width:600px"><em>🌲 Terrain procédural 200×200, cycle jour/nuit, brouillard atmosphérique.</em></p>
 
 </td>
@@ -268,7 +267,6 @@
 </svg>
 
 <p align="center" style="max-width:600px"><em>⚔️ HUD parchemin, barres de vie/mana/XP, minimap, barre rapide.</em></p>
-<p align="center" style="max-width:600px"><em>⚔️ HUD parchemin, barres de vie/mana/XP, minimap, barre rapide.</em></p>
 
 </td>
 <td width="50%" align="center" valign="top">
@@ -303,7 +301,6 @@
   <circle cx="586" cy="10" r="2" fill="#f6d97c"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" begin="1.8s" repeatCount="indefinite"/></circle>
 </svg>
 
-<p align="center" style="max-width:600px"><em>🎬 L'histoire de Mordrak et des ténèbres contée en travelling 3D.</em></p>
 <p align="center" style="max-width:600px"><em>🎬 L'histoire de Mordrak et des ténèbres contée en travelling 3D.</em></p>
 
 </td>
@@ -545,48 +542,48 @@ Quatre marchands, mentors et gardiens du village — chacun avec son dialogue, s
 
 ## 📥 Téléchargements
 
-> **Dernière version stable : [v0.2.1 ▸ Page Releases](https://github.com/DmzGamingYT/Eldoria/releases/latest)**
+> **Dernière version stable : [v0.2.2 ▸ Page Releases](https://github.com/DmzGamingYT/Eldoria/releases/latest)**
 >
 > Installeurs natifs générés automatiquement par la CI à chaque tag `v*`.
 > Aucune installation de Node.js ou Bun requise pour les joueurs.
 
 | Plateforme | Format | Installation |
 |:--:|:--|:--|
-| 🪟 **Windows** 10 / 11 | NSIS `Eldoria-0.2.1-win-x64.exe` (~120 Mo) + portable `.exe` | Double-clic sur l'installeur · Menu Démarrer + raccourci bureau créés |
-| 🍎 **macOS** 11+ (Big Sur) | DMG + ZIP Intel & Apple Silicon (`Eldoria-0.2.1-mac-x64.dmg`, `…-mac-arm64.dmg`) (~140 Mo) | Glisser `Eldoria.app` dans `/Applications` |
-| 🐧 **Linux** (toutes distros) | `Eldoria-0.2.1-linux-x64.AppImage` + `eldoria_0.2.1_amd64.deb` + `.rpm` (~130 Mo) | AppImage : `chmod +x` puis double-clic · Debian/Ubuntu : `sudo dpkg -i …deb` · Fedora/RHEL : `sudo rpm -i …rpm` |
+| 🪟 **Windows** 10 / 11 | NSIS `Eldoria-0.2.2-win-x64.exe` (~120 Mo) + portable `.exe` | Double-clic sur l'installeur · Menu Démarrer + raccourci bureau créés |
+| 🍎 **macOS** 11+ (Big Sur) | DMG + ZIP Intel & Apple Silicon (`Eldoria-0.2.2-mac-arm64.dmg`, `…-mac-x64.zip`) (~140 Mo) | Glisser `Eldoria.app` dans `/Applications` |
+| 🐧 **Linux** (toutes distros) | `Eldoria-0.2.2-linux-x64.AppImage` + `eldoria_0.2.2_amd64.deb` + `.rpm` (~130 Mo) | AppImage : `chmod +x` puis double-clic · Debian/Ubuntu : `sudo dpkg -i …deb` · Fedora/RHEL : `sudo rpm -i …rpm` |
 
 > 📥 **Téléchargement direct** — six installeurs cliquables (les URLs utilisent `/releases/latest/download/`, qui route automatiquement vers la dernière release publiée) :
 >
 > | Plateforme | Installeur | Lien direct |
 > |:--|:--|:--|
-> | 🪟 **Windows** 10 / 11 | NSIS x64 | [`Eldoria-0.2.1-win-x64.exe`](https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.1-win-x64.exe) — double-clic |
-> | 🍎 **macOS** Intel x64 | DMG + ZIP | [`Eldoria-0.2.1-mac-x64.dmg`](https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.1-mac-x64.dmg) · [`Eldoria-0.2.1-mac-x64.zip`](https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.1-mac-x64.zip) — glisser dans `/Applications` |
-> | 🍎 **macOS** Apple Silicon (≥ M1) | DMG + ZIP | [`Eldoria-0.2.1-mac-arm64.dmg`](https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.1-mac-arm64.dmg) · [`Eldoria-0.2.1-mac-arm64.zip`](https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.1-mac-arm64.zip) — glisser dans `/Applications` |
-> | 🐧 **Linux** universal | AppImage | [`Eldoria-0.2.1-linux-x64.AppImage`](https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.1-linux-x64.AppImage) — `chmod +x` puis double-clic |
-> | 🐧 **Debian / Ubuntu / Mint / Pop!_OS** | `.deb` | [`eldoria_0.2.1_amd64.deb`](https://github.com/DmzGamingYT/Eldoria/releases/latest/download/eldoria_0.2.1_amd64.deb) — `sudo dpkg -i …` |
-> | 🐧 **Fedora / RHEL / openSUSE / Nobara** | `.rpm` | [`Eldoria-0.2.1-linux-x64.rpm`](https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.1-linux-x64.rpm) — `sudo rpm -i …` |
+> | 🪟 **Windows** 10 / 11 | NSIS x64 | [`Eldoria-0.2.2-win-x64.exe`](https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.2-win-x64.exe) — double-clic |
+> | 🍎 **macOS** Intel x64 | DMG + ZIP | [`Eldoria-0.2.2-mac-x64.dmg`](https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.2-mac-x64.dmg) · [`Eldoria-0.2.2-mac-x64.zip`](https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.2-mac-x64.zip) — glisser dans `/Applications` |
+> | 🍎 **macOS** Apple Silicon (≥ M1) | DMG + ZIP | [`Eldoria-0.2.2-mac-arm64.dmg`](https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.2-mac-arm64.dmg) · [`Eldoria-0.2.2-mac-arm64.zip`](https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.2-mac-arm64.zip) — glisser dans `/Applications` |
+> | 🐧 **Linux** universal | AppImage | [`Eldoria-0.2.2-linux-x64.AppImage`](https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.2-linux-x64.AppImage) — `chmod +x` puis double-clic |
+> | 🐧 **Debian / Ubuntu / Mint / Pop!_OS** | `.deb` | [`eldoria_0.2.2_amd64.deb`](https://github.com/DmzGamingYT/Eldoria/releases/latest/download/eldoria_0.2.2_amd64.deb) — `sudo dpkg -i …` |
+> | 🐧 **Fedora / RHEL / openSUSE / Nobara** | `.rpm` | [`Eldoria-0.2.2-linux-x64.rpm`](https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.2-linux-x64.rpm) — `sudo rpm -i …` |
 
 ### Installation rapide (Linux AppImage — universelle)
 
 ```bash
-wget https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.1-linux-x64.AppImage
-chmod +x Eldoria-0.2.1-linux-x64.AppImage
-./Eldoria-0.2.1-linux-x64.AppImage
+wget https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.2-linux-x64.AppImage
+chmod +x Eldoria-0.2.2-linux-x64.AppImage
+./Eldoria-0.2.2-linux-x64.AppImage
 ```
 
 ### Installation rapide (Linux Debian / Fedora)
 
 ```bash
 # Debian · Ubuntu · Linux Mint · Pop!_OS …
-wget https://github.com/DmzGamingYT/Eldoria/releases/latest/download/eldoria_0.2.1_amd64.deb
-sudo dpkg -i eldoria_0.2.1_amd64.deb
+wget https://github.com/DmzGamingYT/Eldoria/releases/latest/download/eldoria_0.2.2_amd64.deb
+sudo dpkg -i eldoria_0.2.2_amd64.deb
 
 # Fedora · RHEL · openSUSE · Nobara …
-sudo rpm -i https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.0-linux-x64.rpm
+sudo rpm -i https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.2-linux-x64.rpm
 ```
 
-> **⚠️ Installeurs non signés pour cette version v0.2.1**
+> **⚠️ Installeurs non signés pour cette version v0.2.2**
 >
 > Cette première release livrée publiquement (post-correctifs suite aux coupures CI de v0.2.0) est **non signée** numériquement, par limitation pratique (coût annuel des certificats Apple Developer ID + EV Authenticode). Vous rencontrerez :
 >

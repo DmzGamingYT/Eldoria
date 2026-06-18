@@ -36,11 +36,15 @@ export function useControls() {
       } else if (k === "h" || k === "?") {
         e.preventDefault();
         s.togglePanel("help");
+      } else if (k === "o") {
+        e.preventDefault();
+        s.togglePanel("options");
       } else if (k === "escape") {
         if (s.ui.inventory) s.closePanel("inventory");
         else if (s.ui.quests) s.closePanel("quests");
         else if (s.ui.character) s.closePanel("character");
         else if (s.ui.help) s.closePanel("help");
+        else if (s.ui.options) s.closePanel("options");
         else if (s.ui.dialogue) s.closeDialogue();
         else if (s.ui.shop) s.closeShop();
         else if (s.status === "playing") s.pause();

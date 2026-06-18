@@ -1,0 +1,30 @@
+fix(build): use bun runtime instead of node in build script
+
+Le commit 9ae46b3 a introduit `node scripts/copy-standalone-assets.mjs`
+dans la commande `build` de package.json. **Cette régression casse les
+CI runners** :
+
+- Les runners GitHub Actions (ci.yml + release.yml) installent Bun via
+  `oven-sh/setup-bun@v2` mais **n'installent jamais Node**. Donc
+  `node: command not found`.
+- Mac dev local a node via homebrew → invisible pour le développeur.
+- Les 3 derniers runs ci.yml sur main ont échoué pour cette raison.
+- Le tag v0.2.1 (run 27758771585) a probablement le même bug.
+
+### 🛠 Fix
+
+Remplace `node` par `bun` dans le build script :
+
+```diff
+- "build": "next build && node scripts/copy-standalone-assets.mjs",
++ "build": "next build && bun scripts/copy-standalone-assets.mjs",
+```
+
+`bun scripts/copy-standalone-assets.mjs` invoque le script via le runtime
+déjà installé par ci.yml + release.yml (pas de setup supplémentaire).
+
+### ▶️ Suivant
+
+1. ci.yml re-déclenché — devrait passer cette fois.
+2. Tag v0.2.1 supprimé puis recréé sur le nouveau HEAD → release.yml
+   se relance avec la commande build corrigée.
