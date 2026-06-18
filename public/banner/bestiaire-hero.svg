@@ -8,59 +8,121 @@
     <!-- Slime -->
     <g transform="translate(80 60)">
       <rect x="-50" y="-20" width="160" height="280" rx="10" fill="url(#enemyCard)" stroke="#a07c3a" stroke-width="2"><animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="0s" repeatCount="indefinite"/></rect>
-      <circle r="55" cx="30" cy="60" fill="url(#slimeGlow)" opacity="0.6">
+      <circle r="55" cx="30" cy="100" fill="url(#slimeGlow)" opacity="0.6">
         <animate attributeName="r" values="50;60;50" dur="2s" repeatCount="indefinite"/>
       </circle>
-      <ellipse cx="30" cy="60" rx="38" ry="40" fill="#5fd35f" opacity="0.85"/>
-      <ellipse cx="30" cy="50" rx="30" ry="10" fill="#fff" opacity="0.6"/>
-      <ellipse cx="20" cy="58" rx="6" ry="9" fill="#1a1a1a"/>
-      <ellipse cx="40" cy="58" rx="6" ry="9" fill="#1a1a1a"/>
-      <ellipse cx="30" cy="80" rx="4" ry="2" fill="#1a1a1a"/>
-      <rect x="-50" y="140" width="160" height="26" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.2s" fill="freeze"/></rect>
-      <text x="30" y="159" text-anchor="middle" font-family="Georgia, serif" font-size="14" font-weight="bold" fill="#f6d97c" letter-spacing="2">SLIME VERT</text>
-      <text x="30" y="180" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#5a3a1f">PV 25 • ATQ 4</text>
-      <text x="30" y="200" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-style="italic" fill="#a07c3a">★☆☆☆☆</text>
-      <text x="30" y="230" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#a07c3a">XP 8 • Or 2-5</text>
+      <ellipse cx="30" cy="100" rx="38" ry="40" fill="#5fd35f" opacity="0.85"/>
+      <ellipse cx="30" cy="90" rx="30" ry="10" fill="#fff" opacity="0.6"/>
+      <ellipse cx="20" cy="98" rx="6" ry="9" fill="#1a1a1a"/>
+      <ellipse cx="40" cy="98" rx="6" ry="9" fill="#1a1a1a"/>
+      <ellipse cx="30" cy="120" rx="4" ry="2" fill="#1a1a1a"/>
+      <rect x="-50" y="180" width="160" height="26" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.2s" fill="freeze"/></rect>
+      <text x="30" y="199" text-anchor="middle" font-family="Georgia, serif" font-size="14" font-weight="bold" fill="#f6d97c" letter-spacing="2">SLIME VERT</text>
+      <text x="30" y="219" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#5a3a1f">PV 25 • ATQ 4</text>
+      <text x="30" y="243" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-style="italic" fill="#a07c3a">★☆☆☆☆</text>
     </g>
 
     <!-- Goblin -->
     <g transform="translate(280 60)">
       <rect x="-50" y="-20" width="160" height="280" rx="10" fill="url(#enemyCard)" stroke="#a07c3a" stroke-width="2"><animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="0.3s" repeatCount="indefinite"/></rect>
-      <ellipse cx="30" cy="120" rx="35" ry="80" fill="#8b5a2b"/>
-      <ellipse cx="30" cy="55" rx="22" ry="24" fill="#a87f4a"/>
-      <polygon points="10,38 18,30 20,45" fill="#a87f4a"/>
-      <polygon points="50,38 42,30 40,45" fill="#a87f4a"/>
-      <circle cx="22" cy="55" r="3.5" fill="#fff" />
-      <circle cx="22" cy="56" r="2" fill="#c00"/>
-      <circle cx="38" cy="55" r="3.5" fill="#fff" />
-      <circle cx="38" cy="56" r="2" fill="#c00"/>
-      <line x1="28" y1="66" x2="36" y2="64" stroke="#3a2412" stroke-width="2"/>
-      <rect x="60" y="100" width="6" height="50" fill="#7a6a4a"/>
-      <rect x="-50" y="185" width="160" height="26" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.4s" fill="freeze"/></rect>
-      <text x="30" y="204" text-anchor="middle" font-family="Georgia, serif" font-size="14" font-weight="bold" fill="#f6d97c" letter-spacing="2">PILLARD GOBELIN</text>
-      <text x="30" y="222" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#5a3a1f">PV 45 • ATQ 8</text>
-      <text x="30" y="248" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-style="italic" fill="#a07c3a">★★☆☆☆</text>
+      <!-- Oversized pointy ears -->
+      <polygon points="6,52 18,32 22,60" fill="#5a8a3a" stroke="#3a5a1a" stroke-width="0.6"/>
+      <polygon points="54,52 42,32 38,60" fill="#5a8a3a" stroke="#3a5a1a" stroke-width="0.6"/>
+      <polygon points="10,46 16,38 18,52" fill="#7aa55a"/>
+      <polygon points="50,46 44,38 42,52" fill="#7aa55a"/>
+      <!-- Head (green) -->
+      <ellipse cx="30" cy="65" rx="24" ry="26" fill="#6a9a4a"/>
+      <ellipse cx="30" cy="62" rx="22" ry="22" fill="#7aa55a"/>
+      <!-- Cheek shadows -->
+      <ellipse cx="20" cy="72" rx="3" ry="5" fill="#4a7a2a" opacity="0.5"/>
+      <ellipse cx="40" cy="72" rx="3" ry="5" fill="#4a7a2a" opacity="0.5"/>
+      <!-- Yellow slitted eyes -->
+      <ellipse cx="22" cy="58" rx="3.5" ry="6" fill="#f4d35a"/>
+      <ellipse cx="22" cy="58" rx="1.5" ry="4.5" fill="#1a1a1a"/>
+      <ellipse cx="38" cy="58" rx="3.5" ry="6" fill="#f4d35a"/>
+      <ellipse cx="38" cy="58" rx="1.5" ry="4.5" fill="#1a1a1a"/>
+      <!-- Nose -->
+      <polygon points="28,72 32,72 30,77" fill="#3a5a1a"/>
+      <!-- Crooked grin -->
+      <path d="M22,82 Q30,90 38,82" fill="none" stroke="#3a2412" stroke-width="2"/>
+      <!-- Fang -->
+      <polygon points="29,84 31,84 30,91" fill="#fff"/>
+      <!-- Body (greenish tunic, ragged hem) -->
+      <path d="M8,95 Q30,88 52,95 L50,148 Q30,158 10,148 Z" fill="#5a8a3a"/>
+      <!-- Belt -->
+      <rect x="10" y="145" width="40" height="6" fill="#3a2412"/>
+      <rect x="27" y="143" width="6" height="10" fill="#a07c3a"/>
+      <!-- Loincloth (dark olive, jagged) -->
+      <path d="M14,151 L18,168 L24,158 L30,170 L36,158 L42,170 L46,151 Z" fill="#3a4a1a"/>
+      <!-- Right arm -->
+      <path d="M48,108 Q60,118 62,128" fill="none" stroke="#6a9a4a" stroke-width="7" stroke-linecap="round"/>
+      <!-- Dagger handle (wood) -->
+      <rect x="56" y="118" width="5" height="22" fill="#5a3a1a" rx="1"/>
+      <!-- Dagger crossguard (iron) -->
+      <rect x="54" y="116" width="9" height="4" fill="#7a7a7a"/>
+      <!-- Dagger blade -->
+      <polygon points="56,116 62,116 59,94" fill="#d0d0d0" stroke="#7a7a7a" stroke-width="0.5"/>
+      <!-- Dagger tip gleam -->
+      <circle cx="59" cy="95" r="1" fill="#fff"/>
+      <!-- Plaque + stats (unified y baseline) -->
+      <rect x="-50" y="180" width="160" height="26" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.4s" fill="freeze"/></rect>
+      <text x="30" y="199" text-anchor="middle" font-family="Georgia, serif" font-size="14" font-weight="bold" fill="#f6d97c" letter-spacing="2">PILLARD GOBELIN</text>
+      <text x="30" y="219" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#5a3a1f">PV 45 • ATQ 8</text>
+      <text x="30" y="243" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-style="italic" fill="#a07c3a">★★☆☆☆</text>
     </g>
 
     <!-- Wolf -->
     <g transform="translate(480 60)">
       <rect x="-50" y="-20" width="160" height="280" rx="10" fill="url(#enemyCard)" stroke="#a07c3a" stroke-width="2"><animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="0.6s" repeatCount="indefinite"/></rect>
-      <ellipse cx="30" cy="100" rx="35" ry="25" fill="#6b6b6b"/>
-      <ellipse cx="55" cy="95" rx="22" ry="20" fill="#6b6b6b"/>
-      <polygon points="40,80 45,72 50,82" fill="#5a5a5a"/>
-      <polygon points="60,78 68,68 72,80" fill="#5a5a5a"/>
-      <circle cx="63" cy="92" r="2.5" fill="#fbbf24">
+      <!-- Drooped bushy tail (behind body) -->
+      <path d="M-4,108 Q-14,122 -10,145 Q-7,162 2,165 Q10,158 6,140 Q6,124 4,112 Z" fill="#6b6b6b" stroke="#3a3a3a" stroke-width="0.6"/>
+      <path d="M-3,128 Q-6,142 -4,154" fill="none" stroke="#3a3a3a" stroke-width="0.8"/>
+      <path d="M1,130 Q-2,144 0,156" fill="none" stroke="#3a3a3a" stroke-width="0.8"/>
+      <!-- Body main -->
+      <ellipse cx="35" cy="115" rx="42" ry="28" fill="#7a7a7a"/>
+      <!-- Belly cream highlight -->
+      <ellipse cx="40" cy="125" rx="30" ry="14" fill="#d8c8a8"/>
+      <!-- Mane/back dark patch -->
+      <path d="M15,90 Q35,80 55,90 Q70,98 70,118 L15,118 Z" fill="#3a3a3a"/>
+      <!-- Head -->
+      <ellipse cx="68" cy="85" rx="22" ry="22" fill="#7a7a7a"/>
+      <!-- Snout (extending forward) -->
+      <polygon points="78,90 102,98 98,108 78,104" fill="#8a8a8a"/>
+      <!-- Nose tip (black) -->
+      <ellipse cx="102" cy="103" rx="4" ry="3" fill="#1a1a1a"/>
+      <!-- Mouth slight open -->
+      <path d="M88,108 Q94,114 100,108" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+      <!-- Tongue hint -->
+      <path d="M92,110 Q94,114 96,110" fill="#c2563a" opacity="0.7"/>
+      <!-- Ears (triangular, standing) -->
+      <polygon points="55,70 56,52 68,72" fill="#5a5a5a"/>
+      <polygon points="58,68 59,60 64,68" fill="#a87a7a"/>
+      <polygon points="74,62 80,46 86,64" fill="#5a5a5a"/>
+      <polygon points="76,64 80,54 84,66" fill="#a87a7a"/>
+      <!-- Glowing eye (yellow, animated) -->
+      <circle cx="68" cy="82" r="3.5" fill="#fbbf24">
         <animate attributeName="opacity" values="0.6;1;0.6" dur="1.6s" repeatCount="indefinite"/>
       </circle>
-      <path d="M70,100 L78,98 L70,104 Z" fill="#1a1a1a"/>
-      <line x1="40" y1="125" x2="35" y2="155" stroke="#5a5a5a" stroke-width="4"/>
-      <line x1="50" y1="125" x2="55" y2="155" stroke="#5a5a5a" stroke-width="4"/>
-      <line x1="20" y1="125" x2="15" y2="155" stroke="#5a5a5a" stroke-width="4"/>
-      <line x1="10" y1="125" x2="5" y2="155" stroke="#5a5a5a" stroke-width="4"/>
+      <circle cx="68" cy="82" r="1.5" fill="#1a1a1a"/>
+      <!-- Legs (4) -->
+      <line x1="55" y1="135" x2="55" y2="160" stroke="#6a6a6a" stroke-width="7" stroke-linecap="round"/>
+      <line x1="68" y1="135" x2="68" y2="160" stroke="#6a6a6a" stroke-width="7" stroke-linecap="round"/>
+      <line x1="10" y1="135" x2="8" y2="158" stroke="#6a6a6a" stroke-width="7" stroke-linecap="round"/>
+      <line x1="22" y1="138" x2="24" y2="160" stroke="#6a6a6a" stroke-width="7" stroke-linecap="round"/>
+      <!-- Paws -->
+      <ellipse cx="55" cy="162" rx="6" ry="3" fill="#3a3a3a"/>
+      <ellipse cx="68" cy="162" rx="6" ry="3" fill="#3a3a3a"/>
+      <ellipse cx="8" cy="160" rx="6" ry="3" fill="#3a3a3a"/>
+      <ellipse cx="24" cy="162" rx="6" ry="3" fill="#3a3a3a"/>
+      <!-- Claws -->
+      <line x1="50" y1="164" x2="52" y2="166" stroke="#fff" stroke-width="1"/>
+      <line x1="55" y1="164" x2="55" y2="167" stroke="#fff" stroke-width="1"/>
+      <line x1="60" y1="164" x2="58" y2="166" stroke="#fff" stroke-width="1"/>
+      <!-- Plaque + stats (unified y baseline) -->
       <rect x="-50" y="180" width="160" height="26" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.6s" fill="freeze"/></rect>
-      <text x="30" y="199" text-anchor="middle" font-family="Georgia, serif" font-size="14" font-weight="bold" fill="#f6d97c" letter-spacing="2">LOUP SINISTRE</text>
-      <text x="30" y="220" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#5a3a1f">PV 60 • ATQ 12</text>
-      <text x="30" y="245" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-style="italic" fill="#a07c3a">★★★☆☆</text>
+      <text x="35" y="199" text-anchor="middle" font-family="Georgia, serif" font-size="14" font-weight="bold" fill="#f6d97c" letter-spacing="2">LOUP SINISTRE</text>
+      <text x="35" y="219" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#5a3a1f">PV 60 • ATQ 12</text>
+      <text x="35" y="243" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-style="italic" fill="#a07c3a">★★★☆☆</text>
     </g>
 
     <!-- Skeleton -->
@@ -87,27 +149,66 @@
       <rect x="78" y="56" width="14" height="14" fill="#a07c3a"/>
       <rect x="-50" y="180" width="160" height="26" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.8s" fill="freeze"/></rect>
       <text x="30" y="199" text-anchor="middle" font-family="Georgia, serif" font-size="14" font-weight="bold" fill="#f6d97c" letter-spacing="2">SQUELETTE</text>
-      <text x="30" y="218" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#5a3a1f">PV 80 • ATQ 16</text>
-      <text x="30" y="245" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-style="italic" fill="#a07c3a">★★★★☆</text>
+      <text x="30" y="219" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#5a3a1f">PV 80 • ATQ 16</text>
+      <text x="30" y="243" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-style="italic" fill="#a07c3a">★★★★☆</text>
     </g>
 
     <!-- Ogre -->
     <g transform="translate(880 60)">
       <rect x="-50" y="-20" width="190" height="280" rx="10" fill="url(#enemyCard)" stroke="#a07c3a" stroke-width="2"><animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="3.6s" begin="1.2s" repeatCount="indefinite"/></rect>
-      <ellipse cx="50" cy="100" rx="50" ry="70" fill="#7a4f8b"/>
-      <ellipse cx="50" cy="60" rx="28" ry="28" fill="#9b6fc6"/>
-      <circle cx="42" cy="58" r="4" fill="#fff"/>
-      <circle cx="42" cy="59" r="2.5" fill="#a13a2a"/>
-      <circle cx="58" cy="58" r="4" fill="#fff"/>
-      <circle cx="58" cy="59" r="2.5" fill="#a13a2a"/>
-      <path d="M40,72 L60,72" stroke="#3a2412" stroke-width="2"/>
-      <polygon points="48,72 50,80 52,72" fill="#fff"/>
-      <rect x="78" y="80" width="10" height="60" fill="#b8860b"/>
-      <rect x="78" y="125" width="35" height="14" fill="#5a3e10"/>
-      <rect x="-50" y="185" width="190" height="26" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="1.0s" fill="freeze"/></rect>
-      <text x="50" y="204" text-anchor="middle" font-family="Georgia, serif" font-size="14" font-weight="bold" fill="#f6d97c" letter-spacing="2">OGRE DES CAVERNES</text>
-      <text x="50" y="222" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#5a3a1f">PV 160 • ATQ 26</text>
-      <text x="50" y="245" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-style="italic" fill="#a07c3a">★★★★★</text>
+      <!-- Massive spiked club (held upright to the right) -->
+      <rect x="128" y="40" width="14" height="125" fill="#5a3a1a" rx="3"/>
+      <!-- Club head -->
+      <ellipse cx="135" cy="50" rx="30" ry="24" fill="#3a2412"/>
+      <ellipse cx="135" cy="50" rx="26" ry="20" fill="#5a3a1a"/>
+      <!-- Iron spikes around club head -->
+      <polygon points="135,18 130,32 140,32" fill="#8a8a8a" stroke="#3a3a3a" stroke-width="0.4"/>
+      <polygon points="108,38 112,52 100,48" fill="#8a8a8a" stroke="#3a3a3a" stroke-width="0.4"/>
+      <polygon points="162,38 158,52 170,48" fill="#8a8a8a" stroke="#3a3a3a" stroke-width="0.4"/>
+      <polygon points="104,60 113,66 106,72" fill="#8a8a8a" stroke="#3a3a3a" stroke-width="0.4"/>
+      <polygon points="166,60 157,66 164,72" fill="#8a8a8a" stroke="#3a3a3a" stroke-width="0.4"/>
+      <polygon points="118,80 124,86 120,90" fill="#8a8a8a" stroke="#3a3a3a" stroke-width="0.4"/>
+      <polygon points="152,80 146,86 150,90" fill="#8a8a8a" stroke="#3a3a3a" stroke-width="0.4"/>
+      <!-- Stump legs -->
+      <rect x="20" y="148" width="22" height="22" fill="#3a4a1a"/>
+      <rect x="58" y="148" width="22" height="22" fill="#3a4a1a"/>
+      <!-- Boots -->
+      <rect x="16" y="166" width="30" height="8" fill="#3a2412" rx="2"/>
+      <rect x="54" y="166" width="30" height="8" fill="#3a2412" rx="2"/>
+      <!-- Body (barrel chest, dark olive) -->
+      <ellipse cx="50" cy="120" rx="50" ry="38" fill="#4a5a2a"/>
+      <!-- Tunic overlay -->
+      <path d="M5,110 Q50,98 95,110 L92,148 Q50,158 8,148 Z" fill="#5a6a3a"/>
+      <!-- Belt rope -->
+      <path d="M10,145 Q50,150 90,145" fill="none" stroke="#3a2412" stroke-width="3"/>
+      <!-- Belt knot -->
+      <circle cx="50" cy="148" r="3" fill="#5a3a1a"/>
+      <!-- Head (wide) -->
+      <ellipse cx="50" cy="60" rx="34" ry="28" fill="#6a7a4a"/>
+      <!-- Brow ridge (thick dark) -->
+      <path d="M16,46 Q50,38 84,46 L82,55 Q50,52 18,55 Z" fill="#3a2412"/>
+      <!-- Eyes (red glowing under brow) -->
+      <circle cx="38" cy="58" r="5" fill="#ff3344">
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="1.2s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="62" cy="58" r="5" fill="#ff3344">
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="1.2s" begin="0.3s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="38" cy="58" r="2" fill="#1a1a1a"/>
+      <circle cx="62" cy="58" r="2" fill="#1a1a1a"/>
+      <!-- Snarl mouth -->
+      <path d="M30,76 Q50,84 70,76" fill="none" stroke="#3a2412" stroke-width="2.5"/>
+      <!-- Tusks (2 large white) -->
+      <polygon points="34,76 40,76 37,90" fill="#fff" stroke="#a0a0a0" stroke-width="0.3"/>
+      <polygon points="60,76 66,76 63,90" fill="#fff" stroke="#a0a0a0" stroke-width="0.3"/>
+      <!-- Belly fold lines -->
+      <line x1="30" y1="120" x2="30" y2="142" stroke="#3a4a1a" stroke-width="1"/>
+      <line x1="70" y1="120" x2="70" y2="142" stroke="#3a4a1a" stroke-width="1"/>
+      <!-- Plaque + stats (unified y baseline) -->
+      <rect x="-50" y="180" width="190" height="26" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="1.0s" fill="freeze"/></rect>
+      <text x="50" y="199" text-anchor="middle" font-family="Georgia, serif" font-size="14" font-weight="bold" fill="#f6d97c" letter-spacing="2">OGRE DES CAVERNES</text>
+      <text x="50" y="219" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#5a3a1f">PV 160 • ATQ 26</text>
+      <text x="50" y="243" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-style="italic" fill="#a07c3a">★★★★★</text>
     </g>
 
     <!-- Boss Mordrak -->
