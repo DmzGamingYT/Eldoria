@@ -22,7 +22,10 @@ const SCREENSHOTS_DIR = "./public/screenshots";
 const BASE_URL = process.env.ELDORIA_URL ?? "http://localhost:3000";
 const VIEWPORT = { width: 1440, height: 900 };
 
-existsSync(SCREENSHOTS_DIR) || mkdirSync(SCREENSHOTS_DIR, { recursive: true });
+// `mkdirSync` with `{ recursive: true }` is a no-op if the directory
+// already exists — so we just call it unconditionally (no `existsSync`
+// check, which would be a flagged `no-unused-expressions` lint hit).
+mkdirSync(SCREENSHOTS_DIR, { recursive: true });
 
 // ─── Helpers ─────────────────────────────────────────────────────
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

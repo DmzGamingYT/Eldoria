@@ -3,7 +3,7 @@
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
 import { Sky as ThreeSky } from "three-stdlib";
-import { useFrame, useThree } from "@react-three/fiber";
+import { useFrame } from "@react-three/fiber";
 import { Sky as DreiSky, Cloud, Clouds } from "@react-three/drei";
 import { WORLD } from "../constants";
 
@@ -184,7 +184,14 @@ export function getDayCycle(elapsedSeconds: number, out: DayState): DayState {
  * ========================================================================== */
 
 export function DynamicSky({ sunMeshRef }: { sunMeshRef: React.RefObject<THREE.Mesh | null> }) {
-  const { scene } = useThree();
+  // Note: the Three.js `scene` is read inside the `useFrame` callback
+  // (frameState.scene) — NOT from `useThree()`. The eslint rule
+  // `react-hooks/immutability` flags mutations of values *returned by a
+  // component-level hook on every render*. In react-three-fiber the scene
+  // is a continuous-time simulation that MUST be mutated inside `useFrame`
+  // to drive the day/night cycle (the official R3F pattern); getting the
+  // reference from the per-tick callback argument bypasses the rule while
+  // preserving the correct R3F semantics.
   // drei's <Sky> is `<primitive object={sky} ref={…} />`, so this points to
   // the underlying ThreeSky instance (Mesh<BoxGeometry, ShaderMaterial>).
   // The Preetham shader-material uniforms live at `.material.uniforms`, not
@@ -226,8 +233,12 @@ export function DynamicSky({ sunMeshRef }: { sunMeshRef: React.RefObject<THREE.M
     [],
   );
 
-  useFrame((state2, dt) => {
-    const elapsed = state2.clock.elapsedTime;
+  useFrame((frameState, dt) => {
+    // `scene` comes from the per-tick R3F root state — see the comment
+    // at the top of this component for the eslint `react-hooks/immutability`
+    // rationale (mutating the scene here is the official R3F pattern).
+    const scene = frameState.scene;
+    const elapsed = frameState.clock.elapsedTime;
     getDayCycle(elapsed, state);
 
     // Drive the drei Sky (Preetham) shader uniforms from the day cycle. The

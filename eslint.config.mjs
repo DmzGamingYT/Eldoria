@@ -15,6 +15,10 @@ const eslintConfig = [...nextCoreWebVitals, ...nextTypescript, {
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/prefer-as-const": "off",
     "@typescript-eslint/no-unused-disable-directive": "off",
+
+    // Per-directory overrides (Electron, R3F, scripts) live at the BOTTOM of
+    // this file under a dedicated `files:` block — keeping the project-level
+    // rule set strict and adding waivers only where they are justified.
     
     // React rules
     "react-hooks/exhaustive-deps": "off",
@@ -45,6 +49,23 @@ const eslintConfig = [...nextCoreWebVitals, ...nextTypescript, {
   },
 }, {
   ignores: ["node_modules/**", ".next/**", "out/**", "build/**", "next-env.d.ts", "examples/**", "skills"]
+}, {
+  // ─── Per-directory overrides ─────────────────────────────────────
+  // Some files intentionally use patterns that the project's default
+  // rule set would incorrectly flag. The overrides below document and
+  // whitelist those cases *locally* without weakening the rule set
+  // project-wide.
+  files: ["electron/**/*.js"],
+  rules: {
+    // The Electron main process and preload scripts MUST be CommonJS:
+    //   • `package.json` has no `"type": "module"` field (so it's CJS).
+    //   • Electron's main process historically requires `require()`.
+    //   • The preload script runs in an isolated context where CJS is
+    //     the safe, default choice.
+    // (We could migrate these files to ESM one day, but that's an
+    //  Electron-specific refactor — out of scope here.)
+    "@typescript-eslint/no-require-imports": "off",
+  },
 }];
 
 export default eslintConfig;
