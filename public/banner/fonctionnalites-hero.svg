@@ -1,0 +1,257 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1320 740" width="100%" style="max-width:1320px" role="img" aria-label="Les treize piliers d'Eldoria">
+  <title>Les treize piliers d'Eldoria</title>
+  <desc>Panoramic banner showcasing the thirteen core features of Eldoria: Monde 3D, Combat, Bestiaire, PNJ, Quêtes, Inventaire, Crafting, Boutique, Magie, Progression, Sauvegarde, Desktop, Direction Artistique parchemin.</desc>
+
+  <defs>
+    <linearGradient id="bgP" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a0e2e"/>
+      <stop offset="100%" stop-color="#3a2412"/>
+    </linearGradient>
+    <linearGradient id="goldL" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fff4c2"/>
+      <stop offset="50%" stop-color="#f6d97c"/>
+      <stop offset="100%" stop-color="#a07c3a"/>
+    </linearGradient>
+    <linearGradient id="cardL" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fff4c2"/>
+      <stop offset="100%" stop-color="#ead7a8"/>
+    </linearGradient>
+    <radialGradient id="rFire" cx="0.5" cy="0.45" r="0.55">
+      <stop offset="0%" stop-color="#ff5722" stop-opacity="0.50"/>
+      <stop offset="100%" stop-color="#7a1c0a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="rForge" cx="0.5" cy="0.45" r="0.55">
+      <stop offset="0%" stop-color="#ffa64d" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#8a3a0a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="rMagic" cx="0.5" cy="0.45" r="0.55">
+      <stop offset="0%" stop-color="#9966ff" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#3a1c7a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="rGlowGold" cx="0.5" cy="0.45" r="0.55">
+      <stop offset="0%" stop-color="#fff4c2" stop-opacity="0.65"/>
+      <stop offset="100%" stop-color="#a07c3a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="rEarth" cx="0.5" cy="0.45" r="0.55">
+      <stop offset="0%" stop-color="#c8956a" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#5a3a1f" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- ===== Background cartouche (cream parchment + gold border) ===== -->
+  <rect width="1320" height="740" fill="#faf3df"/>
+  <rect x="6" y="6" width="1308" height="728" fill="none" stroke="url(#goldL)" stroke-width="2" rx="5"/>
+  <rect x="14" y="14" width="1292" height="712" fill="none" stroke="#a07c3a" stroke-width="0.5" opacity="0.45" rx="3"/>
+  <text x="22" y="36" fill="#a07c3a" font-family="Georgia, serif" font-size="20" opacity="0.8">❦</text>
+  <text x="1298" y="36" fill="#a07c3a" font-family="Georgia, serif" font-size="20" text-anchor="end" opacity="0.8">❧</text>
+  <text x="22" y="728" fill="#a07c3a" font-family="Georgia, serif" font-size="20" opacity="0.8">❧</text>
+  <text x="1298" y="728" fill="#a07c3a" font-family="Georgia, serif" font-size="20" text-anchor="end" opacity="0.8">❦</text>
+
+  <!-- ===== HEADER cartouche ===== -->
+  <g transform="translate(660 50)" text-anchor="middle">
+    <rect x="-360" y="-32" width="720" height="64" fill="url(#bgP)" stroke="url(#goldL)" stroke-width="2" rx="6">
+      <animate attributeName="stroke-opacity" values="0.55;1;0.55" dur="4s" repeatCount="indefinite"/>
+    </rect>
+    <rect x="-354" y="-26" width="708" height="52" fill="none" stroke="#f6d97c" stroke-width="0.5" rx="4" opacity="0.5"/>
+    <text x="-340" y="2" fill="#f6d97c" font-family="Georgia, serif" font-size="20" opacity="0.9">❦</text>
+    <text x="340" y="2" fill="#f6d97c" font-family="Georgia, serif" font-size="20" text-anchor="end" opacity="0.9">❧</text>
+    <text y="-6" fill="#f6d97c" font-family="Georgia, serif" font-size="11" letter-spacing="6" font-weight="bold">
+      ◆ LES TREIZE PILIERS D'ELDORIA ◆
+      <animate attributeName="opacity" values="0;1" dur="1.4s" fill="freeze"/>
+    </text>
+    <text y="22" fill="#fff4c2" font-family="Georgia, serif" font-size="15" font-style="italic">
+      Tremplins du royaume — chacun tisse sa légende…
+      <animate attributeName="opacity" values="0;1" dur="1.4s" begin="0.4s" fill="freeze"/>
+    </text>
+    <circle cx="-360" cy="-20" r="2" fill="#f6d97c">
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="360" cy="-20" r="2" fill="#f6d97c">
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" begin="0.6s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="-360" cy="20" r="2" fill="#f6d97c">
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" begin="1.2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="360" cy="20" r="2" fill="#f6d97c">
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" begin="1.8s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- ===== ROW 1 : 5 foundation pillars (CENTERED: cols 60 / 300 / 540 / 780 / 1020) ===== -->
+
+  <!-- 1 : MONDE 3D -->
+  <g transform="translate(60 110)" opacity="0">
+    <animate attributeName="opacity" values="0;1" dur="0.9s" begin="0.6s" fill="freeze"/>
+    <rect x="4" y="4" width="192" height="160" rx="8" fill="url(#cardL)" stroke="#a07c3a" stroke-width="1.5"/>
+    <rect x="9" y="9" width="182" height="150" rx="6" fill="none" stroke="#a07c3a" stroke-width="0.4" opacity="0.4"/>
+    <circle cx="100" cy="56" r="36" fill="url(#rGlowGold)">
+      <animate attributeName="r" values="30;38;30" dur="3.6s" repeatCount="indefinite"/>
+    </circle>
+    <text x="100" y="68" font-size="34" text-anchor="middle">🌍</text>
+    <rect x="14" y="116" width="172" height="22" fill="#3a2412" stroke="#f6d97c" stroke-width="1.2" rx="3"/>
+    <text x="100" y="131" font-size="11" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="1">❦ MONDE 3D ❦</text>
+    <text x="100" y="154" font-size="11" text-anchor="middle" font-family="Georgia, serif" fill="#3a2412" font-style="italic">200 × 200u · jour/nuit 180 s</text>
+  </g>
+
+  <!-- 2 : COMBAT (fire) -->
+  <g transform="translate(300 110)" opacity="0">
+    <animate attributeName="opacity" values="0;1" dur="0.9s" begin="0.7s" fill="freeze"/>
+    <rect x="4" y="4" width="192" height="160" rx="8" fill="url(#cardL)" stroke="#a07c3a" stroke-width="1.5"/>
+    <rect x="9" y="9" width="182" height="150" rx="6" fill="none" stroke="#a07c3a" stroke-width="0.4" opacity="0.4"/>
+    <circle cx="100" cy="56" r="36" fill="url(#rFire)">
+      <animate attributeName="r" values="30;40;30" dur="2.4s" repeatCount="indefinite"/>
+    </circle>
+    <text x="100" y="68" font-size="34" text-anchor="middle">⚔️</text>
+    <rect x="14" y="116" width="172" height="22" fill="#3a2412" stroke="#f6d97c" stroke-width="1.2" rx="3"/>
+    <text x="100" y="131" font-size="11" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="1">❦ COMBAT ❦</text>
+    <text x="100" y="154" font-size="11" text-anchor="middle" font-family="Georgia, serif" fill="#3a2412" font-style="italic">arc · combo · i-frames · FX</text>
+  </g>
+
+  <!-- 3 : BESTIAIRE -->
+  <g transform="translate(540 110)" opacity="0">
+    <animate attributeName="opacity" values="0;1" dur="0.9s" begin="0.8s" fill="freeze"/>
+    <rect x="4" y="4" width="192" height="160" rx="8" fill="url(#cardL)" stroke="#a07c3a" stroke-width="1.5"/>
+    <rect x="9" y="9" width="182" height="150" rx="6" fill="none" stroke="#a07c3a" stroke-width="0.4" opacity="0.4"/>
+    <circle cx="100" cy="56" r="34" fill="url(#rEarth)" opacity="0.75"/>
+    <text x="100" y="68" font-size="34" text-anchor="middle">👹</text>
+    <rect x="14" y="116" width="172" height="22" fill="#3a2412" stroke="#f6d97c" stroke-width="1.2" rx="3"/>
+    <text x="100" y="131" font-size="11" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="1">❦ BESTIAIRE ❦</text>
+    <text x="100" y="154" font-size="11" text-anchor="middle" font-family="Georgia, serif" fill="#3a2412" font-style="italic">6 + 1 boss · IA · respawn 30 s</text>
+  </g>
+
+  <!-- 4 : PNJ -->
+  <g transform="translate(780 110)" opacity="0">
+    <animate attributeName="opacity" values="0;1" dur="0.9s" begin="0.9s" fill="freeze"/>
+    <rect x="4" y="4" width="192" height="160" rx="8" fill="url(#cardL)" stroke="#a07c3a" stroke-width="1.5"/>
+    <rect x="9" y="9" width="182" height="150" rx="6" fill="none" stroke="#a07c3a" stroke-width="0.4" opacity="0.4"/>
+    <circle cx="100" cy="56" r="34" fill="url(#rGlowGold)" opacity="0.7"/>
+    <text x="100" y="68" font-size="34" text-anchor="middle">🎭</text>
+    <rect x="14" y="116" width="172" height="22" fill="#3a2412" stroke="#f6d97c" stroke-width="1.2" rx="3"/>
+    <text x="100" y="131" font-size="11" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="1">❦ PNJ ❦</text>
+    <text x="100" y="154" font-size="11" text-anchor="middle" font-family="Georgia, serif" fill="#3a2412" font-style="italic">4 mentors · dialogues ramifiés</text>
+  </g>
+
+  <!-- 5 : QUÊTES -->
+  <g transform="translate(1020 110)" opacity="0">
+    <animate attributeName="opacity" values="0;1" dur="0.9s" begin="1.0s" fill="freeze"/>
+    <rect x="4" y="4" width="192" height="160" rx="8" fill="url(#cardL)" stroke="#a07c3a" stroke-width="1.5"/>
+    <rect x="9" y="9" width="182" height="150" rx="6" fill="none" stroke="#a07c3a" stroke-width="0.4" opacity="0.4"/>
+    <circle cx="100" cy="56" r="34" fill="url(#rGlowGold)" opacity="0.7"/>
+    <text x="100" y="68" font-size="34" text-anchor="middle">📜</text>
+    <rect x="14" y="116" width="172" height="22" fill="#3a2412" stroke="#f6d97c" stroke-width="1.2" rx="3"/>
+    <text x="100" y="131" font-size="11" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="1">❦ QUÊTES ❦</text>
+    <text x="100" y="154" font-size="11" text-anchor="middle" font-family="Georgia, serif" fill="#3a2412" font-style="italic">5 chapitres · 7 coffres</text>
+  </g>
+
+  <!-- ===== ROW 2 : 4 player-system pillars (cols 165 / 405 / 645 / 885) ===== -->
+
+  <!-- 6 : INVENTAIRE -->
+  <g transform="translate(165 300)" opacity="0">
+    <animate attributeName="opacity" values="0;1" dur="0.9s" begin="1.1s" fill="freeze"/>
+    <rect x="4" y="4" width="192" height="160" rx="8" fill="url(#cardL)" stroke="#a07c3a" stroke-width="1.5"/>
+    <rect x="9" y="9" width="182" height="150" rx="6" fill="none" stroke="#a07c3a" stroke-width="0.4" opacity="0.4"/>
+    <circle cx="100" cy="56" r="34" fill="url(#rEarth)" opacity="0.7"/>
+    <text x="100" y="68" font-size="34" text-anchor="middle">🎒</text>
+    <rect x="14" y="116" width="172" height="22" fill="#3a2412" stroke="#f6d97c" stroke-width="1.2" rx="3"/>
+    <text x="100" y="131" font-size="11" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="1">❦ INVENTAIRE ❦</text>
+    <text x="100" y="154" font-size="11" text-anchor="middle" font-family="Georgia, serif" fill="#3a2412" font-style="italic">16+ objets · 5 niveaux de rareté</text>
+  </g>
+
+  <!-- 7 : CRAFTING (forge glow — distinct from Combat fire) -->
+  <g transform="translate(405 300)" opacity="0">
+    <animate attributeName="opacity" values="0;1" dur="0.9s" begin="1.2s" fill="freeze"/>
+    <rect x="4" y="4" width="192" height="160" rx="8" fill="url(#cardL)" stroke="#a07c3a" stroke-width="1.5"/>
+    <rect x="9" y="9" width="182" height="150" rx="6" fill="none" stroke="#a07c3a" stroke-width="0.4" opacity="0.4"/>
+    <circle cx="100" cy="56" r="34" fill="url(#rForge)" opacity="0.7">
+      <animate attributeName="r" values="30;38;30" dur="3.2s" begin="0.4s" repeatCount="indefinite"/>
+    </circle>
+    <text x="100" y="68" font-size="34" text-anchor="middle">⚒️</text>
+    <rect x="14" y="116" width="172" height="22" fill="#3a2412" stroke="#f6d97c" stroke-width="1.2" rx="3"/>
+    <text x="100" y="131" font-size="11" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="1">❦ CRAFTING ❦</text>
+    <text x="100" y="154" font-size="11" text-anchor="middle" font-family="Georgia, serif" fill="#3a2412" font-style="italic">7 recettes · armes/armures/potions</text>
+  </g>
+
+  <!-- 8 : BOUTIQUE -->
+  <g transform="translate(645 300)" opacity="0">
+    <animate attributeName="opacity" values="0;1" dur="0.9s" begin="1.3s" fill="freeze"/>
+    <rect x="4" y="4" width="192" height="160" rx="8" fill="url(#cardL)" stroke="#a07c3a" stroke-width="1.5"/>
+    <rect x="9" y="9" width="182" height="150" rx="6" fill="none" stroke="#a07c3a" stroke-width="0.4" opacity="0.4"/>
+    <circle cx="100" cy="56" r="34" fill="url(#rGlowGold)" opacity="0.7"/>
+    <text x="100" y="68" font-size="34" text-anchor="middle">🏪</text>
+    <rect x="14" y="116" width="172" height="22" fill="#3a2412" stroke="#f6d97c" stroke-width="1.2" rx="3"/>
+    <text x="100" y="131" font-size="11" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="1">❦ BOUTIQUE ❦</text>
+    <text x="100" y="154" font-size="11" text-anchor="middle" font-family="Georgia, serif" fill="#3a2412" font-style="italic">achat/vente · revente 50 % valeur</text>
+  </g>
+
+  <!-- 9 : MAGIE (violet pulse) -->
+  <g transform="translate(885 300)" opacity="0">
+    <animate attributeName="opacity" values="0;1" dur="0.9s" begin="1.4s" fill="freeze"/>
+    <rect x="4" y="4" width="192" height="160" rx="8" fill="url(#cardL)" stroke="#a07c3a" stroke-width="1.5"/>
+    <rect x="9" y="9" width="182" height="150" rx="6" fill="none" stroke="#a07c3a" stroke-width="0.4" opacity="0.4"/>
+    <circle cx="100" cy="56" r="36" fill="url(#rMagic)">
+      <animate attributeName="r" values="30;40;30" dur="2.4s" repeatCount="indefinite"/>
+    </circle>
+    <text x="100" y="68" font-size="34" text-anchor="middle">🔮</text>
+    <rect x="14" y="116" width="172" height="22" fill="#3a2412" stroke="#f6d97c" stroke-width="1.2" rx="3"/>
+    <text x="100" y="131" font-size="11" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="1">❦ MAGIE ❦</text>
+    <text x="100" y="154" font-size="11" text-anchor="middle" font-family="Georgia, serif" fill="#3a2412" font-style="italic">5 sorts · mana · ciblage</text>
+  </g>
+
+  <!-- ===== ROW 3 : 4 meta-system pillars (cols 165 / 405 / 645 / 885) ===== -->
+
+  <!-- 10 : PROGRESSION -->
+  <g transform="translate(165 490)" opacity="0">
+    <animate attributeName="opacity" values="0;1" dur="0.9s" begin="1.5s" fill="freeze"/>
+    <rect x="4" y="4" width="192" height="160" rx="8" fill="url(#cardL)" stroke="#a07c3a" stroke-width="1.5"/>
+    <rect x="9" y="9" width="182" height="150" rx="6" fill="none" stroke="#a07c3a" stroke-width="0.4" opacity="0.4"/>
+    <circle cx="100" cy="56" r="34" fill="url(#rGlowGold)" opacity="0.7"/>
+    <text x="100" y="68" font-size="34" text-anchor="middle">📈</text>
+    <rect x="14" y="116" width="172" height="22" fill="#3a2412" stroke="#f6d97c" stroke-width="1.2" rx="3"/>
+    <text x="100" y="131" font-size="11" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="1">❦ PROGRESSION ❦</text>
+    <text x="100" y="154" font-size="11" text-anchor="middle" font-family="Georgia, serif" fill="#3a2412" font-style="italic">XP · level^1.6 · 3 pts/niveau</text>
+  </g>
+
+  <!-- 11 : SAUVEGARDE -->
+  <g transform="translate(405 490)" opacity="0">
+    <animate attributeName="opacity" values="0;1" dur="0.9s" begin="1.6s" fill="freeze"/>
+    <rect x="4" y="4" width="192" height="160" rx="8" fill="url(#cardL)" stroke="#a07c3a" stroke-width="1.5"/>
+    <rect x="9" y="9" width="182" height="150" rx="6" fill="none" stroke="#a07c3a" stroke-width="0.4" opacity="0.4"/>
+    <circle cx="100" cy="56" r="34" fill="url(#rEarth)" opacity="0.7"/>
+    <text x="100" y="68" font-size="34" text-anchor="middle">💾</text>
+    <rect x="14" y="116" width="172" height="22" fill="#3a2412" stroke="#f6d97c" stroke-width="1.2" rx="3"/>
+    <text x="100" y="131" font-size="11" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="1">❦ SAUVEGARDE ❦</text>
+    <text x="100" y="154" font-size="11" text-anchor="middle" font-family="Georgia, serif" fill="#3a2412" font-style="italic">localStorage + Prisma/SQLite</text>
+  </g>
+
+  <!-- 12 : DESKTOP -->
+  <g transform="translate(645 490)" opacity="0">
+    <animate attributeName="opacity" values="0;1" dur="0.9s" begin="1.7s" fill="freeze"/>
+    <rect x="4" y="4" width="192" height="160" rx="8" fill="url(#cardL)" stroke="#a07c3a" stroke-width="1.5"/>
+    <rect x="9" y="9" width="182" height="150" rx="6" fill="none" stroke="#a07c3a" stroke-width="0.4" opacity="0.4"/>
+    <circle cx="100" cy="56" r="34" fill="url(#rGlowGold)" opacity="0.7"/>
+    <text x="100" y="68" font-size="34" text-anchor="middle">🖥️</text>
+    <rect x="14" y="116" width="172" height="22" fill="#3a2412" stroke="#f6d97c" stroke-width="1.2" rx="3"/>
+    <text x="100" y="131" font-size="11" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="1">❦ DESKTOP ❦</text>
+    <text x="100" y="154" font-size="11" text-anchor="middle" font-family="Georgia, serif" fill="#3a2412" font-style="italic">Web + Electron · Win / Mac / Linux</text>
+  </g>
+
+  <!-- 13 : DA PARCHEMIN (gold premium accent — meta-feature crown) -->
+  <g transform="translate(885 490)" opacity="0">
+    <animate attributeName="opacity" values="0;1" dur="0.9s" begin="1.8s" fill="freeze"/>
+    <rect x="4" y="4" width="192" height="160" rx="8" fill="url(#cardL)" stroke="url(#goldL)" stroke-width="2"/>
+    <rect x="9" y="9" width="182" height="150" rx="6" fill="none" stroke="#a07c3a" stroke-width="0.4" opacity="0.4"/>
+    <circle cx="100" cy="56" r="40" fill="url(#rGlowGold)">
+      <animate attributeName="r" values="34;44;34" dur="3.6s" repeatCount="indefinite"/>
+    </circle>
+    <text x="100" y="68" font-size="34" text-anchor="middle">🎨</text>
+    <rect x="14" y="116" width="172" height="22" fill="#3a2412" stroke="#f6d97c" stroke-width="1.2" rx="3"/>
+    <text x="100" y="131" font-size="11" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="1">❦ DA PARCHEMIN ❦</text>
+    <text x="100" y="154" font-size="11" text-anchor="middle" font-family="Georgia, serif" fill="#3a2412" font-style="italic">Bloom · GodRays · Cinzel</text>
+  </g>
+
+  <!-- ===== FOOTER caption (y=688 → breathing room above bottom ornaments at y=728) ===== -->
+  <text x="660" y="688" text-anchor="middle" font-family="Georgia, serif" font-size="12" font-style="italic" fill="#5a3a1f" letter-spacing="3">
+    ❦ Le royaume n'est pas un assemblage — c'est une cathédrale pensée comme un seul dépôt ❦
+    <animate attributeName="opacity" values="0;1" dur="1.4s" begin="2.4s" fill="freeze"/>
+  </text>
+</svg>
