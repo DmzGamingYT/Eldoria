@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useState, useSyncExternalStore } from "react";
 
 /* -------------------------------------------------------------------------- */
 /*  UpdateNotifier — listens to electron-updater IPC events via preload.js   */
@@ -43,53 +43,110 @@ function getElectronAPI(): ElectronAPI | null {
   return (api as ElectronAPI) ?? null;
 }
 
+/* ---------------- External store (module-scoped, browser-only) --------------
+ * The Electron IPC API is a singleton. We keep the four pieces of updater
+ * state in a module-level snapshot and notify all subscribers on each event.
+ *
+ * The component subscribes via `useSyncExternalStore` — the React 18+
+ * official pattern for "subscribe to an external event source that only
+ * exists after mount" (Electron preload IPC in our case). This replaces the
+ * older `useState` + `useEffect` pattern that triggered the
+ * `react-hooks/set-state-in-effect` lint error AND avoided the cascade of
+ * two synchronous re-renders (one per setState).
+ * -------------------------------------------------------------------------- */
+interface NotifierSnapshot {
+  state: UpdateState;
+  info: UpdateInfo | null;
+  progress: DownloadProgress | null;
+  errorMsg: string;
+}
+
+const INITIAL_SNAPSHOT: NotifierSnapshot = {
+  state: "idle",
+  info: null,
+  progress: null,
+  errorMsg: "",
+};
+
+let snapshot: NotifierSnapshot = INITIAL_SNAPSHOT;
+const listeners = new Set<() => void>();
+
+// Lazy init:
+//   undefined  → not yet probed (first client subscription will trigger it)
+//   null       → probed and not in Electron
+//   ElectronAPI → probed and bound
+let cachedApi: ElectronAPI | null | undefined = undefined;
+
+function notifyAll() {
+  for (const l of listeners) l();
+}
+
+function bindApi(api: ElectronAPI) {
+  api.onUpdateAvailable((info) => {
+    snapshot = { ...snapshot, state: "available", info };
+    notifyAll();
+  });
+  api.onUpdateDownloadProgress((progress) => {
+    snapshot = { ...snapshot, state: "downloading", progress };
+    notifyAll();
+  });
+  api.onUpdateDownloaded((info) => {
+    snapshot = { ...snapshot, state: "downloaded", info };
+    notifyAll();
+  });
+  api.onUpdateError((err) => {
+    snapshot = { ...snapshot, state: "error", errorMsg: err.message };
+    notifyAll();
+  });
+}
+
+function getApi(): ElectronAPI | null {
+  if (cachedApi !== undefined) return cachedApi;
+  cachedApi = getElectronAPI();
+  if (cachedApi) bindApi(cachedApi);
+  return cachedApi;
+}
+
+/** `useSyncExternalStore` subscribe impl. Lazy-binds the api on the first
+ *  client subscription so handlers are registered exactly once, only in
+ *  the browser (never on the SSR pass). */
+function subscribe(notify: () => void): () => void {
+  listeners.add(notify);
+  if (typeof window !== "undefined") getApi();
+  return () => {
+    listeners.delete(notify);
+  };
+}
+
+/** `useSyncExternalStore` getSnapshot impl. Module-level fn → stable
+ *  reference identity, which lets React detect updates by reference. */
+function getClientSnapshot(): NotifierSnapshot {
+  return snapshot;
+}
+
+/** `useSyncExternalStore` getServerSnapshot impl. Static SSR snapshot
+ *  so React renders the same value on the SSR pass and the initial
+ *  client hydration tick → no hydration mismatch warning. */
+function getServerSnapshot(): NotifierSnapshot {
+  return INITIAL_SNAPSHOT;
+}
+
 export function UpdateNotifier() {
-  const [state, setState] = useState<UpdateState>("idle");
-  const [updateInfo, setUpdateInfo] = useState<UpdateInfo | null>(null);
-  const [progress, setProgress] = useState<DownloadProgress | null>(null);
-  const [errorMsg, setErrorMsg] = useState<string>("");
+  const update = useSyncExternalStore(
+    subscribe,
+    getClientSnapshot,
+    getServerSnapshot,
+  );
   const [dismissed, setDismissed] = useState(false);
-  const [apiReady, setApiReady] = useState(false);
-  const [apiRef, setApiRef] = useState<ElectronAPI | null>(null);
-
-  // All hooks must be declared unconditionally before any early returns
-  useEffect(() => {
-    const api = getElectronAPI();
-    if (!api) return;
-    setApiRef(api);
-    setApiReady(true);
-
-    api.onUpdateAvailable((info) => {
-      setState("available");
-      setUpdateInfo(info);
-      setDismissed(false);
-    });
-
-    api.onUpdateDownloadProgress((p) => {
-      setState("downloading");
-      setProgress(p);
-    });
-
-    api.onUpdateDownloaded((info) => {
-      setState("downloaded");
-      setUpdateInfo(info);
-    });
-
-    api.onUpdateError((err) => {
-      setState("error");
-      setErrorMsg(err.message);
-    });
-  }, []);
 
   const handleDismiss = useCallback(() => setDismissed(true), []);
   const handleInstall = useCallback(() => {
-    apiRef?.quitAndInstall();
-  }, [apiRef]);
+    getApi()?.quitAndInstall();
+  }, []);
 
   // Early returns AFTER all hooks — respects rules of hooks
-  if (!apiReady || !apiRef) return null;
   if (dismissed) return null;
-  if (state === "idle") return null;
+  if (update.state === "idle") return null;
 
   return (
     <div
@@ -104,7 +161,7 @@ export function UpdateNotifier() {
         }}
       >
         {/* ─── Available ─── */}
-        {state === "available" && (
+        {update.state === "available" && (
           <>
             <div className="mb-2 flex items-center gap-2">
               <span className="text-xl">⬆️</span>
@@ -112,7 +169,7 @@ export function UpdateNotifier() {
                 Mise à jour disponible
               </span>
               <span className="ml-auto rounded border border-[var(--gold-4)] bg-[rgba(255,245,215,0.4)] px-1.5 font-serif text-[10px] font-bold text-[var(--gold-3)]">
-                v{updateInfo?.version}
+                v{update.info?.version}
               </span>
             </div>
             <p className="mb-3 text-xs italic text-[var(--parchment-ink-soft)]">
@@ -130,7 +187,7 @@ export function UpdateNotifier() {
         )}
 
         {/* ─── Downloading ─── */}
-        {state === "downloading" && progress && (
+        {update.state === "downloading" && update.progress && (
           <>
             <div className="mb-2 flex items-center gap-2">
               <span className="text-xl" style={{ animation: "float 2s ease-in-out infinite" }}>
@@ -140,7 +197,7 @@ export function UpdateNotifier() {
                 Téléchargement…
               </span>
               <span className="ml-auto font-serif text-[11px] font-bold text-[var(--gold-3)]">
-                {Math.round(progress.percent)}%
+                {Math.round(update.progress.percent)}%
               </span>
             </div>
             {/* Progress bar — parchment style */}
@@ -154,7 +211,7 @@ export function UpdateNotifier() {
               <div
                 className="absolute inset-y-0 left-0 rounded-full transition-all duration-300"
                 style={{
-                  width: `${Math.min(100, progress.percent)}%`,
+                  width: `${Math.min(100, update.progress.percent)}%`,
                   background:
                     "linear-gradient(90deg, var(--gold-3), var(--gold-1))",
                   boxShadow: "0 0 8px rgba(246,217,124,0.5)",
@@ -163,9 +220,9 @@ export function UpdateNotifier() {
             </div>
             <div className="flex justify-between text-[9px] text-[var(--parchment-ink-soft)]">
               <span>
-                {formatBytes(progress.transferred)} / {formatBytes(progress.total)}
+                {formatBytes(update.progress.transferred)} / {formatBytes(update.progress.total)}
               </span>
-              <span>{formatBytes(progress.bytesPerSecond)}/s</span>
+              <span>{formatBytes(update.progress.bytesPerSecond)}/s</span>
             </div>
             <button
               onClick={handleDismiss}
@@ -177,7 +234,7 @@ export function UpdateNotifier() {
         )}
 
         {/* ─── Downloaded — ready to install ─── */}
-        {state === "downloaded" && (
+        {update.state === "downloaded" && (
           <>
             <div className="mb-2 flex items-center gap-2">
               <span className="text-xl">✅</span>
@@ -185,7 +242,7 @@ export function UpdateNotifier() {
                 Prêt à installer
               </span>
               <span className="ml-auto rounded border border-[var(--gold-4)] bg-[rgba(255,245,215,0.4)] px-1.5 font-serif text-[10px] font-bold text-[var(--gold-3)]">
-                v{updateInfo?.version}
+                v{update.info?.version}
               </span>
             </div>
             <p className="mb-3 text-xs italic text-[var(--parchment-ink-soft)]">
@@ -209,7 +266,7 @@ export function UpdateNotifier() {
         )}
 
         {/* ─── Error ─── */}
-        {state === "error" && (
+        {update.state === "error" && (
           <>
             <div className="mb-2 flex items-center gap-2">
               <span className="text-xl">⚠️</span>
@@ -218,7 +275,7 @@ export function UpdateNotifier() {
               </span>
             </div>
             <p className="mb-3 text-xs text-[var(--parchment-ink-soft)]">
-              {errorMsg || "Une erreur est survenue lors de la vérification."}
+              {update.errorMsg || "Une erreur est survenue lors de la vérification."}
             </p>
             <button
               onClick={handleDismiss}

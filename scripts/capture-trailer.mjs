@@ -29,7 +29,10 @@ const FRAME_INTERVAL_MS = 80; // ≈ 12 fps
 const TOTAL_SECONDS = 10;
 const TOTAL_FRAMES = Math.floor((TOTAL_SECONDS * 1000) / FRAME_INTERVAL_MS);
 
-existsSync(FRAMES_DIR) && rmSync(FRAMES_DIR, { recursive: true, force: true });
+// `rmSync` with `{ force: true, recursive: true }` is a no-op if the
+// directory doesn't exist — so we just call it unconditionally (no
+// `existsSync` check, which would be a `no-unused-expressions` lint hit).
+rmSync(FRAMES_DIR, { recursive: true, force: true });
 mkdirSync(FRAMES_DIR, { recursive: true });
 mkdirSync(path.dirname(OUTPUT_GIF), { recursive: true });
 
