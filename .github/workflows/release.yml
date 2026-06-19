@@ -76,7 +76,7 @@ jobs:
 
     steps:
       - name: 📥 Récupération du code (full history pour le tag)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -93,7 +93,7 @@ jobs:
         # ICONDIR + ICONDIRENTRY (Pillow.save(format='ICO', sizes=...) n'est
         # pas fiable — cf. scripts/build-icons.py module docstring). Étape
         # identique sur les 3 runners Windows/macOS/Linux.
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.11'
 
@@ -129,6 +129,22 @@ jobs:
           echo "=== .next/standalone depth 3 ==="
           find .next/standalone -maxdepth 3 -type d 2>&1 | head -60 || true
 
+      - name: 🔍 Vérification de la version avant build
+        # Safety net: vérifie que la version dans package.json correspond
+        # au tag Git pour éviter les artefacts avec une mauvaise version
+        # (ex: DMG ARM64 généré avec v0.2.3 au lieu de v0.2.4).
+        shell: bash
+        run: |
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          TAG_VERSION=${GITHUB_REF_NAME#v}
+          echo "package.json version: $PKG_VERSION"
+          echo "Git tag version:      $TAG_VERSION"
+          if [ "$PKG_VERSION" != "$TAG_VERSION" ]; then
+            echo "❌ Version mismatch! package.json=$PKG_VERSION but tag=$TAG_VERSION"
+            exit 1
+          fi
+          echo "✅ Versions match: $PKG_VERSION"
+
       - name: 📦 Construction des installeurs (${{ matrix.target }})
         # --publish never = pas de tentative d'upload auto sur GitHub ici,
         # c'est le job `release` qui s'en charge proprement.
@@ -143,7 +159,7 @@ jobs:
           ls -lh dist-electron/ 2>&1 || true
 
       - name: 📤 Upload des artefacts (pour le job `release`)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: eldoria-installer-${{ matrix.target }}
           path: |
@@ -172,7 +188,7 @@ jobs:
 
     steps:
       - name: 📥 Récupération du code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: 🟢 Installation de Bun
         uses: oven-sh/setup-bun@v2
@@ -180,10 +196,10 @@ jobs:
           bun-version: ${{ env.BUN_VERSION }}
 
       - name: 📥 Téléchargement de tous les artefacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           path: artifacts
-          # `merge-multiple: true` (par défaut sur v4) combine tous les jobs
+          # `merge-multiple: true` (par défaut sur v8) combine tous les jobs
           # dans un seul dossier `artifacts/`.
 
       - name: 📋 Vérification des installeurs reçus

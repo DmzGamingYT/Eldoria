@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Récupération du code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: 🟢 Installation de Bun
         uses: oven-sh/setup-bun@v2
@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Récupération du code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: 🟢 Installation de Bun
         uses: oven-sh/setup-bun@v2
@@ -63,7 +63,7 @@ jobs:
     needs: [lint, typecheck]
     steps:
       - name: 📥 Récupération du code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: 🟢 Installation de Bun
         uses: oven-sh/setup-bun@v2
