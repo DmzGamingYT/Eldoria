@@ -116,6 +116,19 @@ jobs:
       - name: 🔨 Build Next.js (production standalone)
         run: bun run build
 
+      - name: 🔍 Diagnostic: vérifier l'encodage des noms de fichiers standalone
+        # Lists the standalone tree to verify filenames are intact before
+        # electron-builder packages them. Helps diagnose encoding corruption
+        # (garbled folder names) reported on Windows installs.
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          echo "=== .next/standalone top-level ==="
+          ls -la .next/standalone/ 2>&1 || true
+          echo ""
+          echo "=== .next/standalone depth 3 ==="
+          find .next/standalone -maxdepth 3 -type d 2>&1 | head -60 || true
+
       - name: 📦 Construction des installeurs (${{ matrix.target }})
         # --publish never = pas de tentative d'upload auto sur GitHub ici,
         # c'est le job `release` qui s'en charge proprement.

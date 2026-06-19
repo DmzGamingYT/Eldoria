@@ -16,6 +16,41 @@ le projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
 ---
 
+## [0.2.4] — 2026-06-19 — Fix noms de dossiers corrompus (ASAR au lieu de extraResources)
+
+Après installation du `.exe` Windows, les dossiers dans `resources/standalone/`
+apparaissaient comme des caractères CJK corrompus (ex. `肊`) au lieu de noms
+normaux. Cause racine : la limite **MAX_PATH Windows (260 caractères)** — les
+`node_modules` profondément imbriqués dans `.next/standalone` dépassaient cette
+limite lors de l'extraction NSIS via `extraResources`, corrompant les noms de
+fichiers.
+
+### 🐛 Correction — Standalone emballé dans `app.asar`
+
+- `.next/standalone` déplacé de `extraResources` (fichiers extraits par NSIS)
+  vers `files` (emballé dans `app.asar` — un seul fichier sur le disque,
+  contourne complètement la limite MAX_PATH).
+- `asarUnpack` étendu pour `sharp` et `@img` (binaires natifs) en plus de
+  Prisma (déjà présent).
+- `electron/main.js` : chemins de production mis à jour pour pointer dans
+  `app.asar`. Le `cwd` de `fork()` utilise `process.resourcesPath` (chemin
+  réel) au lieu du chemin ASAR (incompréhensible par l'OS `chdir()`).
+- Garde `mkdirSync` ajoutée pour éviter d'écrire dans l'ASAR (lecture seule).
+
+### 🔍 Diagnostic CI
+
+- Étape ajoutée dans `release.yml` pour lister les fichiers standalone sur le
+  runner Windows avant `electron-builder`, permettant de vérifier l'intégrité
+  des noms de fichiers.
+
+### 🔧 Maintenance
+
+- `package.json` bump 0.2.3 → 0.2.4.
+- `electron-builder.yml` : `unicode: true` explicite dans la config NSIS
+  (déjà défaut dans v26.x, mais ajouté comme sauvegarde explicite).
+
+---
+
 ## [0.2.3] — 2026-06-19 — Pipeline release débloqué (icônes Windows) + Sécurité des dépendances
 
 Les versions 0.2.0 → 0.2.2 ont toutes poussé leur tag `v*` sur le remote
