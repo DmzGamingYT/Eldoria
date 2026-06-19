@@ -65,3 +65,8 @@ prisma/db/*.db
 
 # npm lockfile (projet utilise Bun)
 package-lock.json
+
+# Build (artefacts de debug oubliés lors du travail sur le set d'icônes —
+# ne JAMAIS les committer, ils servent juste aux tests manuels locaux).
+build/*.bak
+build/icon_test.ico

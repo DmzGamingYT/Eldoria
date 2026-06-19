@@ -16,6 +16,50 @@ le projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
 ---
 
+## [0.2.3] — 2026-06-18 — Pipeline release débloqué (icônes Windows)
+
+Les versions 0.2.0 → 0.2.2 ont toutes poussé leur tag `v*` sur le remote
+mais **aucune GitHub Release** n'avait été créée (`gh release list` →
+vide). Le job `release` de `softprops/action-gh-release@v2` n'avait rien
+à attacher parce que la build **Windows** du matrix échouait sur :
+
+    ⨯ Icon is not a valid ICO file: D:\a\Eldoria\Eldoria\build\icon.ico
+
+L'ICO commité était mal formé (structure ICONDIRENTRY cassée, mono-frame)
+et `electron-builder@26` rejette les ICO non conformes.
+
+### 🐛 Correction — `build/icon.ico` regénéré en multi-résolutions
+
+- Nouveau script `scripts/build-icons.py` : sérialise manuellement un ICO
+  conforme (ICONDIR + 6 × ICONDIRENTRY + sub-images PNG embarquées)
+  depuit le set de PNG déjà présent dans `build/icons/`
+  (16/32/48/64/128/256).
+- Résultat : 6 résolutions embarquées, structure binaire vérifiée par
+  `Pillow` round-trip en fin de script (sécurité contre toute régression).
+- Taille `build/icon.ico` : quelques KB seulement (vs. 200 KB pour le
+  fichier cassé qui était un PNG mal-renommé).
+
+### ✨ Amélioration — Icônes regénérées automatiquement dans la CI
+
+- Nouvelle séquence dans `.github/workflows/release.yml` (job `build`,
+  après `bun install` et avant `bun run build`) :
+  1. `actions/setup-python@v5` → Python 3.11 sur les 3 runners
+  2. `pip install Pillow` → library de sérialisation ICO
+  3. `python3 scripts/build-icons.py` → regénération idempotente
+- `build/icon.icns` reste **inchangé** : il est multi-blocs valide (8
+  blocs ic04-ic14 + info) et toute régression mono-bloc dégraderait le
+  rendu retina macOS (`electron-builder` le lit tel quel).
+
+### 🔧 Maintenance
+
+- `package.json` bump 0.2.2 → 0.2.3 (alignement tag Git ↔ artefacts).
+- `.gitignore` : exclusion de `build/*.bak` et `build/icon_test.ico`
+  (artefacts de debug oubliés lors du travail initial sur les icônes).
+- Documentation release : ce `CHANGELOG.md` sert aussi de release body
+  fallback si `bun scripts/generate-release-body.mjs` échoue un jour.
+
+---
+
 ## [0.2.2] — 2026-06-18 — Pipeline complet + tous les installeurs
 
 Le workflow CI de la **0.2.1** ne publiait que les installeurs de base
