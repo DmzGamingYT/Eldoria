@@ -50,6 +50,8 @@ env:
   BUN_VERSION: '1'
   # Désactive la télémétrie Next.js pendant le build (accélère + moins de logs)
   NEXT_TELEMETRY_DISABLED: 1
+  # Force UTF-8 partout (évite UnicodeEncodeError sur Windows avec cp1252)
+  PYTHONUTF8: 1
 
 jobs:
   # ── Build matrice 3 OS ─────────────────────────────────────────
