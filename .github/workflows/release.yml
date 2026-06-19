@@ -123,9 +123,11 @@ jobs:
 
       - name: 📋 Inventaire des artefacts produits
         # Pour debug : liste ce que electron-builder a sorti
+        # shell: bash requis car ls -lh ne marche pas sous PowerShell (alias Get-ChildItem)
+        shell: bash
         run: |
           echo "=== Artefacts dans dist-electron/ ==="
-          ls -lh dist-electron/ 2>&1 || dir dist-electron\ 2>nul
+          ls -lh dist-electron/ 2>&1 || true
 
       - name: 📤 Upload des artefacts (pour le job `release`)
         uses: actions/upload-artifact@v4
