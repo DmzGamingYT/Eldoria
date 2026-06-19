@@ -59,6 +59,12 @@ import subprocess
 import sys
 from pathlib import Path
 
+# Forcer UTF-8 sur tous les OS (Windows CI utilise cp1252 par défaut,
+# ce qui casse les emojis dans les print()).
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 try:
     from PIL import Image
 except ImportError:
