@@ -116,7 +116,7 @@ jobs:
       - name: 🔨 Build Next.js (production standalone)
         run: bun run build
 
-      - name: 🔍 Diagnostic: vérifier l'encodage des noms de fichiers standalone
+      - name: "🔍 Diagnostic: vérifier l'encodage des noms de fichiers standalone"
         # Lists the standalone tree to verify filenames are intact before
         # electron-builder packages them. Helps diagnose encoding corruption
         # (garbled folder names) reported on Windows installs.
