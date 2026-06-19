@@ -76,7 +76,7 @@ jobs:
 
     steps:
       - name: 📥 Récupération du code (full history pour le tag)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -93,7 +93,7 @@ jobs:
         # ICONDIR + ICONDIRENTRY (Pillow.save(format='ICO', sizes=...) n'est
         # pas fiable — cf. scripts/build-icons.py module docstring). Étape
         # identique sur les 3 runners Windows/macOS/Linux.
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.11'
 
@@ -143,7 +143,7 @@ jobs:
           ls -lh dist-electron/ 2>&1 || true
 
       - name: 📤 Upload des artefacts (pour le job `release`)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: eldoria-installer-${{ matrix.target }}
           path: |
@@ -172,7 +172,7 @@ jobs:
 
     steps:
       - name: 📥 Récupération du code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: 🟢 Installation de Bun
         uses: oven-sh/setup-bun@v2
@@ -180,10 +180,10 @@ jobs:
           bun-version: ${{ env.BUN_VERSION }}
 
       - name: 📥 Téléchargement de tous les artefacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           path: artifacts
-          # `merge-multiple: true` (par défaut sur v4) combine tous les jobs
+          # `merge-multiple: true` (par défaut sur v8) combine tous les jobs
           # dans un seul dossier `artifacts/`.
 
       - name: 📋 Vérification des installeurs reçus
