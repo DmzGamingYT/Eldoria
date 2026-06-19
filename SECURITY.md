@@ -63,4 +63,46 @@ La politique de sécurité couvre :
 
 Cette politique sera mise à jour si de nouvelles menaces ou de nouvelles fonctionnalités l'exigent.
 
+---
+
+## 📊 Exceptions d'audit de dépendances
+
+À ce jour, `bun audit` signale **6 vulnérabilités restantes** sur les 30 initialement détectées. Les 24 autres ont été corrigées :
+
+- **19** via des `overrides` dans `package.json` (picomatch, lodash, defu, brace-expansion, diff, effect, flatted, js-yaml, postcss, prismjs, js-cookie, @babel/core)
+- **3** (lodash-es) par suppression de `@reactuses/core` (dépendance inutilisée)
+- **1** (uuid) par suppression de `next-auth` et `uuid` (dépendances inutilisées)
+- **1** (ajv) par override `ajv@^6.14.0`
+
+Les 6 restantes ne peuvent pas être corrigées pour les raisons détaillées ci-dessous.
+
+### minimatch — 6 high (ReDoS)
+
+| Advisory | Sévérité |
+|:---|:---|
+| [GHSA-3ppc-4f35-3m26](https://github.com/advisories/GHSA-3ppc-4f35-3m26) | High |
+| [GHSA-7r86-cg39-jmmj](https://github.com/advisories/GHSA-7r86-cg39-jmmj) | High |
+| [GHSA-23c5-xmqv-rm74](https://github.com/advisories/GHSA-23c5-xmqv-rm74) | High |
+
+- **Version installée** : 3.1.2 (dernière de la ligne 3.x)
+- **Version corrigée** : ≥ 3.1.3 (n'existe pas) / ≥ 5.1.6 (ligne 5.x)
+- **Consommateurs** : `@eslint/config-array`, `@eslint/eslintrc`, `eslint-plugin-import`, `eslint-plugin-jsx-a11y`, `eslint-plugin-react`, `glob@7.2.3`
+- **Risque** : ReDoS (expression régulière pathologique). Impact limité car ces paquets sont **uniquement des outils de développement** (ESLint), jamais exécutés en production.
+- **Pourquoi non-fixable** : Aucune version ≥ 3.1.3 n'existe dans la ligne 3.x. Forcer la version 5.x+ casserait l'API attendue par les plugins ESLint qui requièrent `^3.0.4`.
+- **Action requise** : Attendre qu'ESLint migre vers minimatch ≥ 5.x dans une future version majeure.
+
+### Corrigées depuis la dernière mise à jour
+
+Les vulnérabilités suivantes ont été éliminées :
+
+| Paquet vulnérable | Vulns | Solution appliquée |
+|:---|:---|:---|
+| **lodash-es** | 3 (1H + 2M) | Suppression de `@reactuses/core` (dépendance morte, jamais importée) |
+| **uuid@8.3.2** | 1 (M) | Suppression de `next-auth` et `uuid` (dépendances mortes, jamais importées) |
+| **ajv@6.12.6** | 1 (M) | Override `ajv@^6.14.0` (version publiée sur npm) |
+
+---
+
+> **Résumé** : Sur les 6 vulnérabilités restantes, **toutes concernent exclusivement des outils de développement** (ESLint). Aucune n'est exploitable en production par un utilisateur final.
+
 Merci de contribuer à la sécurité du projet ! 🛡️
