@@ -95,8 +95,11 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: 📦 Installation de Pillow
-        run: python3 -m pip install --quiet --upgrade Pillow
+      - name: 📦 Installation de Pillow (version épinglée)
+        # Pillow est épinglée à la version testée localement pour éviter les
+        # régressions silencieuses si une future majeure change la sérialisation
+        # ICONDIR. Bumper cette pin après avoir testé le pipeline release.
+        run: python3 -m pip install --quiet "Pillow==10.4.0"
 
       - name: 🎨 Régénération des icônes multi-résolutions
         # Régénère build/icon.ico depuis le set de PNG (16/32/48/64/128/256)
