@@ -16,6 +16,39 @@ le projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
 ---
 
+## [0.2.5] — 2026-06-19 — Fix lancement macOS + nettoyage post-release
+
+### 🐛 Correction — ReferenceError au lancement macOS
+
+L'application crashait au démarrage sur macOS avec :
+`ReferenceError: Cannot access 'isDev' before initialization`.
+
+**Cause racine :** `const isDev = !app.isPackaged` était déclaré
+**après** son premier usage dans la configuration de `electron-log`.
+Avec `const`, la variable est dans la "temporal dead zone" —
+il existe techniquement mais pas encore initialisée.
+
+**Fix :** Déplacement de `const isDev = !app.isPackaged` avant
+la configuration `electron-log` dans `electron/main.js`.
+
+### 🐛 Correction — Vérification de version dans la CI
+
+Étape ajoutée dans `release.yml` qui compare la version dans
+`package.json` avec le tag Git **avant** de lancer le build
+des installeurs. En cas de mismatch, le build échoue immédiatement
+avec un message clair.
+
+**Cela empêche la récurrence du bug v0.2.4** où le DMG ARM64
+avait été généré avec la version 0.2.3 au lieu de 0.2.4.
+
+### 🔧 Maintenance — Nettoyage post-release
+
+- `tmp/` ajouté au `.gitignore` (48 fichiers de debug release supprimés)
+- GitHub Actions upgrade (résolution warnings Node.js 20 déprécié)
+- PR #10 : nettoyage complet des artefacts orphelins
+
+---
+
 ## [0.2.4] — 2026-06-19 — Fix noms de dossiers corrompus (ASAR au lieu de extraResources)
 
 Après installation du `.exe` Windows, les dossiers dans `resources/standalone/`
