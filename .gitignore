@@ -70,3 +70,6 @@ package-lock.json
 # ne JAMAIS les committer, ils servent juste aux tests manuels locaux).
 build/*.bak
 build/icon_test.ico
+
+# Temp directory (scripts de debug release, PR drafts, logs CI)
+tmp/
