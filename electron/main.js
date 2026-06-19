@@ -5,6 +5,8 @@ const { fork } = require("child_process");
 const { autoUpdater } = require("electron-updater");
 const log = require("electron-log");
 
+const isDev = !app.isPackaged;
+
 // Disable GPU sandbox on Linux where it can cause issues with some distros
 if (process.platform === "linux") {
   app.commandLine.appendSwitch("no-sandbox");
@@ -22,8 +24,6 @@ log.transports.file.format = "[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}]{scope} {t
 let mainWindow = null;
 let serverProcess = null;
 let resolvedUrl = null;
-
-const isDev = !app.isPackaged;
 
 // In production, the standalone directory is packed inside app.asar.
 // Electron patches fs/require/process.chdir at the native level so that
