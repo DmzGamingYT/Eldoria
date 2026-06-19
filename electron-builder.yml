@@ -7,28 +7,30 @@ directories:
   output: dist-electron
   buildResources: build
 
-# Files to include in the Electron package
+# Files to include in the Electron package.
+# We bundle .next/standalone INSIDE app.asar to avoid the Windows MAX_PATH
+# (260 char) corruption that occurs when NSIS extracts deeply nested
+# node_modules as loose files via extraResources — the overflow corrupts
+# folder names into garbled CJK characters (e.g. "肊").
 files:
   - electron/**/*
-  - "!**/node_modules/**/{test,__tests__,tests,powered-test,example,examples}"
-  - "!**/node_modules/.cache/**"
-
-# Extra resources copied next to the app (not inside ASAR)
-# The build script already copies public/ into .next/standalone/public,
-# so we only need to ship the standalone directory as-is.
-extraResources:
   - from: .next/standalone
     to: standalone
     filter:
       - "**/*"
       - "!**/node_modules/.cache/**"
+  - "!**/node_modules/**/{test,__tests__,tests,powered-test,example,examples}"
+  - "!**/node_modules/.cache/**"
 
-# Safety net: ensure Prisma native binaries are accessible outside ASAR
-# (most Prisma files live in extraResources/standalone, but this catches any
-# that might end up in the main app bundle)
+# Native binaries MUST be unpacked from the ASAR (they cannot be loaded
+# from inside an archive). This extracts them to app.asar.unpacked/.
+# Electron resolves require() for .node files to the unpacked copy
+# automatically.
 asarUnpack:
   - "**/node_modules/.prisma/**"
   - "**/node_modules/@prisma/**"
+  - "**/node_modules/sharp/**"
+  - "**/node_modules/@img/**"
 
 # ─── Publish config (GitHub Releases) ────────────────
 publish:
@@ -55,6 +57,11 @@ nsis:
   createDesktopShortcut: true
   createStartMenuShortcut: true
   shortcutName: Eldoria
+  # Force Unicode NSIS to preserve non-ASCII characters (accents, CJK, etc.)
+  # in file/folder names during extraction. Without this, NSIS may use the
+  # system codepage (e.g. cp1252 on Western Windows) which corrupts UTF-8
+  # names into garbled characters.
+  unicode: true
 
 # ─── macOS ────────────────────────────────────────────
 mac:

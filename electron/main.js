@@ -25,21 +25,22 @@ let resolvedUrl = null;
 
 const isDev = !app.isPackaged;
 
-// In production, the standalone server is shipped next to this main.js
-// In dev, it's at .next/standalone/server.js relative to the project root
+// In production, the standalone directory is packed inside app.asar.
+// Electron patches fs/require/process.chdir at the native level so that
+// all I/O transparently reads from the ASAR archive.
+// In dev, it's at .next/standalone/server.js relative to the project root.
 function getServerPath() {
   if (isDev) {
     return path.join(__dirname, "..", ".next", "standalone", "server.js");
   }
-  // Packaged: server.js is in the same directory tree
-  return path.join(process.resourcesPath, "standalone", "server.js");
+  return path.join(process.resourcesPath, "app.asar", "standalone", "server.js");
 }
 
 function getStandaloneDir() {
   if (isDev) {
     return path.join(__dirname, "..", ".next", "standalone");
   }
-  return path.join(process.resourcesPath, "standalone");
+  return path.join(process.resourcesPath, "app.asar", "standalone");
 }
 
 function getDbDir() {
@@ -55,8 +56,10 @@ function startServer() {
     const serverPath = getServerPath();
     const standaloneDir = getStandaloneDir();
 
-    // Ensure the public and static dirs exist in standalone for production
-    if (!isDev) {
+    // Ensure the public and static dirs exist in standalone for production.
+    // Inside app.asar these dirs are read-only and already exist (copy-standalone-assets.mjs
+    // copies them during build), so we only mkdir when NOT inside an ASAR.
+    if (!isDev && !standaloneDir.includes("app.asar")) {
       const prodPublic = path.join(standaloneDir, "public");
       const prodStatic = path.join(standaloneDir, ".next", "static");
       if (!fs.existsSync(prodPublic)) fs.mkdirSync(prodPublic, { recursive: true });
@@ -75,8 +78,13 @@ function startServer() {
       DATABASE_URL: `file:${path.join(dbDir, "custom.db")}`,
     };
 
+    // NOTE: cwd must be a REAL filesystem path (not inside app.asar)
+    // because child_process.fork passes it to the OS-level chdir() syscall.
+    // The Next.js standalone server calls process.chdir(__dirname) internally,
+    // which Electron patches to work transparently inside ASAR.
+    const cwd = isDev ? standaloneDir : process.resourcesPath;
     serverProcess = fork(serverPath, [], {
-      cwd: standaloneDir,
+      cwd,
       env,
       silent: true,
     });

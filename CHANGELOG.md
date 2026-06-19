@@ -16,7 +16,42 @@ le projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
 ---
 
-## [0.2.3] — 2026-06-18 — Pipeline release débloqué (icônes Windows)
+## [0.2.4] — 2026-06-19 — Fix noms de dossiers corrompus (ASAR au lieu de extraResources)
+
+Après installation du `.exe` Windows, les dossiers dans `resources/standalone/`
+apparaissaient comme des caractères CJK corrompus (ex. `肊`) au lieu de noms
+normaux. Cause racine : la limite **MAX_PATH Windows (260 caractères)** — les
+`node_modules` profondément imbriqués dans `.next/standalone` dépassaient cette
+limite lors de l'extraction NSIS via `extraResources`, corrompant les noms de
+fichiers.
+
+### 🐛 Correction — Standalone emballé dans `app.asar`
+
+- `.next/standalone` déplacé de `extraResources` (fichiers extraits par NSIS)
+  vers `files` (emballé dans `app.asar` — un seul fichier sur le disque,
+  contourne complètement la limite MAX_PATH).
+- `asarUnpack` étendu pour `sharp` et `@img` (binaires natifs) en plus de
+  Prisma (déjà présent).
+- `electron/main.js` : chemins de production mis à jour pour pointer dans
+  `app.asar`. Le `cwd` de `fork()` utilise `process.resourcesPath` (chemin
+  réel) au lieu du chemin ASAR (incompréhensible par l'OS `chdir()`).
+- Garde `mkdirSync` ajoutée pour éviter d'écrire dans l'ASAR (lecture seule).
+
+### 🔍 Diagnostic CI
+
+- Étape ajoutée dans `release.yml` pour lister les fichiers standalone sur le
+  runner Windows avant `electron-builder`, permettant de vérifier l'intégrité
+  des noms de fichiers.
+
+### 🔧 Maintenance
+
+- `package.json` bump 0.2.3 → 0.2.4.
+- `electron-builder.yml` : `unicode: true` explicite dans la config NSIS
+  (déjà défaut dans v26.x, mais ajouté comme sauvegarde explicite).
+
+---
+
+## [0.2.3] — 2026-06-19 — Pipeline release débloqué (icônes Windows) + Sécurité des dépendances
 
 Les versions 0.2.0 → 0.2.2 ont toutes poussé leur tag `v*` sur le remote
 mais **aucune GitHub Release** n'avait été créée (`gh release list` →
@@ -49,6 +84,40 @@ et `electron-builder@26` rejette les ICO non conformes.
 - `build/icon.icns` reste **inchangé** : il est multi-blocs valide (8
   blocs ic04-ic14 + info) et toute régression mono-bloc dégraderait le
   rendu retina macOS (`electron-builder` le lit tel quel).
+
+### 🔒 Sécurité — Réduction des vulnérabilités de 30 à 6
+
+Audit complet des dépendances transitives (`bun audit`) : 30 vulnérabilités
+détectées initialement, réduites à **6** (toutes `minimatch@3.1.2` via ESLint,
+non-fixables, dev-only).
+
+#### Corrigées via overrides (19 vulnérabilités)
+
+12 overrides ajoutés dans `package.json` avec des ranges caret pour rester
+compatible : `picomatch`, `lodash`, `defu`, `brace-expansion`, `diff`,
+`effect`, `flatted`, `js-yaml`, `postcss`, `prismjs`, `js-cookie`,
+`@babel/core`.
+
+#### Corrigées par suppression de dépendances mortes (5 vulnérabilités)
+
+- **`@reactuses/core`** supprimé — jamais importé dans le code source.
+  Tirait `lodash-es` (3 vulns : prototype pollution + code injection).
+- **`next-auth`** supprimé — jamais importé. Tirait `uuid@8.3.2` (1 vuln :
+  missing buffer bounds check).
+- **`uuid`** supprimé — jamais importé directement non plus.
+
+#### Corrigées par override (1 vulnérabilité)
+
+- **`ajv@^6.14.0`** — fixe GHSA-2g4f-4pwh-qvx6 (ReDoS avec option `$data`).
+
+#### Non-fixables (6 vulnérabilités)
+
+- **`minimatch@3.1.2`** (6 high) — pas de fix dans la ligne 3.x, utilisé
+  par `@eslint/config-array` et `@eslint/eslintrc`. Uniquement des outils
+dev, jamais exécuté en production.
+
+Voir `SECURITY.md` pour le détail complet (advisories GHSA, versions,
+consommateurs, évaluation des risques).
 
 ### 🔧 Maintenance
 
