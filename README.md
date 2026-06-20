@@ -592,13 +592,13 @@ sudo rpm -i https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldo
 
 > **⚠️ Installeurs non signés**
 >
-> Les installeurs sont **non signés** numériquement, par limitation pratique (coût annuel des certificats Apple Developer ID + EV Authenticode). Vous rencontrerez :
+> Les builds sans secrets Apple configurés sont **non signés** numériquement. Vous rencontrerez :
 >
 > - 🪟 **Windows** : SmartScreen affichera « Windows a protégé votre ordinateur » au premier lancement → *Informations complémentaires → Exécuter quand même*.
-> - 🍎 **macOS** : Gatekeeper refusera l'ouverture du `.dmg` → *Clic droit sur `Eldoria.app` → Ouvrir* (une seule fois, ensuite l'app est de confiance).
+> - 🍎 **macOS** : Gatekeeper refusera l'ouverture du `.dmg` → voir la [section Dépannage macOS](#-dépannage-macos) ci-dessous.
 > - 🐧 **Linux** : aucune incidence, l'AppImage / `.deb` / `.rpm` s'exécute ou s'installe directement.
 >
-> La **signature automatique** (certificat EV Authenticode pour Windows + Apple Developer ID + notarisation pour macOS) est planifiée pour la **v0.3.0** ([voir la Roadmap](#-roadmap)). Pour une utilisation de jeu normale, ces avertissements ne bloquent pas l'installation.
+> La **signature automatique** (certificat EV Authenticode pour Windows + Apple Developer ID + notarisation pour macOS) est désormais implémentée. Configurez les secrets GitHub (CSC_LINK, APPLE_ID, etc.) pour activer la signature — voir [docs/apple-signing-guide.md](docs/apple-signing-guide.md).
 
 ### Publier une nouvelle release (pour les mainteneurs)
 
@@ -613,6 +613,24 @@ git push origin main v0.X.Y
 ```
 
 → Le workflow [`.github/workflows/release.yml`](.github/workflows/release.yml) construit les installeurs en parallèle sur 3 runners natifs (**Windows + macOS + Linux**), puis un job `release` les télécharge tous et les attache automatiquement à la **GitHub Release**.
+
+### 🍎 Dépannage macOS
+
+Si vous voyez le message **"Eldoria is damaged and can't be opened"** au lancement, c'est un problème de **Gatekeeper macOS** — l'app n'étant pas signée ni notariée par Apple, macOS la bloque automatiquement.
+
+**Solution rapide :** ouvrez le **Terminal** et exécutez cette commande :
+
+```bash
+xattr -cr /Applications/Eldoria.app
+```
+
+Cela supprime le **flag de quarantaine** que macOS applique aux apps téléchargées depuis Internet. Ensuite, double-cliquez sur `Eldoria.app` — ça se lancera normalement.
+
+> **Alternative :** faites un **clic droit** sur `Eldoria.app` → **Ouvrir** (au lieu de double-clic). macOS proposera une exception. Cette procédure n'est nécessaire qu'une seule fois — ensuite l'app sera enregistrée comme de confiance.
+
+**Pourquoi ça arrive ?** Le workflow CI construit les DMG **sans signature ni notarisation Apple** quand les secrets GitHub (`CSC_LINK`, `APPLE_ID`, `APPLE_APP_SPECIFIC_PASSWORD`, `APPLE_TEAM_ID`) ne sont pas configurés. Une fois ces secrets en place, les DMG seront signés et notariés — Gatekeeper les acceptera sans intervention manuelle.
+
+> 📖 Voir le guide complet : [docs/apple-signing-guide.md](docs/apple-signing-guide.md)
 
 ---
 

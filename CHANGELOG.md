@@ -8,6 +8,9 @@ le projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+### 🔧 Maintenance
+- `README.md` : liens de téléchargement et noms de fichiers mis à jour de v0.2.2 à v0.2.5 (PR #13)
+
 ### Prévu pour **v0.3.0 — Arbre de talents**
 - Arbre de compétences ramifié (3 branches : combat / magic / survie)
 - PNJ secondaires avec quêtes dynamiques
