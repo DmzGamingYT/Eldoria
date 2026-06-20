@@ -70,14 +70,44 @@
   <text x="20" y="700" font-family="Georgia, serif" font-size="20" fill="#a07c3a">❧</text>
   <text x="1080" y="700" font-family="Georgia, serif" font-size="20" fill="#a07c3a" text-anchor="end">❦</text>
 
-  <!-- ============ TWINKLING STARS (6, matches sceau density) ============ -->
-  <g fill="#f6d97c">
-    <circle cx="120" cy="120" r="1.4"><animate attributeName="opacity" values="0.2;1;0.2" dur="3.2s" begin="0s" repeatCount="indefinite"/></circle>
-    <circle cx="980" cy="140" r="1.4"><animate attributeName="opacity" values="0.2;1;0.2" dur="3.2s" begin="0.4s" repeatCount="indefinite"/></circle>
-    <circle cx="80" cy="430" r="1.4"><animate attributeName="opacity" values="0.2;1;0.2" dur="3.2s" begin="0.8s" repeatCount="indefinite"/></circle>
-    <circle cx="1020" cy="420" r="1.4"><animate attributeName="opacity" values="0.2;1;0.2" dur="3.2s" begin="1.2s" repeatCount="indefinite"/></circle>
-    <circle cx="200" cy="600" r="1.4"><animate attributeName="opacity" values="0.2;1;0.2" dur="3.2s" begin="1.6s" repeatCount="indefinite"/></circle>
-    <circle cx="900" cy="600" r="1.4"><animate attributeName="opacity" values="0.2;1;0.2" dur="3.2s" begin="2.0s" repeatCount="indefinite"/></circle>
+  <!-- ============ MONSTER SPRITE EMISSARIES (replaces decorative stars) ============
+       Six enemy-type emissaries scattered in the empty zones of the map. Each emissary
+       is a small cream-and-gold ghosted medallion (r=20) carrying a monster emoji at
+       the centre. Positions chosen so they don't collide with the central medallion,
+       the village halo (r=48) or the bottom legend (y=653..683). -->
+  <g font-family="Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, sans-serif">
+    <!-- LEFT COLUMN (NW -> SW): wolf / skull / ogre -->
+    <g transform="translate(170 290)">
+      <circle r="20" fill="#fff4c2" fill-opacity="0.08" stroke="#a07c3a" stroke-width="0.6" stroke-opacity="0.5"/>
+      <text y="8" text-anchor="middle" font-size="22">&#x1f43a;</text>
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="3.6s" begin="0s" repeatCount="indefinite"/>
+    </g>
+    <g transform="translate(170 470)">
+      <circle r="20" fill="#fff4c2" fill-opacity="0.08" stroke="#a07c3a" stroke-width="0.6" stroke-opacity="0.5"/>
+      <text y="8" text-anchor="middle" font-size="22">&#x1f480;</text>
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="3.6s" begin="0.6s" repeatCount="indefinite"/>
+    </g>
+    <g transform="translate(170 600)">
+      <circle r="20" fill="#fff4c2" fill-opacity="0.08" stroke="#a07c3a" stroke-width="0.6" stroke-opacity="0.5"/>
+      <text y="8" text-anchor="middle" font-size="22">&#x1f479;</text>
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="3.6s" begin="1.2s" repeatCount="indefinite"/>
+    </g>
+    <!-- RIGHT COLUMN (NE -> SE): slime / goblin / Mordrak outrider -->
+    <g transform="translate(930 290)">
+      <circle r="20" fill="#fff4c2" fill-opacity="0.08" stroke="#a07c3a" stroke-width="0.6" stroke-opacity="0.5"/>
+      <text y="8" text-anchor="middle" font-size="22">&#x1f438;</text>
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="3.6s" begin="1.8s" repeatCount="indefinite"/>
+    </g>
+    <g transform="translate(930 470)">
+      <circle r="20" fill="#fff4c2" fill-opacity="0.08" stroke="#a07c3a" stroke-width="0.6" stroke-opacity="0.5"/>
+      <text y="8" text-anchor="middle" font-size="22">&#x1f47a;</text>
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="3.6s" begin="2.4s" repeatCount="indefinite"/>
+    </g>
+    <g transform="translate(930 600)">
+      <circle r="20" fill="#fff4c2" fill-opacity="0.08" stroke="#a07c3a" stroke-width="0.6" stroke-opacity="0.5"/>
+      <text y="8" text-anchor="middle" font-size="22">&#x1f451;</text>
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="3.6s" begin="3.0s" repeatCount="indefinite"/>
+    </g>
   </g>
 
   <!-- ============ EYEBROW HEADER (matches sceau-capot) ============ -->
