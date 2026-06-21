@@ -35,14 +35,14 @@ Puis upload-les sur itch.io dans la section **Uploads** :
 
 | Fichier GitHub | Nom sur itch.io | Plateforme itch.io |
 |---|---|---|
-| `Eldoria-0.2.5-win-x64.exe` | `Eldoria-v0.2.5-Windows-x64.exe` | 🪟 Windows |
-| `Eldoria-0.2.5-mac-x64.dmg` | `Eldoria-v0.2.5-macOS-Intel.dmg` | 🍎 macOS (Intel) |
-| `Eldoria-0.2.5-mac-arm64.dmg` | `Eldoria-v0.2.5-macOS-AppleSilicon.dmg` | 🍎 macOS (Apple Silicon) |
-| `Eldoria-0.2.5-mac-x64.zip` | `Eldoria-v0.2.5-macOS-Intel.zip` | 🍎 macOS (Intel) |
-| `Eldoria-0.2.5-mac-arm64.zip` | `Eldoria-v0.2.5-macOS-AppleSilicon.zip` | 🍎 macOS (Apple Silicon) |
-| `Eldoria-0.2.5-linux-x64.AppImage` | `Eldoria-v0.2.5-Linux-x64.AppImage` | 🐧 Linux |
-| `eldoria_0.2.5_amd64.deb` | `Eldoria-v0.2.5-Linux-amd64.deb` | 🐧 Linux |
-| `Eldoria-0.2.5-linux-x64.rpm` | `Eldoria-v0.2.5-Linux-x64.rpm` | 🐧 Linux |
+| `Eldoria-0.2.6-win-x64.exe` | `Eldoria-v0.2.6-Windows-x64.exe` | 🪟 Windows |
+| `Eldoria-0.2.6-mac-x64.dmg` | `Eldoria-v0.2.6-macOS-Intel.dmg` | 🍎 macOS (Intel) |
+| `Eldoria-0.2.6-mac-arm64.dmg` | `Eldoria-v0.2.6-macOS-AppleSilicon.dmg` | 🍎 macOS (Apple Silicon) |
+| `Eldoria-0.2.6-mac-x64.zip` | `Eldoria-v0.2.6-macOS-Intel.zip` | 🍎 macOS (Intel) |
+| `Eldoria-0.2.6-mac-arm64.zip` | `Eldoria-v0.2.6-macOS-AppleSilicon.zip` | 🍎 macOS (Apple Silicon) |
+| `Eldoria-0.2.6-linux-x64.AppImage` | `Eldoria-v0.2.6-Linux-x64.AppImage` | 🐧 Linux |
+| `eldoria_0.2.6_amd64.deb` | `Eldoria-v0.2.6-Linux-amd64.deb` | 🐧 Linux |
+| `Eldoria-0.2.6-linux-x64.rpm` | `Eldoria-v0.2.6-Linux-x64.rpm` | 🐧 Linux |
 
 > ⚠️ **IMPORTANT** : Chaque fichier doit avoir un **nom différent** et la bonne **case plateforme** cochée.
 > itch.io permet plusieurs fichiers par plateforme — les utilisateurs verront un menu déroulant pour choisir le format.
@@ -115,8 +115,8 @@ Autrefois, le royaume d'Eldoria prospérait sous la lumière de l'Arbre d'Argent
    - Alternative : décompressez le .zip et copiez Eldoria.app dans Applications
 4. **Linux** :
    - AppImage (universal) : `chmod +x Eldoria*.AppImage && ./Eldoria*.AppImage`
-   - Debian/Ubuntu/Mint : `sudo dpkg -i eldoria_0.2.5_amd64.deb`
-   - Fedora/RHEL/openSUSE : `sudo rpm -i Eldoria-0.2.5-linux-x64.rpm`
+   - Debian/Ubuntu/Mint : `sudo dpkg -i eldoria_0.2.6_amd64.deb`
+   - Fedora/RHEL/openSUSE : `sudo rpm -i Eldoria-0.2.6-linux-x64.rpm`
 
 > ⚠️ Les installeurs ne sont pas signés numériquement. Vous devrez accepter l'avertissement de sécurité au premier lancement (normal pour un indie game).
 

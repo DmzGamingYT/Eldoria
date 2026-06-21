@@ -1,6 +1,6 @@
 {
   "name": "eldoria",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "private": true,
   "main": "electron/main.js",
   "description": "Eldoria — un RPG fantasy 3D jouable dans le navigateur et installable sur Windows, macOS et Linux. Monde procédural, combat en temps réel, 5 sorts, 6 ennemis + boss, 5 quêtes.",
