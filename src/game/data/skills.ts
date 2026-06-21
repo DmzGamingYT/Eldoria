@@ -39,7 +39,7 @@ export const SKILLS: SkillDef[] = [
   },
   {
     id: "shield",
-    name: "Bouelier Arcanique",
+    name: "Bouclier Arcanique",
     description: "Conjure une barrière protectrice qui réduit de moitié les dégâts reçus pendant 8 secondes.",
     icon: "🛡️",
     manaCost: 18,

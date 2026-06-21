@@ -17,7 +17,7 @@ Suis les étapes ci-dessous dans l'ordre.
 | Champ | Valeur |
 |---|---|
 | **Title** | `Eldoria — Chroniques de la Forêt d'Argent` |
-| **Short description** | `RPG fantasy 3D open-world — monde procédural, combat en temps réel, 5 sorts, 6 ennemis + boss, 5 quêtes. Gratuis.` |
+| **Short description** | `RPG fantasy 3D open-world — monde procédural, combat en temps réel, 5 sorts, 5 ennemis + boss, 5 quêtes. Gratuit.` |
 | **Project URL** | `dmzgamingyt.itch.io/eldoria` |
 | **Classification** | `Game` |
 | **Pricing** | `Free` (coche "No cost") |
@@ -35,14 +35,14 @@ Puis upload-les sur itch.io dans la section **Uploads** :
 
 | Fichier GitHub | Nom sur itch.io | Plateforme itch.io |
 |---|---|---|
-| `Eldoria-0.2.2-win-x64.exe` | `Eldoria-v0.2.2-Windows-x64.exe` | 🪟 Windows |
-| `Eldoria-0.2.2-mac-x64.dmg` | `Eldoria-v0.2.2-macOS-Intel.dmg` | 🍎 macOS (Intel) |
-| `Eldoria-0.2.2-mac-arm64.dmg` | `Eldoria-v0.2.2-macOS-AppleSilicon.dmg` | 🍎 macOS (Apple Silicon) |
-| `Eldoria-0.2.2-mac-x64.zip` | `Eldoria-v0.2.2-macOS-Intel.zip` | 🍎 macOS (Intel) |
-| `Eldoria-0.2.2-mac-arm64.zip` | `Eldoria-v0.2.2-macOS-AppleSilicon.zip` | 🍎 macOS (Apple Silicon) |
-| `Eldoria-0.2.2-linux-x64.AppImage` | `Eldoria-v0.2.2-Linux-x64.AppImage` | 🐧 Linux |
-| `eldoria_0.2.2_amd64.deb` | `Eldoria-v0.2.2-Linux-amd64.deb` | 🐧 Linux |
-| `Eldoria-0.2.2-linux-x64.rpm` | `Eldoria-v0.2.2-Linux-x64.rpm` | 🐧 Linux |
+| `Eldoria-0.2.5-win-x64.exe` | `Eldoria-v0.2.5-Windows-x64.exe` | 🪟 Windows |
+| `Eldoria-0.2.5-mac-x64.dmg` | `Eldoria-v0.2.5-macOS-Intel.dmg` | 🍎 macOS (Intel) |
+| `Eldoria-0.2.5-mac-arm64.dmg` | `Eldoria-v0.2.5-macOS-AppleSilicon.dmg` | 🍎 macOS (Apple Silicon) |
+| `Eldoria-0.2.5-mac-x64.zip` | `Eldoria-v0.2.5-macOS-Intel.zip` | 🍎 macOS (Intel) |
+| `Eldoria-0.2.5-mac-arm64.zip` | `Eldoria-v0.2.5-macOS-AppleSilicon.zip` | 🍎 macOS (Apple Silicon) |
+| `Eldoria-0.2.5-linux-x64.AppImage` | `Eldoria-v0.2.5-Linux-x64.AppImage` | 🐧 Linux |
+| `eldoria_0.2.5_amd64.deb` | `Eldoria-v0.2.5-Linux-amd64.deb` | 🐧 Linux |
+| `Eldoria-0.2.5-linux-x64.rpm` | `Eldoria-v0.2.5-Linux-x64.rpm` | 🐧 Linux |
 
 > ⚠️ **IMPORTANT** : Chaque fichier doit avoir un **nom différent** et la bonne **case plateforme** cochée.
 > itch.io permet plusieurs fichiers par plateforme — les utilisateurs verront un menu déroulant pour choisir le format.
@@ -77,10 +77,10 @@ Autrefois, le royaume d'Eldoria prospérait sous la lumière de l'Arbre d'Argent
 
 - **Monde 3D procédural** 200×200 unités avec cycle jour/nuit (180s) et brouillard atmosphérique
 - **Combat en temps réel** avec arc d'attaque, combo et invincibilité temporaire
-- **5 compétences magiques** : Boule de Feu, Soin Léger, Éclair, Bouclier de Mana, Nova de Givre
-- **6 types d'ennemis + 1 boss final** (Mordrak) avec IA de patrouille/chasse/attaque
+- **5 compétences magiques** : Boule de Feu, Soin Léger, Chaîne d'Éclairs, Bouclier Arcanique, Nova de Givre
+- **5 types d'ennemis + 1 boss final** (Mordrak) avec IA de patrouille/chasse/attaque
 - **4 PNJ mentors** avec dialogues ramifiés et quêtes
-- **5 quêtes chainées** menant au boss final
+- **5 quêtes chaînées** menant au boss final
 - **Inventaire** de 16+ objets avec 5 niveaux de rareté
 - **Crafting** : 7 recettes (armes, armures, potions)
 - **Boutique** : achat et revente à 50%
@@ -115,8 +115,8 @@ Autrefois, le royaume d'Eldoria prospérait sous la lumière de l'Arbre d'Argent
    - Alternative : décompressez le .zip et copiez Eldoria.app dans Applications
 4. **Linux** :
    - AppImage (universal) : `chmod +x Eldoria*.AppImage && ./Eldoria*.AppImage`
-   - Debian/Ubuntu/Mint : `sudo dpkg -i eldoria_0.2.2_amd64.deb`
-   - Fedora/RHEL/openSUSE : `sudo rpm -i Eldoria-0.2.2-linux-x64.rpm`
+   - Debian/Ubuntu/Mint : `sudo dpkg -i eldoria_0.2.5_amd64.deb`
+   - Fedora/RHEL/openSUSE : `sudo rpm -i Eldoria-0.2.5-linux-x64.rpm`
 
 > ⚠️ Les installeurs ne sont pas signés numériquement. Vous devrez accepter l'avertissement de sécurité au premier lancement (normal pour un indie game).
 

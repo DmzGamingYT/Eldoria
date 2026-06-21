@@ -4,7 +4,7 @@ import { useGame } from "../store";
 import { ITEMS, getItemIcon } from "../data/items";
 import { COLORS } from "../constants";
 import type { ItemCategory } from "../types";
-import { PanelShell, Eyebrow, GoldButton, InkButton, GoldRule, Medallion } from "./parchment";
+import { PanelShell, Eyebrow, GoldRule, Medallion } from "./parchment";
 import { ItemIcon, RarityPips } from "./ItemIcon";
 import { Wand2 } from "lucide-react";
 
@@ -74,8 +74,8 @@ export function CharacterSheet() {
         <Medallion size="lg">
           <Wand2 className="h-10 w-10 text-[var(--parchment-ink)] drop-shadow" strokeWidth={1.6} />
         </Medallion>
-        <div className="flex-1">
-          <div className="font-serif text-xl font-bold text-[var(--parchment-ink)]">
+        <div className="min-w-0 flex-1">
+          <div className="truncate font-serif text-xl font-bold text-[var(--parchment-ink)]">
             Héros d'Eldoria
           </div>
           <div className="font-serif text-sm not-italic text-[var(--gold-3)]">
@@ -88,13 +88,13 @@ export function CharacterSheet() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 gap-2">
         {stats.map((s) => (
           <div
             key={s.label}
-            className="parchment-paper rounded-md border-2 border-[var(--gold-3)] px-3 py-2"
+            className="parchment-paper flex flex-col justify-center rounded-md border-2 border-[var(--gold-3)] px-3 py-2"
           >
-            <Eyebrow>{s.label}</Eyebrow>
+            <Eyebrow className="block truncate">{s.label}</Eyebrow>
             <div
               className="mt-0.5 font-serif text-lg font-bold leading-tight"
               style={{ color: s.color }}
@@ -108,7 +108,7 @@ export function CharacterSheet() {
       <GoldRule />
 
       {/* Équipement */}
-      <Eyebrow>◈ Équipement ◈</Eyebrow>
+      <Eyebrow className="block text-center">◈ Équipement ◈</Eyebrow>
       <div className="mt-2 grid grid-cols-2 gap-2">
         <EquipDisplay label="Arme" id={equipment.weapon} item={weapon} />
         <EquipDisplay label="Armure" id={equipment.armor} item={armor} />
@@ -117,7 +117,7 @@ export function CharacterSheet() {
       {/* Allocation des points */}
       {player.statPoints > 0 && (
         <div className="mt-4 rounded-lg border-2 border-[var(--gold-3)] bg-[var(--gold-1)]/30 p-3">
-          <Eyebrow>
+          <Eyebrow className="block text-center">
             ◈ Répartir les points ({player.statPoints}) ◈
           </Eyebrow>
           <div className="mt-2 grid grid-cols-4 gap-2">
@@ -155,10 +155,10 @@ function EquipDisplay({
 }) {
   if (!item) {
     return (
-      <div className="parchment-paper flex items-center gap-2 rounded-lg border-2 border-dashed border-[var(--gold-4)] p-2.5">
-        <div className="flex h-10 w-10 items-center justify-center rounded-md border border-[var(--gold-4)] bg-[rgba(255,245,215,0.4)] font-serif text-2xl opacity-40">—</div>
-        <div>
-          <Eyebrow>{label}</Eyebrow>
+      <div className="parchment-paper flex h-full items-center gap-2 rounded-lg border-2 border-dashed border-[var(--gold-4)] p-2.5">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-[var(--gold-4)] bg-[rgba(255,245,215,0.4)] font-serif text-2xl opacity-40">—</div>
+        <div className="min-w-0">
+          <Eyebrow className="block truncate">{label}</Eyebrow>
           <div className="font-serif text-xs italic text-[var(--parchment-ink-soft)]">Vide</div>
         </div>
       </div>
@@ -167,7 +167,7 @@ function EquipDisplay({
   const c = COLORS.rarity[item.rarity as keyof typeof COLORS.rarity];
   return (
     <div
-      className="parchment-paper flex items-center gap-2.5 rounded-lg border-2 p-2.5"
+      className="parchment-paper flex h-full items-center gap-2.5 rounded-lg border-2 p-2.5"
       style={{ borderColor: c }}
     >
       <ItemIcon
@@ -180,7 +180,7 @@ function EquipDisplay({
         size="sm"
       />
       <div className="min-w-0 flex-1">
-        <Eyebrow>{label}</Eyebrow>
+        <Eyebrow className="block truncate">{label}</Eyebrow>
         <div className="truncate font-serif text-xs font-bold" style={{ color: c }}>
           {item.nameFr ?? item.name}
         </div>
@@ -200,7 +200,7 @@ function AllocBtn({ label, desc, onClick, color }: { label: string; desc: string
   return (
     <button
       onClick={onClick}
-      className={`rounded-lg border-2 bg-[rgba(255,245,215,0.5)] px-2 py-2 text-center transition ${color}`}
+      className={`flex flex-col items-center justify-center rounded-lg border-2 bg-[rgba(255,245,215,0.5)] px-2 py-2 text-center transition ${color}`}
     >
       <div className="font-serif text-sm font-bold tracking-wide">{label}</div>
       <div className="font-serif text-[9px] opacity-90 italic">{desc}</div>

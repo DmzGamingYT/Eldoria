@@ -116,7 +116,7 @@
     <text x="100" y="68" font-size="34" text-anchor="middle">👹</text>
     <rect x="14" y="116" width="172" height="22" fill="#3a2412" stroke="#f6d97c" stroke-width="1.2" rx="3"/>
     <text x="100" y="131" font-size="11" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" fill="#f6d97c" letter-spacing="1">❦ BESTIAIRE ❦</text>
-    <text x="100" y="154" font-size="11" text-anchor="middle" font-family="Georgia, serif" fill="#3a2412" font-style="italic">6 + 1 boss · IA · respawn 30 s</text>
+    <text x="100" y="154" font-size="11" text-anchor="middle" font-family="Georgia, serif" fill="#3a2412" font-style="italic">5 + 1 boss · IA · respawn 30 s</text>
   </g>
 
   <!-- 4 : PNJ -->

@@ -53,7 +53,7 @@ export function Shop() {
       <div className="grid gap-4 md:grid-cols-2">
         {/* Acheter */}
         <div>
-          <Eyebrow><ShoppingCart className="mr-1 inline h-3 w-3 align-[-2px] text-[var(--gold-3)]" />Acheter</Eyebrow>
+          <Eyebrow className="block"><ShoppingCart className="mr-1 inline h-3 w-3 align-[-2px] text-[var(--gold-3)]" />Acheter</Eyebrow>
           <div className="mt-2 space-y-2 max-h-[52vh] overflow-y-auto pr-1">
             {shopItems.map((item) => {
               const c = COLORS.rarity[item.rarity];
@@ -93,7 +93,7 @@ export function Shop() {
 
         {/* Vendre */}
         <div>
-          <Eyebrow><ArrowLeftRight className="mr-1 inline h-3 w-3 align-[-2px] text-[var(--gold-3)]" />Vendre (50 % de la valeur)</Eyebrow>
+          <Eyebrow className="block"><ArrowLeftRight className="mr-1 inline h-3 w-3 align-[-2px] text-[var(--gold-3)]" />Vendre (50 % de la valeur)</Eyebrow>
           <div className="mt-2 space-y-2 max-h-[52vh] overflow-y-auto pr-1">
             {sellable.length === 0 && (
               <EmptyState>Rien à vendre pour l'instant.</EmptyState>

@@ -44,7 +44,7 @@ export function MainMenu() {
           </InkButton>
         </div>
         <p className="mt-5 text-center text-[10px] tracking-wider text-[var(--parchment-ink-soft)] opacity-70">
-          Touche Échap · pour reprendre
+          Touche Échap pour reprendre
         </p>
       </ParchmentModal>
     );

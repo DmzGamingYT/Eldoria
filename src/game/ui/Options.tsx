@@ -47,7 +47,7 @@ export function Options() {
       <div className="space-y-5">
         {/* ─── Mises à jour ─── */}
         <div>
-          <Eyebrow>◈ Mises à jour</Eyebrow>
+          <Eyebrow className="block">◈ Mises à jour ◈</Eyebrow>
           <div className="mt-3 space-y-2.5">
             <GoldButton onClick={handleCheckUpdate} fullWidth disabled={checking}>
               <span className="flex items-center justify-center gap-2">
@@ -68,7 +68,7 @@ export function Options() {
 
         {/* ─── À propos ─── */}
         <div>
-          <Eyebrow>◈ À propos</Eyebrow>
+          <Eyebrow className="block">◈ À propos ◈</Eyebrow>
           <div className="mt-3 rounded-lg border border-[var(--gold-4)] bg-[rgba(255,245,215,0.25)] p-3 text-sm">
             <div className="flex items-center gap-2">
               <Info className="h-4 w-4 text-[var(--gold-3)]" />
@@ -78,7 +78,7 @@ export function Options() {
               Chroniques de la Forêt d'Argent
             </p>
             <p className="mt-1 text-xs text-[var(--parchment-ink-soft)]">
-              Version 0.2.1 · RPG fantasy 3D
+              Version 0.2.5 · RPG fantasy 3D
             </p>
             <p className="mt-1 text-xs text-[var(--parchment-ink-soft)]">
               © 2026 DmzGamingYT
