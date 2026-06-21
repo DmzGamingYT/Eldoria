@@ -8,7 +8,22 @@ le projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
+### Prévu pour **v0.3.0 — Arbre de talents**
+- Arbre de compétences ramifié (3 branches : combat / magic / survie)
+- PNJ secondaires avec quêtes dynamiques
+- Monde vivant (animaux, météo, saisons)
+- Voir la section 🗺️ [Roadmap du README](README.md#-roadmap)
+
+---
+
+## [0.2.6] — 2026-06-21 — Corrections documentation, textes & bump version
+
 ### 🔧 Maintenance
+- `package.json` : bump version `0.2.5` → `0.2.6`
+- `src/game/ui/Options.tsx` : version affichée mise à jour `0.2.5` → `0.2.6`
+- `README.md` : liens de téléchargement et noms de fichiers mis à jour de v0.2.5 à v0.2.6
+- `docs/itchio-page-guide.md` : versions mises à jour `0.2.5` → `0.2.6`
+- `release-body.md` : version et liens mis à jour `v0.2.5` → `v0.2.6`
 - `README.md` : liens de téléchargement et noms de fichiers mis à jour de v0.2.2 à v0.2.5 (PR #13)
 
 ### 🐛 Correction — Textes de l'interface & données du jeu
@@ -28,12 +43,6 @@ le projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 - `public/banner/carte-monde.svg` : label biome nord-ouest corrigé (`SQUELETTES` → `GUERRIER SQUELETTE`)
 - `public/banner/world-map.svg` : label hexagone corrigé (`Squelettes` → `Guerrier Squelette`)
 - `public/banner/roadmap-hero.svg` : compte ennemis phase 1 corrigé (`6 ennemis` → `5+1 ennemis`)
-
-### Prévu pour **v0.3.0 — Arbre de talents**
-- Arbre de compétences ramifié (3 branches : combat / magic / survie)
-- PNJ secondaires avec quêtes dynamiques
-- Monde vivant (animaux, météo, saisons)
-- Voir la section 🗺️ [Roadmap du README](README.md#-roadmap)
 
 ---
 
