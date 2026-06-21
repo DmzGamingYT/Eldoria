@@ -40,7 +40,7 @@ le projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 - `public/banner/competences-hero.svg` : noms corrigés (`ÉCLAIR` → `CHAÎNE D'ÉCLAIRS`, `BOUCLIER` → `BOUCLIER ARCANIQUE`, `GIVRE` → `NOVA DE GIVRE`), tailles de police harmonisées
 - `public/banner/fonctionnalites-hero.svg` : compte bestiaire corrigé (`6 + 1 boss` → `5 + 1 boss`)
 - `public/banner/sceau-capot.svg` : compte bestiaire corrigé (`6+1` → `5+1`, `6 créatures` → `5 créatures`), description mise à jour
-- `public/banner/carte-monde.svg` : label biome nord-ouest corrigé (`SQUELETTES` → `GUERRIER SQUELETTE`)
+- `public/banner/carte-monde.svg` : label biome nord-ouest corrigé (`SQUELETTES` → `GUERRIER SQUELETTE`) ; médaillon Mordrak redessiné (crâne crème, yeux rouges, cornes dorées) pour corriger l'invisibilité du symbole causée par le `clip-path` sur le `<use>`
 - `public/banner/world-map.svg` : label hexagone corrigé (`Squelettes` → `Guerrier Squelette`)
 - `public/banner/roadmap-hero.svg` : compte ennemis phase 1 corrigé (`6 ennemis` → `5+1 ennemis`)
 
