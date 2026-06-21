@@ -175,7 +175,7 @@
       <path d="M76,58 L96,52 L96,68 L78,68 Z" fill="#a07c3a" stroke="#3a2412" stroke-width="0.6"/>
       <rect x="78" y="54" width="4" height="14" fill="#7a5a3a"/>
       <rect x="-50" y="180" width="160" height="26" fill="#3a2412" stroke="#f6d97c" stroke-width="1.5" rx="3"><animate attributeName="fill-opacity" values="0;1" dur="1.6s" begin="0.8s" fill="freeze"/></rect>
-      <text x="30" y="199" text-anchor="middle" font-family="Georgia, serif" font-size="14" font-weight="bold" fill="#f6d97c" letter-spacing="1">SQUELETTE</text>
+      <text x="30" y="199" text-anchor="middle" font-family="Georgia, serif" font-size="13" font-weight="bold" fill="#f6d97c" letter-spacing="0.5">GUERRIER SQUELETTE</text>
       <text x="30" y="219" text-anchor="middle" font-family="Georgia, serif" font-size="11" fill="#5a3a1f">PV 80 • ATQ 16</text>
       <text x="30" y="243" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-style="italic" fill="#a07c3a">★★★★☆</text>
     </g>

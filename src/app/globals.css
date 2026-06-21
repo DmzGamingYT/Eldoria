@@ -57,6 +57,7 @@
   --crimson: #a13a2a;
   --leaf: #5a8a3a;
   --indigo: #5a4a8a;
+  --breakpoint-xs: 475px;
 }
 
 :root {

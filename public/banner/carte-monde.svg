@@ -28,14 +28,13 @@
     </radialGradient>
     <filter id="cmBlur"><feGaussianBlur stdDeviation="1.4"/></filter>
 
+    <!-- Circular clip used to contain the Mordrak aura + robe inside the r=58 medallion -->
+    <clipPath id="cmClipMordrak"><circle r="58"/></clipPath>
+
     <!-- ============================================================== -->
-    <!-- CREATURE PORTRAIT SYMBOLS                                       -->
-    <!-- Verbatim inlined from public/banner/bestiaire-hero.svg (each   -->
-    <!-- <symbol> viewBox crops to body-only, no plaque/cards).          -->
-    <!-- Render via <use width=H height=H/> to scale into medallions.   -->
+    <!-- CREATURE PORTRAIT SYMBOLS (verbatim from bestiaire-hero.svg)   -->
     <!-- ============================================================== -->
 
-    <!-- SLIME VERT (body) — bestiaire-hero local: cx 30 cy 100 rx 38 ry 40 -->
     <symbol id="artSlime" viewBox="-15 50 90 110">
       <circle cx="30" cy="100" r="55" fill="url(#cmSlimeGlow)" opacity="0.6">
         <animate attributeName="r" values="50;60;50" dur="2s" repeatCount="indefinite"/>
@@ -47,7 +46,6 @@
       <ellipse cx="30" cy="120" rx="4" ry="2" fill="#1a1a1a"/>
     </symbol>
 
-    <!-- PILLARD GOBELIN (head only, no body) -->
     <symbol id="artGoblin" viewBox="-10 22 80 80">
       <polygon points="6,52 18,32 22,60" fill="#5a8a3a" stroke="#3a5a1a" stroke-width="0.6"/>
       <polygon points="54,52 42,32 38,60" fill="#5a8a3a" stroke="#3a5a1a" stroke-width="0.6"/>
@@ -66,7 +64,6 @@
       <polygon points="29,84 31,84 30,91" fill="#fff"/>
     </symbol>
 
-    <!-- LOUP SINISTRE (head + ears + snout only, no legs/body) -->
     <symbol id="artLoup" viewBox="-5 30 115 80">
       <ellipse cx="68" cy="85" rx="22" ry="22" fill="#7a7a7a"/>
       <polygon points="55,70 56,52 68,72" fill="#5a5a5a"/>
@@ -83,7 +80,6 @@
       <circle cx="68" cy="82" r="1.5" fill="#1a1a1a"/>
     </symbol>
 
-    <!-- SQUELETTE GUERRIER (skull only) -->
     <symbol id="artSquelette" viewBox="-10 28 80 60">
       <ellipse cx="35" cy="52" rx="24" ry="24" fill="#e8e8e8" stroke="#a0a0a0" stroke-width="0.6"/>
       <ellipse cx="27" cy="50" rx="6" ry="7" fill="#0a0a0a"/>
@@ -103,7 +99,6 @@
       <line x1="41" y1="68" x2="41" y2="74" stroke="#a0a0a0" stroke-width="0.4"/>
     </symbol>
 
-    <!-- OGRE DES CAVERNES (head only) -->
     <symbol id="artOgre" viewBox="-15 18 100 100">
       <ellipse cx="50" cy="60" rx="34" ry="28" fill="#6a7a4a"/>
       <path d="M16,46 Q50,38 84,46 L82,55 Q50,52 18,55 Z" fill="#3a2412"/>
@@ -120,13 +115,12 @@
       <polygon points="60,76 66,76 63,90" fill="#fff" stroke="#a0a0a0" stroke-width="0.3"/>
     </symbol>
 
-    <!-- MORDRAK (full emblem: hooded skull + pulsing red aura + robe) -->
     <symbol id="artMordrak" viewBox="20 0 180 220">
       <circle cx="100" cy="80" r="80" fill="url(#cmBossAura)">
         <animate attributeName="r" values="70;88;70" dur="2.2s" repeatCount="indefinite"/>
         <animate attributeName="opacity" values="0.5;1;0.5" dur="2.2s" repeatCount="indefinite"/>
       </circle>
-      <ellipse cx="100" cy="140" rx="80" ry="80" fill="#2b0a3d"/>
+      <ellipse cx="100" cy="140" rx="80" ry="80" fill="#4a1d6e"/>
       <ellipse cx="100" cy="80" rx="38" ry="42" fill="#1a0808"/>
       <ellipse cx="100" cy="80" rx="38" ry="42" fill="none" stroke="#ff3344" stroke-width="2"/>
       <ellipse cx="100" cy="75" rx="18" ry="22" fill="#f5e6c8"/>
@@ -142,9 +136,7 @@
     </symbol>
   </defs>
 
-  <!-- ============================================================== -->
-  <!-- BACKDROP + FRAME (matches sceau-capot + carres-savoir)          -->
-  <!-- ============================================================== -->
+  <!-- ===== BACKDROP + FRAME ===== -->
   <rect width="1100" height="720" rx="14" fill="url(#cmParch)"/>
   <rect x="6" y="6" width="1088" height="708" fill="none" stroke="url(#cmGold)" stroke-width="2" opacity="0.6" rx="12"/>
   <rect x="14" y="14" width="1072" height="692" fill="none" stroke="#f6d97c" stroke-width="0.5" opacity="0.4" rx="10"/>
@@ -153,14 +145,14 @@
   <text x="20" y="702" font-family="Georgia, serif" font-size="20" fill="#a07c3a">❧</text>
   <text x="1080" y="702" font-family="Georgia, serif" font-size="20" fill="#a07c3a" text-anchor="end">❦</text>
 
-  <!-- Eyebrow header (matches sceau-capot) -->
+  <!-- ===== EYEBROW HEADER ===== -->
   <g transform="translate(550 28)" text-anchor="middle">
     <ellipse cx="0" cy="6" rx="340" ry="14" fill="url(#cmCenterGlow)" opacity="0.45"/>
     <text font-family="Georgia, serif" font-size="11" fill="#f6d97c" letter-spacing="6" font-weight="bold">◆  CARTOGRAPHIE DU SANCTUAIRE  ◆</text>
   </g>
   <text x="550" y="50" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#a07c3a" font-style="italic" letter-spacing="3">cinq territoires &amp; au nord, le Seigneur des Ombres</text>
 
-  <!-- Rotating rings around village (matches sceau-capot rings) -->
+  <!-- ===== ROTATING RINGS AROUND VILLAGE ===== -->
   <g transform="translate(550 380)">
     <g>
       <circle r="178" fill="none" stroke="url(#cmGold)" stroke-width="2" stroke-dasharray="3 8" opacity="0.55"/>
@@ -172,43 +164,40 @@
     </g>
   </g>
 
-  <!-- ============================================================== -->
-  <!-- MORDRAK BOSS EMBLEM (top centre)                                -->
-  <!-- Renders artMordrak inside a r=58 medallion with its halo behind -->
-  <!-- ============================================================== -->
+  <!-- ===== MORDRAK BOSS EMBLEM ===== -->
+  <!-- Compose medallion in two passes: filled disc + cream halo, then clipped art on top, then gold ring last so it stays clean -->
   <g transform="translate(550 175)">
-    <!-- Single pulsing red aura (the symbol's aura is r=80 in viewBox-space, scales to ~52 here) -->
-    <circle r="58" fill="#1a0838" stroke="url(#cmGold)" stroke-width="2.5"/>
+    <circle r="58" fill="#1a0838"/>
     <circle r="52" fill="none" stroke="#f6d97c" stroke-width="0.5" opacity="0.5"/>
-    <use href="#artMordrak" x="-58" y="-66" width="116" height="142"/>
+    <use href="#artMordrak" x="-58" y="-45" width="116" height="142" clip-path="url(#cmClipMordrak)"/>
+    <circle r="58" fill="none" stroke="url(#cmGold)" stroke-width="2.5"/>
   </g>
-  <text x="550" y="98" text-anchor="middle" font-family="Georgia, serif" font-size="12" font-weight="bold" fill="#ff8a96" letter-spacing="4">⚔  LE DONJON DE MORDRAK  ⚔</text>
-  <text x="550" y="262" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#ff5468" letter-spacing="2" font-style="italic">PV 600 · ATQ 40 · ✦✦✦ BOSS</text>
+  <text x="550" y="100" text-anchor="middle" font-family="Georgia, serif" font-size="12" font-weight="bold" fill="#ff8a96" letter-spacing="4">⚔  LE DONJON DE MORDRAK  ⚔</text>
+  <text x="550" y="270" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#ff5468" letter-spacing="1.5" font-style="italic">PV 600 · ATQ 40 · ✦✦✦</text>
+
+  <!-- ===== GOLD RADIAL SPOKES (village edge → biome edge, full connection — no floating gaps) ===== -->
+  <!-- Each spoke starts at the village gold ring (r=55) and ends at the biome gold ring (r=47),
+       computed along the center-to-center vector so it visibly bridges the two medallions.
+       The S spoke starts at y=435, safely below the embedded village labels (y=389/400/410). -->
+  <line x1="507" y1="345" x2="476" y2="320" stroke="url(#cmGold)" stroke-width="2" opacity="0.7"/>          <!-- NW -->
+  <line x1="593" y1="345" x2="624" y2="320" stroke="url(#cmGold)" stroke-width="2" opacity="0.7"/>          <!-- NE -->
+  <line x1="593" y1="415" x2="624" y2="440" stroke="url(#cmGold)" stroke-width="2" opacity="0.7"/>          <!-- SE -->
+  <line x1="507" y1="415" x2="476" y2="440" stroke="url(#cmGold)" stroke-width="2" opacity="0.7"/>          <!-- SW -->
+  <line x1="550" y1="435" x2="550" y2="463" stroke="url(#cmGold)" stroke-width="2" opacity="0.7"/>          <!-- S  -->
 
   <!-- ============================================================== -->
-  <!-- GOLD RADIAL SPOKES (village → 5 biomes)                         -->
-  <!-- ============================================================== -->
-  <line x1="550" y1="320" x2="550" y2="245" stroke="url(#cmGold)" stroke-width="2" opacity="0.55"/>          <!-- N: village → top (Mordrak direction) -->
-  <line x1="502" y1="344" x2="471" y2="324" stroke="url(#cmGold)" stroke-width="2" opacity="0.7"/>          <!-- NW -->
-  <line x1="596" y1="342" x2="628" y2="324" stroke="url(#cmGold)" stroke-width="2" opacity="0.7"/>          <!-- NE -->
-  <line x1="596" y1="418" x2="624" y2="436" stroke="url(#cmGold)" stroke-width="2" opacity="0.7"/>          <!-- SE -->
-  <line x1="550" y1="442" x2="550" y2="464" stroke="url(#cmGold)" stroke-width="2" opacity="0.7"/>          <!-- S  -->
-  <line x1="504" y1="418" x2="475" y2="436" stroke="url(#cmGold)" stroke-width="2" opacity="0.7"/>          <!-- SW -->
-
-  <!-- ============================================================== -->
-  <!-- 5 BIOME MEDALLIONS (hexagonal ring around village)               -->
-  <!-- Each medallion = cream + gold ring + verbatim creature art via -->
-  <!-- <use> + difficulty stars + name + italic tagline                 -->
+  <!-- 5 BIOME MEDALLIONS (creature art tightened into upper half so   -->
+  <!-- labels at y=18 / y=29 / y=39 sit cleanly below)                -->
   <!-- ============================================================== -->
 
   <!-- NW: RUINES SQUELETTES -->
   <g transform="translate(440 290)">
     <circle r="46" fill="#fff4c2" stroke="url(#cmGold)" stroke-width="2"/>
     <circle r="40" fill="none" stroke="#a07c3a" stroke-width="0.6" opacity="0.6"/>
-    <use href="#artSquelette" x="-26" y="-44" width="52" height="40"/>
-    <text x="0" y="22" text-anchor="middle" font-family="Georgia, serif" font-size="9" font-weight="900" fill="#a13a2a" letter-spacing="1">★★★★☆</text>
-    <text x="0" y="34" text-anchor="middle" font-family="Georgia, serif" font-size="9" font-weight="bold" fill="#3a2412" letter-spacing="2">SQUELETTES</text>
-    <text x="0" y="46" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#5a3a1f" font-style="italic">Ruines nord-ouest</text>
+    <use href="#artSquelette" x="-27" y="-34" width="48" height="36"/>
+    <text x="0" y="21" text-anchor="middle" font-family="Georgia, serif" font-size="9" font-weight="900" fill="#a13a2a" letter-spacing="1">★★★★☆</text>
+    <text x="0" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="7" font-weight="bold" fill="#3a2412" letter-spacing="0.5">GUERRIER SQUELETTE</text>
+    <text x="0" y="42" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#5a3a1f" font-style="italic">Ruines nord-ouest</text>
     <animate attributeName="opacity" values="0.85;1;0.85" dur="3.6s" begin="0s" repeatCount="indefinite"/>
   </g>
 
@@ -216,10 +205,10 @@
   <g transform="translate(660 290)">
     <circle r="46" fill="#fff4c2" stroke="url(#cmGold)" stroke-width="2"/>
     <circle r="40" fill="none" stroke="#a07c3a" stroke-width="0.6" opacity="0.6"/>
-    <use href="#artLoup" x="-30" y="-40" width="60" height="42"/>
-    <text x="0" y="22" text-anchor="middle" font-family="Georgia, serif" font-size="9" font-weight="900" fill="#a13a2a" letter-spacing="1">★★★☆☆</text>
-    <text x="0" y="34" text-anchor="middle" font-family="Georgia, serif" font-size="9" font-weight="bold" fill="#3a2412" letter-spacing="2">LOUPS</text>
-    <text x="0" y="46" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#5a3a1f" font-style="italic">Bois nord-est</text>
+    <use href="#artLoup" x="-34" y="-40" width="54" height="38"/>
+    <text x="0" y="21" text-anchor="middle" font-family="Georgia, serif" font-size="9" font-weight="900" fill="#a13a2a" letter-spacing="1">★★★☆☆</text>
+    <text x="0" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="9" font-weight="bold" fill="#3a2412" letter-spacing="2">LOUPS</text>
+    <text x="0" y="42" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#5a3a1f" font-style="italic">Bois nord-est</text>
     <animate attributeName="opacity" values="0.85;1;0.85" dur="3.6s" begin="0.6s" repeatCount="indefinite"/>
   </g>
 
@@ -227,10 +216,10 @@
   <g transform="translate(660 470)">
     <circle r="46" fill="#fff4c2" stroke="url(#cmGold)" stroke-width="2"/>
     <circle r="40" fill="none" stroke="#a07c3a" stroke-width="0.6" opacity="0.6"/>
-    <use href="#artGoblin" x="-24" y="-32" width="48" height="48"/>
-    <text x="0" y="22" text-anchor="middle" font-family="Georgia, serif" font-size="9" font-weight="900" fill="#a13a2a" letter-spacing="1">★★☆☆☆</text>
-    <text x="0" y="34" text-anchor="middle" font-family="Georgia, serif" font-size="9" font-weight="bold" fill="#3a2412" letter-spacing="2">GOBELINS</text>
-    <text x="0" y="46" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#5a3a1f" font-style="italic">Forêt sud-est</text>
+    <use href="#artGoblin" x="-21" y="-38" width="42" height="42"/>
+    <text x="0" y="21" text-anchor="middle" font-family="Georgia, serif" font-size="9" font-weight="900" fill="#a13a2a" letter-spacing="1">★★☆☆☆</text>
+    <text x="0" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="9" font-weight="bold" fill="#3a2412" letter-spacing="2">GOBELINS</text>
+    <text x="0" y="42" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#5a3a1f" font-style="italic">Forêt sud-est</text>
     <animate attributeName="opacity" values="0.85;1;0.85" dur="3.6s" begin="1.2s" repeatCount="indefinite"/>
   </g>
 
@@ -238,10 +227,10 @@
   <g transform="translate(550 510)">
     <circle r="46" fill="#fff4c2" stroke="url(#cmGold)" stroke-width="2"/>
     <circle r="40" fill="none" stroke="#a07c3a" stroke-width="0.6" opacity="0.6"/>
-    <use href="#artSlime" x="-24" y="-30" width="48" height="60"/>
-    <text x="0" y="22" text-anchor="middle" font-family="Georgia, serif" font-size="9" font-weight="900" fill="#a13a2a" letter-spacing="1">★☆☆☆☆</text>
-    <text x="0" y="34" text-anchor="middle" font-family="Georgia, serif" font-size="9" font-weight="bold" fill="#3a2412" letter-spacing="2">SLIMES</text>
-    <text x="0" y="46" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#5a3a1f" font-style="italic">Champs du sud</text>
+    <use href="#artSlime" x="-18" y="-40" width="36" height="44"/>
+    <text x="0" y="21" text-anchor="middle" font-family="Georgia, serif" font-size="9" font-weight="900" fill="#a13a2a" letter-spacing="1">★☆☆☆☆</text>
+    <text x="0" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="9" font-weight="bold" fill="#3a2412" letter-spacing="2">SLIMES</text>
+    <text x="0" y="42" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#5a3a1f" font-style="italic">Champs du sud</text>
     <animate attributeName="opacity" values="0.85;1;0.85" dur="3.6s" begin="1.8s" repeatCount="indefinite"/>
   </g>
 
@@ -249,42 +238,38 @@
   <g transform="translate(440 470)">
     <circle r="46" fill="#fff4c2" stroke="url(#cmGold)" stroke-width="2"/>
     <circle r="40" fill="none" stroke="#a07c3a" stroke-width="0.6" opacity="0.6"/>
-    <use href="#artOgre" x="-26" y="-30" width="52" height="52"/>
-    <text x="0" y="22" text-anchor="middle" font-family="Georgia, serif" font-size="9" font-weight="900" fill="#a13a2a" letter-spacing="1">★★★★★</text>
-    <text x="0" y="34" text-anchor="middle" font-family="Georgia, serif" font-size="9" font-weight="bold" fill="#3a2412" letter-spacing="2">OGRES</text>
-    <text x="0" y="46" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#5a3a1f" font-style="italic">Cavernes sud-ouest</text>
+    <use href="#artOgre" x="-29" y="-36" width="44" height="44"/>
+    <text x="0" y="21" text-anchor="middle" font-family="Georgia, serif" font-size="9" font-weight="900" fill="#a13a2a" letter-spacing="1">★★★★★</text>
+    <text x="0" y="32" text-anchor="middle" font-family="Georgia, serif" font-size="9" font-weight="bold" fill="#3a2412" letter-spacing="2">OGRES</text>
+    <text x="0" y="42" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#5a3a1f" font-style="italic">Cavernes sud-ouest</text>
     <animate attributeName="opacity" values="0.85;1;0.85" dur="3.6s" begin="2.4s" repeatCount="indefinite"/>
   </g>
 
-  <!-- ============================================================== -->
-  <!-- VILLAGE EMBLEM (centre hub)                                     -->
-  <!-- ============================================================== -->
+  <!-- ===== VILLAGE EMBLEM (labels embedded INSIDE the inner dark circle — no more overlap with SW/SE medallions) ===== -->
   <g transform="translate(550 380)">
-    <circle r="60" fill="url(#cmCenterGlow)">
-      <animate attributeName="r" values="54;68;54" dur="3.6s" repeatCount="indefinite"/>
+    <circle r="56" fill="url(#cmCenterGlow)">
+      <animate attributeName="r" values="50;62;50" dur="3.6s" repeatCount="indefinite"/>
       <animate attributeName="opacity" values="0.5;0.95;0.5" dur="3.6s" repeatCount="indefinite"/>
     </circle>
-    <circle r="58" fill="#fff4c2" stroke="url(#cmGold)" stroke-width="2.5"/>
-    <circle r="52" fill="none" stroke="#a07c3a" stroke-width="0.7" opacity="0.7"/>
+    <circle r="54" fill="#fff4c2" stroke="url(#cmGold)" stroke-width="2.5"/>
+    <circle r="48" fill="none" stroke="#a07c3a" stroke-width="0.7" opacity="0.7"/>
     <circle r="42" fill="#1a0838" stroke="#a07c3a" stroke-width="0.8"/>
-    <g transform="translate(0 -2)" fill="#a07c3a" stroke="#3a2412" stroke-width="0.6">
+    <!-- Building icon: smaller and pulled up so labels below have breathing room -->
+    <g transform="translate(0 -18) scale(0.6)" fill="#a07c3a" stroke="#3a2412" stroke-width="0.6">
       <polygon points="-22,12 -22,-2 -8,-12 6,-2 6,12"/>
       <rect x="-22" y="12" width="28" height="6"/>
       <polygon points="-4,18 -4,8 14,8 14,18 18,8 22,18"/>
       <rect x="20" y="-6" width="10" height="14"/>
       <polygon points="20,-6 25,-14 30,-6"/>
     </g>
-    <circle cx="0" cy="22" r="4" fill="#ff5722" filter="url(#cmBlur)">
-      <animate attributeName="r" values="3;6;3" dur="1.4s" repeatCount="indefinite"/>
-    </circle>
+    <!-- Embedded labels (stacked below the building icon, all within the inner dark r=42) -->
+    <text x="0" y="9" text-anchor="middle" font-family="Georgia, serif" font-size="10" font-weight="bold" fill="#f6d97c" letter-spacing="1">LE VILLAGE</text>
+    <text x="0" y="20" text-anchor="middle" font-family="Georgia, serif" font-size="8" font-weight="bold" fill="#f6d97c" letter-spacing="2">CENTRAL</text>
+    <text x="0" y="30" text-anchor="middle" font-family="Georgia, serif" font-size="6" fill="#a07c3a" font-style="italic" letter-spacing="0.5">hub · auberge</text>
   </g>
-  <text x="550" y="469" text-anchor="middle" font-family="Georgia, serif" font-size="11" font-weight="bold" fill="#f6d97c" letter-spacing="3">♕ LE VILLAGE CENTRAL ♕</text>
-  <text x="550" y="481" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#a07c3a" font-style="italic" letter-spacing="2">le hub, l'auberge, l'autel</text>
 
-  <!-- ============================================================== -->
-  <!-- BOTTOM LEGEND BAR (matches carres-savoir dark footer)           -->
-  <!-- ============================================================== -->
-  <g transform="translate(550 650)">
+  <!-- ===== BOTTOM LEGEND BAR ===== -->
+  <g transform="translate(550 660)">
     <rect x="-470" y="-15" width="940" height="30" rx="5" fill="url(#cmDark)" stroke="url(#cmGold)" stroke-width="1.2" opacity="0.95"/>
     <rect x="-464" y="-10" width="928" height="20" rx="3" fill="none" stroke="#f6d97c" stroke-width="0.4" opacity="0.5"/>
     <text x="0" y="-2" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#f6d97c" letter-spacing="4" font-weight="bold">◈ ÉCHELLE DE DIFFICULTÉ ◈</text>

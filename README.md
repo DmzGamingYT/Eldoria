@@ -418,7 +418,7 @@ Le destin du porteur d'espoir est tracé en cinq chapitres — chacun se conclut
 
 | # | Quête | Donneur | Objectif | Récompense |
 |---|---|---|---|---|
-| 1 | 🟢 **Chasse aux Slimes** | Aldric l'Ancien | Tuer 5 slimes | 50 XP, 30 po, Potion |
+| 1 | 🟢 **Chasse aux Slimes** | Aldric l'Ancien | Tuer 5 slimes | 50 XP, 30 po, Potion de Soin |
 | 2 | 🟤 **La Menace Gobeline** | Brynn la Marchande | Tuer 6 gobelins | 120 XP, 80 po, Épée de Fer |
 | 3 | 🐺 **Chasse aux Loups** | Saela la Chasseuse | Tuer 5 loups | 180 XP, 100 po, Cotte de Mailles |
 | 4 | 💀 **Repos des Os** | Mireille la Sage | Tuer 6 squelettes | 300 XP, 200 po, Hache d'Acier |
@@ -461,7 +461,7 @@ Le destin du porteur d'espoir est tracé en cinq chapitres — chacun se conclut
 
 <p align="center">
   <a href="public/banner/competences-hero.svg">
-    <img src="public/banner/competences-hero.svg" alt="Cinq arts arcaniques — Boule de Feu, Soin Léger, Éclair, Bouclier, Givre" width="100%" style="max-width:780px">
+    <img src="public/banner/competences-hero.svg" alt="Cinq arts arcaniques — Boule de Feu, Soin Léger, Chaîne d'Éclairs, Bouclier Arcanique, Nova de Givre" width="100%" style="max-width:780px">
   </a>
 </p>
 
@@ -489,7 +489,7 @@ Le destin du porteur d'espoir est tracé en cinq chapitres — chacun se conclut
     <text x="820" y="62" fill="#f6d97c" font-family="Georgia, serif" font-size="22" opacity="0.9" text-anchor="end">❧</text>
     <text x="460" y="40" text-anchor="middle" fill="#f6d97c" font-family="Georgia, serif" font-size="11" letter-spacing="6" font-weight="bold">◆ BESTIAIRE D'ELDORIA ◆</text>
     <text x="460" y="66" text-anchor="middle" fill="#fff4c2" font-family="Georgia, serif" font-size="17" font-style="italic">
-      Six créatures rampent dans les terres — et un seigneur les guide…
+      Cinq créatures rampent dans les terres — et un seigneur les guide…
       <animate attributeName="opacity" values="0;1" dur="1.6s" fill="freeze"/>
     </text>
     <circle cx="100" cy="34" r="3" fill="#f6d97c"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" repeatCount="indefinite"/></circle>
@@ -500,7 +500,7 @@ Le destin du porteur d'espoir est tracé en cinq chapitres — chacun se conclut
 </p>
 
 <p align="center">
-  <img src="public/banner/bestiaire-hero.svg" alt="Bestiaire d'Eldoria - six creatures dont le boss final Mordrak : Slime Vert, Pillard Gobelin, Loup Sinistre, Squelette, Ogre des Cavernes" width="100%" style="max-width:1300px">
+  <img src="public/banner/bestiaire-hero.svg" alt="Bestiaire d'Eldoria — cinq créatures et le boss final Mordrak : Slime Vert, Pillard Gobelin, Loup Sinistre, Guerrier Squelette, Ogre des Cavernes" width="100%" style="max-width:1300px">
 </p>
 
 ---
@@ -529,7 +529,7 @@ Quatre marchands, mentors et gardiens du village — chacun avec son dialogue, s
 <p align="center">
   <a href="public/banner/fonctionnalites-hero.svg">
     <img src="public/banner/fonctionnalites-hero.svg"
-         alt="Les treize piliers d'Eldoria — Monde 3D 200×200, Combat en temps réel, Bestiaire 6+1 boss, 4 PNJ mentors, 5 chapitres de quêtes, Inventaire 16+ objets 5 raretés, Crafting 7 recettes armes/armures/potions, Boutique achat/vente 50 %, Magie 5 sorts mana ciblage, Progression XP level^1.6, Sauvegarde localStorage + Prisma/SQLite, Build desktop Electron Win/Mac/Linux, Direction artistique parchemin Cinzel+Garamond + Bloom + God Rays + Vignette"
+         alt="Les treize piliers d'Eldoria — Monde 3D 200×200, Combat en temps réel, Bestiaire 5+1 boss, 4 PNJ mentors, 5 chapitres de quêtes chaînées, Inventaire 16+ objets 5 raretés, Crafting 7 recettes armes/armures/potions, Boutique achat/vente 50 %, Magie 5 sorts mana ciblage, Progression XP level^1.6, Sauvegarde localStorage + Prisma/SQLite, Build desktop Electron Win/Mac/Linux, Direction artistique parchemin Cinzel+Garamond + Bloom + God Rays + Vignette"
          width="100%" style="max-width:1320px; display:block; border-radius:3px;">
   </a>
 </p>
@@ -554,7 +554,7 @@ Quatre marchands, mentors et gardiens du village — chacun avec son dialogue, s
 | 🪟 **Windows** 10 / 11 | NSIS `Eldoria-0.2.5-win-x64.exe` (~265 Mo) | ✅ | Double-clic sur l'installeur · Menu Démarrer + raccourci bureau créés |
 | 🍎 **macOS** Intel x64 | DMG + ZIP (`Eldoria-0.2.5-mac-x64.dmg`, `…-mac-x64.zip`) (~350 Mo) | ✅ | Glisser `Eldoria.app` dans `/Applications` |
 | 🍎 **macOS** Apple Silicon (≥ M1) | DMG + ZIP (`Eldoria-0.2.5-mac-arm64.dmg`, `…-mac-arm64.zip`) (~348 Mo) | ✅ | Glisser `Eldoria.app` dans `/Applications` |
-| 🐧 **Linux** universal | AppImage `Eldoria-0.2.5-linux-x86_64.AppImage` (~410 Mo) | ✅ | `chmod +x` puis double-clic |
+| 🐧 **Linux** universal | AppImage `Eldoria-0.2.5-linux-x64.AppImage` (~410 Mo) | ✅ | `chmod +x` puis double-clic |
 | 🐧 **Debian / Ubuntu / Mint / Pop!_OS** | `.deb` `eldoria_0.2.5_amd64.deb` (~298 Mo) | ✅ | `sudo dpkg -i …deb` |
 | 🐧 **Fedora / RHEL / openSUSE / Nobara** | `.rpm` `Eldoria-0.2.5-linux-x64.rpm` (~230 Mo) | ✅ | `sudo rpm -i …rpm` |
 
@@ -567,16 +567,16 @@ Quatre marchands, mentors et gardiens du village — chacun avec son dialogue, s
 > | 🍎 **macOS** Intel x64 | ZIP | [`Eldoria-0.2.5-mac-x64.zip`](https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.5-mac-x64.zip) — glisser dans `/Applications` |
 > | 🍎 **macOS** Apple Silicon (≥ M1) | DMG | [`Eldoria-0.2.5-mac-arm64.dmg`](https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.5-mac-arm64.dmg) — glisser dans `/Applications` |
 > | 🍎 **macOS** Apple Silicon (≥ M1) | ZIP | [`Eldoria-0.2.5-mac-arm64.zip`](https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.5-mac-arm64.zip) — glisser dans `/Applications` |
-> | 🐧 **Linux** universal | AppImage | [`Eldoria-0.2.5-linux-x86_64.AppImage`](https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.5-linux-x86_64.AppImage) — `chmod +x` puis double-clic |
+> | 🐧 **Linux** universal | AppImage | [`Eldoria-0.2.5-linux-x64.AppImage`](https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.5-linux-x64.AppImage) — `chmod +x` puis double-clic |
 > | 🐧 **Debian / Ubuntu / Mint / Pop!_OS** | `.deb` | [`eldoria_0.2.5_amd64.deb`](https://github.com/DmzGamingYT/Eldoria/releases/latest/download/eldoria_0.2.5_amd64.deb) — `sudo dpkg -i …` |
 > | 🐧 **Fedora / RHEL / openSUSE / Nobara** | `.rpm` | [`Eldoria-0.2.5-linux-x64.rpm`](https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.5-linux-x64.rpm) — `sudo rpm -i …` |
 
 ### Installation rapide (Linux AppImage — universelle)
 
 ```bash
-wget https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.5-linux-x86_64.AppImage
-chmod +x Eldoria-0.2.5-linux-x86_64.AppImage
-./Eldoria-0.2.5-linux-x86_64.AppImage
+wget https://github.com/DmzGamingYT/Eldoria/releases/latest/download/Eldoria-0.2.5-linux-x64.AppImage
+chmod +x Eldoria-0.2.5-linux-x64.AppImage
+./Eldoria-0.2.5-linux-x64.AppImage
 ```
 
 ### Installation rapide (Linux Debian / Fedora)
@@ -676,7 +676,7 @@ bun run electron:build:linux  # Linux (AppImage + deb + rpm)
 
 ```bash
 bun run screenshots
-# → génère public/screenshots/{01..04}*.png via Playwright
+# → génère public/screenshots/{01..04}*.png via capture-screenshots.mjs
 ```
 
 ### Générer le trailer GIF cinématique
@@ -756,8 +756,8 @@ Les modèles 3D et animations sont fournis par **[Quaternius](https://quaternius
 | Pack | Statut | Emplacement |
 |---|---|---|
 | Universal Animation Library | ✅ Téléchargé | `public/assets/characters/animations/` |
-| Universal Base Characters | ⚠️ Placeholder | `public/assets/characters/base/` |
-| Modular Character Outfits | ⚠️ Placeholder | `public/assets/characters/outfits/` |
+| Universal Base Characters | ✅ Téléchargé | `public/assets/characters/base/` |
+| Modular Character Outfits | ✅ Téléchargé | `public/assets/characters/outfits/` |
 
 Les bannières et illustrations SVG du README sont dérivées de l'identité visuelle du jeu
 (parchemin / or / pourpre) et codées artisanalement pour ce projet.

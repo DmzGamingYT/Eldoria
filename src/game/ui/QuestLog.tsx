@@ -37,7 +37,7 @@ export function QuestLog() {
           if (list.length === 0) return null;
           return (
             <div key={sec.title}>
-              <Eyebrow style={{ color: sec.color }}>◈ {sec.title} ({list.length}) ◈</Eyebrow>
+              <Eyebrow className="block" style={{ color: sec.color }}>◈ {sec.title} ({list.length}) ◈</Eyebrow>
               <div className="mt-2 space-y-2.5">
                 {list.map((q) => {
                   const def = QUESTS.find((d) => d.id === q.id);
@@ -96,7 +96,7 @@ export function QuestLog() {
                               +{def.reward.xp} XP
                             </span>
                             <span className="rounded border border-[var(--gold-3)] bg-[var(--gold-1)]/45 px-2 py-0.5 font-serif text-[10px] font-bold text-[var(--gold-3)]">
-                              +{def.reward.gold} or
+                              +{def.reward.gold} po
                             </span>
                             {def.reward.item && (() => {
                               const it = ITEMS[def.reward.item];

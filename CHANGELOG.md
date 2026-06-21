@@ -11,6 +11,24 @@ le projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 ### 🔧 Maintenance
 - `README.md` : liens de téléchargement et noms de fichiers mis à jour de v0.2.2 à v0.2.5 (PR #13)
 
+### 🐛 Correction — Textes de l'interface & données du jeu
+- `src/game/ui/Options.tsx` : version affichée corrigée `0.2.1` → `0.2.5`
+- `src/game/data/skills.ts` : faute d'orthographe corrigée `"Bouelier Arcanique"` → `"Bouclier Arcanique"`
+- `src/game/ui/QuestLog.tsx` : unité d'or harmonisée (`"or"` → `"po"` pour cohérence avec l'inventaire et la boutique)
+- `src/game/ui/MainMenu.tsx` : point médian superflu supprimé (`"Touche Échap · pour reprendre"` → `"Touche Échap pour reprendre"`)
+
+### 📚 Documentation — corrections d'incohérences texte & version
+- `docs/itchio-page-guide.md` : versions mises à jour `0.2.2` → `0.2.5`, typo "Gratuis" → "Gratuit", compte d'ennemis corrigé (`6` → `5` réguliers + boss), "chainées" → "chaînées", noms de compétences alignés avec `src/game/data/skills.ts`
+- `release-body.md` : version et liens mis à jour `0.2.1` → `0.2.5`
+- `README.md` : compte d'ennemis corrigé (`6+1` → `5+1`), alt text du bestiaire corrigé, nom AppImage corrigé (`linux-x86_64` → `linux-x64`), noms de compétences alignés, récompense quête 1 corrigée (`Potion` → `Potion de Soin`), commentaire screenshots corrigé, statuts assets Quaternius mis à jour (`Placeholder` → `Téléchargé`)
+- `public/banner/bestiaire-hero.svg` : "SQUELETTE" → "GUERRIER SQUELETTE"
+- `public/banner/competences-hero.svg` : noms corrigés (`ÉCLAIR` → `CHAÎNE D'ÉCLAIRS`, `BOUCLIER` → `BOUCLIER ARCANIQUE`, `GIVRE` → `NOVA DE GIVRE`), tailles de police harmonisées
+- `public/banner/fonctionnalites-hero.svg` : compte bestiaire corrigé (`6 + 1 boss` → `5 + 1 boss`)
+- `public/banner/sceau-capot.svg` : compte bestiaire corrigé (`6+1` → `5+1`, `6 créatures` → `5 créatures`), description mise à jour
+- `public/banner/carte-monde.svg` : label biome nord-ouest corrigé (`SQUELETTES` → `GUERRIER SQUELETTE`)
+- `public/banner/world-map.svg` : label hexagone corrigé (`Squelettes` → `Guerrier Squelette`)
+- `public/banner/roadmap-hero.svg` : compte ennemis phase 1 corrigé (`6 ennemis` → `5+1 ennemis`)
+
 ### Prévu pour **v0.3.0 — Arbre de talents**
 - Arbre de compétences ramifié (3 branches : combat / magic / survie)
 - PNJ secondaires avec quêtes dynamiques

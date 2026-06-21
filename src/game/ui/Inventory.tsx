@@ -262,7 +262,7 @@ export function Inventory() {
 
       {/* Emplacements d'équipement */}
       <div>
-        <Eyebrow>◈ Équipement ◈</Eyebrow>
+        <Eyebrow className="block">◈ Équipement ◈</Eyebrow>
         <div className="mt-2 flex items-center gap-3">
           <EquipSlot
             label="Arme"
