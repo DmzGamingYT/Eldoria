@@ -175,13 +175,15 @@
   <text x="550" y="100" text-anchor="middle" font-family="Georgia, serif" font-size="12" font-weight="bold" fill="#ff8a96" letter-spacing="4">⚔  LE DONJON DE MORDRAK  ⚔</text>
   <text x="550" y="270" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#ff5468" letter-spacing="1.5" font-style="italic">PV 600 · ATQ 40 · ✦✦✦</text>
 
-  <!-- ===== GOLD RADIAL SPOKES (village → 5 biomes) ===== -->
-  <!-- S spoke starts at y=450 so it doesn't cross the village label at y=435/447 -->
-  <line x1="550" y1="450" x2="550" y2="464" stroke="url(#cmGold)" stroke-width="2" opacity="0.7"/>          <!-- S  -->
-  <line x1="502" y1="344" x2="471" y2="324" stroke="url(#cmGold)" stroke-width="2" opacity="0.7"/>          <!-- NW -->
-  <line x1="596" y1="342" x2="628" y2="324" stroke="url(#cmGold)" stroke-width="2" opacity="0.7"/>          <!-- NE -->
-  <line x1="596" y1="418" x2="624" y2="436" stroke="url(#cmGold)" stroke-width="2" opacity="0.7"/>          <!-- SE -->
-  <line x1="504" y1="418" x2="475" y2="436" stroke="url(#cmGold)" stroke-width="2" opacity="0.7"/>          <!-- SW -->
+  <!-- ===== GOLD RADIAL SPOKES (village edge → biome edge, full connection — no floating gaps) ===== -->
+  <!-- Each spoke starts at the village gold ring (r=55) and ends at the biome gold ring (r=47),
+       computed along the center-to-center vector so it visibly bridges the two medallions.
+       The S spoke starts at y=435, safely below the embedded village labels (y=389/400/410). -->
+  <line x1="507" y1="345" x2="476" y2="320" stroke="url(#cmGold)" stroke-width="2" opacity="0.7"/>          <!-- NW -->
+  <line x1="593" y1="345" x2="624" y2="320" stroke="url(#cmGold)" stroke-width="2" opacity="0.7"/>          <!-- NE -->
+  <line x1="593" y1="415" x2="624" y2="440" stroke="url(#cmGold)" stroke-width="2" opacity="0.7"/>          <!-- SE -->
+  <line x1="507" y1="415" x2="476" y2="440" stroke="url(#cmGold)" stroke-width="2" opacity="0.7"/>          <!-- SW -->
+  <line x1="550" y1="435" x2="550" y2="463" stroke="url(#cmGold)" stroke-width="2" opacity="0.7"/>          <!-- S  -->
 
   <!-- ============================================================== -->
   <!-- 5 BIOME MEDALLIONS (creature art tightened into upper half so   -->
