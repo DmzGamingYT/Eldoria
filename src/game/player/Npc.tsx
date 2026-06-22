@@ -309,7 +309,33 @@ function NpcVariant({
   const baseGltf = useGLTF(BASE_GLB);
   const outfitGltf = useGLTF(OUTFIT_GLB_MAP[variant.archetype]);
 
-  const { actions, names } = useAnimations(animGltf.animations, rootRef);
+  // Collect every named node from the cached base + outfit scenes. Used to
+  // strip animation tracks whose target node the rig doesn't expose —
+  // otherwise Three.js's AnimationMixer emits a `THREE.PropertyBinding: No
+  // target node found for track: …` for every unresolved track on every NPC
+  // instance, polluting the (production) console for every panel toggle.
+  // The set is computed once per GLB cache hit so per-NPC instance cost is
+  // a single O(tracks) clone of `AnimationClip` (no per-frame work).
+  const validNodeNames = useMemo(() => {
+    const names = new Set<string>();
+    baseGltf.scene.traverse((o) => { if (o.name) names.add(o.name); });
+    outfitGltf.scene.traverse((o) => { if (o.name) names.add(o.name); });
+    return names;
+  }, [baseGltf, outfitGltf]);
+
+  // Sanitized clones of the Universal Animation Library clips. The result is
+  // memoized at the module level keyed by (animation GLB url, sorted-join of
+  // valid node names) so the 4+ NPC instances of the world reuse the same
+  // sanitized clip array instead of re-cloning every track on every mount.
+  // When validNodeNames is empty (placeholder path) we fall back to the raw
+  // clips — the procedural fallback already kicked in upstream so the
+  // warnings are moot.
+  const sanitizedAnimations = useMemo(
+    () => getSanitizedClips(animGltf.animations, validNodeNames, makeSanitizeKey(ANIMATION_GLB, validNodeNames)),
+    [animGltf.animations, validNodeNames],
+  );
+
+  const { actions, names } = useAnimations(sanitizedAnimations, rootRef);
 
   // Pick a sensible idle + talk clip name. We:
   //   1. prefer a clip whose name matches the category regex;
@@ -896,6 +922,83 @@ class ErrorBoundary extends Component<
 /** Pick the first clip name matching `pat` — undefined if no match. */
 function pickClip(names: string[], pat: RegExp): string | undefined {
   return names.find((n) => pat.test(n));
+}
+
+/** Track-name → node-name: a Three.js `KeyframeTrack.name` looks like
+ *  `nodeName.propertyName[propertyIndex]` (e.g. `root.position`, `Hips.quaternion`,
+ *  `LeftHand.morphTargetInfluences[0]`). We only need the leading node chunk. */
+function trackNodeName(trackName: string): string {
+  const dot = trackName.indexOf(".");
+  return dot === -1 ? trackName : trackName.slice(0, dot);
+}
+
+/** Module-scoped memoization: every (animation GLB url, sorted-join of valid
+ *  node names) tuple produces a stable sanitized clip array. 4 NPCs sharing
+ *  the same Quaternius bundle + the same rig hit the cache after the first
+ *  instance builds it. */
+const __sanitizedClipsCache = new Map<string, THREE.AnimationClip[]>();
+
+const IS_DEV = typeof process !== "undefined" && process.env.NODE_ENV !== "production";
+
+/** Public entry — passes the cache lookup through to the core sanitizer. */
+function getSanitizedClips(
+  animations: THREE.AnimationClip[],
+  validNames: Set<string>,
+  cacheKey?: string,
+): THREE.AnimationClip[] {
+  if (validNames.size === 0) return animations;
+  const key = cacheKey ?? [...validNames].sort().join("|");
+  const hit = __sanitizedClipsCache.get(key);
+  if (hit && hit.length === animations.length) return hit;
+  const fresh = sanitizeAnimationsForRig(animations, validNames);
+  __sanitizedClipsCache.set(key, fresh);
+  return fresh;
+}
+
+/** Build the cache key from the animation GLB URL + the sorted node set. */
+function makeSanitizeKey(animUrl: string, validNames: Set<string>): string {
+  return `${animUrl}#${[...validNames].sort().join("|")}`;
+}
+
+/** Strip tracks from `animations` whose target node isn't in `validNames`.
+ *  - Returns the same array (preserving referential identity) if every track
+ *    is valid — avoids the clone cost on the happy path AND lets drei's
+ *    `useAnimations` memoization downstream hit the cache.
+ *  - Uses `AnimationClip.clone()` + per-clip `tracks` reassignment so
+ *    `blendMode`, `userData`, and any other metadata Quaternius or future
+ *    Three.js releases add are preserved.
+ *  - Logs ONCE in dev (NODE_ENV !== "production") the total strip count so
+ *    the dev sees the impact in logs without spamming the production
+ *    console. */
+function sanitizeAnimationsForRig(
+  animations: THREE.AnimationClip[],
+  validNames: Set<string>,
+): THREE.AnimationClip[] {
+  if (validNames.size === 0) return animations;
+  let anyDropped = false;
+  let strippedTotal = 0;
+  const out: THREE.AnimationClip[] = [];
+  for (const clip of animations) {
+    const kept = clip.tracks.filter((t) => validNames.has(trackNodeName(t.name)));
+    if (kept.length !== clip.tracks.length) {
+      strippedTotal += clip.tracks.length - kept.length;
+      anyDropped = true;
+      // AnimationClip.clone() preserves name + blendMode + userData; we just
+      // swap the (already filtered) tracks array on the clone.
+      const c = clip.clone();
+      c.tracks = kept;
+      out.push(c);
+    } else {
+      out.push(clip);
+    }
+  }
+  if (!anyDropped) return animations; // happy path → original refs
+  if (IS_DEV) {
+    console.warn(
+      `[NpcVariant] stripped ${strippedTotal} unresolved animation track(s) — likely "root.position" / "root.quaternion" root-motion tracks the Quaternius rig doesn't expose as named bones. The clips still play correctly; the tracks are inert root-motion overrides.`,
+    );
+  }
+  return out;
 }
 
 /** Clones a GLTF scene + tints every MeshStandardMaterial. Per-instance

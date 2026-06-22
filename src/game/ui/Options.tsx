@@ -78,7 +78,7 @@ export function Options() {
               Chroniques de la Forêt d'Argent
             </p>
             <p className="mt-1 text-xs text-[var(--parchment-ink-soft)]">
-              Version 0.2.6 · RPG fantasy 3D
+              Version 0.3.0 · RPG fantasy 3D
             </p>
             <p className="mt-1 text-xs text-[var(--parchment-ink-soft)]">
               © 2026 DmzGamingYT

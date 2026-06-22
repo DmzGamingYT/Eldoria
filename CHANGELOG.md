@@ -6,13 +6,48 @@ le projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
 ---
 
-## [Non publié]
+## [Non publié] — v0.3.0 livrée sur main (tag + release à pousser par le mainteneur)
 
-### Prévu pour **v0.3.0 — Arbre de talents**
-- Arbre de compétences ramifié (3 branches : combat / magic / survie)
-- PNJ secondaires avec quêtes dynamiques
-- Monde vivant (animaux, météo, saisons)
-- Voir la section 🗺️ [Roadmap du README](README.md#-roadmap)
+### Prévu pour **v0.3.x**
+- Multi-rang sur les talents (maxRank > 1, coût exponentiel).
+- Intégration des sorts au combat : lancer via la barre rapide ou un nouveau panneau.
+- Active buffs UI (régénération en combat, blizzard de la capstone Survie).
+
+---
+
+## [0.3.0] — 2026-06-22 — Arbre de Talents (3 branches : Combat · Magie · Survie)
+
+Le système de progression du héros passe du « répartir 3 points manuellement dans 4 stats » à un **Arbre de Talents ramifié** : 18 talents (5 + 1 capstone par branche), trois styles de jeu distincts (DPS / sorts / tank), prérequis entre talents, et passifs régénération.
+
+### ✨ Ajouté
+
+- **Arbre de talents** — 3 branches verticales dans un nouveau panneau `SkillTree` (touche `T` ou bouton HUD avec badge pulsant quand vous avez des points à dépenser) :
+  - **Combat** (rouge) — `Force brute`, `Précision`, `Force brute ×12% ATQ`, `Létalité`, `Célérité du guerrier`, capstone `Bourreau` (critiques ×2.5).
+  - **Magie** (bleu) — `Focalisation` (+15 mana), `Flux arcanique` (+1 mana/s), `Sorcèlerie` (+12% puissance sorts), `Vague de mana`, `Incantation rapide`, capstone `Archimage` (+35% sorts, +50 mana).
+  - **Survie** (vert) — `Vigueur`, `Peau épaisse`, `Récupération` (+1.5 HP/s), `Cuirasse de fer`, `Vitalité`, capstone `Immortel` (+5 HP/s, +5 défense).
+- **Économie de points** — 1 point par niveau + 1 bonus tous les 5 niveaux (5, 10, 15…). Les anciennes stats allouées manuellement (`statPoints`) restent visibles comme bonus flat embarqués dans les stats de base. Migration automatique depuis les saves v0.2.x.
+- **Nouvelles statistiques dérivées** — `critChance` (base 15%, + talents), `spellPower` (base ×1, + talents), `healthRegen`/sec, `manaRegen`/sec, `cooldownReduction` (capée à 75%).
+- **Combat** : `playerAttack` utilise `derivedCritChance`, applique un multiplicateur ×2.5 sur critique si la capstone Combat `Bourreau` est allouée, et applique `cooldownReduction` sur le cooldown de l'attaque basique.
+- **Régénération passive HP/MP** appliquée à chaque tick d'`updateEnemies` (HP désactivée 1 s après un coup reçu pour éviter le heal-through-damage).
+- **Persistance v2** — la save passe de `rpg_save_v1` à `rpg_save_v2` avec `schemaVersion: 2` ; les saves v1 sont toujours chargées via auto-migration (drop `statPoints`, calcul rétroactif des points de talent selon le niveau).
+- **Badge HUD pulsant** sur le bouton Talents quand des points sont disponibles.
+- **Aide-mémoire** (`H`) et panneau d'accueil mis à jour pour mentionner la touche `T`.
+- **Refund de talent en cascade** — rembourser un parent rembourse automatiquement ses descendants qui dépendaient de lui, pour éviter l'état incohérent entre l'agrégation des bonus et l'affichage verrouillé.
+
+### 🔧 Maintenance
+
+- `package.json` bump `0.2.6` → `0.3.0`.
+- `src/game/ui/Options.tsx` : version affichée `0.2.6` → `0.3.0`.
+- `PlayerStats.statPoints` remplacé par `talentPoints` + `allocatedTalents: Record<string, number>`.
+- `recomputeDerived` réécrit pour intégrer équipement puis talents (flats d'abord, multiplicateurs après).
+- 5 branches distantes obsolètes nettoyées (`aligne-medailon-mordrak-verbatim`, `chore/bump-v0.2.6`, `docs/readme-v0.2.5-links`, `fix/mordrak-medallion-visible`, `sceau-capot-rework`) — leur contenu est déjà mergé dans `main`.
+- Nouveau fichier : `src/game/data/talents.ts` (18 talents + helpers `isTalentAvailable`, `pointsInBranch`, `talentPointsForLevel`).
+- Nouveau fichier : `src/game/ui/SkillTree.tsx` (panneau 3 colonnes SVG avec liens entre prérequis).
+
+### ⚠️ Notes de compatibilité
+
+- Les saves v0.2.x (`rpg_save_v1`) sont auto-migrées à la lecture : suppression de `statPoints`, ajout de `talentPoints` rétroactif.
+- Les talents sont mono-rang (`maxRank = 1`) en v0.3.0 — un futur patch ajoutera le multi-rang avec un coût exponentiel si la demande est forte.
 
 ---
 
@@ -186,7 +221,7 @@ consommateurs, évaluation des risques).
 
 ### 🔧 Maintenance
 
-- `package.json` bump 0.2.2 → 0.2.3 (alignement tag Git ↔ artefacts).
+- `package.json` bump 0.2.2 → 0.3.0 (alignement tag Git ↔ artefacts).
 - `.gitignore` : exclusion de `build/*.bak` et `build/icon_test.ico`
   (artefacts de debug oubliés lors du travail initial sur les icônes).
 - Documentation release : ce `CHANGELOG.md` sert aussi de release body

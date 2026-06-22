@@ -16,7 +16,9 @@ export interface PlayerStats {
   defense: number;
   speed: number;
   gold: number;
-  statPoints: number;
+  /** Talent points to spend in the SkillTree. Replaces the old `statPoints` field
+   *  starting with v0.3.0. Awarded at level-up (1 per level, +1 bonus every 5). */
+  talentPoints: number;
 }
 
 export interface PlayerState extends PlayerStats {
@@ -30,6 +32,8 @@ export interface PlayerState extends PlayerStats {
   invulnerableUntil: number;
   killCount: number;
   facingDir: Vec3;
+  /** Map of talentId -> rank (always 1 in v0.3.0 MVP). {@link TalentDef}. */
+  allocatedTalents: Record<string, number>;
 }
 
 export type EnemyType = "slime" | "goblin" | "wolf" | "skeleton" | "ogre" | "boss";
@@ -192,5 +196,72 @@ export interface CraftRecipe {
   result: { itemId: string; qty: number };
   materials: { itemId: string; qty: number }[];
   requiresCraftingStation?: boolean;
+}
+
+/* ============================================================================
+ *  Talent Tree — v0.3.0
+ *  Three themes: combat (DPS), magic (spells), survival (tank/regen).
+ *  Each branch holds 5 standard talents + 1 capstone (cost 2) for tier 5.
+ *  Prerequisites: a combination of (a) `branchPoints` already invested in the
+ *  same branch, and/or (b) a specific parent talent `requiresTalentId`.
+ *  Effects aggregate: flat bonuses are summed, percentage bonuses stack
+ *  additively and apply AFTER equipment bonuses. See `recomputeDerived` in
+ *  store.ts for the canonical calculation order.
+ * ========================================================================== */
+
+export type TalentBranch = "combat" | "magic" | "survival";
+
+export interface TalentEffects {
+  /** Flat attack added before multiplication (integer). */
+  attackFlat?: number;
+  /** Multiplicative attack bonus (0.10 = +10%). */
+  attackPct?: number;
+  /** Flat defense added before multiplication. */
+  defenseFlat?: number;
+  /** Multiplicative defense bonus. */
+  defensePct?: number;
+  /** Flat max-HP added before multiplication. */
+  healthFlat?: number;
+  /** Multiplicative HP bonus. */
+  healthPct?: number;
+  /** Flat max-MP added. */
+  manaFlat?: number;
+  /** Multiplicative MP bonus. */
+  manaPct?: number;
+  /** Critical-hit chance added (0.05 = +5%). Stacks with base 15%. */
+  critChanceFlat?: number;
+  /** Multiplicative spell damage bonus (base 1.0). */
+  spellPowerPct?: number;
+  /** HP regenerated per second (out-of-combat). */
+  healthRegenFlat?: number;
+  /** MP regenerated per second. */
+  manaRegenFlat?: number;
+  /** Multiplicative reduction on all cooldown timers (0.10 = -10%). */
+  cooldownReductionPct?: number;
+}
+
+export interface TalentPrerequisites {
+  /** Points already invested in the SAME branch requirement. */
+  branchPoints?: number;
+  /** Specific parent talent that must already be allocated. */
+  requiresTalentId?: string;
+  /** Minimum player level required. */
+  minLevel?: number;
+}
+
+export interface TalentDef {
+  id: string;
+  branch: TalentBranch;
+  /** Visual tier 1..5 (the capstone always sits at tier 5). */
+  tier: number;
+  nameFr: string;
+  descFr: string;
+  /** Visual icon (lucide icon name OR emoji). Stored as a single string;
+   *  the SkillTree UI switches to a Lucide icon if the value matches one. */
+  icon: string;
+  /** Number of talent points the talent costs. Capstones cost 2. */
+  cost: number;
+  prerequisites: TalentPrerequisites;
+  effects: TalentEffects;
 }
 

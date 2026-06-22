@@ -32,6 +32,12 @@ import {
   CHEST_SPAWNS,
   getChestGold,
 } from "./data/skills";
+import {
+  TALENTS,
+  getTalent,
+  isTalentAvailable,
+  talentPointsForLevel,
+} from "./data/talents";
 import { playSound, audio } from "./audio";
 
 let enemyIdCounter = 0;
@@ -101,7 +107,7 @@ function makeInitialPlayer(): PlayerState {
     defense: PLAYER.baseDefense,
     speed: PLAYER.baseSpeed,
     gold: 25,
-    statPoints: 0,
+    talentPoints: 0,
     position: [spawnX, spawnFeetY, spawnZ],
     rotation: 0,
     isAttacking: false,
@@ -112,6 +118,7 @@ function makeInitialPlayer(): PlayerState {
     invulnerableUntil: 0,
     killCount: 0,
     facingDir: [0, 0, -1],
+    allocatedTalents: {},
   };
 }
 
@@ -136,6 +143,14 @@ function makeInitialChests(): Chest[] {
 // 0 = dawn, DAY_LENGTH*0.25 = noon, 0.5 = dusk, 0.75 = midnight
 const DAY_LENGTH = 120; // seconds for a full day-night cycle
 
+export type UiPanelKey =
+  | "inventory"
+  | "quests"
+  | "character"
+  | "help"
+  | "options"
+  | "talents";
+
 export interface GameStore {
   status: GameStatus;
   player: PlayerState;
@@ -154,6 +169,8 @@ export interface GameStore {
     character: boolean;
     help: boolean;
     options: boolean;
+    /** SkillTree panel (v0.3.0+) — toggled by hotkey T or HUD button. */
+    talents: boolean;
     dialogue: string | null; // npc id
     shop: string | null; // npc id
     toast: { id: number; message: string; type: "info" | "success" | "error" } | null;
@@ -165,6 +182,16 @@ export interface GameStore {
   derivedDefense: number;
   derivedMaxHealth: number;
   derivedMaxMana: number;
+  /** Bonus crit chance (base 0.15 → + talents). */
+  derivedCritChance: number;
+  /** Multiplicative spell damage (base 1.0 → + talents). */
+  derivedSpellPower: number;
+  /** HP regen / sec from talents. */
+  derivedHealthRegen: number;
+  /** MP regen / sec from talents. */
+  derivedManaRegen: number;
+  /** Cooldown reduction fraction (talents only, base 0). */
+  derivedCooldownReduction: number;
   // actions
   startGame: () => void;
   resetGame: () => void;
@@ -186,8 +213,8 @@ export interface GameStore {
   sellItem: (itemId: string, qty?: number) => void;
   acceptQuest: (questId: string) => void;
   turnInQuest: (questId: string) => void;
-  togglePanel: (panel: "inventory" | "quests" | "character" | "help" | "options") => void;
-  closePanel: (panel: "inventory" | "quests" | "character" | "help" | "options") => void;
+  togglePanel: (panel: UiPanelKey) => void;
+  closePanel: (panel: UiPanelKey) => void;
   openDialogue: (npcId: string) => void;
   closeDialogue: () => void;
   openShop: (npcId: string) => void;
@@ -202,9 +229,30 @@ export interface GameStore {
   saveGame: () => void;
   loadGame: () => boolean;
   hasSave: () => boolean;
+  /** Allocate one talent point to a talent. Drops the cost from
+   *  `player.talentPoints`, writes the rank in `player.allocatedTalents`,
+   *  then re-runs recomputeDerived. No-op (with toast) on invalid input. */
+  allocateTalent: (talentId: string) => void;
+  /** Refund an allocated talent (talent points returned). Useful for testing
+   *  / re-spec; not bound to UI in v0.3.0. */
+  refundTalent: (talentId: string) => void;
 }
 
-function recomputeDerived(player: PlayerState, equipment: { weapon: string | null; armor: string | null }) {
+/** Canonical stat recomputation for the entire derived-stat block.
+ *  Order of operations — important:
+ *    1. Add equipment flat bonuses to the player's raw stats.
+ *    2. Add talent flat bonuses on top.
+ *    3. Apply talent percentage multipliers last (so %s stack additively
+ *       and apply to the equipment-inclusive base).
+ *  The percentage effects from equipment are not used by v0.2.x/v0.3.0
+ *  items (they stay flat), but we reserve the slot for future rune/enchant
+ *  systems that may introduce %s.
+ */
+function recomputeDerived(
+  player: PlayerState,
+  equipment: { weapon: string | null; armor: string | null },
+) {
+  // 1. Equipment flat bonuses (from items.ts).
   let bonusAttack = 0;
   let bonusDefense = 0;
   let bonusHealth = 0;
@@ -225,11 +273,63 @@ function recomputeDerived(player: PlayerState, equipment: { weapon: string | nul
       bonusMana += a.stats.mana ?? 0;
     }
   }
+
+  // 2. Talent flat + percentage contributions, summed across all allocated
+  //    talents (each rank counts; maxRank=1 in v0.3.0 MVP).
+  let tAtkFlat = 0,
+    tAtkPct = 0,
+    tDefFlat = 0,
+    tDefPct = 0,
+    tHpFlat = 0,
+    tHpPct = 0,
+    tMpFlat = 0,
+    tMpPct = 0;
+  let critFlat = 0;
+  let spellPowerPct = 0;
+  let healthRegenFlat = 0;
+  let manaRegenFlat = 0;
+  let cooldownReductionPct = 0;
+
+  const alloc = player.allocatedTalents ?? {};
+  for (const [id, rank] of Object.entries(alloc)) {
+    if (!rank) continue;
+    const def = getTalent(id);
+    if (!def) continue;
+    const e = def.effects;
+    const coef = rank;
+    tAtkFlat += (e.attackFlat ?? 0) * coef;
+    tAtkPct += (e.attackPct ?? 0) * coef;
+    tDefFlat += (e.defenseFlat ?? 0) * coef;
+    tDefPct += (e.defensePct ?? 0) * coef;
+    tHpFlat += (e.healthFlat ?? 0) * coef;
+    tHpPct += (e.healthPct ?? 0) * coef;
+    tMpFlat += (e.manaFlat ?? 0) * coef;
+    tMpPct += (e.manaPct ?? 0) * coef;
+    critFlat += (e.critChanceFlat ?? 0) * coef;
+    spellPowerPct += (e.spellPowerPct ?? 0) * coef;
+    healthRegenFlat += (e.healthRegenFlat ?? 0) * coef;
+    manaRegenFlat += (e.manaRegenFlat ?? 0) * coef;
+    cooldownReductionPct += (e.cooldownReductionPct ?? 0) * coef;
+  }
+
+  const baseAtk = player.attack + bonusAttack + tAtkFlat;
+  const baseDef = player.defense + bonusDefense + tDefFlat;
+  const baseHp = player.maxHealth + bonusHealth + tHpFlat;
+  const baseMp = player.maxMana + bonusMana + tMpFlat;
+
   return {
-    derivedAttack: player.attack + bonusAttack,
-    derivedDefense: player.defense + bonusDefense,
-    derivedMaxHealth: player.maxHealth + bonusHealth,
-    derivedMaxMana: player.maxMana + bonusMana,
+    derivedAttack: Math.max(1, Math.floor(baseAtk * (1 + tAtkPct))),
+    derivedDefense: Math.max(0, Math.floor(baseDef * (1 + tDefPct))),
+    derivedMaxHealth: Math.max(1, Math.floor(baseHp * (1 + tHpPct))),
+    derivedMaxMana: Math.max(1, Math.floor(baseMp * (1 + tMpPct))),
+    /** Critical hit chance: base 15% + all talent contributions. */
+    derivedCritChance: Math.min(1, Math.max(0, 0.15 + critFlat)),
+    /** Spell damage multiplier: base 1.0 + talent %s. */
+    derivedSpellPower: Math.max(0, 1 + spellPowerPct),
+    derivedHealthRegen: Math.max(0, healthRegenFlat),
+    derivedManaRegen: Math.max(0, manaRegenFlat),
+    /** Cap at 75% so we never fully cancel the gameplay rhythm. */
+    derivedCooldownReduction: Math.min(0.75, Math.max(0, cooldownReductionPct)),
   };
 }
 
@@ -254,6 +354,7 @@ export const useGame = create<GameStore>((set, get) => ({
     character: false,
     help: false,
     options: false,
+    talents: false,
     dialogue: null,
     shop: null,
     toast: null,
@@ -264,6 +365,11 @@ export const useGame = create<GameStore>((set, get) => ({
   derivedDefense: PLAYER.baseDefense,
   derivedMaxHealth: PLAYER.baseMaxHealth,
   derivedMaxMana: PLAYER.baseMaxMana,
+  derivedCritChance: 0.15,
+  derivedSpellPower: 1.0,
+  derivedHealthRegen: 0,
+  derivedManaRegen: 0,
+  derivedCooldownReduction: 0,
 
   startGame: () => {
     const fresh = makeInitialPlayer();
@@ -282,7 +388,17 @@ export const useGame = create<GameStore>((set, get) => ({
       floatingTexts: [],
       particles: [],
       loot: [],
-      ui: { inventory: false, quests: false, character: false, help: false, options: false, dialogue: null, shop: null, toast: null },
+      ui: {
+        inventory: false,
+        quests: false,
+        character: false,
+        help: false,
+        options: false,
+        talents: false,
+        dialogue: null,
+        shop: null,
+        toast: null,
+      },
       ...d,
     });
   },
@@ -360,6 +476,10 @@ export const useGame = create<GameStore>((set, get) => ({
     const pz = s.player.position[2];
     const pfx = Math.sin(s.player.rotation);
     const pfz = Math.cos(s.player.rotation);
+    // v0.3.0: capstones modify the crit multiplier.  The Combat capstone
+    // `c_executioner` raises crit damage from x2 to x2.5.
+    const critMult =
+      (s.player.allocatedTalents?.c_executioner ?? 0) > 0 ? 2.5 : 2;
     let hitAny = false;
     const newEnemies = s.enemies.map((e) => {
       if (e.isDead) return e;
@@ -373,8 +493,10 @@ export const useGame = create<GameStore>((set, get) => ({
       const dot = nx * pfx + nz * pfz;
       if (dot < Math.cos(PLAYER.attackArc)) return e;
       const variance = 0.85 + Math.random() * 0.3;
-      const isCrit = Math.random() < 0.15;
-      const damage = Math.max(1, Math.floor(dmg * variance * (isCrit ? 2 : 1)));
+      // v0.3.0: crit chance now sourced from `derivedCritChance`
+      // (base 15% + talent bonuses).
+      const isCrit = Math.random() < s.derivedCritChance;
+      const damage = Math.max(1, Math.floor(dmg * variance * (isCrit ? critMult : 1)));
       hitAny = true;
       get().addFloatingText(
         [e.position[0], e.position[1] + e.scale * 1.3, e.position[2]],
@@ -388,8 +510,15 @@ export const useGame = create<GameStore>((set, get) => ({
         hurtUntil: performance.now() / 1000 + 0.25,
       };
     });
+    // v0.3.0: cooldown reduction applies to the attack cooldown.
+    const effectiveAttackCooldown =
+      PLAYER.attackCooldown * (1 - s.derivedCooldownReduction);
     set((st) => ({
-      player: { ...st.player, isAttacking: true, attackCooldown: PLAYER.attackCooldown },
+      player: {
+        ...st.player,
+        isAttacking: true,
+        attackCooldown: effectiveAttackCooldown,
+      },
       enemies: newEnemies,
     }));
     // process deaths
@@ -420,7 +549,8 @@ export const useGame = create<GameStore>((set, get) => ({
             let def_ = cur.player.defense;
             let hp = cur.player.health;
             let mp = cur.player.mana;
-            let sp = cur.player.statPoints;
+            // v0.3.0: each level-up grants 1 talent point (+1 bonus every 5).
+            let tp = cur.player.talentPoints;
             while (xp >= xpToNext) {
               xp -= xpToNext;
               lvl += 1;
@@ -431,7 +561,9 @@ export const useGame = create<GameStore>((set, get) => ({
               def_ += 1;
               hp = maxHp;
               mp = maxMp;
-              sp += 3;
+              // 1 point per level + 1 bonus every 5 levels (5, 10, 15…).
+              tp += 1;
+              if (lvl % 5 === 0) tp += 1;
               levelUps += 1;
               const lvlId = `ft_${performance.now()}_lvl_${e.id}`;
               newFloatingTexts.push({ id: lvlId, position: [e.position[0], 2.0, e.position[2]], text: `NIVEAU SUP\u00c9RIEUR !`, color: "#fbbf24", born: performance.now(), duration: 1100 });
@@ -490,7 +622,7 @@ export const useGame = create<GameStore>((set, get) => ({
             cur.player.defense = def_;
             cur.player.health = hp;
             cur.player.mana = mp;
-            cur.player.statPoints = sp;
+            cur.player.talentPoints = tp;
             return { ...e, isDead: true, state: "dead" as const, deathTime: now };
           }
           return e;
@@ -689,6 +821,46 @@ export const useGame = create<GameStore>((set, get) => ({
     const pt = s.particles.filter((p) => now * 1000 - p.born < p.duration);
     if (ft.length !== s.floatingTexts.length) set({ floatingTexts: ft });
     if (pt.length !== s.particles.length) set({ particles: pt });
+    // v0.3.0: passive talent regen (HP / MP per second). Applied here so it
+    // runs in the same fixed-timestep loop as enemy AI. Active combat
+    // (s.player.invulnerableUntil > now) gates HP regen off so we don't
+    // trivially heal through damage; mana regen is always-on.
+    {
+      const cur = get();
+      let healedHp = 0;
+      let healedMp = 0;
+      if (
+        cur.status === "playing" &&
+        !cur.player.isDead &&
+        cur.derivedMaxHealth > 0
+      ) {
+        if (cur.derivedHealthRegen > 0) {
+          // Regen only when not freshly hit (1 s cooldown after taking dmg).
+          const nowSec = performance.now() / 1000;
+          if (nowSec - cur.player.lastDamageTime > 1) {
+            healedHp = Math.min(
+              cur.derivedMaxHealth - cur.player.health,
+              cur.derivedHealthRegen * dt,
+            );
+          }
+        }
+        if (cur.derivedManaRegen > 0) {
+          healedMp = Math.min(
+            cur.derivedMaxMana - cur.player.mana,
+            cur.derivedManaRegen * dt,
+          );
+        }
+        if (healedHp > 0 || healedMp > 0) {
+          set((st) => ({
+            player: {
+              ...st.player,
+              health: st.player.health + healedHp,
+              mana: st.player.mana + healedMp,
+            },
+          }));
+        }
+      }
+    }
     // clamp player health to derivedMax (in case equipment changed)
     if (s.player.health > derivedMaxHealth) {
       set((st) => ({ player: { ...st.player, health: derivedMaxHealth } }));
@@ -934,6 +1106,121 @@ export const useGame = create<GameStore>((set, get) => ({
   closePanel: (panel) =>
     set((st) => ({ ui: { ...st.ui, [panel]: false } })),
 
+  /* ------------------------- v0.3.0 talent actions ---------------------- */
+
+  allocateTalent: (talentId) => {
+    const def = getTalent(talentId);
+    if (!def) {
+      get().showToast("Talent inconnu", "error");
+      return;
+    }
+    const s = get();
+    const alloc = s.player.allocatedTalents ?? {};
+    if (alloc[talentId] && alloc[talentId] >= def.cost) {
+      get().showToast("Talent déjà acquis", "error");
+      return;
+    }
+    const { ok, reasons } = isTalentAvailable(def, alloc, s.player.level);
+    if (!ok) {
+      get().showToast(`Conditions non remplies : ${reasons[0]}`, "error");
+      return;
+    }
+    if (s.player.talentPoints < def.cost) {
+      get().showToast("Points de talent insuffisants", "error");
+      return;
+    }
+    const nextAlloc = { ...alloc, [talentId]: (alloc[talentId] ?? 0) + 1 };
+    const nextPlayer = {
+      ...s.player,
+      talentPoints: s.player.talentPoints - def.cost,
+      allocatedTalents: nextAlloc,
+    };
+    const d = recomputeDerived(nextPlayer, s.equipment);
+    set({
+      player: {
+        ...nextPlayer,
+        // Re-clamp current HP/MP inside the new caps.
+        health: Math.min(nextPlayer.health, d.derivedMaxHealth),
+        mana: Math.min(nextPlayer.mana, d.derivedMaxMana),
+      },
+      ...d,
+    });
+    get().showToast(`${def.icon} ${def.nameFr} acquis (−${def.cost} pt${def.cost > 1 ? "s" : ""})`, "success");
+  },
+
+  refundTalent: (talentId) => {
+    /**
+     * Cascade refund: when a parent talent is refunded, every descendant
+     * that depends on it loses its prerequisite. Without a cascade the
+     * invalidated children would still apply their bonuses (because
+     * `recomputeDerived` aggregates naively) while the SkillTree UI would
+     * flag them as locked — an inconsistent state. We therefore walk the
+     * tree top-down and refund every dependent.
+     *
+     * Only refund the root if its current `pointsInBranch` cost can pay for
+     * what we're taking back; otherwise we'd refund nothing.
+     */
+    const s = get();
+    const def = getTalent(talentId);
+    if (!def) return;
+    const alloc = s.player.allocatedTalents ?? {};
+    if (!alloc[talentId]) return;
+
+    const toRefund = new Set<string>([talentId]);
+    // BFS through descendants (those whose `requiresTalentId` is in the set).
+    let queue: string[] = [talentId];
+    while (queue.length > 0) {
+      const next: string[] = [];
+      for (const t of TALENTS) {
+        const pre = t.prerequisites.requiresTalentId;
+        if (pre && toRefund.has(t.id) === false && alloc[t.id]) {
+          // If any dependency on `t` is being refunded, also refund `t`.
+          if (toRefund.has(pre)) {
+            toRefund.add(t.id);
+            next.push(t.id);
+          }
+        }
+      }
+      queue = next;
+    }
+
+    let refundTotal = 0;
+    const nextAlloc = { ...alloc };
+    for (const id of toRefund) {
+      const d = getTalent(id);
+      if (!d) continue;
+      refundTotal += d.cost * (nextAlloc[id] ?? 0);
+      delete nextAlloc[id];
+    }
+    const nextPlayer = {
+      ...s.player,
+      talentPoints: s.player.talentPoints + refundTotal,
+      allocatedTalents: nextAlloc,
+    };
+    const dStats = recomputeDerived(nextPlayer, s.equipment);
+    set({
+      player: {
+        ...nextPlayer,
+        health: Math.min(nextPlayer.health, dStats.derivedMaxHealth),
+        mana: Math.min(nextPlayer.mana, dStats.derivedMaxMana),
+      },
+      ...dStats,
+    });
+    const rootName = def.nameFr;
+    const refundedNames = [...toRefund]
+      .map((id) => getTalent(id)?.nameFr)
+      .filter(Boolean)
+      .filter((n) => n !== rootName);
+    if (refundedNames.length > 0) {
+      get().showToast(
+        `${def.icon} ${rootName} + ${refundedNames.length} dépendant(s) remboursés (+${refundTotal} pts)`,
+        "info",
+      );
+    } else {
+      get().showToast(`${def.icon} ${rootName} remboursé (+${refundTotal} pt)`, "info");
+    }
+  },
+
   openDialogue: (npcId) =>
     set((st) => ({ ui: { ...st.ui, dialogue: npcId, shop: null } })),
 
@@ -1022,7 +1309,9 @@ export const useGame = create<GameStore>((set, get) => ({
         player.defense += 1;
         player.health = player.maxHealth;
         player.mana = player.maxMana;
-        player.statPoints += 3;
+        // v0.3.0: each level-up grants 1 talent point (+1 bonus every 5).
+        player.talentPoints += 1;
+        if (player.level % 5 === 0) player.talentPoints += 1;
         // show toast outside
         setTimeout(() => {
           get().showToast(`Niveau sup\u00e9rieur ! Vous \u00eates maintenant niveau ${player.level}`, "success");
@@ -1061,6 +1350,8 @@ export const useGame = create<GameStore>((set, get) => ({
   saveGame: () => {
     const s = get();
     const data = {
+      // v0.3.0 schema: bump when field shapes change.
+      schemaVersion: 2 as const,
       player: s.player,
       inventory: s.inventory,
       equipment: s.equipment,
@@ -1068,7 +1359,10 @@ export const useGame = create<GameStore>((set, get) => ({
       timestamp: Date.now(),
     };
     try {
-      localStorage.setItem("rpg_save_v1", JSON.stringify(data));
+      localStorage.setItem("rpg_save_v2", JSON.stringify(data));
+      // Clear the previous-version slot so a downgrade doesn't reload stale
+      // data when v2 fields (allocatedTalents) are absent.
+      localStorage.removeItem("rpg_save_v1");
       get().showToast("Partie sauvegard\u00e9e", "success");
     } catch {
       get().showToast("\u00c9chec de la sauvegarde", "error");
@@ -1077,32 +1371,76 @@ export const useGame = create<GameStore>((set, get) => ({
 
   loadGame: () => {
     try {
-      const raw = localStorage.getItem("rpg_save_v1");
-      if (!raw) return false;
-      const data = JSON.parse(raw);
+      // Try the current schema first, then fall back to v2 (auto-migration).
+      let data: {
+        schemaVersion?: number;
+        player?: Record<string, unknown>;
+        inventory?: InventoryItem[];
+        equipment?: { weapon: string | null; armor: string | null };
+        quests?: QuestState[];
+      } | null = null;
+      const rawV2 = localStorage.getItem("rpg_save_v2");
+      if (rawV2) {
+        data = JSON.parse(rawV2);
+      } else {
+        const rawV1 = localStorage.getItem("rpg_save_v1");
+        if (!rawV1) return false;
+        data = JSON.parse(rawV1);
+      }
+      if (!data) return false;
+
+      // v0.2.x \u2192 v0.3.0 migration. The legacy `statPoints` field is dropped
+      // silently (any prior statPoint investments were already baked into
+      // attack/defense/maxHealth/maxMana and remain valid). We then award the
+      // talent points the player would have earned if talents had always
+      // existed, so the new feature unlocks immediately.
+      const legacy = (data.player ?? {}) as Record<string, unknown>;
+      const cleaned: Record<string, unknown> = { ...legacy };
+      delete cleaned.statPoints;
+
       const fresh = makeInitialPlayer();
-      const merged = { ...fresh, ...data.player };
+      const merged: PlayerState = {
+        ...fresh,
+        ...cleaned,
+        position: fresh.position, // overridden below with terrain-aware Y
+      } as PlayerState;
+      if (merged.talentPoints === undefined) {
+        merged.talentPoints = talentPointsForLevel(merged.level);
+      }
+      if (!merged.allocatedTalents) {
+        merged.allocatedTalents = {};
+      }
       // Normalise stored Y from older saves (when position[1] was always 0)
       // to the new "feet Y" convention so loading doesn't drop the character
       // below the terrain or re-introduce the floating bug.
       const feetY =
         terrainHeight(merged.position[0], merged.position[2]) - PLAYER.footOffset;
-      const player = {
+      const player: PlayerState = {
         ...merged,
-        position: [merged.position[0], feetY, merged.position[2]],
+        position: [merged.position[0], feetY, merged.position[2]] as Vec3,
       };
-      const d = recomputeDerived(player, data.equipment || { weapon: null, armor: null });
+      const d = recomputeDerived(player, data.equipment ?? { weapon: null, armor: null });
       set({
         status: "playing",
         player,
-        inventory: data.inventory || [],
-        equipment: data.equipment || { weapon: null, armor: null },
-        quests: data.quests || makeInitialQuests(),
+        inventory: data.inventory ?? [],
+        equipment: data.equipment ?? { weapon: null, armor: null },
+        quests: data.quests ?? makeInitialQuests(),
         enemies: buildInitialEnemies(),
         floatingTexts: [],
         particles: [],
         loot: [],
-        ui: { inventory: false, quests: false, character: false, help: false, options: false, dialogue: null, shop: null, toast: null },
+        ui: {
+          inventory: false,
+          quests: false,
+          character: false,
+          help: false,
+          options: false,
+          talents: false,
+          dialogue: null,
+          shop: null,
+          toast: null,
+        },
         ...d,
       });
       get().showToast("Partie charg\u00e9e", "success");
@@ -1114,7 +1452,12 @@ export const useGame = create<GameStore>((set, get) => ({
 
   hasSave: () => {
     try {
-      return !!localStorage.getItem("rpg_save_v1");
+      // Either schema counts: we only show the "Reprendre" button when some
+      // save exists we know how to read.
+      return !!(
+        localStorage.getItem("rpg_save_v2") ||
+        localStorage.getItem("rpg_save_v1")
+      );
     } catch {
       return false;
     }

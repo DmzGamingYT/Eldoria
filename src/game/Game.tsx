@@ -22,6 +22,7 @@ import { MainMenu, HelpPanel } from "./ui/MainMenu";
 import { Intro } from "./ui/Intro";
 import { UpdateNotifier } from "./ui/UpdateNotifier";
 import { Options } from "./ui/Options";
+import { SkillTree } from "./ui/SkillTree";
 
 export function Game() {
   const status = useGame((s) => s.status);
@@ -115,6 +116,7 @@ export function Game() {
       {ui.inventory && <Inventory />}
       {ui.quests && <QuestLog />}
       {ui.character && <CharacterSheet />}
+      {ui.talents && <SkillTree />}
       {ui.dialogue && <DialogueBox />}
       {ui.shop && <Shop />}
       {ui.help && <HelpPanel />}

@@ -33,6 +33,10 @@ export function useControls() {
       } else if (k === "c") {
         e.preventDefault();
         s.togglePanel("character");
+      } else if (k === "t") {
+        // v0.3.0: SkillTree hotkey.
+        e.preventDefault();
+        s.togglePanel("talents");
       } else if (k === "h" || k === "?") {
         e.preventDefault();
         s.togglePanel("help");
@@ -43,6 +47,7 @@ export function useControls() {
         if (s.ui.inventory) s.closePanel("inventory");
         else if (s.ui.quests) s.closePanel("quests");
         else if (s.ui.character) s.closePanel("character");
+        else if (s.ui.talents) s.closePanel("talents");
         else if (s.ui.help) s.closePanel("help");
         else if (s.ui.options) s.closePanel("options");
         else if (s.ui.dialogue) s.closeDialogue();
