@@ -1,7 +1,13 @@
 import type { Metadata } from "next";
 import { Cinzel, EB_Garamond } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "@/components/ui/toaster";
+
+// NOTE: The shadcn/Radix <Toaster /> was removed (v0.3.0 cleanup). The game
+// uses its own parchment-styled toast system inside src/game/ui/HUD.tsx, so the
+// Radix Toast mount in `src/components/ui/toaster.tsx` was dead code. Removing
+// it also eliminates the always-on Radix DismissableLayer which, on rapid
+// panel toggles, occasionally threw `element.getBoundingClientRect is not a
+// function` from `document.activeElement` lookups in production builds.
 
 // Cinzel for fantasy display headings — engraved-stone feel
 const cinzel = Cinzel({
@@ -52,7 +58,6 @@ export default function RootLayout({
         className={`${cinzel.variable} ${ebGaramond.variable} antialiased bg-background text-foreground`}
       >
         {children}
-        <Toaster />
       </body>
     </html>
   );

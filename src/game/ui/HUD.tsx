@@ -17,6 +17,7 @@ import {
   Crown,
   HelpCircle,
   Settings,
+  Sparkles,
   type LucideIcon,
 } from "lucide-react";
 import {
@@ -40,6 +41,7 @@ export function HUD() {
   const consumeItem = useGame((s) => s.useItem);
   const inventory = useGame((s) => s.inventory);
   const toast = useGame((s) => s.ui.toast);
+  const talentPoints = useGame((s) => s.player.talentPoints);
 
   const hpPct = (player.health / derivedMaxHealth) * 100;
   const mpPct = (player.mana / derivedMaxMana) * 100;
@@ -172,6 +174,14 @@ export function HUD() {
         <PanelButton active={ui.inventory} onClick={() => togglePanel("inventory")} Icon={Backpack} label="Sac" hotkey="I" />
         <PanelButton active={ui.quests} onClick={() => togglePanel("quests")} Icon={ScrollText} label="Quêtes" hotkey="Q" />
         <PanelButton active={ui.character} onClick={() => togglePanel("character")} Icon={Crown} label="Héros" hotkey="C" />
+        <PanelButton
+          active={ui.talents}
+          onClick={() => togglePanel("talents")}
+          Icon={Sparkles}
+          label="Talents"
+          hotkey="T"
+          badge={talentPoints > 0 ? talentPoints : undefined}
+        />
         <PanelButton active={ui.help} onClick={() => togglePanel("help")} Icon={HelpCircle} label="Aide" hotkey="H" />
         <PanelButton active={ui.options} onClick={() => togglePanel("options")} Icon={Settings} label="Options" hotkey="O" />
       </div>
@@ -261,17 +271,20 @@ function PanelButton({
   Icon,
   label,
   hotkey,
+  badge,
 }: {
   active: boolean;
   onClick: () => void;
   Icon: LucideIcon;
   label: string;
   hotkey: string;
+  /** Optional counter badge (e.g. unspent talent points). */
+  badge?: number;
 }) {
   return (
     <button
       onClick={onClick}
-      className={`pointer-events-auto ink-btn flex h-10 min-w-10 items-center gap-1 px-2 py-1.5 transition hover:scale-[1.04] ${
+      className={`pointer-events-auto ink-btn relative flex h-10 min-w-10 items-center gap-1 px-2 py-1.5 transition hover:scale-[1.04] ${
         active
           ? "!bg-[var(--gold-1)]/70 !border-[var(--gold-2)]"
           : ""
@@ -280,6 +293,15 @@ function PanelButton({
       <Icon className="h-4 w-4 shrink-0 text-[var(--gold-3)]" />
       <span className="hidden font-serif text-xs font-semibold lg:inline text-[var(--parchment-ink)]">{label}</span>
       <span className="hidden rounded border border-[var(--gold-4)] bg-[rgba(60,30,10,0.18)] px-1 font-serif text-[9px] text-[var(--gold-3)] lg:inline">{hotkey}</span>
+      {badge !== undefined && badge > 0 && (
+        <span
+          className="absolute -top-1.5 -right-1.5 flex h-5 min-w-5 items-center justify-center rounded-full border-2 border-[var(--gold-4)] bg-[var(--crimson)] px-1 font-serif text-[10px] font-black leading-none text-[var(--parchment-1)] shadow-md"
+          style={{ animation: "pulseRed 1.4s ease-in-out infinite" }}
+          title={`${badge} point${badge > 1 ? "s" : ""} de talent disponible${badge > 1 ? "s" : ""}`}
+        >
+          {badge}
+        </span>
+      )}
     </button>
   );
 }
