@@ -313,13 +313,20 @@ function TalentNode({
   points: number;
 }) {
   const meta = BRANCH_META[def.branch];
-  const allocated = (alloc[def.id] ?? 0) > 0;
+  const maxRank = def.maxRank ?? 1;
+  const currentRank = alloc[def.id] ?? 0;
+  const isMaxRank = currentRank >= maxRank;
+  const allocated = currentRank > 0;
   const { ok, reasons } = isTalentAvailable(def, alloc, level);
-  const canAfford = points >= def.cost;
-  const canAllocate = !allocated && ok && canAfford;
-  const state: "allocated" | "available" | "locked" = allocated
+  // v0.4.0 — NEXT-rank cost scales linearly: nth rank costs `def.cost * n`.
+  const nextCost = def.cost * (currentRank + 1);
+  const canAffordNext = points >= nextCost;
+  const canAllocate = !isMaxRank && ok && canAffordNext;
+  const state: "maxed" | "allocated" | "available" | "locked" = isMaxRank
+    ? "maxed"
+    : allocated
     ? "allocated"
-    : ok && canAfford
+    : ok && canAffordNext
     ? "available"
     : "locked";
 
@@ -328,13 +335,27 @@ function TalentNode({
   const allocateTalent = useGame((s) => s.allocateTalent);
   const refundTalent = useGame((s) => s.refundTalent);
 
-  const fill = state === "allocated" ? meta.color : state === "available" ? "#3a2412" : "rgba(40,25,10,0.85)";
-  const stroke = state === "allocated" ? meta.accent : ok ? meta.color : "#5a3a1f";
+  const fill =
+    state === "maxed"
+      ? meta.color
+      : state === "allocated"
+      ? meta.color
+      : state === "available"
+      ? "#3a2412"
+      : "rgba(40,25,10,0.85)";
+  const stroke =
+    state === "maxed"
+      ? meta.accent
+      : state === "allocated"
+      ? meta.accent
+      : state === "available"
+      ? meta.color
+      : "#5a3a1f";
 
   return (
     <g
       style={{
-        cursor: canAllocate ? "pointer" : allocated ? "pointer" : "not-allowed",
+        cursor: canAllocate || allocated ? "pointer" : "not-allowed",
       }}
       onClick={() => {
         if (canAllocate) allocateTalent(def.id);
@@ -412,8 +433,15 @@ function TalentNode({
         fill={state === "locked" ? "#a07c3a" : meta.accent}
         opacity={state === "locked" ? 0.7 : 0.95}
       >
-        {truncate(def.descFr, 38)}
+        {truncate(def.descFr, maxRank > 1 ? 32 : 38)}
       </text>
+      {/* Reviewer fix (v0.4.0 PR): SVG <title> on every node carries the
+          FULL descFr (capstones now have ~90+ char strings that even at
+          truncated width strip the numeric effects). Hover restores the
+          full text. */}
+      <title>
+        {`${def.nameFr}${maxRank > 1 ? ` (max rang ${maxRank})` : ""} — ${def.descFr}`}
+      </title>
 
       {/* Cost badge */}
       <g>
@@ -433,18 +461,48 @@ function TalentNode({
           y={y + NODE_H - 6}
           fontFamily="Georgia, serif"
           fontSize={10}
-          fill={state === "allocated" ? "#a3e635" : "#f6d97c"}
+          fill={
+            state === "maxed"
+              ? "#a3e635"
+              : state === "allocated"
+              ? meta.accent
+              : "#f6d97c"
+          }
         >
-          {state === "allocated"
-            ? `✓ ACQUIS`
-            : `Coût ${def.cost} pt${def.cost > 1 ? "s" : ""}`}
+          {state === "maxed"
+            ? `✓ RANG MAX`
+            : state === "allocated"
+            ? `Rang ${currentRank}/${maxRank} · prochain ${nextCost} pt${nextCost > 1 ? "s" : ""}`
+            : `Coût ${nextCost} pt${nextCost > 1 ? "s" : ""}`}
         </text>
-        {def.cost > 1 && state !== "allocated" && (
+        {maxRank > 1 && state !== "maxed" && (
           <g transform={`translate(${x + 8 + NODE_W - 30}, ${y + NODE_H - 14})`}>
             <Crown className="h-3 w-3" fill={meta.accent} stroke={meta.accent} />
           </g>
         )}
       </g>
+
+      {/* v0.4.0 — rank pip indicators (only when maxRank > 1). Rendered
+          above the cost badge so the eye follows pip row → cost text. */}
+      {maxRank > 1 && (
+        <g transform={`translate(${x + 8 + 8}, ${y + NODE_H - 24})`}>
+          {Array.from({ length: maxRank }).map((_, idx) => {
+            const filled = idx < currentRank;
+            return (
+              <circle
+                key={idx}
+                cx={idx * 9 + 4}
+                cy={4}
+                r={filled ? 3.2 : 2.4}
+                fill={filled ? meta.accent : "rgba(80, 50, 20, 0.6)"}
+                stroke={meta.accent}
+                strokeOpacity={filled ? 1 : 0.35}
+                strokeWidth={0.6}
+              />
+            );
+          })}
+        </g>
+      )}
 
       {/* Lock / Check overlay for bookkeeping */}
       {state === "locked" && (
@@ -463,19 +521,24 @@ function TalentNode({
           <title>{reasons.join(" · ") || "Conditions non remplies"}</title>
         </g>
       )}
-      {state === "allocated" && (
+      {(state === "allocated" || state === "maxed") && (
         <g transform={`translate(${x + 8 + NODE_W - 26}, ${y + 6})`}>
-          <rect width={20} height={20} rx={4} fill={meta.color} />
+          <rect width={20} height={20} rx={4} fill={state === "maxed" ? meta.accent : meta.color} />
           <text
             x={10}
             y={15}
             textAnchor="middle"
             fontFamily="serif"
             fontSize={14}
-            fill="#fff4c2"
+            fill={state === "maxed" ? "#1a2a14" : "#fff4c2"}
           >
             ✓
           </text>
+          <title>
+            {state === "maxed"
+              ? `${def.nameFr} — Rang MAX (${currentRank}/${maxRank}).`
+              : `Rang ${currentRank}/${maxRank}. Cliquez pour rembourser 1 rang (+${def.cost * currentRank} pt${def.cost * currentRank > 1 ? "s" : ""}).`}
+          </title>
         </g>
       )}
     </g>
@@ -497,14 +560,17 @@ function FooterHint() {
       <Star className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[var(--gold-3)]" />
       <div className="space-y-0.5">
         <p>
-          Cliquez sur un talent <span className="font-bold text-[var(--gold-3)]">vert déblocable</span> pour le dépenser.
+          Cliquez sur un talent <span className="font-bold text-[var(--gold-3)]">vert déblocable</span> pour
+          le dépenser.
         </p>
         <p>
-          Cliquez sur un talent <span className="font-bold" style={{ color: "#a3e635" }}>acquis</span> pour le rembourser (utile pour tester des configurations).
+          Cliquez sur un talent <span className="font-bold" style={{ color: "#a3e635" }}>acquis</span> pour
+          rembourser 1 rang. Les enfants dépendants ne sont remboursés en cascade que si le parent tombe à 0.
         </p>
         <p>
-          Les capstones de tier 5 coûtent 2 points. L'ultime de Combat (Bourreau) fait passer les critiques de <code>×2</code> à{" "}
-          <code>×2.5</code>.
+          Les <strong>6 capstones</strong> sont <em>multi-rang (max 3)</em> : coût du rang <em>n</em>{" "}
+          = base × <em>n</em> (linéaire). Bourreau (Combat) booste les critiques{" "}
+          <code>+5%</code> par rang et les fait passer de <code>×2</code> à <code>×2.5</code>.
         </p>
       </div>
     </div>

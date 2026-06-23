@@ -259,8 +259,15 @@ export interface TalentDef {
   /** Visual icon (lucide icon name OR emoji). Stored as a single string;
    *  the SkillTree UI switches to a Lucide icon if the value matches one. */
   icon: string;
-  /** Number of talent points the talent costs. Capstones cost 2. */
+  /** Base cost in talent points. Capstones cost 2; standard talents cost 1.
+   *  v0.4.0: when a talent has `maxRank > 1` the n-th rank costs `cost * n`
+   *  (linear progression, see allocateTalent in store.ts). */
   cost: number;
+  /** Optional max rank (defaults to 1). v0.4.0: capstones only. Gives a
+   *  late-game point sink without flattening the early-tree identity.
+   *  Effect aggregation already multiplies by rank (see
+   *  recomputeDerived coefficients). */
+  maxRank?: number;
   prerequisites: TalentPrerequisites;
   effects: TalentEffects;
 }
