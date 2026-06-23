@@ -227,6 +227,20 @@ jobs:
           REPO: ${{ github.repository }}
         run: bun scripts/generate-release-body.mjs
 
+      - name: 🎨 Régénération de la social card (PNG 1280×640)
+        # Le SVG source public/banner/social-card.svg est versionné dans le
+        # dépôt. À chaque release on régénère le PNG via sharp+librsvg pour
+        # garantir la cohérence entre l'identité du projet (TL;DR, médaillon
+        # Arbre d'Argent, badges tech) et les aperçus partagés (GitHub Social
+        # Preview, itch.io capsule, Steamworks, Discord/Twitter/OG cards).
+        # Pourquoi générer dans la CI plutôt que committer manuellement ?
+        #   - Évite les diffs binaires parasites à chaque release (qu'un
+        #     humain oublierait probablement de commit)
+        #   - Garantit que le PNG n'est jamais stale par rapport au SVG
+        #   - `bun run social-card` utilise le script Node déjà testé + la
+        #     dépendance sharp déjà installée via bun install
+        run: bun run social-card
+
       - name: 🔍 Aperçu du body généré (debug)
         run: |
           echo "=== release-body.md ==="
@@ -248,9 +262,12 @@ jobs:
           generate_release_notes: false
           draft: false
           prerelease: ${{ contains(github.ref_name, '-') }}
-          # Files : installeurs + métadonnées electron-updater
+          # Files : installeurs + métadonnées electron-updater + social card
           # electron-updater a besoin de latest*.yml + .blockmap pour
           # le téléchargement différentiel et la validation SHA-512.
+          # La social card PNG 1280x640 est attachée pour permettre le
+          # téléchargement direct depuis la release (mise à jour manuelle
+          # de l'image GitHub Social Preview via l'UI Settings).
           files: |
             artifacts/**/*.exe
             artifacts/**/*.dmg
@@ -260,6 +277,7 @@ jobs:
             artifacts/**/*.rpm
             artifacts/**/*.blockmap
             artifacts/**/latest*.yml
+            public/banner/social-card.png
           fail_on_unmatched_files: true
 
 
