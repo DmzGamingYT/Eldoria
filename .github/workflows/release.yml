@@ -132,7 +132,7 @@ jobs:
       - name: 🔍 Vérification de la version avant build
         # Safety net: vérifie que la version dans package.json correspond
         # au tag Git pour éviter les artefacts avec une mauvaise version
-        # (ex: DMG ARM64 généré avec v0.2.3 au lieu de v0.2.4).
+        # (ex: DMG ARM64 généré avec v0.2.x au lieu de v0.3.0).
         shell: bash
         run: |
           PKG_VERSION=$(node -p "require('./package.json').version")
