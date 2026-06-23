@@ -73,3 +73,5 @@ build/icon_test.ico
 
 # Temp directory (scripts de debug release, PR drafts, logs CI)
 tmp/
+# Internal dev journal (not for public repo)
+worklog.md
