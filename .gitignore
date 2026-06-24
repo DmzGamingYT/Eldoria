@@ -73,5 +73,10 @@ build/icon_test.ico
 
 # Temp directory (scripts de debug release, PR drafts, logs CI)
 tmp/
+
+# Cover PNG + screenshots préparés pour l'upload itch.io (scripts/render-itch-cover.mjs).
+# On n'ignore que le sous-dossier release/ du projet, pas les autres.
+release/
+release/**/*.png
 # Internal dev journal (not for public repo)
 worklog.md

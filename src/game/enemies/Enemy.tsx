@@ -85,8 +85,6 @@ export function EnemyModel({ enemy }: { enemy: EnemyInstance }) {
   });
 
   const color = def.color;
-  // `EnemyDef.isBoss` is optional, so defensively coalesce to a plain boolean for downstream props.
-  const isBoss = def.isBoss ?? false;
 
   return (
     <group ref={groupRef} scale={enemy.scale}>
@@ -94,7 +92,7 @@ export function EnemyModel({ enemy }: { enemy: EnemyInstance }) {
       <mesh position={[0, 0.02, 0]} rotation={[-Math.PI / 2, 0, 0]} geometry={_shadowGeo1} material={_shadowMat1} />
       <mesh position={[0, 0.021, 0]} rotation={[-Math.PI / 2, 0, 0]} geometry={_shadowGeo2} material={_shadowMat2} />
       <group ref={bodyRef}>
-        <EnemyShape type={enemy.type} color={color} isBoss={isBoss} />
+        <EnemyShape type={enemy.type} color={color} />
       </group>
       {/* health bar (only if damaged) */}
       {!enemy.isDead && enemy.health < enemy.maxHealth && (
@@ -131,7 +129,7 @@ function lighten(hex: string, amount: number): string {
   return `#${_tempColor.getHexString()}`;
 }
 
-function EnemyShape({ type, color, isBoss }: { type: EnemyInstance["type"]; color: string; isBoss: boolean }) {
+function EnemyShape({ type, color }: { type: EnemyInstance["type"]; color: string }) {
   switch (type) {
     case "slime":
       return <SlimeBody color={color} />;

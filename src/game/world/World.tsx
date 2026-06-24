@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useEffect, useLayoutEffect } from "react";
+import { useMemo, useRef, useLayoutEffect } from "react";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 import { getDayCycle } from "./Sky";
@@ -143,15 +143,6 @@ function Tree({ position, scale = 1 }: { position: [number, number, number]; sca
   );
 }
 
-function Rock({ position, scale = 1, rotation = 0 }: { position: [number, number, number]; scale?: number; rotation?: number }) {
-  const y = terrainHeight(position[0], position[2]);
-  return (
-    <mesh castShadow receiveShadow position={[position[0], y + 0.2 * scale, position[2]]} rotation={[0, rotation, 0]} scale={scale}>
-      <dodecahedronGeometry args={[0.5, 0]} />
-      <meshStandardMaterial color="#6b6b6b" roughness={1} flatShading />
-    </mesh>
-  );
-}
 
 function Flower({ position, color }: { position: [number, number, number]; color: string }) {
   const y = terrainHeight(position[0], position[2]);
@@ -529,7 +520,7 @@ function VillagePaths() {
 function Bush({ position, scale = 1 }: { position: [number, number, number]; scale?: number }) {
   const y = terrainHeight(position[0], position[2]);
   // Deterministic colors from position — stable across re-renders.
-  const seed = useMemo(() => Math.abs(Math.sin(position[0] * 12.9898 + position[2] * 78.233)), [position[0], position[2]]);
+  const seed = useMemo(() => Math.abs(Math.sin(position[0] * 12.9898 + position[2] * 78.233)), [position]);
   const shade = 0.5 + seed * 0.5;
   const c = useMemo(
     () => new THREE.Color().setHSL(0.28 + (seed * 0.3) % 0.08, 0.5 + (seed * 0.5) % 0.3, 0.22 + shade * 0.18),
@@ -1067,7 +1058,7 @@ function FallingForestLeaves() {
       const l = leafData[i];
       // Update vertical position — fall downward, then wrap
       const height = heights[i];
-      let yPos = 3.0 + height - (t * l.speed * 0.6) % 5.0;
+      const yPos = 3.0 + height - (t * l.speed * 0.6) % 5.0;
       // Horizontal sway
       const sway = Math.sin(t * l.swayFreq + l.phase) * l.swayAmp;
       const drift = Math.cos(t * l.swayFreq * 0.6 + l.phase * 1.3) * l.swayAmp * 0.5;
@@ -1372,8 +1363,6 @@ export function Lighting() {
   const sunRef = useRef<THREE.DirectionalLight>(null);
   const hemiRef = useRef<THREE.HemisphereLight>(null);
   const ambRef = useRef<THREE.AmbientLight>(null);
-  const targetRef = useRef<THREE.Object3D>(null);
-
   // Reusable DayState — drives sun position/colour/intensity from the cycle.
   const dayState = useMemo(() => createDayState(), []);
 

@@ -152,7 +152,7 @@ export function RunDust() {
     if (s.status !== "playing") return;
     const p = s.player;
     const now = performance.now() / 1000;
-    const dt = Math.min(state.clock.getDelta(), 0.05);
+    const _dt = Math.min(state.clock.getDelta(), 0.05);
 
     // Spawn dust when running fast
     const isRunning = p.isMoving && p.speed > 5.0;

@@ -76,12 +76,6 @@ function createHumanoidGLB(name, color) {
   }
 
   // Pack into GLB binary buffer
-  const binData = {
-    positions,
-    normals,
-    indices,
-  };
-
   // Calculate byte lengths
   const posBytes = positions.byteLength;
   const normBytes = normals.byteLength;

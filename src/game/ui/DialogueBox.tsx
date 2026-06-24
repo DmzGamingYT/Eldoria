@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useGame } from "../store";
 import { NPCS, QUESTS } from "../data/enemies";
-import { GoldButton, InkButton, Medallion, Eyebrow, GoldRule } from "./parchment";
+import { GoldButton, InkButton, Medallion, GoldRule } from "./parchment";
 
 export function DialogueBox() {
   const npcId = useGame((s) => s.ui.dialogue);

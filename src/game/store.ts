@@ -28,9 +28,7 @@ import { PLAYER, xpForLevel, ENEMY_RESPAWN_TIME } from "./constants";
 import { terrainHeight } from "./world/World";
 import {
   SKILLS,
-  CRAFT_RECIPES,
   CHEST_SPAWNS,
-  getChestGold,
 } from "./data/skills";
 import {
   TALENTS,
@@ -38,7 +36,7 @@ import {
   isTalentAvailable,
   talentPointsForLevel,
 } from "./data/talents";
-import { playSound, audio } from "./audio";
+// import { playSound } from "./audio"; // unused — re-enable when audio triggers are wired
 
 let enemyIdCounter = 0;
 function nextEnemyId() {
@@ -130,7 +128,7 @@ function makeInitialQuests(): QuestState[] {
   }));
 }
 
-function makeInitialChests(): Chest[] {
+function _makeInitialChests(): Chest[] {
   return CHEST_SPAWNS.map((c) => ({
     id: c.id,
     position: [...c.position] as Vec3,
@@ -138,10 +136,6 @@ function makeInitialChests(): Chest[] {
     loot: c.loot.map((l) => ({ ...l })),
   }));
 }
-
-// Day/night cycle: time in seconds (0..DAY_LENGTH), wraps around.
-// 0 = dawn, DAY_LENGTH*0.25 = noon, 0.5 = dusk, 0.75 = midnight
-const DAY_LENGTH = 120; // seconds for a full day-night cycle
 
 export type UiPanelKey =
   | "inventory"
@@ -558,7 +552,7 @@ export const useGame = create<GameStore>((set, get) => ({
         const now = performance.now() / 1000;
         let goldGained = 0;
         let kills = 0;
-        let levelUps = 0;
+        const _levelUps = 0;
         const newLoot = [...cur.loot];
         let newQuests = cur.quests;
         const newFloatingTexts = [...cur.floatingTexts];
@@ -569,7 +563,7 @@ export const useGame = create<GameStore>((set, get) => ({
           if (!e.isDead && e.health <= 0) {
             const def = ENEMIES[e.type];
             // XP — accumulate level-ups
-            let xpLeft = def.xpReward;
+            const xpLeft = def.xpReward;
             let xp = cur.player.xp + xpLeft;
             let lvl = cur.player.level;
             let xpToNext = cur.player.xpToNext;
@@ -594,7 +588,7 @@ export const useGame = create<GameStore>((set, get) => ({
               // 1 point per level + 1 bonus every 5 levels (5, 10, 15…).
               tp += 1;
               if (lvl % 5 === 0) tp += 1;
-              levelUps += 1;
+              // levelUps tracked for future achievements
               const lvlId = `ft_${performance.now()}_lvl_${e.id}`;
               newFloatingTexts.push({ id: lvlId, position: [e.position[0], 2.0, e.position[2]], text: `NIVEAU SUP\u00c9RIEUR !`, color: "#fbbf24", born: performance.now(), duration: 1100 });
             }
@@ -721,7 +715,7 @@ export const useGame = create<GameStore>((set, get) => ({
       let newWanderTarget = e.wanderTarget;
       let newWanderCooldown = e.wanderCooldown;
       let newAttackCooldown = Math.max(0, e.attackCooldown - dt);
-      let newHurtUntil = e.hurtUntil;
+      const newHurtUntil = e.hurtUntil;
       // hurt state timeout
       if (e.state === "hurt" && time > e.hurtUntil) {
         newState = dist < def.aggroRange ? "chase" : "idle";
@@ -1273,7 +1267,7 @@ export const useGame = create<GameStore>((set, get) => ({
 
     const nextRank = currentRank - 1;
     const nextAlloc: Record<string, number> = { ...alloc };
-    let refundedExtras: string[] = [];
+    const refundedExtras: string[] = [];
 
     if (nextRank === 0) {
       // Cascade only fires when we drop this talent to rank 0. Descendants'
@@ -1422,7 +1416,8 @@ export const useGame = create<GameStore>((set, get) => ({
         get().showToast(`${def.icon} ${def.name} — aucune cible à portée`, "info");
         return;
       }
-      const target = s.enemies.find((e) => e.id === nearest!.id);
+      const nearId = nearest.id;
+      const target = s.enemies.find((e) => e.id === nearId);
       if (!target) return;
       const dmg = Math.max(1, Math.floor(basePower * (0.85 + Math.random() * 0.3)));
       get().addFloatingText(
@@ -1556,7 +1551,8 @@ export const useGame = create<GameStore>((set, get) => ({
 
   grantXp: (xp) => {
     set((st) => {
-      let player = { ...st.player, xp: st.player.xp + xp };
+      const player = { ...st.player, xp: st.player.xp + xp };
+      // Mutate the snapshot in-place — Zustand captures the final state.
       while (player.xp >= player.xpToNext) {
         player.xp -= player.xpToNext;
         player.level += 1;

@@ -64,9 +64,10 @@ export function useControls() {
           if (!nearest || d < nearest.dist) nearest = { id: n.id, dist: d };
         }
         if (nearest && nearest.dist < 3) {
-          const npc = s.npcs.find((n) => n.id === nearest!.id);
+          const nearId = nearest.id;
+          const npc = s.npcs.find((n) => n.id === nearId);
           if (npc?.isShopkeeper) s.openShop(npc.id);
-          else s.openDialogue(nearest.id);
+          else s.openDialogue(nearId);
         }
       }
     };

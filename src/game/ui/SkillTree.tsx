@@ -15,7 +15,7 @@ import {
   pointsInBranch,
 } from "../data/talents";
 import type { TalentBranch, TalentDef } from "../types";
-import { PanelShell, Eyebrow, GoldRule } from "./parchment";
+import { PanelShell, GoldRule, Eyebrow } from "./parchment";
 import { Sparkles, Crown, Star } from "lucide-react";
 
 // Layout constants for the SVG connectors between nodes.
@@ -121,12 +121,9 @@ function TreeBody() {
   const rowsByTier = useMemo(() => {
     const tiers = new Map<number, number>();
     let y = 0;
-    let prevTier = -1;
-    for (const list of [TALENTS]) {
-      // Single pool ordered by tier desc → ensures the deepest node dictates
-      // height. We collect unique tier values from all branches and spread
-      // them out vertically.
-    }
+    // Single pool ordered by tier desc → ensures the deepest node dictates
+    // height. We collect unique tier values from all branches and spread
+    // them out vertically.
     for (const branch of branches) {
       for (const node of branch.nodes) {
         if (!tiers.has(node.tier)) {
@@ -138,7 +135,6 @@ function TreeBody() {
     // Always pin tier 1 at the top
     tiers.set(1, 0);
     // Re-pack tiers in order 1..5
-    let row = 1;
     const order = [1, 2, 3, 4, 5];
     for (const t of order) tiers.set(t, t - 1);
     return tiers;
