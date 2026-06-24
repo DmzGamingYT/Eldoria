@@ -122,7 +122,7 @@ Le système de progression du héros passe du « répartir 3 points manuellement
 - `package.json` : bump version `0.2.5` → `0.2.6`
 - `src/game/ui/Options.tsx` : version affichée mise à jour `0.2.5` → `0.2.6`
 - `README.md` : liens de téléchargement et noms de fichiers mis à jour de v0.2.5 à v0.2.6
-- `docs/itchio-page-guide.md` : versions mises à jour `0.2.5` → `0.2.6`
+- `docs/release/itchio-page-guide.md` : versions mises à jour `0.2.5` → `0.2.6`
 - `release-body.md` : version et liens mis à jour `v0.2.5` → `v0.2.6`
 - `README.md` : liens de téléchargement et noms de fichiers mis à jour de v0.2.2 à v0.2.5 (PR #13)
 
@@ -133,7 +133,7 @@ Le système de progression du héros passe du « répartir 3 points manuellement
 - `src/game/ui/MainMenu.tsx` : point médian superflu supprimé (`"Touche Échap · pour reprendre"` → `"Touche Échap pour reprendre"`)
 
 ### 📚 Documentation — corrections d'incohérences texte & version
-- `docs/itchio-page-guide.md` : versions mises à jour `0.2.2` → `0.2.5`, typo "Gratuis" → "Gratuit", compte d'ennemis corrigé (`6` → `5` réguliers + boss), "chainées" → "chaînées", noms de compétences alignés avec `src/game/data/skills.ts`
+- `docs/release/itchio-page-guide.md` : versions mises à jour `0.2.2` → `0.2.5`, typo "Gratuis" → "Gratuit", compte d'ennemis corrigé (`6` → `5` réguliers + boss), "chainées" → "chaînées", noms de compétences alignés avec `src/game/data/skills.ts`
 - `release-body.md` : version et liens mis à jour `0.2.1` → `0.2.5`
 - `README.md` : compte d'ennemis corrigé (`6+1` → `5+1`), alt text du bestiaire corrigé, nom AppImage corrigé (`linux-x86_64` → `linux-x64`), noms de compétences alignés, récompense quête 1 corrigée (`Potion` → `Potion de Soin`), commentaire screenshots corrigé, statuts assets Quaternius mis à jour (`Placeholder` → `Téléchargé`)
 - `public/banner/bestiaire-hero.svg` : "SQUELETTE" → "GUERRIER SQUELETTE"

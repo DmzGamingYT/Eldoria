@@ -47,7 +47,6 @@ const warn  = (msg) => console.log(`   \x1b[33m⚠\x1b[0m  ${msg}`);
 const info  = (msg) => console.log(`\x1b[36m🎬\x1b[0m  ${msg}`);
 const fatal = (msg) => { console.error(`\n\x1b[31m❌\x1b[0m  ${msg}`); process.exit(1); };
 
-const SIZE_KB = (b) => `${(b / 1024).toFixed(1)} KB`;
 const SIZE_MB = (b) => `${(b / 1024 / 1024).toFixed(2)} MB`;
 
 // ── 1. Vérifications préalables ──

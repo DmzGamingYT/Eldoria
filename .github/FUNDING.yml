@@ -1,0 +1,18 @@
+# Bouton de sponsoring GitHub — affiché en haut du README quand activé.
+# Activation : Settings → General → Sponsorship (les autres canaux sont configurables ici).
+# Cf. https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/displaying-a-sponsor-button-in-your-repository
+
+github: DmzGamingYT
+
+# Décommentez et complétez les lignes ci-dessous pour ajouter d'autres canaux :
+# patreon: votre_pseudo_patreon
+# open_collective: eldoria
+# ko_fi: eldoria
+# tidelift: eldoria
+# community_bridge: eldoria
+# liberapay: eldoria
+
+# Pour un lien totalement personnalisé (ex. : Stripe, Buy Me a Coffee, GitHub Sponsors alternative) :
+# custom:
+#   - "Buy Me a Coffee": https://www.buymeacoffee.com/dmzgamingyt
+#   - "Tipeee (FR)": https://fr.tipeee.com/eldoria

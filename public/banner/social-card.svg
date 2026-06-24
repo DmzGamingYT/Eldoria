@@ -39,7 +39,7 @@
     <text x="5" y="80" font-family="Georgia, serif" font-size="34" font-style="italic" fill="#f8e9c5">Un RPG fantasy 3D natif &amp; navigateur.</text>
     <text x="5" y="130" font-family="Georgia, serif" font-size="24" fill="#d8be83">Monde procédural 200×200, combat en temps réel.</text>
     <text x="5" y="170" font-family="Georgia, serif" font-size="24" fill="#d8be83">5 sorts, 5 actes → boss final : Mordrak.</text>
-    <text x="5" y="210" font-family="Georgia, serif" font-size="24" fill="#d8be83">Arbre de talents (v0.3.0).</text>
+    <text x="5" y="210" font-family="Georgia, serif" font-size="24" fill="#d8be83">Talents multi-rang · combat rapide · Frostpeak.</text>
   </g>
 
   <!-- Tech badges — bottom-left (Georgia serif pour cohérence avec le reste) -->
@@ -92,5 +92,5 @@
   <!-- Footer URL — bottom-right -->
   <text x="1200" y="600" text-anchor="end" font-family="Georgia, serif" font-size="20" font-style="italic" fill="#a07c3a">github.com/DmzGamingYT/Eldoria</text>
   <!-- Footer version — bottom-left -->
-  <text x="50" y="600" text-anchor="start" font-family="Georgia, serif" font-size="20" fill="#f6d97c">v0.3.0 · Gratuit &amp; open-source</text>
+  <text x="50" y="600" text-anchor="start" font-family="Georgia, serif" font-size="20" fill="#f6d97c">v0.4.0 · Gratuit &amp; open-source</text>
 </svg>

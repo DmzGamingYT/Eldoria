@@ -1,6 +1,6 @@
 # 🏗️ Architecture & Stack — Eldoria
 
-> Documentation technique pour contributeurs et curieux. Pour l'installation locale, voir [`docs/dev-setup.md`](dev-setup.md).
+> Documentation technique pour contributeurs et curieux. Pour l'installation locale, voir [`docs/development/dev-setup.md`](dev-setup.md).
 
 ## Concept : monolithe unifié
 
@@ -34,7 +34,7 @@ src/
 │   │   ├── items.ts           # 16+ objets, 5 raretés
 │   │   ├── enemies.ts         # 6 + 1 boss, 4 PNJ, 5 quêtes
 │   │   ├── skills.ts          # 5 sorts, 7 coffres
-│   │   └── talents.ts         # 18 talents sur 3 branches (v0.3.0)
+│   │   └── talents.ts         # 18 talents sur 3 branches (v0.4.0, multi-rang)
 │   ├── player/                # Joueur + PNJ 3D
 │   ├── enemies/               # IA patrouille/chase/attack
 │   ├── effects/               # Effets visuels & particules

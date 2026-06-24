@@ -1,0 +1,46 @@
+name: ❓ Question / Aide
+description: Poser une question rapide ou demander de l'aide sur Eldoria
+title: "[Question] "
+labels: ["question"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Bienvenue ! Posez votre question ici, nous tâcherons de vous répondre rapidement.
+
+        ⚠️ Pour un **bug** ou une **demande de fonctionnalité**, utilisez plutôt les templates correspondants — c'est plus rapide à traiter.
+
+  - type: textarea
+    id: question
+    attributes:
+      label: ❓ Votre question
+      description: Soyez aussi précis(e) que possible — plus la question est claire, plus la réponse sera rapide.
+      placeholder: "Comment fonctionne… / Où puis-je trouver… / Est-il prévu de…"
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: 🔍 Contexte / ce que j'ai déjà essayé
+      description: Qu'avez-vous déjà tenté ? Quel est votre objectif ? Liez captures ou extraits de code si utile.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: topic
+    attributes:
+      label: 🏷️ Sujet
+      description: Catégorie générale de votre question — cela aide à diriger vers le bon relecteur.
+      options:
+        - 🎮 Gameplay / Monde de jeu
+        - 🛠️ Build / Compilation locale (Bun · Prisma · Electron)
+        - 🐛 Bug potentiel (à confirmer)
+        - 📚 Documentation
+        - 🖥️ Installation / Compatibilité plateforme
+        - 🎨 Direction artistique / Assets
+        - 💡 Suggestion ou idée
+        - 🤔 Autre
+    validations:
+      required: true
