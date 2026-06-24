@@ -49,6 +49,18 @@ Plus de captures dans [`public/screenshots/`](public/screenshots/) — *bestiair
 
 > **Dernière version stable : [v0.3.0 ▸ Releases](https://github.com/DmzGamingYT/Eldoria/releases/latest)** — installeurs natifs générés par la CI à chaque tag `v*`.
 
+---
+
+## 🎯 Distribution
+
+<p align="center">
+  <a href="https://dmzgamingyt.itch.io/eldoria"><img alt="Jouer sur itch.io" src="https://img.shields.io/badge/itch.io-Jouer%20Maintenant-f6d97c?style=for-the-badge&logo=itchdotio&logoColor=%231a0e2e" /></a>
+</p>
+
+> 🎮 **[Page officielle Eldoria sur itch.io](https://dmzgamingyt.itch.io/eldoria)** — installeurs natifs, cover parchemin 630×500, 4 captures, thème Cinzel/Garamond.
+>
+> ⏳ *Page en cours de publication — bientôt en ligne.* Guide : [`docs/itchio-page-guide.md`](docs/itchio-page-guide.md).
+
 | Plateforme | Format | Installation |
 |:--:|:--|:--|
 | 🪟 **Windows** 10 / 11 | NSIS `Eldoria-0.3.0-win-x64.exe` (~265 Mo) | Double-clic |

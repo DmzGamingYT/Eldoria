@@ -8,7 +8,7 @@
 | Outil | Version | Pourquoi |
 |---|---|---|
 | **[Bun](https://bun.sh/)** | ≥ 1.0 | Gestionnaire de paquets + runtime CI/dev |
-| **[Node.js](https://nodejs.org/)** | ≥ 18 | Requis pour Next.js et Prisma (Bun gère le reste) |
+| **[Node.js](https://nodejs.org/)** | ≥ 18 | Requis par Next.js 16 (Bun s'occupe du reste) |
 | **[Git](https://git-scm.com/)** | récent | Workflow conventional commits |
 
 Native toolchains (installées par `bun install` via node-gyp/sharp si nécessaire) :
@@ -26,9 +26,9 @@ cd Eldoria
 # 2. Installer les dépendances
 bun install
 
-# 3. Initialiser la base Prisma
-bun run db:generate
-bun run db:push
+# 3. (Pas de base de données à initialiser — la persistance du jeu
+#     passe par `Zustand persist` dans `src/game/store.ts`.
+#     `bun install` suffit pour une installation fraîche jouable.)
 ```
 
 ## Lancer en mode développement

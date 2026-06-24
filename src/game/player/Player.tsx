@@ -516,7 +516,7 @@ function WeaponMesh({ weaponId }: { weaponId: string | null }) {
   return null;
 }
 
-function PlayerNameTag({ name }: { name: string }) {
+function PlayerNameTag({ name: _name }: { name: string }) {
   const ref = useRef<THREE.Group>(null);
   useFrame(({ camera }) => {
     if (ref.current) {

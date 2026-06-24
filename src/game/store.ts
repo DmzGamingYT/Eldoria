@@ -28,9 +28,7 @@ import { PLAYER, xpForLevel, ENEMY_RESPAWN_TIME } from "./constants";
 import { terrainHeight } from "./world/World";
 import {
   SKILLS,
-  CRAFT_RECIPES,
   CHEST_SPAWNS,
-  getChestGold,
 } from "./data/skills";
 import {
   TALENTS,
@@ -38,7 +36,7 @@ import {
   isTalentAvailable,
   talentPointsForLevel,
 } from "./data/talents";
-import { playSound, audio } from "./audio";
+// import { playSound } from "./audio"; // unused — re-enable when audio triggers are wired
 
 let enemyIdCounter = 0;
 function nextEnemyId() {
@@ -130,7 +128,7 @@ function makeInitialQuests(): QuestState[] {
   }));
 }
 
-function makeInitialChests(): Chest[] {
+function _makeInitialChests(): Chest[] {
   return CHEST_SPAWNS.map((c) => ({
     id: c.id,
     position: [...c.position] as Vec3,
@@ -139,10 +137,6 @@ function makeInitialChests(): Chest[] {
   }));
 }
 
-// Day/night cycle: time in seconds (0..DAY_LENGTH), wraps around.
-// 0 = dawn, DAY_LENGTH*0.25 = noon, 0.5 = dusk, 0.75 = midnight
-const DAY_LENGTH = 120; // seconds for a full day-night cycle
-
 export type UiPanelKey =
   | "inventory"
   | "quests"
@@ -150,6 +144,17 @@ export type UiPanelKey =
   | "help"
   | "options"
   | "talents";
+
+/**
+ * v0.4.0 save schema. Bumped from 2 to 3 to add optional runtime fields
+ * (`skillCooldowns`, `activeBuffs`). v2 saves remain loadable via the
+ * `loadGame` fallback chain; the migration defaults sane empty values.
+ */
+export const SAVE_KEY = "rpg_save_v3";
+export const SAVE_SCHEMA_VERSION = 3 as const;
+/** Legacy keys cleaned up on every successful write (so downgrades don't
+ *  silently reload stale data). */
+const LEGACY_SAVE_KEYS = ["rpg_save_v2", "rpg_save_v1"] as const;
 
 export interface GameStore {
   status: GameStatus;
@@ -177,6 +182,14 @@ export interface GameStore {
   };
   cameraYaw: number;
   cameraPitch: number;
+  /** v0.4.0 — remaining cooldown (seconds) per skill id. Ticked to 0 by
+   *  `tickCooldowns`. Reduced actual cooldown by `derivedCooldownReduction`
+   *  at cast time, mirroring the basic-attack behaviour. */
+  skillCooldowns: SkillCooldownState;
+  /** v0.4.0 — active timed buffs on the player (currently used by the
+   *  `shield` skill from Bouclier Arcanique). Mitigates incoming damage
+   *  while any shield-type buff is present. */
+  activeBuffs: ActiveBuff[];
   // computed
   derivedAttack: number;
   derivedDefense: number;
@@ -221,6 +234,13 @@ export interface GameStore {
   closeShop: () => void;
   collectLoot: (lootId: string) => void;
   showToast: (message: string, type?: "info" | "success" | "error") => void;
+  /** v0.4.0 — cast a skill. Validates unlockLevel, mana, cooldown; spends
+   *  mana; reduces cooldown by `derivedCooldownReduction`; applies the
+   *  per-type effect (fireball/frost: AOE damage, lightning: heavy single-
+   *  target damage, heal: instant HP, shield: 8 s 50 % damage reduction
+   *  buff). Auto-no-ops if the skill is locked / OOM / on cooldown or
+   *  has no targets in range (the AOE case). */
+  castSkill: (skillId: string) => void;
   applyDamageToEnemy: (enemyId: string, damage: number, knockback?: Vec3) => void;
   applyDamageToPlayer: (damage: number, source: string) => void;
   grantXp: (xp: number) => void;
@@ -361,6 +381,8 @@ export const useGame = create<GameStore>((set, get) => ({
   },
   cameraYaw: 0,
   cameraPitch: 0.5,
+  skillCooldowns: {},
+  activeBuffs: [],
   derivedAttack: PLAYER.baseAttack,
   derivedDefense: PLAYER.baseDefense,
   derivedMaxHealth: PLAYER.baseMaxHealth,
@@ -399,6 +421,8 @@ export const useGame = create<GameStore>((set, get) => ({
         shop: null,
         toast: null,
       },
+      skillCooldowns: {},
+      activeBuffs: [],
       ...d,
     });
   },
@@ -528,7 +552,7 @@ export const useGame = create<GameStore>((set, get) => ({
         const now = performance.now() / 1000;
         let goldGained = 0;
         let kills = 0;
-        let levelUps = 0;
+        const _levelUps = 0;
         const newLoot = [...cur.loot];
         let newQuests = cur.quests;
         const newFloatingTexts = [...cur.floatingTexts];
@@ -539,7 +563,7 @@ export const useGame = create<GameStore>((set, get) => ({
           if (!e.isDead && e.health <= 0) {
             const def = ENEMIES[e.type];
             // XP — accumulate level-ups
-            let xpLeft = def.xpReward;
+            const xpLeft = def.xpReward;
             let xp = cur.player.xp + xpLeft;
             let lvl = cur.player.level;
             let xpToNext = cur.player.xpToNext;
@@ -564,7 +588,7 @@ export const useGame = create<GameStore>((set, get) => ({
               // 1 point per level + 1 bonus every 5 levels (5, 10, 15…).
               tp += 1;
               if (lvl % 5 === 0) tp += 1;
-              levelUps += 1;
+              // levelUps tracked for future achievements
               const lvlId = `ft_${performance.now()}_lvl_${e.id}`;
               newFloatingTexts.push({ id: lvlId, position: [e.position[0], 2.0, e.position[2]], text: `NIVEAU SUP\u00c9RIEUR !`, color: "#fbbf24", born: performance.now(), duration: 1100 });
             }
@@ -691,7 +715,7 @@ export const useGame = create<GameStore>((set, get) => ({
       let newWanderTarget = e.wanderTarget;
       let newWanderCooldown = e.wanderCooldown;
       let newAttackCooldown = Math.max(0, e.attackCooldown - dt);
-      let newHurtUntil = e.hurtUntil;
+      const newHurtUntil = e.hurtUntil;
       // hurt state timeout
       if (e.state === "hurt" && time > e.hurtUntil) {
         newState = dist < def.aggroRange ? "chase" : "idle";
@@ -705,14 +729,24 @@ export const useGame = create<GameStore>((set, get) => ({
               newAttackCooldown = def.attackCooldown;
               const variance = 0.85 + Math.random() * 0.3;
               const rawDmg = def.attack * variance;
-              const mitigated = Math.max(1, Math.floor(rawDmg - s.derivedDefense * 0.6));
+              // v0.4.0 (reviewer fix): hoist the shield check OUT of the
+              // per-enemy map so it's evaluated once per tick (it's
+              // invariant through the enemies iteration). Frozen inline
+              // below if we re-enter the map; here we read it just-in-time
+              // because `s` is captured via closure on `get().
+              const nowSec = performance.now() / 1000;
+              const shieldActive = s.activeBuffs.some(
+                (b) => b.type === "shield" && b.expiresAt > nowSec,
+              );
+              const shielded = shieldActive ? rawDmg * 0.5 : rawDmg;
+              const mitigated = Math.max(1, Math.floor(shielded - s.derivedDefense * 0.6));
               damageToPlayer += mitigated;
               damageSource = def.name;
               playerTookDamage = true;
               get().addFloatingText(
                 [px, 1.6, pz],
                 `-${mitigated}`,
-                "#ef4444"
+                shieldActive ? "#7dd3fc" : "#ef4444"
               );
             }
           } else {
@@ -868,14 +902,56 @@ export const useGame = create<GameStore>((set, get) => ({
   },
 
   tickCooldowns: (dt) => {
-    const cd = get().player.attackCooldown;
-    if (cd <= 0) return;
-    set((st) => ({
-      player: {
-        ...st.player,
-        attackCooldown: Math.max(0, cd - dt),
-      },
-    }));
+    const s = get();
+    const cd = s.player.attackCooldown;
+    const hasSkillCd = Object.values(s.skillCooldowns).some((v) => v > 0);
+    const hasBuff = s.activeBuffs.length > 0;
+    if (cd <= 0 && !hasSkillCd && !hasBuff) return;
+    const now = performance.now() / 1000;
+    set((st) => {
+      const updates: Partial<GameStore> = {};
+      let changed = false;
+      if (st.player.attackCooldown > 0) {
+        updates.player = {
+          ...st.player,
+          attackCooldown: Math.max(0, st.player.attackCooldown - dt),
+        };
+        changed = true;
+      } else {
+        updates.player = st.player;
+      }
+      // v0.4.0 — skill cooldowns (linear decay, entries pruned at <= 0)
+      const newCds: SkillCooldownState = {};
+      let skillChanged = false;
+      for (const [id, t] of Object.entries(st.skillCooldowns)) {
+        const next = t - dt;
+        if (next > 0.01) {
+          if (!skillChanged && next !== t) {
+            for (const k of Object.keys(newCds)) delete newCds[k];
+            for (const [k2, v2] of Object.entries(st.skillCooldowns)) newCds[k2] = v2;
+            skillChanged = true;
+          }
+          newCds[id] = next;
+        } else {
+          skillChanged = true;
+        }
+      }
+      // Even if no numeric drift happened, prune entries that hit <= 0 this tick.
+      if (Object.keys(newCds).length !== Object.keys(st.skillCooldowns).length) {
+        skillChanged = true;
+      }
+      if (skillChanged) {
+        updates.skillCooldowns = newCds;
+        changed = true;
+      }
+      // v0.4.0 — active buff expiry
+      const newBuffs = st.activeBuffs.filter((b) => b.expiresAt > now);
+      if (newBuffs.length !== st.activeBuffs.length) {
+        updates.activeBuffs = newBuffs;
+        changed = true;
+      }
+      return changed ? updates : {};
+    });
   },
 
   useItem: (itemId) => {
@@ -1108,6 +1184,14 @@ export const useGame = create<GameStore>((set, get) => ({
 
   /* ------------------------- v0.3.0 talent actions ---------------------- */
 
+  /**
+   * v0.4.0 — multi-rank aware. Standard talents still cap at rank 1; capstones
+   * declare `maxRank: 3`. Each rank costs `def.cost * (rankIndex+1)`
+   * (linear scale), so a `c_executioner` capstone allocation costs:
+   *   rank 1 → 2 pts · rank 2 → 4 pts · rank 3 → 6 pts (12 pts total).
+   * Effects aggregate linearly through `recomputeDerived` (each rank
+   * multiplies the talent's flat/percentage effects).
+   */
   allocateTalent: (talentId) => {
     const def = getTalent(talentId);
     if (!def) {
@@ -1116,8 +1200,14 @@ export const useGame = create<GameStore>((set, get) => ({
     }
     const s = get();
     const alloc = s.player.allocatedTalents ?? {};
-    if (alloc[talentId] && alloc[talentId] >= def.cost) {
-      get().showToast("Talent déjà acquis", "error");
+    const maxRank = def.maxRank ?? 1;
+    const currentRank = alloc[talentId] ?? 0;
+    if (currentRank >= maxRank) {
+      if (maxRank > 1) {
+        get().showToast(`${def.nameFr} déjà au rang max ${currentRank}/${maxRank}`, "info");
+      } else {
+        get().showToast("Talent déjà acquis", "error");
+      }
       return;
     }
     const { ok, reasons } = isTalentAvailable(def, alloc, s.player.level);
@@ -1125,14 +1215,18 @@ export const useGame = create<GameStore>((set, get) => ({
       get().showToast(`Conditions non remplies : ${reasons[0]}`, "error");
       return;
     }
-    if (s.player.talentPoints < def.cost) {
-      get().showToast("Points de talent insuffisants", "error");
+    const costForRank = def.cost * (currentRank + 1);
+    if (s.player.talentPoints < costForRank) {
+      get().showToast(
+        `Points insuffisants : ${costForRank} requis (rang ${currentRank + 1} de ${def.nameFr})`,
+        "error",
+      );
       return;
     }
-    const nextAlloc = { ...alloc, [talentId]: (alloc[talentId] ?? 0) + 1 };
+    const nextAlloc = { ...alloc, [talentId]: currentRank + 1 };
     const nextPlayer = {
       ...s.player,
-      talentPoints: s.player.talentPoints - def.cost,
+      talentPoints: s.player.talentPoints - costForRank,
       allocatedTalents: nextAlloc,
     };
     const d = recomputeDerived(nextPlayer, s.equipment);
@@ -1145,56 +1239,73 @@ export const useGame = create<GameStore>((set, get) => ({
       },
       ...d,
     });
-    get().showToast(`${def.icon} ${def.nameFr} acquis (−${def.cost} pt${def.cost > 1 ? "s" : ""})`, "success");
+    const tag = maxRank > 1 ? ` rang ${currentRank + 1}/${maxRank}` : "";
+    get().showToast(
+      `${def.icon} ${def.nameFr}${tag} (−${costForRank} pt${costForRank > 1 ? "s" : ""})`,
+      "success",
+    );
   },
 
+  /**
+   * v0.4.0 — 1-rank-at-a-time refund with cascade-guard. Each refund call
+   * returns the points equivalent to the LAST rank step the player paid,
+   * so the economy stays symmetric:
+   *   rank 1 → 2 → 3 … pays 2, 4, 6 … cps cumulatively.
+   *   Refunding 3 → 2 returns 6 cps (the cost of rank 3).
+   *   Refunding 2 → 1 returns 4 cps.
+   *   Refunding 1 → 0 returns 2 cps AND cascades the descendants (children
+   *   lose their prerequisite, so we drop them to 0 to keep the derived-
+   *   stat block aligned with the UI's "locked" state).
+   */
   refundTalent: (talentId) => {
-    /**
-     * Cascade refund: when a parent talent is refunded, every descendant
-     * that depends on it loses its prerequisite. Without a cascade the
-     * invalidated children would still apply their bonuses (because
-     * `recomputeDerived` aggregates naively) while the SkillTree UI would
-     * flag them as locked — an inconsistent state. We therefore walk the
-     * tree top-down and refund every dependent.
-     *
-     * Only refund the root if its current `pointsInBranch` cost can pay for
-     * what we're taking back; otherwise we'd refund nothing.
-     */
     const s = get();
     const def = getTalent(talentId);
     if (!def) return;
     const alloc = s.player.allocatedTalents ?? {};
-    if (!alloc[talentId]) return;
+    const currentRank = alloc[talentId] ?? 0;
+    if (currentRank <= 0) return;
 
-    const toRefund = new Set<string>([talentId]);
-    // BFS through descendants (those whose `requiresTalentId` is in the set).
-    let queue: string[] = [talentId];
-    while (queue.length > 0) {
-      const next: string[] = [];
-      for (const t of TALENTS) {
-        const pre = t.prerequisites.requiresTalentId;
-        if (pre && toRefund.has(t.id) === false && alloc[t.id]) {
-          // If any dependency on `t` is being refunded, also refund `t`.
-          if (toRefund.has(pre)) {
+    const nextRank = currentRank - 1;
+    const nextAlloc: Record<string, number> = { ...alloc };
+    const refundedExtras: string[] = [];
+
+    if (nextRank === 0) {
+      // Cascade only fires when we drop this talent to rank 0. Descendants'
+      // prerequisites are string-based; a child holding rank ≥ 1 whose
+      // `requiresTalentId === talentId` becomes orphan the moment
+      // `alloc[talentId] === 0`. We drop them to keep derived stats aligned
+      // with the UI's "locked" state.
+      const toRefund = new Set<string>([talentId]);
+      let queue: string[] = [talentId];
+      while (queue.length > 0) {
+        const frontier: string[] = [];
+        for (const t of TALENTS) {
+          if (toRefund.has(t.id)) continue;
+          const pre = t.prerequisites.requiresTalentId;
+          if (pre && toRefund.has(pre) && (nextAlloc[t.id] ?? 0) > 0) {
             toRefund.add(t.id);
-            next.push(t.id);
+            frontier.push(t.id);
           }
         }
+        queue = frontier;
       }
-      queue = next;
+      for (const id of toRefund) {
+        const d = getTalent(id);
+        if (!d) continue;
+        if (id === talentId) continue;
+        const dropped = nextAlloc[id] ?? 0;
+        if (dropped > 0) refundedExtras.push(`${d.nameFr} (${dropped}r)`);
+        delete nextAlloc[id];
+      }
+      nextAlloc[talentId] = 0;
+    } else {
+      nextAlloc[talentId] = nextRank;
     }
 
-    let refundTotal = 0;
-    const nextAlloc = { ...alloc };
-    for (const id of toRefund) {
-      const d = getTalent(id);
-      if (!d) continue;
-      refundTotal += d.cost * (nextAlloc[id] ?? 0);
-      delete nextAlloc[id];
-    }
+    const refundAmount = def.cost * currentRank;
     const nextPlayer = {
       ...s.player,
-      talentPoints: s.player.talentPoints + refundTotal,
+      talentPoints: s.player.talentPoints + refundAmount,
       allocatedTalents: nextAlloc,
     };
     const dStats = recomputeDerived(nextPlayer, s.equipment);
@@ -1206,19 +1317,161 @@ export const useGame = create<GameStore>((set, get) => ({
       },
       ...dStats,
     });
-    const rootName = def.nameFr;
-    const refundedNames = [...toRefund]
-      .map((id) => getTalent(id)?.nameFr)
-      .filter(Boolean)
-      .filter((n) => n !== rootName);
-    if (refundedNames.length > 0) {
+    const maxRank = def.maxRank ?? 1;
+    if (maxRank > 1) {
       get().showToast(
-        `${def.icon} ${rootName} + ${refundedNames.length} dépendant(s) remboursés (+${refundTotal} pts)`,
+        `${def.icon} ${def.nameFr} rang ${currentRank}→${nextRank}/${maxRank} (+${refundAmount} pt${refundAmount > 1 ? "s" : ""})`,
+        "info",
+      );
+    } else if (refundedExtras.length > 0) {
+      get().showToast(
+        `${def.icon} ${def.nameFr} + ${refundedExtras.length} dépendant(s) remboursé(s) (+${refundAmount} pt)`,
         "info",
       );
     } else {
-      get().showToast(`${def.icon} ${rootName} remboursé (+${refundTotal} pt)`, "info");
+      get().showToast(`${def.icon} ${def.nameFr} remboursé (+${refundAmount} pt)`, "info");
     }
+  },
+
+  /* ------------------------- v0.4.0 combat actions ----------------------- */
+
+  /**
+   * Cast a skill by id. Effects by SkillDef.type:
+   *   fireball   — AOE damage to enemies within 4 u of the player.
+   *   frost      — AOE damage within 4 u (slow effect reserved for v0.4.x).
+   *   lightning  — heavy single-target damage to nearest enemy (≤ 6 u).
+   *   heal       — flat HP restored to the player (clamped to derivedMaxHealth).
+   *   shield     — 8 s buff reducing incoming damage by 50 % (one shield at a time).
+   * Each cast spends `skill.manaCost` mana; sets `skillCooldowns[skillId]` to
+   * `skill.cooldown * (1 - derivedCooldownReduction)` (mirroring the basic
+   * attack's cooldown reduction); silently no-ops if the player is locked /
+   * OOM / still on cooldown OR (for AOE/targeted skills) if no target is in
+   * range — preventing mana burn on a wasted cast.
+   */
+  castSkill: (skillId) => {
+    const s = get();
+    if (s.status !== "playing" || s.player.isDead) return;
+    const def = SKILLS.find((sk) => sk.id === skillId);
+    if (!def) return;
+    if (s.player.level < def.unlockLevel) {
+      get().showToast(`${def.name} : niveau ${def.unlockLevel} requis`, "info");
+      return;
+    }
+    if (s.player.mana < def.manaCost) {
+      get().showToast(`Mana insuffisant pour ${def.name}`, "error");
+      return;
+    }
+    const currentCd = s.skillCooldowns[skillId] ?? 0;
+    if (currentCd > 0) {
+      // Silent no-op: spamming during cd is the most common UX, don't spam
+      // toasts at the user.
+      return;
+    }
+    const px = s.player.position;
+    const color = def.color;
+    const cdSec = def.cooldown * (1 - s.derivedCooldownReduction);
+
+    if (def.type === "fireball" || def.type === "frost") {
+      const radius = 4;
+      const basePower = def.power * s.derivedSpellPower;
+      let hits = 0;
+      let totalDmg = 0;
+      for (const e of s.enemies) {
+        if (e.isDead) continue;
+        const dx = e.position[0] - px[0];
+        const dz = e.position[2] - px[2];
+        const d = Math.hypot(dx, dz);
+        if (d > radius + e.scale * 0.5) continue;
+        const dmg = Math.max(1, Math.floor(basePower * (0.85 + Math.random() * 0.3)));
+        get().addFloatingText(
+          [e.position[0], e.position[1] + e.scale * 1.4, e.position[2]],
+          `${dmg}`,
+          color,
+        );
+        get().applyDamageToEnemy(e.id, dmg);
+        hits += 1;
+        totalDmg += dmg;
+      }
+      // Reviewer fix: AOE no-target must early-return BEFORE spending mana or
+      // starting the cooldown — mirror what lightning already does.
+      if (hits === 0) {
+        get().showToast(`${def.icon} ${def.name} — aucune cible à portée`, "info");
+        return;
+      }
+      get().addParticleBurst([px[0], px[1] + 1.4, px[2]], color, 14);
+      get().showToast(
+        `${def.icon} ${def.name} — ${hits} cible${hits > 1 ? "s" : ""} touchée${hits > 1 ? "s" : ""} (−${totalDmg} PV)`,
+        "success",
+      );
+    } else if (def.type === "lightning") {
+      const basePower = def.power * s.derivedSpellPower * 1.4;
+      let nearest: { id: string; d: number } | null = null;
+      for (const e of s.enemies) {
+        if (e.isDead) continue;
+        const d = Math.hypot(e.position[0] - px[0], e.position[2] - px[2]);
+        if (d > 6) continue;
+        if (!nearest || d < nearest.d) nearest = { id: e.id, d };
+      }
+      if (!nearest) {
+        get().showToast(`${def.icon} ${def.name} — aucune cible à portée`, "info");
+        return;
+      }
+      const nearId = nearest.id;
+      const target = s.enemies.find((e) => e.id === nearId);
+      if (!target) return;
+      const dmg = Math.max(1, Math.floor(basePower * (0.85 + Math.random() * 0.3)));
+      get().addFloatingText(
+        [target.position[0], target.position[1] + target.scale * 1.5, target.position[2]],
+        `${dmg}!`,
+        color,
+      );
+      get().applyDamageToEnemy(target.id, dmg);
+      get().addParticleBurst(
+        [target.position[0], target.position[1] + target.scale * 0.7, target.position[2]],
+        color,
+        10,
+      );
+      get().showToast(`${def.icon} ${def.name} → ${dmg} dégâts`, "success");
+    } else if (def.type === "heal") {
+      const amount = def.power;
+      const newHp = Math.min(s.derivedMaxHealth, s.player.health + amount);
+      const healed = newHp - s.player.health;
+      get().addFloatingText([px[0], 1.6, px[2]], `+${healed}`, color);
+      set((st) => ({
+        player: { ...st.player, health: newHp },
+      }));
+      if (healed > 0) {
+        get().showToast(`${def.icon} ${def.name} (+${healed} PV)`, "success");
+      } else {
+        get().showToast(`${def.icon} ${def.name} — déjà au maximum`, "info");
+        // Refund nothing — already at max. Don't burn mana either (silent).
+        return;
+      }
+    } else if (def.type === "shield") {
+      const now = performance.now() / 1000;
+      const newBuff: ActiveBuff = {
+        id: `shield_${now}`,
+        type: "shield",
+        name: def.name,
+        icon: def.icon,
+        expiresAt: now + 8,
+        power: 0.5,
+      };
+      // Single shield at a time; drop any prior shield before applying the
+      // fresh one (a re-cast during the active window refreshes duration).
+      set((st) => ({
+        activeBuffs: [...st.activeBuffs.filter((b) => b.type !== "shield"), newBuff],
+      }));
+      get().showToast(`${def.icon} ${def.name} actif (8 s)`, "success");
+    } else {
+      get().showToast(`${def.name} : type d'effet non implémenté`, "error");
+      return;
+    }
+
+    set((st) => ({
+      player: { ...st.player, mana: Math.max(0, st.player.mana - def.manaCost) },
+      skillCooldowns: { ...st.skillCooldowns, [skillId]: cdSec },
+    }));
   },
 
   openDialogue: (npcId) =>
@@ -1298,7 +1551,8 @@ export const useGame = create<GameStore>((set, get) => ({
 
   grantXp: (xp) => {
     set((st) => {
-      let player = { ...st.player, xp: st.player.xp + xp };
+      const player = { ...st.player, xp: st.player.xp + xp };
+      // Mutate the snapshot in-place — Zustand captures the final state.
       while (player.xp >= player.xpToNext) {
         player.xp -= player.xpToNext;
         player.level += 1;
@@ -1350,19 +1604,19 @@ export const useGame = create<GameStore>((set, get) => ({
   saveGame: () => {
     const s = get();
     const data = {
-      // v0.3.0 schema: bump when field shapes change.
-      schemaVersion: 2 as const,
+      // v0.4.0: schema bumped 2 → 3 (skillCooldowns + activeBuffs).
+      schemaVersion: SAVE_SCHEMA_VERSION,
       player: s.player,
       inventory: s.inventory,
       equipment: s.equipment,
       quests: s.quests,
+      skillCooldowns: s.skillCooldowns,
+      activeBuffs: s.activeBuffs,
       timestamp: Date.now(),
     };
     try {
-      localStorage.setItem("rpg_save_v2", JSON.stringify(data));
-      // Clear the previous-version slot so a downgrade doesn't reload stale
-      // data when v2 fields (allocatedTalents) are absent.
-      localStorage.removeItem("rpg_save_v1");
+      localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+      for (const legacy of LEGACY_SAVE_KEYS) localStorage.removeItem(legacy);
       get().showToast("Partie sauvegard\u00e9e", "success");
     } catch {
       get().showToast("\u00c9chec de la sauvegarde", "error");
@@ -1371,21 +1625,30 @@ export const useGame = create<GameStore>((set, get) => ({
 
   loadGame: () => {
     try {
-      // Try the current schema first, then fall back to v2 (auto-migration).
+      // v0.4.0: try the current schema first, then fall back to v2 (auto-
+      // migration: defaults skillCooldowns/activeBuffs), then v1 (drops
+      // `statPoints`, awards retroactive talent points).
       let data: {
         schemaVersion?: number;
         player?: Record<string, unknown>;
         inventory?: InventoryItem[];
         equipment?: { weapon: string | null; armor: string | null };
         quests?: QuestState[];
+        skillCooldowns?: SkillCooldownState;
+        activeBuffs?: ActiveBuff[];
       } | null = null;
-      const rawV2 = localStorage.getItem("rpg_save_v2");
-      if (rawV2) {
-        data = JSON.parse(rawV2);
+      const rawV3 = localStorage.getItem(SAVE_KEY);
+      if (rawV3) {
+        data = JSON.parse(rawV3);
       } else {
-        const rawV1 = localStorage.getItem("rpg_save_v1");
-        if (!rawV1) return false;
-        data = JSON.parse(rawV1);
+        const rawV2 = localStorage.getItem("rpg_save_v2");
+        if (rawV2) {
+          data = JSON.parse(rawV2);
+        } else {
+          const rawV1 = localStorage.getItem("rpg_save_v1");
+          if (!rawV1) return false;
+          data = JSON.parse(rawV1);
+        }
       }
       if (!data) return false;
 
@@ -1441,6 +1704,8 @@ export const useGame = create<GameStore>((set, get) => ({
           shop: null,
           toast: null,
         },
+        skillCooldowns: data.skillCooldowns ?? {},
+        activeBuffs: data.activeBuffs ?? [],
         ...d,
       });
       get().showToast("Partie charg\u00e9e", "success");
@@ -1452,9 +1717,8 @@ export const useGame = create<GameStore>((set, get) => ({
 
   hasSave: () => {
     try {
-      // Either schema counts: we only show the "Reprendre" button when some
-      // save exists we know how to read.
       return !!(
+        localStorage.getItem(SAVE_KEY) ||
         localStorage.getItem("rpg_save_v2") ||
         localStorage.getItem("rpg_save_v1")
       );

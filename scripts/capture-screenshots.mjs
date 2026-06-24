@@ -16,7 +16,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { chromium } from "playwright";
-import { mkdirSync, existsSync } from "node:fs";
+import { mkdirSync } from "node:fs";
 
 const SCREENSHOTS_DIR = "./public/screenshots";
 const BASE_URL = process.env.ELDORIA_URL ?? "http://localhost:3000";

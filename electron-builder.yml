@@ -27,8 +27,6 @@ files:
 # Electron resolves require() for .node files to the unpacked copy
 # automatically.
 asarUnpack:
-  - "**/node_modules/.prisma/**"
-  - "**/node_modules/@prisma/**"
   - "**/node_modules/sharp/**"
   - "**/node_modules/@img/**"
 

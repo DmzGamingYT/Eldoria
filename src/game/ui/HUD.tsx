@@ -1,8 +1,10 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useGame } from "../store";
 import { ITEMS, getItemIcon } from "../data/items";
 import { ENEMIES, ENEMY_SPAWN_POINTS, NPCS, QUESTS as QUESTS_DEF } from "../data/enemies";
+import { SKILLS, unlockedSkills } from "../data/skills";
 import { COLORS } from "../constants";
 import type { ItemCategory } from "../types";
 import {
@@ -42,6 +44,8 @@ export function HUD() {
   const inventory = useGame((s) => s.inventory);
   const toast = useGame((s) => s.ui.toast);
   const talentPoints = useGame((s) => s.player.talentPoints);
+  const activeBuffs = useGame((s) => s.activeBuffs);
+  const skillCooldowns = useGame((s) => s.skillCooldowns);
 
   const hpPct = (player.health / derivedMaxHealth) * 100;
   const mpPct = (player.mana / derivedMaxMana) * 100;
@@ -56,6 +60,19 @@ export function HUD() {
     const inv = inventory.find((i) => i.itemId === id);
     return { id, item: ITEMS[id], qty: inv?.qty ?? 0 };
   });
+
+  // v0.4.0 — combat quickbar: first 4 unlocked skills map to keys 1-4.
+  const unlocked = unlockedSkills(player.level);
+  const skillSlots = unlocked.slice(0, 4);
+  // Tick the buff row once per quarter-second so the remaining duration
+  // shown next to each buff is reasonably accurate without re-rendering on
+  // every frame.
+  const [nowSec, setNowSec] = useState(() => performance.now() / 1000);
+  useEffect(() => {
+    if (activeBuffs.length === 0) return;
+    const id = setInterval(() => setNowSec(performance.now() / 1000), 250);
+    return () => clearInterval(id);
+  }, [activeBuffs.length]);
 
   return (
     <div className="pointer-events-none absolute inset-0 select-none font-[var(--font-garamond)]">
@@ -100,6 +117,34 @@ export function HUD() {
               <span>{player.killCount}</span>
             </div>
           </div>
+          {/* v0.4.0 — Active buffs (currently just the shield). Rendered only
+              when at least one is present so the panel doesn't gain an
+              empty row at rest. */}
+          {activeBuffs.length > 0 && (
+            <div className="mt-2 flex flex-wrap items-center gap-1.5 border-t border-dashed border-[var(--gold-4)] pt-1.5">
+              <Eyebrow>Buffs</Eyebrow>
+              {activeBuffs.map((b) => {
+                const remaining = Math.max(0, b.expiresAt - nowSec);
+                return (
+                  <div
+                    key={b.id}
+                    className="flex items-center gap-1 rounded border px-1.5 py-0.5"
+                    style={{
+                      borderColor: "var(--gold-3)",
+                      background: "rgba(125, 211, 252, 0.12)",
+                      color: "var(--indigo)",
+                      fontFamily: "var(--font-garamond)",
+                      fontVariantNumeric: "tabular-nums",
+                    }}
+                    title={`${b.name} — ${remaining.toFixed(1)} s`}
+                  >
+                    <span className="text-sm">{b.icon}</span>
+                    <span className="font-bold">{remaining.toFixed(1)}s</span>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
 
@@ -109,9 +154,10 @@ export function HUD() {
       {/* ===== Haut-centre : Suivi des quêtes ===== */}
       <QuestTracker />
 
-      {/* ===== Bas-centre : Barre rapide ===== */}
+      {/* ===== Bas-centre : Barre rapide (3 potions F1-F3 + 4 skills 1-4 + attaque) ===== */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
         <div className="parchment-banner pointer-events-auto flex items-center gap-2 p-2 text-[var(--parchment-ink)]">
+          {/* 3 potion slots — F1/F2/F3 hotkeys, mouse-click still works. */}
           {hotbar.map((slot, i) => {
             const empty = slot.qty === 0;
             return (
@@ -122,7 +168,7 @@ export function HUD() {
                 className={`relative h-12 w-12 transition hover:scale-[1.06] ${
                   empty ? "opacity-40" : ""
                 }`}
-                title={slot.item ? `${slot.item.nameFr ?? slot.item.name}${empty ? " (vide)" : ` × ${slot.qty}`}` : "—"}
+                title={slot.item ? `${slot.item.nameFr ?? slot.item.name}${empty ? " (vide)" : ` × ${slot.qty}  (F${i + 1})`}` : "—"}
               >
                 {slot.item ? (
                   <ItemIcon
@@ -138,11 +184,99 @@ export function HUD() {
                   <div className="parchment-paper flex h-full w-full items-center justify-center rounded-lg border-2 border-dashed border-[var(--gold-4)]" />
                 )}
                 <span className="absolute -top-1 -left-1 flex h-5 w-5 items-center justify-center rounded-md border-2 border-[var(--gold-4)] bg-[var(--parchment-1)] font-serif text-[10px] font-bold text-[var(--gold-3)] shadow">
-                  {i + 1}
+                  F{i + 1}
                 </span>
                 {!empty && (
                   <span className="absolute bottom-0 right-0 rounded bg-[rgba(60,30,10,0.88)] px-1 font-serif text-[10px] font-bold leading-none text-white shadow">
                     {slot.qty}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+          <div className="mx-1 h-10 w-px bg-[var(--gold-3)] opacity-50" />
+          {/* 4 skill slots — keys 1-4. The empty case renders a fixed
+              placeholder so the row never shifts on level-up. */}
+          {Array.from({ length: 4 }).map((_, i) => {
+            const sk = skillSlots[i];
+            if (!sk) {
+              const nextUnlocked = SKILLS.find(
+                (sk2) => sk2.unlockLevel > player.level,
+              );
+              return (
+                <div
+                  key={`locked-${i}`}
+                  className="parchment-paper relative flex h-12 w-12 items-center justify-center rounded-lg border-2 border-dashed border-[var(--gold-4)] opacity-30"
+                  title={
+                    nextUnlocked
+                      ? `Compétence à venir (niveau ${nextUnlocked.unlockLevel})`
+                      : "—"
+                  }
+                >
+                  <span className="font-serif text-[10px] italic text-[var(--gold-3)]">
+                    L{nextUnlocked?.unlockLevel ?? "?"}
+                  </span>
+                  <span className="absolute -top-1 -left-1 flex h-5 w-5 items-center justify-center rounded-md border-2 border-[var(--gold-4)] bg-[var(--parchment-1)] font-serif text-[10px] font-bold text-[var(--gold-3)] shadow">
+                    {i + 1}
+                  </span>
+                </div>
+              );
+            }
+            const cd = skillCooldowns[sk.id] ?? 0;
+            const cdActive = cd > 0;
+            const cdRatio = cdActive
+              ? Math.max(0, Math.min(1, cd / sk.cooldown))
+              : 0;
+            const mania = player.mana < sk.manaCost;
+            const usable = !cdActive && !mania;
+            return (
+              <button
+                key={sk.id}
+                onClick={() => useGame.getState().castSkill(sk.id)}
+                disabled={!usable}
+                className={`parchment-paper relative flex h-12 w-12 items-center justify-center rounded-lg border transition hover:scale-[1.06] ${
+                  usable
+                    ? "border-[var(--gold-3)]"
+                    : "border-dashed border-[var(--gold-4)] opacity-60"
+                }`}
+                style={{
+                  background: `linear-gradient(135deg, ${sk.color}22, var(--parchment-1) 70%)`,
+                  boxShadow: usable
+                    ? "0 0 8px rgba(125, 211, 252, 0.35), inset 0 0 6px rgba(0,0,0,0.25)"
+                    : "none",
+                }}
+                title={`${sk.name} — ${sk.manaCost} Mana  (touche ${i + 1})${cdActive ? ` · CD ${cd.toFixed(1)}s` : ""}${mania ? " · Mana insuffisant" : ""}`}
+              >
+                {cdActive && (
+                  <div
+                    className="pointer-events-none absolute inset-0 rounded-lg"
+                    style={{
+                      background: `conic-gradient(from -90deg, rgba(20,10,2,0.75) 0deg, rgba(20,10,2,0.75) ${cdRatio * 360}deg, transparent ${cdRatio * 360}deg)`,
+                    }}
+                  />
+                )}
+                <span
+                  className="relative font-serif text-2xl"
+                  style={{ filter: cdActive ? "brightness(0.6)" : "none" }}
+                >
+                  {sk.icon}
+                </span>
+                <span className="absolute -top-1 -left-1 flex h-5 w-5 items-center justify-center rounded-md border-2 border-[var(--gold-4)] bg-[var(--parchment-1)] font-serif text-[10px] font-bold text-[var(--gold-3)] shadow">
+                  {i + 1}
+                </span>
+                {cdActive ? (
+                  <span
+                    className="absolute bottom-0 right-0 flex h-5 min-w-5 items-center justify-center rounded-tl-md bg-[rgba(20,10,2,0.92)] px-1 font-serif text-[10px] font-bold leading-none text-white shadow"
+                    style={{ fontVariantNumeric: "tabular-nums" }}
+                  >
+                    {cd.toFixed(1)}s
+                  </span>
+                ) : (
+                  <span
+                    className="absolute bottom-0 right-0 flex h-5 min-w-5 items-center justify-center rounded-tl-md bg-[rgba(20,10,2,0.78)] px-1 font-serif text-[10px] font-bold leading-none text-white shadow"
+                    style={{ fontVariantNumeric: "tabular-nums" }}
+                  >
+                    {sk.manaCost}✦
                   </span>
                 )}
               </button>

@@ -7,7 +7,6 @@ import {
   EffectComposer,
   Bloom,
   Vignette,
-  Noise,
   GodRays,
   HueSaturation,
   BrightnessContrast,

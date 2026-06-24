@@ -233,7 +233,7 @@ interface NpcMoveState {
 }
 
 function NpcVisualBoundary({
-  npc,
+  npc: _npc,
   variant,
   isTalking,
   moveState,
@@ -1052,9 +1052,9 @@ useGLTF.preload(ANIMATION_GLB);
 function NpcMarker({ npcId, npcColor }: { npcId: string; npcColor: string }) {
   const quests = useGame((s) => s.quests);
   const npcQuests = quests.filter((q) => {
-    const npc = useGame.getState().npcs.find((n) => n.id === npcId);
-    if (!npc?.quest) return false;
-    return q.id === npc.quest;
+    const npcEntry = useGame.getState().npcs.find((n) => n.id === npcId);
+    if (!npcEntry?.quest) return false;
+    return q.id === npcEntry.quest;
   });
   const hasCompletable = npcQuests.some((q) => q.status === "completed");
   const hasAvailable = npcQuests.some((q) => q.status === "available");
