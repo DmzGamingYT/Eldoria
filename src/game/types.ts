@@ -36,7 +36,16 @@ export interface PlayerState extends PlayerStats {
   allocatedTalents: Record<string, number>;
 }
 
-export type EnemyType = "slime" | "goblin" | "wolf" | "skeleton" | "ogre" | "boss";
+export type EnemyType =
+  | "slime"
+  | "goblin"
+  | "wolf"
+  | "skeleton"
+  | "ogre"
+  | "boss"
+  // v0.4.0 — Frostpeak biome (NW zone, x ∈ [-60,-30], z ∈ [-30,0])
+  | "ice_slime"
+  | "frost_wolf";
 
 export type EnemyState = "idle" | "wander" | "chase" | "attack" | "hurt" | "dead";
 
