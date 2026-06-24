@@ -22,6 +22,7 @@
     "electron:build:linux": "bun run build && electron-builder --linux --publish never",
     "screenshots": "node scripts/capture-screenshots.mjs",
     "trailer": "node scripts/capture-trailer.mjs",
+    "build:demo": "node scripts/build-demo-gif.mjs",
     "social-card": "node scripts/generate-social-card.mjs"
   },
   "dependencies": {
