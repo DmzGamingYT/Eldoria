@@ -9,6 +9,8 @@ Ce dossier `.github/` orchestre toute l'**automatisation GitHub** du projet : CI
 | Workflow | Déclencheur | Rôle |
 |:--|:--|:--|
 | [`workflows/ci.yml`](workflows/ci.yml) | Push vers `main` · PR contre `main` | **Lint** ESLint · **Typecheck** TypeScript · **Build** de production Next.js |
+| [`workflows/codeql.yml`](workflows/codeql.yml) | Push / PR / hebdo *(lundi 06:00 UTC)* | 🔐 **Analyse de sécurité statique** CodeQL (JS/TS). Complète `SECURITY.md`. |
+| [`workflows/release-drafter.yml`](workflows/release-drafter.yml) | Push / PR mergée dans `main` | 📝 **Brouillon de release auto** catégorisé par labels. Aligné avec `release.yml` au moment du tag. |
 | [`workflows/release.yml`](workflows/release.yml) | Push d'un tag `v*` *(ex: `v0.4.0`)* | **Build matrix** 3 OS (Win / macOS / Linux) → installeurs via `electron-builder` → publication GitHub Release |
 
 ### Pipeline release (détaillé)

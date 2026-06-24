@@ -1,0 +1,93 @@
+# ═══════════════════════════════════════════════════════════════
+# Eldoria — Release Drafter : pré-génère le body de la prochaine release
+# ═══════════════════════════════════════════════════════════════
+# Cf. https://github.com/release-drafter/release-drafter
+# À chaque PR mergée dans main → met à jour un brouillon de release
+# avec une section par catégorie de labels.
+#
+# ─── Coordination avec `release.yml` ──────────────────────────
+# Au moment du tag `v*`, `release.yml` essaie d'abord de récupérer
+# le body de ce brouillon (via `gh release view … --json body`) ; à
+# défaut il régénère le body via `scripts/generate-release-body.mjs`.
+# C'est cette étape qui évite l'écrasement : le brouillon accumulé
+# au fil des PRs sert de source de vérité pour le body final.
+#
+# ─── Labels utilisés ──────────────────────────────────────────
+# Les catégories ci-dessous sont alignées sur les labels RÉELS
+# posés par les issue templates (.github/ISSUE_TEMPLATE/*.yml) et
+# dependabot.yml : bug, à vérifier, enhancement, à discuter,
+# question, documentation, dependencies, ci, invite-to-collaborate.
+# Le label `'*'` capture tout ce qui ne tombe dans aucune catégorie.
+
+name: Release Drafter
+
+on:
+  push:
+    branches: [main]
+  # Permet aussi un déclenchement manuel depuis l'UI Actions
+  workflow_dispatch:
+
+# Permissions : on doit pouvoir écrire sur les releases (créer/mettre
+# à jour le brouillon). On n'écrit PAS sur les PRs — release-drafter
+# ne fait que les lire pour extraire les titres/auteurs.
+permissions:
+  contents: write
+
+jobs:
+  update_release_draft:
+    name: 📝 Mise à jour du brouillon de release
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Récupération du code
+        uses: actions/checkout@v7
+
+      - name: 📝 Mise à jour du brouillon de release
+        uses: release-drafter/release-drafter@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          # Un item par PR : titre + lien (#NN) + auteur
+          change-template: '- ${{title}} (#${{number}}) @${{author}}'
+          # Body pré-généré, repris par `release.yml` au moment du tag.
+          template: |
+            ## ⚔️ Eldoria v$RESOLVED_VERSION
+
+            _Brouillon — sera finalisé au moment du tag par `release.yml`._
+
+            ### 🌟 Nouveautés
+
+            $CHANGES
+
+          # Catégories = alignement sur les labels RÉELS du projet
+          # (cf. .github/ISSUE_TEMPLATE/*.yml + dependabot.yml).
+          categories:
+            - title: '⚔️ Combat, sorts & talents'
+              labels:
+                - 'enhancement'
+                - 'à discuter'
+            - title: '🔧 Technique & CI'
+              labels:
+                - 'ci'
+                - 'dependencies'
+            - title: '🎯 Premiers PRs (invite-to-collaborate)'
+              labels:
+                - 'invite-to-collaborate'
+            - title: '📝 Documentation'
+              labels:
+                - 'documentation'
+            - title: '🐛 Corrections de bugs'
+              labels:
+                - 'bug'
+                - 'à vérifier'
+            - title: '❓ Questions & autres'
+              labels:
+                - 'question'
+                - '*'
+          # On désactive la résolution automatique de version pour
+          # garder le contrôle total : le bump majeur/mineur se fait
+          # manuellement au moment du tag. Le tag de la prochaine
+          # release sera donc défini par `release.yml` (qui pousse
+          # `vX.Y.Z` au moment voulu).
+          resolve-version: false
+          # Garde le brouillon en mode "draft" tant que le tag n'est pas poussé.
+          publish: false
