@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useGame } from "../store";
 import { ITEMS, getItemIcon } from "../data/items";
 import { ENEMIES, ENEMY_SPAWN_POINTS, NPCS, QUESTS as QUESTS_DEF } from "../data/enemies";
 import { SKILLS, unlockedSkills } from "../data/skills";
+import { getTalent } from "../data/talents";
 import { COLORS } from "../constants";
-import type { ItemCategory } from "../types";
+import type { ActiveBuff, ItemCategory } from "../types";
 import {
   Shield,
   Sword,
@@ -46,6 +47,65 @@ export function HUD() {
   const talentPoints = useGame((s) => s.player.talentPoints);
   const activeBuffs = useGame((s) => s.activeBuffs);
   const skillCooldowns = useGame((s) => s.skillCooldowns);
+
+  // v0.4.0 — derive talent-driven buffs (capstones) directly from
+  // allocatedTalents. We deliberately do NOT push them into
+  // store.activeBuffs: the v0.4.0 save migration would duplicate them on
+  // load, and tickCooldowns would otherwise prune them. Powers are sourced
+  // structurally via `getTalent(id).effects` × rank so the tray stays in
+  // sync with src/game/data/talents.ts on edits.
+  const talentBuffs: ActiveBuff[] = useMemo(() => {
+    const alloc = player.allocatedTalents ?? {};
+    const list: ActiveBuff[] = [];
+    const imm = getTalent("s_immortal");
+    const immRank = alloc.s_immortal ?? 0;
+    if (imm && immRank > 0) {
+      list.push({
+        id: "talent:s_immortal",
+        type: "regen",
+        name: imm.nameFr + (imm.maxRank && immRank > 1 ? ` ${immRank}/${imm.maxRank}` : ""),
+        icon: imm.icon,
+        expiresAt: Number.POSITIVE_INFINITY,
+        power: (imm.effects.healthRegenFlat ?? 0) * immRank,
+      });
+    }
+    const arc = getTalent("m_archmage");
+    const arcRank = alloc.m_archmage ?? 0;
+    if (arc && arcRank > 0) {
+      list.push({
+        id: "talent:m_archmage",
+        type: "mana_tide",
+        name: arc.nameFr + (arc.maxRank && arcRank > 1 ? ` ${arcRank}/${arc.maxRank}` : ""),
+        icon: arc.icon,
+        expiresAt: Number.POSITIVE_INFINITY,
+        power: (arc.effects.spellPowerPct ?? 0) * arcRank,
+      });
+    }
+    const exe = getTalent("c_executioner");
+    const exRank = alloc.c_executioner ?? 0;
+    if (exe && exRank > 0) {
+      // c_executioner's critMult is currently BINARY in store.playerAttack:
+      // `(c_executioner > 0) ? 2.5 : 2`. Display the actual on-the-wire
+      // behaviour (×2.5 at any rank > 0) — not a hypothetical per-rank
+      // scale — to avoid misleading the player.
+      list.push({
+        id: "talent:c_executioner",
+        type: "crit",
+        name: exe.nameFr + (exe.maxRank && exRank > 1 ? ` ${exRank}/${exe.maxRank}` : ""),
+        icon: exe.icon,
+        expiresAt: Number.POSITIVE_INFINITY,
+        power: 2.5,
+      });
+    }
+    return list;
+  }, [player.allocatedTalents]);
+
+  // Merge talent-driven buffs + transient activeBuffs for display. Transient
+  // entries render LAST so the eye reads permanent → fresh spell effects.
+  const renderedBuffs = useMemo(
+    () => [...talentBuffs, ...activeBuffs],
+    [talentBuffs, activeBuffs],
+  );
 
   const hpPct = (player.health / derivedMaxHealth) * 100;
   const mpPct = (player.mana / derivedMaxMana) * 100;
@@ -120,26 +180,43 @@ export function HUD() {
           {/* v0.4.0 — Active buffs (currently just the shield). Rendered only
               when at least one is present so the panel doesn't gain an
               empty row at rest. */}
-          {activeBuffs.length > 0 && (
+          {renderedBuffs.length > 0 && (
             <div className="mt-2 flex flex-wrap items-center gap-1.5 border-t border-dashed border-[var(--gold-4)] pt-1.5">
               <Eyebrow>Buffs</Eyebrow>
-              {activeBuffs.map((b) => {
-                const remaining = Math.max(0, b.expiresAt - nowSec);
+              {renderedBuffs.map((b) => {
+                // Talent-derived buffs (capstones) carry expiresAt = Infinity;
+                // transient spell buffs carry a real countdown. Display
+                // accordingly so the player sees a stable "+5/s" line for
+                // Immortel vs. a "4.2s" countdown for Bouclier Arcanique.
+                const isPermanent = !isFinite(b.expiresAt);
+                const remaining = isPermanent ? b.power : Math.max(0, b.expiresAt - nowSec);
+                const label = isPermanent
+                  ? b.type === "crit"
+                    ? `×${b.power.toFixed(1)}`
+                    : b.type === "mana_tide"
+                    ? `+${Math.round(b.power * 100)}%`
+                    : `+${b.power}/s`
+                  : `${remaining.toFixed(1)}s`;
+                const title = isPermanent
+                  ? `${b.name} — ${b.type} permanent`
+                  : `${b.name} — ${remaining.toFixed(1)} s`;
                 return (
                   <div
                     key={b.id}
                     className="flex items-center gap-1 rounded border px-1.5 py-0.5"
                     style={{
                       borderColor: "var(--gold-3)",
-                      background: "rgba(125, 211, 252, 0.12)",
-                      color: "var(--indigo)",
+                      background: isPermanent
+                        ? "rgba(163, 230, 53, 0.14)"
+                        : "rgba(125, 211, 252, 0.12)",
+                      color: isPermanent ? "#3a6b2a" : "var(--indigo)",
                       fontFamily: "var(--font-garamond)",
                       fontVariantNumeric: "tabular-nums",
                     }}
-                    title={`${b.name} — ${remaining.toFixed(1)} s`}
+                    title={title}
                   >
                     <span className="text-sm">{b.icon}</span>
-                    <span className="font-bold">{remaining.toFixed(1)}s</span>
+                    <span className="font-bold">{label}</span>
                   </div>
                 );
               })}

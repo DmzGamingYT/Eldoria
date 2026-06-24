@@ -208,7 +208,7 @@ export const NPCS: NpcDef[] = [
     position: [4, 0, 8],
     color: "#4a90e2",
     isShopkeeper: true,
-    shop: ["health_potion", "mana_potion", "leather_armor", "rusty_sword", "iron_sword"],
+    shop: ["health_potion", "greater_health_potion", "mana_potion", "leather_armor", "rusty_sword", "iron_sword"],
     dialogue: [
       "Salutations, aventurier ! J'ai des marchandises à vendre.",
       "Potions pour guérir, lames pour frapper, armures pour protéger.",
