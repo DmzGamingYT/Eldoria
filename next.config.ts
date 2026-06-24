@@ -7,10 +7,7 @@ const nextConfig: NextConfig = {
     // process that isn't available inside Electron's static file serving.
     unoptimized: true,
   },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  reactStrictMode: false,
+  reactStrictMode: true,
 };
 
 export default nextConfig;

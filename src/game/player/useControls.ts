@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useGame } from "../store";
+import { SKILLS, unlockedSkills } from "../data/skills";
 
 // Centralized keyboard + mouse input handling.
 // Writes pressed keys into a ref consumed by the Player useFrame loop,
@@ -63,9 +64,10 @@ export function useControls() {
           if (!nearest || d < nearest.dist) nearest = { id: n.id, dist: d };
         }
         if (nearest && nearest.dist < 3) {
-          const npc = s.npcs.find((n) => n.id === nearest!.id);
+          const nearId = nearest.id;
+          const npc = s.npcs.find((n) => n.id === nearId);
           if (npc?.isShopkeeper) s.openShop(npc.id);
-          else s.openDialogue(nearest.id);
+          else s.openDialogue(nearId);
         }
       }
     };
@@ -81,18 +83,27 @@ export function useControls() {
       } else if (k === "j") {
         if (s.status === "playing") s.playerAttack();
       } else if (k === "1" || k === "2" || k === "3" || k === "4") {
-        // hotbar quick use
+        // v0.4.0 — combat quickbar. First 4 unlocked skills (in `SKILLS`
+        // declaration order) bind to keys 1-4. castSkill handles the
+        // unlock-level / mana / cooldown checks internally.
+        if (s.status !== "playing") return;
         const idx = parseInt(k, 10) - 1;
-        const quick = s.inventory
-          .filter((it) => {
-            const item = s.equipment;
-            return true;
-          })
-          .slice(0, 4);
-        // Use first potion in inventory mapped to slot
+        const ordered = SKILLS.filter((sk) => sk.unlockLevel <= s.player.level).slice(0, 4);
+        const target = ordered[idx] ?? unlockedSkills(s.player.level)[idx];
+        if (target) {
+          e.preventDefault();
+          s.castSkill(target.id);
+        }
+      } else if (k === "f1" || k === "f2" || k === "f3") {
+        // v0.4.0 — potion hotkeys. F1 → health_potion, F2 → mana_potion,
+        // F3 → greater_health_potion. Mouse-click on the HUD chips still
+        // works in parallel.
+        if (s.status !== "playing") return;
         const potionOrder = ["health_potion", "mana_potion", "greater_health_potion"];
+        const idx = ["f1", "f2", "f3"].indexOf(k);
         const pid = potionOrder[idx];
         if (pid && s.inventory.find((i) => i.itemId === pid)) {
+          e.preventDefault();
           s.useItem(pid);
         }
       } else if (k === "f5") {

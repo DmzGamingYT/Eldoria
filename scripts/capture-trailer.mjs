@@ -17,7 +17,7 @@
 
 import { chromium } from "playwright";
 import { execSync } from "node:child_process";
-import { mkdirSync, existsSync, rmSync } from "node:fs";
+import { mkdirSync, rmSync } from "node:fs";
 import path from "node:path";
 
 const FRAMES_DIR = "./tmp/trailer-frames";

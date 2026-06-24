@@ -22,9 +22,8 @@ cd Eldoria
 # Installer les dépendances
 bun install
 
-# Initialiser la base de données
-bun run db:generate
-bun run db:push
+# (Pas de base de données à initialiser — la persistance passe par
+#  `Zustand persist` dans `src/game/store.ts`.)
 
 # Lancer le serveur de développement
 bun run dev

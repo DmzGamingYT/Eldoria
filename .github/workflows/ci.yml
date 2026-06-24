@@ -73,9 +73,6 @@ jobs:
       - name: 📦 Installation des dépendances
         run: bun install --frozen-lockfile
 
-      - name: 🔧 Génération Prisma
-        run: bun run db:generate
-
       - name: 🔨 Build de production
         run: bun run build
 
