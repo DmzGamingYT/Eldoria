@@ -133,6 +133,44 @@ export const ENEMIES: Record<EnemyType, EnemyDef> = {
       { itemId: "dungeon_key", chance: 1, qty: [1, 1] },
     ],
   },
+  // v0.4.0 — Frostpeak biome (NW zone)
+  ice_slime: {
+    type: "ice_slime",
+    name: "Slime Glacé",
+    health: 80,
+    attack: 12,
+    defense: 2,
+    speed: 1.3,
+    xpReward: 32,
+    goldReward: [4, 10],
+    aggroRange: 7,
+    attackRange: 1.6,
+    attackCooldown: 1.5,
+    color: "#7ec8e3",
+    scale: 0.9,
+    drops: [
+      { itemId: "slime_gel", chance: 0.85, qty: [2, 3] },
+    ],
+  },
+  frost_wolf: {
+    type: "frost_wolf",
+    name: "Loup du Frost",
+    health: 120,
+    attack: 18,
+    defense: 4,
+    speed: 3.4,
+    xpReward: 65,
+    goldReward: [10, 22],
+    aggroRange: 11,
+    attackRange: 1.7,
+    attackCooldown: 1.0,
+    color: "#c8e0f0",
+    scale: 1.1,
+    drops: [
+      { itemId: "wolf_fang", chance: 0.85, qty: [2, 3] },
+      { itemId: "leather_armor", chance: 0.08 },
+    ],
+  },
 };
 
 export const ENEMY_SPAWN_POINTS: { type: EnemyType; position: [number, number, number]; count: number; radius: number }[] = [
@@ -146,6 +184,9 @@ export const ENEMY_SPAWN_POINTS: { type: EnemyType; position: [number, number, n
   { type: "skeleton", position: [36, 0, 22], count: 3, radius: 5 },
   { type: "ogre", position: [-38, 0, -24], count: 2, radius: 4 },
   { type: "boss", position: [0, 0, -50], count: 1, radius: 0 },
+  // v0.4.0 — Frostpeak biome spawns (NW corner, x ∈ [-60,-30], z ∈ [-30,0])
+  { type: "ice_slime", position: [-45, 0, -18], count: 2, radius: 5 },
+  { type: "frost_wolf", position: [-50, 0, -10], count: 3, radius: 6 },
 ];
 
 export const NPCS: NpcDef[] = [
@@ -199,6 +240,19 @@ export const NPCS: NpcDef[] = [
     ],
     quest: "skeleton_hunt",
   },
+  // v0.4.0 — Nordic Hermit at the SE edge of the Frostpeak zone
+  {
+    id: "hermit",
+    name: "Thrain l'Ermite Nordique",
+    position: [-32, 0, -2],
+    color: "#5a8aa0",
+    dialogue: [
+      "Bienvenue aux terres gelées, voyageur.",
+      "Le Frostpeak est dangereux, mais ses trésors valent le risque.",
+      "Tuez les loups du Frost qui rôdent dans mes cols, et je vous récompenserai.",
+    ],
+    quest: "le_passage_gele",
+  },
 ];
 
 export const QUESTS: QuestDef[] = [
@@ -241,5 +295,14 @@ export const QUESTS: QuestDef[] = [
     giver: "sage",
     objective: { type: "kill", target: "boss", count: 1 },
     reward: { xp: 1000, gold: 1000, item: "dragon_slayer" },
+  },
+  // v0.4.0 — Frostpeak introductory quest (Nordic Hermit, kill frost_wolves)
+  {
+    id: "le_passage_gele",
+    title: "Le Passage Gelé",
+    description: "Thrain l'Ermite vous demande de chasser les loups du Frost qui infestent les cols enneigés du N-O.",
+    giver: "hermit",
+    objective: { type: "kill", target: "frost_wolf", count: 3 },
+    reward: { xp: 100, gold: 30, item: "frost_ward_ring" },
   },
 ];

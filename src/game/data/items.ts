@@ -262,6 +262,26 @@ export const ITEMS: Record<string, ItemDef> = {
     value: 0,
     stackable: false,
   },
+
+  // v0.4.0 — Frostpeak legendary ring (reward of "Le Passage Gelé")
+  // Reuses the existing "armor" ItemCategory ring slot to avoid cascading
+  // PlayerState.equipment + recomputeDerived + HUD layout changes for a
+  // single quest reward. Mechanical behaviour = armor-equippable ring
+  // with defense/HP/mana stats; lore remains "ring".
+  frost_ward_ring: {
+    id: "frost_ward_ring",
+    name: "Anneau de Gel",
+    description: "Anneau légendaire forgé dans la glace éternelle du Frostpeak. Protège des griffes de loup et du souffle des slimes glacés.",
+    category: "armor",
+    icon: "💍",
+    rarity: "legendary",
+    nameFr: "Anneau de Gel",
+    rarityFr: "légendaire",
+    categoryFr: "Anneau",
+    stats: { defense: 8, health: 10, mana: 20 },
+    value: 200,
+    stackable: false,
+  },
 };
 
 /* -------------------------------------------------------------------------- */

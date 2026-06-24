@@ -883,6 +883,89 @@ function AmbientMotes({ count = 220 }: { count?: number }) {
 }
 
 /* -------------------------------------------------------------------------- */
+/*  FrostpeakSnow — falling snow particles confined to the NW biome           */
+/*  (x ∈ [-60,-30], z ∈ [-30,0]). Reuses the instancedMesh + useFrame        */
+/*  pattern from AmbientMotes; instances wrap when they reach ground.        */
+/* -------------------------------------------------------------------------- */
+
+const FROSTPEAK_BBOX = { xMin: -60, xMax: -30, zMin: -30, zMax: 0 };
+
+function FrostpeakSnow({ count = 260 }: { count?: number }) {
+  const meshRef = useRef<THREE.InstancedMesh>(null);
+  const dummy = useMemo(() => new THREE.Object3D(), []);
+  const total = Math.min(count, 260);
+  const data = useMemo(() => {
+    const arr: {
+      x: number;
+      z: number;
+      yOff: number;
+      speed: number;
+      swayPhase: number;
+      swayAmp: number;
+    }[] = [];
+    for (let i = 0; i < total; i++) {
+      const x = FROSTPEAK_BBOX.xMin + Math.random() * (FROSTPEAK_BBOX.xMax - FROSTPEAK_BBOX.xMin);
+      const z = FROSTPEAK_BBOX.zMin + Math.random() * (FROSTPEAK_BBOX.zMax - FROSTPEAK_BBOX.zMin);
+      arr.push({
+        x,
+        z,
+        yOff: Math.random() * 6,
+        speed: 1.2 + Math.random() * 1.4,
+        swayPhase: Math.random() * Math.PI * 2,
+        swayAmp: 0.15 + Math.random() * 0.35,
+      });
+    }
+    return arr;
+  }, [total]);
+
+  // Pre-seed matrices so snow appears on first frame (avoids ground-only pop-in).
+  useLayoutEffect(() => {
+    if (!meshRef.current) return;
+    for (let i = 0; i < data.length; i++) {
+      const d = data[i];
+      const y = terrainHeight(d.x, d.z) + d.yOff;
+      dummy.position.set(d.x, y, d.z);
+      dummy.scale.setScalar(0.07);
+      dummy.updateMatrix();
+      meshRef.current.setMatrixAt(i, dummy.matrix);
+    }
+    meshRef.current.instanceMatrix.needsUpdate = true;
+  }, [data, dummy]);
+
+  useFrame((state) => {
+    if (!meshRef.current) return;
+    const t = state.clock.elapsedTime;
+    const mat = meshRef.current.material as THREE.MeshBasicMaterial;
+    mat.opacity = 0.75 + Math.sin(t * 0.4) * 0.08;
+    for (let i = 0; i < data.length; i++) {
+      const d = data[i];
+      const terrainY = terrainHeight(d.x, d.z);
+      // Falls at constant speed; wraps when reaching the ground.
+      const phase = (t * d.speed + d.yOff * 0.3) % 6;
+      const yPos = terrainY + 0.4 + phase;
+      const sway = Math.sin(t * 1.4 + d.swayPhase) * d.swayAmp;
+      const drift = Math.cos(t * 0.8 + d.swayPhase) * d.swayAmp * 0.6;
+      dummy.position.set(d.x + sway, yPos, d.z + drift);
+      dummy.scale.setScalar(0.07);
+      dummy.updateMatrix();
+      meshRef.current.setMatrixAt(i, dummy.matrix);
+    }
+    meshRef.current.instanceMatrix.needsUpdate = true;
+  });
+
+  return (
+    <instancedMesh
+      ref={meshRef}
+      args={[undefined, undefined, data.length]}
+      frustumCulled={false}
+    >
+      <sphereGeometry args={[1, 4, 4]} />
+      <meshBasicMaterial color="#ffffff" transparent opacity={0.8} depthWrite={false} />
+    </instancedMesh>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
 /*  Forest mist — patches of pale mist rising from the ground in wooded       */
 /*  areas, creating a morning-forest atmosphere.                              */
 /* -------------------------------------------------------------------------- */
@@ -1354,6 +1437,7 @@ export function Environment() {
       <ForestMist />
       <FallingForestLeaves />
       <AmbientMotes count={60} />
+      <FrostpeakSnow />
       <WallBorder />
     </group>
   );

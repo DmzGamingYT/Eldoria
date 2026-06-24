@@ -6,6 +6,7 @@ import { Sky as ThreeSky } from "three-stdlib";
 import { useFrame } from "@react-three/fiber";
 import { Sky as DreiSky, Cloud, Clouds } from "@react-three/drei";
 import { WORLD } from "../constants";
+import { useGame } from "../store";
 
 /* ============================================================================
  *  Day/Night cycle for Eldoria.
@@ -85,6 +86,10 @@ const _colA = new THREE.Color();
 const _colB = new THREE.Color();
 const _col = new THREE.Color();
 const _sunDir = new THREE.Vector3();
+
+// v0.4.0 — Frostpeak zone fog tint (pale frost-blue, complement of daylight
+// palette without going navy cold). Singleton Color for zero per-frame alloc.
+const _FROST_FOG_COLOR = new THREE.Color("#b8d8e8");
 
 /** The Preetham sky shader uniforms we drive from useFrame. Mirrors the
  *  static shape declared in `three-stdlib/objects/Sky.d.ts`. */
@@ -281,6 +286,29 @@ export function DynamicSky({ sunMeshRef }: { sunMeshRef: React.RefObject<THREE.M
     scene.background = state.fogColor;
     if (scene.fog instanceof THREE.FogExp2) {
       scene.fog.color.copy(state.fogColor);
+    }
+    // v0.4.0 — Frostpeak zone fog tint. When the player is in the NW snow
+    // biome (x ∈ [-60,-30], z ∈ [-30,0]), blend scene.fog.color slightly
+    // toward pale frost-blue so the atmosphere reads "winter" without
+    // overriding the day/night cycle. Position check via useGame.getState()
+    // avoids triggering Zustand cascades from inside useFrame.
+    if (scene.fog instanceof THREE.FogExp2) {
+      const px = useGame.getState().player.position[0];
+      const pz = useGame.getState().player.position[2];
+      // v0.4.0 — bidirectional zone tint. Lerp toward _FROST_FOG_COLOR
+      // inside the bbox; lerp back to state.fogColor outside so the exit
+      // is symmetric (otherwise the last frost-blended colour freezes
+      // until the day cycle drifts it back, which reads as a jarring
+      // snap on transition). Same 0.20 weight on both legs balance the
+      // bidirectional blend speed.
+      const inFrostpeak = px >= -60 && px <= -30 && pz >= -30 && pz <= 0;
+      // Snapshot the day-cycle colour once per tick so the lerp has a
+      // stable target (without the clone, the exit transition subtly
+      // *chases* the live state.fogColor as the day cycle advances,
+      // reading as "frost lazily releasing while noon overtakes it").
+      const dayColor = state.fogColor.clone();
+      scene.fog.color.lerp(inFrostpeak ? _FROST_FOG_COLOR : dayColor, 0.2);
+      scene.background = scene.fog.color;
     }
   });
 

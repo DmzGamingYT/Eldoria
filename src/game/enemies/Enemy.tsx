@@ -132,10 +132,14 @@ function lighten(hex: string, amount: number): string {
 function EnemyShape({ type, color }: { type: EnemyInstance["type"]; color: string }) {
   switch (type) {
     case "slime":
+    case "ice_slime":
+      // Frostpeak variant — same SlimeBody, ice-blue tint from def.color.
       return <SlimeBody color={color} />;
     case "goblin":
       return <GoblinBody color={color} />;
     case "wolf":
+    case "frost_wolf":
+      // Frostpeak variant — same WolfBody, pale-silver tint from def.color.
       return <WolfBody color={color} />;
     case "skeleton":
       return <SkeletonBody color={color} />;
