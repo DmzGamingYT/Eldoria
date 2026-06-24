@@ -233,9 +233,16 @@ jobs:
         #   - Évite les diffs binaires parasites à chaque release (qu'un
         #     humain oublierait probablement de commit)
         #   - Garantit que le PNG n'est jamais stale par rapport au SVG
-        #   - `bun run social-card` utilise le script Node déjà testé + la
-        #     dépendance sharp déjà installée via bun install
-        run: bun run social-card
+        #   - `bun pm trust sharp && bun scripts/generate-social-card.mjs` :
+        #     `bun pm trust sharp` autorise le postinstall de sharp (qui
+        #     télécharge le binding natif `sharp-<platform>-<arch>`).
+        #     Sans cela, sharp est dans `node_modules/` MAIS sans binding
+        #     natif et `import "sharp"` throw `ERR_MODULE_NOT_FOUND` — c'est
+        #     exactement la cause de l'échec du 1er run v0.4.0.
+        #     On invoque le script directement via `bun` (pas via
+        #     `bun run social-card` qui appellerait `node scripts/...` défini
+        #     dans package.json). Bun gère ESM + native modules nativement.
+        run: bun pm trust sharp && bun scripts/generate-social-card.mjs
 
       - name: 🔍 Aperçu du body généré (debug)
         run: |
