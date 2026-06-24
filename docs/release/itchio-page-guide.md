@@ -8,7 +8,7 @@ Contenu prêt à copier-coller pour la page officiel du jeu.
 
 - **RPG 3D fantasy** jouable dans le navigateur ou installable sur Windows, macOS, Linux.
 - Monde procédural 200×200, combat en temps réel, 5 sorts, bestiaire varié, 5 quêtes → boss **Mordrak**.
-- **🆕 v0.3.0 :** Arbre de Talents — 3 branches (Combat · Magie · Survie), 18 talents, capstones de tier 5.
+- **🆕 v0.4.0 :** Talents **multi-rang** (1-3 rangs, coût exponentiel) · **barre rapide de combat** (touches 1-4 + F1-F3 potions) · **arène dédiée de Mordrak** · nouveau biome **Frostpeak** (ice_slime, frost_wolf, quête "Le Passage Gelé") · potion de soin supérieure (Brynn).
 - Gratuit, open-source (CC0 pour les assets 3D).
 
 ---
@@ -41,10 +41,10 @@ Puis upload-les dans la section **Uploads** :
 
 | Plateforme itch.io | Fichier à uploader |
 |---|---|
-| 🪟 Windows | `Eldoria-v0.3.0-Windows-x64.exe` |
-| 🍎 macOS (Intel) | `Eldoria-v0.3.0-macOS-Intel.dmg` **+** `…-macOS-Intel.zip` |
-| 🍎 macOS (Apple Silicon) | `Eldoria-v0.3.0-macOS-AppleSilicon.dmg` **+** `…-macOS-AppleSilicon.zip` |
-| 🐧 Linux | `Eldoria-v0.3.0-Linux-x64.AppImage` **+** `…-Linux-amd64.deb` **+** `…-Linux-x64.rpm` |
+| 🪟 Windows | `Eldoria-0.4.0-win-x64.exe` |
+| 🍎 macOS (Intel) | `Eldoria-0.4.0-mac-x64.dmg` **+** `…-mac-x64.zip` |
+| 🍎 macOS (Apple Silicon) | `Eldoria-0.4.0-mac-arm64.dmg` **+** `…-mac-arm64.zip` |
+| 🐧 Linux | `Eldoria-0.4.0-linux-x64.AppImage` **+** `eldoria_0.4.0_amd64.deb` **+** `Eldoria-0.4.0-linux-x64.rpm` |
 
 > ⚠️ **IMPORTANT** : Chaque fichier doit avoir un **nom différent** et la bonne **case plateforme** cochée — itch.io affiche un menu déroulant pour choisir le format.
 >
@@ -59,7 +59,7 @@ Utilise le bouton `<>` (mode HTML) ou applique les styles manuellement en mode r
 ```markdown
 ⚔️ **Eldoria** — RPG 3D fantasy. Monde procédural 200×200, combat en temps réel, 5 sorts, 5 quêtes chaînées jusqu'au boss final **Mordrak**.
 
-🆕 **v0.3.0** : Arbre de Talents à 3 branches (Combat, Magie, Survie) avec capstones de tier 5.
+🆕 **v0.4.0** : Talents **multi-rang** (1-3, coût exponentiel), barre rapide de combat (1-4 + F1-F3), arène dédiée pour Mordrak, nouveau biome **Frostpeak** (ice_slime + frost_wolf + quête "Le Passage Gelé"), potion de soin supérieure en boutique.
 
 ---
 
@@ -75,7 +75,7 @@ Utilise le bouton `<>` (mode HTML) ou applique les styles manuellement en mode r
 - 5 ennemis + boss Mordrak, IA de patrouille/chasse/attaque
 
 **Progression**
-- **Arbre de Talents** (v0.3.0) : 18 talents, 3 branches, capstones
+- **Arbre de Talents** (v0.3.0+, multi-rang en v0.4.0) : 18 talents, 3 branches, capstones
 - 5 quêtes chaînées : slime → gobelins → loups → squelettes → Mordrak
 - Inventaire 16+ objets, 5 niveaux de rareté
 - Crafting : 7 recettes (armes, armures, potions)
@@ -100,9 +100,11 @@ Utilise le bouton `<>` (mode HTML) ou applique les styles manuellement en mode r
 | Inventaire | I |
 | Journal de quêtes | Q |
 | Fiche personnage | C |
-| Arbre de Talents | T *(nouveau v0.3.0)* |
 | Aide-mémoire | H |
-| Barre rapide (potions) | 1 / 2 / 3 |
+| Sauvegarde rapide | F5 |
+| Arbre de Talents | T *(introduit v0.3.0)* |
+| Sorts (barre rapide) | 1 / 2 / 3 / 4 *(v0.4.0)* |
+| Potions (barre rapide) | F1 / F2 / F3 *(v0.4.0)* |
 
 ---
 
@@ -117,7 +119,7 @@ Next.js 16 · React Three Fiber · Three.js · Zustand · Prisma + SQLite · Ele
 1. Téléchargez l'installeur de votre plateforme (voir "Download this file" plus bas).
 2. **Windows** — double-clic sur l'installeur, suivez les étapes.
 3. **macOS** — `.dmg` : montez-le et glissez `Eldoria.app` dans `Applications`. Ou `.zip` : décompressez et copiez.
-4. **Linux** — AppImage : `chmod +x Eldoria*.AppImage && ./Eldoria*.AppImage`. Ou `.deb` : `sudo dpkg -i eldoria_0.3.0_amd64.deb`. Ou `.rpm` : `sudo rpm -i Eldoria-0.3.0-linux-x64.rpm`.
+4. **Linux** — AppImage : `chmod +x Eldoria*.AppImage && ./Eldoria*.AppImage`. Ou `.deb` : `sudo dpkg -i eldoria_0.4.0_amd64.deb`. Ou `.rpm` : `sudo rpm -i Eldoria-0.4.0-linux-x64.rpm`.
 
 > ⚠️ Installeurs **non signés** (normal pour un indie game). Sur macOS, voir le [dépannage Gatekeeper](#gatekeeper) si le lancement est bloqué.
 
@@ -239,7 +241,7 @@ Ajoute dans ton `README.md` (sous les badges ou avant "Démarrage rapide") :
 - [ ] 8 fichiers uploadés (Win ×1, Mac ×4, Linux ×3) avec noms distincts et bonnes plateformes
 - [ ] Cover image 630×500 uploadée
 - [ ] 4 screenshots uploadés
-- [ ] Description collée (avec mention v0.3.0 talents)
+- [ ] Description collée (avec mention multi-rang talents + biome Frostpeak)
 - [ ] Contrôles incluent la touche **T** (Arbre de Talents)
 - [ ] Tags ajoutés (10 max)
 - [ ] Metadata (genre, durée, langues)

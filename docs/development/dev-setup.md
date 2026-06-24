@@ -1,6 +1,6 @@
 # 🛠️ Démarrage rapide & développement — Eldoria
 
-> Pour l'**architecture et la stack**, voir [`docs/architecture.md`](architecture.md).
+> Pour l'**architecture et la stack**, voir [`docs/development/architecture.md`](architecture.md).
 > Pour l'**utilisation du jeu en production** (installation joueur), voir le [README](../README.md#-téléchargements).
 
 ## Prérequis
@@ -81,13 +81,13 @@ xattr -cr /Applications/Eldoria.app
 # Ou clic droit → "Ouvrir" (procédure unique)
 ```
 
-Pour activer la signature + notarisation automatique, voir [`docs/apple-signing-guide.md`](apple-signing-guide.md) (5 secrets GitHub requis).
+Pour activer la signature + notarisation automatique, voir [`docs/release/apple-signing-guide.md`](../release/apple-signing-guide.md) (5 secrets GitHub requis).
 
 ## 🐧 Dépannage Linux (AppImage non exécutable)
 
 ```bash
-chmod +x Eldoria-0.3.0-linux-x64.AppImage
-./Eldoria-0.3.0-linux-x64.AppImage
+chmod +x Eldoria-0.4.0-linux-x64.AppImage
+./Eldoria-0.4.0-linux-x64.AppImage
 ```
 
 Si FUSE manque : `apt install fuse` ou décompresser via `--appimage-extract-and-run`.

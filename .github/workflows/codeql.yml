@@ -1,0 +1,74 @@
+# ═══════════════════════════════════════════════════════════════
+# Eldoria — CodeQL : analyse de sécurité statique hebdomadaire
+# ═══════════════════════════════════════════════════════════════
+# Cf. https://docs.github.com/en/code-security/code-scanning/automating-code-scanning-with-codeql-cli/about-codeql
+# Scanne le code JS/TS à chaque push/PR + un scan hebdomadaire le lundi
+# matin (aligné avec dependabot.yml). Complète la politique SECURITY.md
+# en détectant automatiquement les failles ReDoS, injection, path
+# traversal, désérialisation non sécurisée, etc.
+
+name: CodeQL
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Hebdomadaire le lundi à 06:00 UTC (≈ 08:00 Europe/Paris en été,
+    # 07:00 en hiver). Même jour que dependabot.yml.
+    - cron: '0 6 * * 1'
+  # Permet aussi un déclenchement manuel depuis l'UI Actions
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# Permissions minimales : CodeQL doit uploader les résultats SARIF
+# dans la section Security du repo.
+permissions:
+  security-events: write
+  contents: read
+
+jobs:
+  analyze:
+    name: 🔐 Analyse CodeQL (${{ matrix.language }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: javascript-typescript
+            # `none` = analyse source uniquement (pas besoin de build).
+            # Adapté à Next.js / TS standard (pas de décorateurs custom).
+            build-mode: none
+
+    steps:
+      - name: 📥 Récupération du code
+        uses: actions/checkout@v7
+
+      - name: 🔧 Initialisation de CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+          # On s'aligne sur la politique SECURITY.md : ne pas faire de
+          # build complet (gain ~3 min sur le runner).
+
+      - name: 🔍 Analyse CodeQL
+        uses: github/codeql-action/analyze@v4
+        with:
+          category: /language:${{ matrix.language }}
+          # `upload: always` publie le SARIF dans l'onglet Security
+          # du repo même si des alertes sont détectées — le mainteneur
+          # les examine avant de merger les fixes. On évite le fast-fail
+          # pour ne pas bloquer les PRs sur des warnings : le job reste
+          # vert tant que les alertes ne sont pas critiques.
+          upload: always
+          # GitHub Code Scanning (onglet Security) est la destination
+          # canonique des alertes — il n'est PAS nécessaire d'uploader
+          # le SARIF en artifact : github/codeql-action@v4 ne l'écrit
+          # pas par défaut sur le disque runner, et un glob vide
+          # génèrerait un artifact trompeur avec `if-no-files-found: ignore`.

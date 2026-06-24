@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <title>Eldoria — RPG 3D Fantasy</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Eldoria est un RPG 3D fantasy open-source. Monde procédural 200×200, combat en temps réel, 5 sorts, 5 quêtes jusqu'au boss Mordrak. Gratuit, jouable navigateur ou installable Windows / macOS / Linux.">
+<meta name="description" content="Eldoria est un RPG 3D fantasy open-source. Monde procédural 200×200, combat en temps réel, 5 sorts, 5 quêtes jusqu'au boss Mordrak, 18 talents multi-rang, biome Frostpeak. Gratuit, jouable navigateur ou installable Windows / macOS / Linux.">
 <meta name="theme-color" content="#1a0e2e">
 
 <!-- Open Graph (Discord, Facebook, Steam, LinkedIn, itch.io embeds) -->
 <meta property="og:type" content="game">
 <meta property="og:title" content="Eldoria — RPG 3D Fantasy">
-<meta property="og:description" content="Monde 3D procédural, combat temps réel, 5 sorts, arbre de talents. Gratuit & open-source.">
+<meta property="og:description" content="Monde 3D procédural, combat temps réel, 5 sorts, arbre de talents multi-rang. Gratuit &amp; open-source.">
 <meta property="og:url" content="https://dmzgamingyt.github.io/Eldoria/">
 <meta property="og:site_name" content="Eldoria">
 <meta property="og:locale" content="fr_FR">
@@ -22,31 +22,858 @@
 <!-- Twitter Card (X) -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Eldoria — RPG 3D Fantasy">
-<meta name="twitter:description" content="Monde 3D procédural, combat temps réel, 5 sorts, arbre de talents v0.3.0. Gratuit & open-source.">
+<meta name="twitter:description" content="Monde 3D procédural, combat temps réel, 5 sorts, arbre de talents multi-rang (v0.4.0). Gratuit &amp; open-source.">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/DmzGamingYT/Eldoria/main/public/banner/social-card.png">
 <meta name="twitter:image:alt" content="Eldoria hero: TL;DR + 5 sorts + Arbre d'Argent">
 
 <style>
-:root{--gold:#f6d97c;--ink:#3a2412;--bg-deep:#1a0e2e;--bg:#2a1d3e}
-body{margin:0;font-family:Georgia,'Times New Roman',serif;background:linear-gradient(180deg,var(--bg-deep) 0%,var(--bg) 100%);color:#f8e9c5;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem}
-.card{max-width:640px;text-align:center;padding:3rem 2rem;border:1px solid var(--gold);border-radius:4px;background:rgba(58,36,18,.3)}
-h1{font-size:2.5rem;color:var(--gold);margin:0 0 1rem;letter-spacing:.05em}
-p{line-height:1.6}
-.btn{display:inline-block;margin-top:1.5rem;padding:.75rem 1.5rem;border:1px solid var(--gold);border-radius:2px;color:var(--gold);text-decoration:none;transition:all .2s ease}
-.btn:hover{background:var(--gold);color:var(--ink)}
-.eyebrow{color:#a13a2a;letter-spacing:.4em;font-size:.8rem;font-weight:700;margin-bottom:.5rem}
-.muted{margin-top:2rem;font-size:.9rem;opacity:.7}
-.muted a{color:var(--gold);text-decoration:none}
-.muted a:hover{text-decoration:underline}
+:root{
+  --gold:#f6d97c;
+  --gold-strong:#ffe28a;
+  --gold-deep:#a07c3a;
+  --ink:#3a2412;
+  --bg-deep:#1a0e2e;
+  --bg:#2a1d3e;
+  --bg-soft:#3a2a4e;
+  --vermillion:#a13a2a;
+  --parchment:#f8e9c5;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Georgia,'Times New Roman',serif;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(246,217,124,.10), transparent 50%),
+    radial-gradient(circle at 80% 100%, rgba(161,58,42,.12), transparent 60%),
+    linear-gradient(180deg, var(--bg-deep) 0%, var(--bg) 60%, var(--bg-soft) 100%);
+  color:var(--parchment);
+  line-height:1.6;
+  min-height:100vh;
+}
+a{color:var(--gold);text-decoration:none;transition:all .25s ease}
+a:hover{color:var(--gold-strong)}
+
+/* ───── Hero ───── */
+.hero{
+  padding:5rem 2rem 3rem;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(ellipse at top, rgba(246,217,124,.18), transparent 60%);
+  pointer-events:none;
+  z-index:0;
+}
+.hero > *{ position:relative; z-index:1; }
+.hero-eyebrow{
+  color:var(--vermillion);
+  letter-spacing:.5em;
+  font-size:.8rem;
+  font-weight:700;
+  margin-bottom:.5rem;
+  opacity:.85;
+}
+.hero h1{
+  font-family:Cinzel,Georgia,serif;
+  font-size:clamp(2.6rem, 7vw, 4.4rem);
+  letter-spacing:.12em;
+  margin:.5rem 0;
+  background:linear-gradient(180deg, #fff4c2 0%, #f6d97c 50%, #a07c3a 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  font-weight:700;
+}
+.hero .tagline{
+  max-width:700px;
+  margin:1rem auto 1.5rem;
+  font-size:1.15rem;
+  font-style:italic;
+  color:#d8be83;
+  opacity:.95;
+}
+.hero .banner{
+  max-width:920px;
+  width:100%;
+  margin:1.5rem auto 0;
+  display:block;
+  border:1px solid rgba(246,217,124,.3);
+  border-radius:2px;
+  box-shadow:0 8px 32px rgba(0,0,0,.4);
+}
+.hero .cta-group{
+  display:flex;
+  flex-wrap:wrap;
+  gap:1rem;
+  justify-content:center;
+  margin-top:2rem;
+}
+
+/* ───── Boutons ───── */
+.btn{
+  display:inline-block;
+  padding:.85rem 1.7rem;
+  border:1px solid var(--gold);
+  border-radius:2px;
+  color:var(--gold);
+  font-family:Georgia,serif;
+  font-weight:600;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  font-size:.85rem;
+  transition:all .25s ease;
+  background:rgba(58,36,18,.4);
+}
+.btn:hover{
+  background:rgba(58,36,18,.7);
+  color:var(--gold-strong);
+  transform:translateY(-2px);
+  box-shadow:0 4px 16px rgba(246,217,124,.25);
+}
+.btn.primary{
+  background:var(--gold);
+  color:var(--ink);
+  border-color:var(--gold);
+}
+.btn.primary:hover{
+  background:var(--gold-strong);
+  color:var(--ink);
+  transform:translateY(-2px);
+  box-shadow:0 6px 20px rgba(246,217,124,.4);
+}
+
+/* ───── Stats ───── */
+.stats{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:1rem;
+  padding:2rem;
+  margin:0 auto;
+  max-width:1100px;
+}
+.stat{
+  text-align:center;
+  border-left:1px solid rgba(246,217,124,.25);
+  padding:0 1.5rem;
+  flex:1 1 auto;
+  min-width:140px;
+}
+.stat:first-child{ border-left:0; }
+.stat-value{
+  display:block;
+  font-family:Cinzel,Georgia,serif;
+  font-size:1.85rem;
+  font-weight:700;
+  color:var(--gold);
+  line-height:1;
+}
+.stat-label{
+  font-size:.7rem;
+  letter-spacing:.15em;
+  color:var(--gold-deep);
+  text-transform:uppercase;
+  margin-top:.5rem;
+}
+
+/* ───── Sections ───── */
+.section{
+  max-width:1180px;
+  margin:0 auto;
+  padding:4rem 2rem 2rem;
+}
+.section-title{
+  text-align:center;
+  font-family:Cinzel,Georgia,serif;
+  font-size:1.65rem;
+  letter-spacing:.1em;
+  color:var(--gold);
+  margin:0 0 .5rem;
+  text-transform:uppercase;
+  font-weight:700;
+}
+.section-sub{
+  text-align:center;
+  font-style:italic;
+  color:#d8be83;
+  opacity:.8;
+  margin:0 auto 3rem;
+  max-width:600px;
+}
+
+/* ───── Features grid ───── */
+.features-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+  gap:1.5rem;
+}
+.feature-card{
+  background:rgba(58,36,18,.4);
+  border:1px solid rgba(246,217,124,.3);
+  border-radius:4px;
+  padding:1.7rem 1.5rem;
+  transition:all .3s ease;
+  position:relative;
+  overflow:hidden;
+}
+.feature-card::before{
+  content:'';
+  position:absolute;
+  top:0; left:0; right:0;
+  height:3px;
+  background:linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity:0;
+  transition:opacity .3s;
+}
+.feature-card:hover{
+  transform:translateY(-4px);
+  border-color:var(--gold);
+  box-shadow:0 8px 28px rgba(0,0,0,.4);
+}
+.feature-card:hover::before{ opacity:1; }
+.feature-icon{
+  width:44px; height:44px;
+  display:block;
+  margin-bottom:1rem;
+  color:var(--gold);
+  filter:drop-shadow(0 0 4px rgba(246,217,124,.4));
+}
+.feature-title{
+  font-family:Cinzel,Georgia,serif;
+  font-size:1.05rem;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin:0 0 .6rem;
+  font-weight:700;
+}
+.feature-desc{
+  color:var(--parchment);
+  font-size:.95rem;
+  opacity:.92;
+  margin:0;
+}
+.feature-desc strong{
+  color:var(--gold-strong);
+  font-weight:600;
+}
+
+/* ───── Screenshots ───── */
+.screenshots-section{
+  background:radial-gradient(ellipse at center, rgba(246,217,124,.06), transparent 70%);
+  margin-top:2rem;
+}
+.screenshots-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+  gap:1rem;
+}
+.screenshots-grid a{ display:block; }
+.screenshots-grid img{
+  width:100%;
+  height:200px;
+  object-fit:cover;
+  border:1px solid rgba(246,217,124,.35);
+  border-radius:2px;
+  transition:all .3s ease;
+  display:block;
+}
+.screenshots-grid img:hover{
+  border-color:var(--gold);
+  transform:scale(1.02);
+  box-shadow:0 6px 24px rgba(0,0,0,.5);
+}
+
+/* ───── Démo animée ───── */
+.demo-frame{
+  display:block;
+  max-width:560px;
+  width:100%;
+  margin:0 auto;
+  border:1px solid rgba(246,217,124,.45);
+  border-radius:3px;
+  box-shadow:0 0 0 1px rgba(0,0,0,.4), 0 12px 40px rgba(0,0,0,.55);
+  background:#0d071c;
+  transition:all .35s ease;
+}
+.demo-frame:hover{
+  border-color:var(--gold);
+  transform:scale(1.015);
+  box-shadow:0 0 0 1px rgba(246,217,124,.4), 0 16px 50px rgba(0,0,0,.65);
+}
+.demo-strip{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
+  gap:.75rem;
+  margin-top:1.5rem;
+}
+.demo-strip a{ display:block; }
+.demo-strip img{
+  width:100%;
+  height:110px;
+  object-fit:cover;
+  border:1px solid rgba(246,217,124,.25);
+  border-radius:2px;
+  opacity:.85;
+  transition:all .3s ease;
+}
+.demo-strip img:hover{
+  opacity:1;
+  border-color:var(--gold);
+  transform:translateY(-2px);
+}
+.demo-tagline{
+  text-align:center;
+  font-size:.78rem;
+  font-style:italic;
+  color:var(--gold-deep);
+  opacity:.75;
+  margin-top:.75rem;
+  letter-spacing:.02em;
+}
+
+/* ───── CTA Section ───── */
+.cta-section{
+  text-align:center;
+  padding:5rem 2rem 6rem;
+  background:
+    radial-gradient(ellipse at center, rgba(246,217,124,.12), transparent 60%);
+  position:relative;
+}
+.cta-section h2{
+  font-family:Cinzel,Georgia,serif;
+  color:var(--gold);
+  font-size:1.85rem;
+  letter-spacing:.08em;
+  margin:0 0 1rem;
+  font-weight:700;
+}
+.cta-section p{
+  color:#d8be83;
+  max-width:640px;
+  margin:0 auto 2rem;
+  font-style:italic;
+  opacity:.92;
+}
+
+/* ───── Footer ───── */
+footer{
+  text-align:center;
+  padding:2.5rem 2rem 2rem;
+  border-top:1px solid rgba(246,217,124,.2);
+  font-size:.85rem;
+  color:var(--gold-deep);
+  opacity:.85;
+}
+footer a{ color:var(--gold); }
+footer a:hover{ color:var(--gold-strong); text-decoration:underline; }
+footer .footer-credits{
+  margin-bottom:.5rem;
+  line-height:1.8;
+}
+
+/* ───── Responsive ───── */
+@media (max-width:640px){
+  .hero{ padding:3rem 1.5rem 2rem; }
+  .stats{ gap:.5rem; padding:1.5rem 1rem; }
+  .stat{ padding:0 .8rem; min-width:120px; }
+  .feature-card{ padding:1.3rem 1.1rem; }
+  .section-title{ font-size:1.35rem; }
+  .cta-section h2{ font-size:1.4rem; }
+  footer{ font-size:.78rem; }
+  .changelog-grid{ grid-template-columns:1fr; }
+  .controls-table th,.controls-table td{ padding:.6rem .8rem; font-size:.82rem; }
+  .stack-grid{ grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); }
+}
+
+/* ───── Changelog ───── */
+.changelog-section{
+  background:
+    radial-gradient(ellipse at 30% 50%, rgba(161,58,42,.08), transparent 60%),
+    radial-gradient(ellipse at 70% 50%, rgba(246,217,124,.06), transparent 50%);
+}
+.changelog-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));
+  gap:1.5rem;
+  margin-top:.5rem;
+}
+.changelog-card{
+  background:rgba(58,36,18,.5);
+  border:1px solid rgba(246,217,124,.25);
+  border-radius:4px;
+  padding:1.5rem 1.4rem;
+  transition:all .3s ease;
+  position:relative;
+  overflow:hidden;
+}
+.changelog-card::after{
+  content:'';
+  position:absolute;
+  bottom:0; left:0; right:0;
+  height:2px;
+  background:linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity:0;
+  transition:opacity .3s;
+}
+.changelog-card:hover{
+  border-color:var(--gold);
+  transform:translateY(-3px);
+  box-shadow:0 6px 24px rgba(0,0,0,.35);
+}
+.changelog-card:hover::after{ opacity:1; }
+.changelog-icon{
+  font-size:1.6rem;
+  margin-bottom:.6rem;
+  display:block;
+}
+.changelog-card h4{
+  font-family:Cinzel,Georgia,serif;
+  font-size:.95rem;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin:0 0 .5rem;
+  font-weight:700;
+}
+.changelog-card p{
+  color:var(--parchment);
+  font-size:.9rem;
+  opacity:.9;
+  margin:0;
+  line-height:1.55;
+}
+.changelog-card p strong{
+  color:var(--gold-strong);
+  font-weight:600;
+}
+
+/* ───── Controls table ───── */
+.controls-section{
+  background:radial-gradient(ellipse at center, rgba(246,217,124,.05), transparent 60%);
+}
+.controls-table{
+  width:100%;
+  max-width:680px;
+  margin:0 auto;
+  border-collapse:separate;
+  border-spacing:0;
+  border:1px solid rgba(246,217,124,.25);
+  border-radius:4px;
+  overflow:hidden;
+}
+.controls-table thead th{
+  background:rgba(58,36,18,.6);
+  color:var(--gold);
+  font-family:Cinzel,Georgia,serif;
+  font-size:.8rem;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  padding:.85rem 1.2rem;
+  text-align:left;
+  border-bottom:1px solid rgba(246,217,124,.3);
+}
+.controls-table tbody tr{
+  transition:background .2s;
+}
+.controls-table tbody tr:hover{
+  background:rgba(246,217,124,.06);
+}
+.controls-table td{
+  padding:.7rem 1.2rem;
+  font-size:.9rem;
+  color:var(--parchment);
+  border-bottom:1px solid rgba(246,217,124,.1);
+}
+.controls-table tbody tr:last-child td{
+  border-bottom:none;
+}
+.controls-table .key{
+  display:inline-block;
+  background:rgba(58,36,18,.7);
+  border:1px solid rgba(246,217,124,.4);
+  border-radius:3px;
+  padding:.15rem .5rem;
+  font-family:monospace;
+  font-size:.82rem;
+  color:var(--gold);
+  min-width:1.6rem;
+  text-align:center;
+  box-shadow:0 1px 2px rgba(0,0,0,.3);
+}
+.controls-table .new-tag{
+  display:inline-block;
+  background:var(--vermillion);
+  color:var(--parchment);
+  font-size:.6rem;
+  font-weight:700;
+  letter-spacing:.05em;
+  padding:.1rem .35rem;
+  border-radius:2px;
+  margin-left:.4rem;
+  vertical-align:middle;
+  text-transform:uppercase;
+}
+
+/* ───── Stack detail ───── */
+.stack-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+  gap:1.2rem;
+}
+.stack-item{
+  display:flex;
+  align-items:flex-start;
+  gap:1rem;
+  background:rgba(58,36,18,.35);
+  border:1px solid rgba(246,217,124,.15);
+  border-radius:4px;
+  padding:1.2rem 1.3rem;
+  transition:all .3s ease;
+}
+.stack-item:hover{
+  border-color:rgba(246,217,124,.35);
+  background:rgba(58,36,18,.5);
+}
+.stack-label{
+  font-family:Cinzel,Georgia,serif;
+  font-size:.72rem;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--gold-deep);
+  white-space:nowrap;
+  min-width:90px;
+  padding-top:.15rem;
+}
+.stack-value{
+  color:var(--parchment);
+  font-size:.9rem;
+  line-height:1.5;
+  opacity:.92;
+}
+.stack-value strong{
+  color:var(--gold-strong);
+  font-weight:600;
+}
+
+/* ───── Documentation links ───── */
+.docs-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
+  gap:1rem;
+}
+.docs-link{
+  display:flex;
+  align-items:center;
+  gap:.8rem;
+  background:rgba(58,36,18,.35);
+  border:1px solid rgba(246,217,124,.15);
+  border-radius:4px;
+  padding:1rem 1.2rem;
+  transition:all .25s ease;
+  text-decoration:none;
+  color:var(--parchment);
+}
+.docs-link:hover{
+  border-color:var(--gold);
+  background:rgba(58,36,18,.55);
+  transform:translateY(-2px);
+  box-shadow:0 4px 16px rgba(0,0,0,.3);
+}
+.docs-link-emoji{
+  font-size:1.3rem;
+  flex-shrink:0;
+}
+.docs-link-text{
+  display:flex;
+  flex-direction:column;
+}
+.docs-link-title{
+  font-family:Cinzel,Georgia,serif;
+  font-size:.85rem;
+  letter-spacing:.04em;
+  color:var(--gold);
+  font-weight:700;
+}
+.docs-link-desc{
+  font-size:.8rem;
+  color:var(--gold-deep);
+  opacity:.85;
+  margin-top:.15rem;
+}
+
+/* ───── Contributing ───── */
+.contrib-section{
+  text-align:center;
+}
+.contrib-body{
+  max-width:640px;
+  margin:0 auto;
+}
+.contrib-text{
+  color:var(--parchment);
+  opacity:.9;
+  font-size:.95rem;
+  line-height:1.7;
+  margin:0 0 .5rem;
+}
+.contrib-text code{
+  background:rgba(58,36,18,.6);
+  padding:.15rem .4rem;
+  border-radius:2px;
+  color:var(--gold);
+}
+.contrib-text strong{
+  color:var(--gold-strong);
+}
+.contrib-cta{
+  margin-top:1.5rem;
+}
+
 </style>
 </head>
 <body>
-<main class="card">
-  <p class="eyebrow">◆ LE SCEAU D'ELDORIA ◆</p>
+
+<header class="hero">
+  <p class="hero-eyebrow">◆ LE SCEAU D'ELDORIA ◆</p>
   <h1>Eldoria</h1>
-  <p>RPG 3D fantasy open-source. Monde procédural 200×200, combat en temps réel, 5 sorts, 5 quêtes jusqu'au boss <em>Mordrak</em>. Arbre de talents v0.3.0.</p>
-  <a class="btn" href="https://github.com/DmzGamingYT/Eldoria/releases/latest">⬇ Télécharger v0.3.0</a>
-  <p class="muted">Page d'accueil déployée via GitHub Pages — version complète sur le <a href="https://github.com/DmzGamingYT/Eldoria">dépôt GitHub</a>.</p>
-</main>
+  <p class="tagline">Un RPG 3D fantasy open-source<br>Monde procédural · Combat en temps réel · Arbre de talents multi-rang</p>
+  <img class="banner" src="public/banner/eldoria-banner.svg" alt="Bannière Eldoria — Chroniques de la Forêt d'Argent" />
+  <div class="cta-group">
+    <a class="btn primary" href="https://github.com/DmzGamingYT/Eldoria/releases/latest">⬇ Télécharger v0.4.0</a>
+    <a class="btn" href="https://dmzgamingyt.itch.io/eldoria">🎮 Jouer sur itch.io</a>
+    <a class="btn" href="https://github.com/DmzGamingYT/Eldoria/wiki">📖 Wiki</a>
+  </div>
+</header>
+
+<section class="stats" aria-label="Chiffres clés d'Eldoria">
+  <div class="stat"><span class="stat-value">200×200</span><span class="stat-label">Monde procédural</span></div>
+  <div class="stat"><span class="stat-value">5 sorts</span><span class="stat-label">+ barre rapide</span></div>
+  <div class="stat"><span class="stat-value">18 talents</span><span class="stat-label">3 branches · multi-rang</span></div>
+  <div class="stat"><span class="stat-value">5 quêtes</span><span class="stat-label">→ boss Mordrak</span></div>
+  <div class="stat"><span class="stat-value">3 OS</span><span class="stat-label">Win · macOS · Linux</span></div>
+</section>
+
+<section class="section">
+  <h2 class="section-title">Un royaume, six piliers</h2>
+  <p class="section-sub">Tout ce qu'Eldoria a sous le capot — un seul monde tissé de main de maître.</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/>
+      </svg>
+      <h3 class="feature-title">Monde vivant</h3>
+      <p class="feature-desc">Monde procédural 200×200, cycle jour/nuit 180 s, brouillard et bloom. Sept biomes, dont la nouvelle zone hivernale <strong>Frostpeak</strong> au nord-ouest.</p>
+    </div>
+    <div class="feature-card">
+      <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M14.5 6.5l3 3M9 12l-3 3-3-3M21 8l-3-3-3 3M18 12l3 3-3 3"/>
+        <circle cx="12" cy="12" r="2.5"/>
+      </svg>
+      <h3 class="feature-title">Combat tactique</h3>
+      <p class="feature-desc">Arc d'attaque, combo, invincibilité temporaire. 5 sorts débloquables (Boule de Feu, Soin, Éclair, Bouclier, Nova) sur <strong>barre rapide</strong> (1-4 + F1-F3).</p>
+    </div>
+    <div class="feature-card">
+      <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 2v20M2 12h20M5 5l14 14M19 5L5 19"/>
+        <circle cx="12" cy="12" r="3" fill="currentColor" opacity=".3"/>
+      </svg>
+      <h3 class="feature-title">Talents multi-rang</h3>
+      <p class="feature-desc">Arbre à 3 branches (Combat · Magie · Survie). Chaque talent monte jusqu'à <strong>3 rangs</strong> (coût exponentiel). Capstones persistants sur le HUD.</p>
+    </div>
+    <div class="feature-card">
+      <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="4" y="7" width="16" height="14" rx="1"/>
+        <path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/>
+        <path d="M4 13h16"/>
+      </svg>
+      <h3 class="feature-title">Quêtes &amp; Lore</h3>
+      <p class="feature-desc">Cinq quêtes chaînées du tutoriel au <strong>boss final Mordrak</strong>. PNJ mentors (Brynn, Aldric, Lyra, Kael) avec dialogues ramifiés. Nouvelle quête « Le Passage Gelé ».</p>
+    </div>
+    <div class="feature-card">
+      <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M6 7h12l-1 13H7L6 7z"/>
+        <path d="M9 7V4a3 3 0 016 0v3"/>
+        <circle cx="12" cy="13" r="1.5" fill="currentColor"/>
+      </svg>
+      <h3 class="feature-title">Inventaire &amp; Craft</h3>
+      <p class="feature-desc">16+ objets, 5 niveaux de rareté. 7 recettes de crafting (armes, armures, potions). Boutique à 50 % revente — <strong>Potion de Soin Supérieure</strong> chez Brynn.</p>
+    </div>
+    <div class="feature-card">
+      <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="2" y="4" width="20" height="13" rx="1"/>
+        <path d="M2 8h20M9 4v13M15 4v13"/>
+        <text x="12" y="14" text-anchor="middle" font-family="Cinzel,Georgia,serif" font-size="5" font-weight="700" fill="currentColor">3D</text>
+      </svg>
+      <h3 class="feature-title">Stack moderne</h3>
+      <p class="feature-desc">React Three Fiber 9 + Three.js 0.184, Zustand 5, Prisma + SQLite. Distribué en app desktop native (<strong>Electron 42</strong>) sur Win / macOS / Linux — sans dépendance externe.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section changelog-section">
+  <h2 class="section-title">🆕 Nouveautés v0.4.0</h2>
+  <p class="section-sub">Sprint Talents · Combat · Biome Frostpeak — la plus grosse mise à jour à ce jour.</p>
+  <div class="changelog-grid">
+    <div class="changelog-card">
+      <span class="changelog-icon">🌲</span>
+      <h4>Biome Frostpeak</h4>
+      <p>Nouvelle zone hivernale au nord-ouest avec <strong>ice_slime</strong>, <strong>frost_wolf</strong>, quête « Le Passage Gelé », neige procédurale et tint bleu-glacial.</p>
+    </div>
+    <div class="changelog-card">
+      <span class="changelog-icon">📈</span>
+      <h4>Talents multi-rang</h4>
+      <p>Chaque talent monte jusqu'à <strong>3 rangs</strong> (coût exponentiel). Capstones Bourreau · Archimage · Immortel visibles comme buffs persistants sur le HUD.</p>
+    </div>
+    <div class="changelog-card">
+      <span class="changelog-icon">⚔️</span>
+      <h4>Barre rapide de combat</h4>
+      <p>Touches <strong>1‑4</strong> pour les sorts débloqués, <strong>F1‑F3</strong> pour les potions. Cooldown circulaire sous le HUD.</p>
+    </div>
+    <div class="changelog-card">
+      <span class="changelog-icon">🏛️</span>
+      <h4>Arène de Mordrak</h4>
+      <p>Zone dédiée pour le boss final : anneau doré, 16 haies, obélisque pulsant. Le boss ne peut plus fuir dans la forêt.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section screenshots-section">
+  <h2 class="section-title">Aperçu en action</h2>
+  <p class="section-sub">Démo 6,8 s sur 4 scènes clés — zoom progressif, fondus enchaînés. Direction artistique parchemin, palette or &amp; pourpre.</p>
+  <picture>
+    <source srcset="public/illustrations/demo.webm" type="video/webm">
+    <img class="demo-frame" src="public/illustrations/demo.gif" alt="Démo animée Eldoria : menu cinématique → intro → monde 3D → combat HUD (6,8 secondes, longueur infinie)" width="640" loading="lazy"/>
+  </picture>
+  <p class="demo-tagline">GIF (480×270, ~2,5 Mo) · WebM (qualité supérieure, ~700 Ko)</p>
+  <div class="demo-strip" aria-label="Captures statiques équivalentes">
+    <a href="https://github.com/DmzGamingYT/Eldoria/blob/main/public/screenshots/01-main-menu.png"><img src="public/screenshots/01-main-menu.png" alt="Menu principal" loading="lazy"/></a>
+    <a href="https://github.com/DmzGamingYT/Eldoria/blob/main/public/screenshots/03-game-world.png"><img src="public/screenshots/03-game-world.png" alt="Monde 3D" loading="lazy"/></a>
+    <a href="https://github.com/DmzGamingYT/Eldoria/blob/main/public/screenshots/04-gameplay-hud.png"><img src="public/screenshots/04-gameplay-hud.png" alt="HUD combat" loading="lazy"/></a>
+    <a href="https://github.com/DmzGamingYT/Eldoria/blob/main/public/screenshots/02-intro-sequence.png"><img src="public/screenshots/02-intro-sequence.png" alt="Cinématique d'intro" loading="lazy"/></a>
+  </div>
+  <p class="demo-tagline">Plus de captures (inventaire, boutique, quêtes, fiche héros, talents) sur le <a href="https://github.com/DmzGamingYT/Eldoria/tree/main/public/screenshots">dépôt GitHub</a>.</p>
+</section>
+
+<section class="section controls-section">
+  <h2 class="section-title">🎮 Commandes</h2>
+  <p class="section-sub">Aide-mémoire des touches — appuyez sur <strong>H</strong> en jeu pour l'afficher.</p>
+  <table class="controls-table">
+    <thead><tr><th>Action</th><th>Touche</th></tr></thead>
+    <tbody>
+      <tr><td>Déplacement</td><td><span class="key">Z</span> <span class="key">Q</span> <span class="key">S</span> <span class="key">D</span> / <span class="key">W</span> <span class="key">A</span> <span class="key">S</span> <span class="key">D</span></td></tr>
+      <tr><td>Courir</td><td><span class="key">Maj</span></td></tr>
+      <tr><td>Attaque</td><td><span class="key">Espace</span> / <span class="key">J</span></td></tr>
+      <tr><td>Caméra</td><td><span class="key">[</span> / <span class="key">]</span></td></tr>
+      <tr><td>Dialogue PNJ</td><td><span class="key">E</span></td></tr>
+      <tr><td>Inventaire</td><td><span class="key">I</span></td></tr>
+      <tr><td>Journal de quêtes</td><td><span class="key">Q</span></td></tr>
+      <tr><td>Fiche personnage</td><td><span class="key">C</span></td></tr>
+      <tr><td>Arbre de Talents</td><td><span class="key">T</span> <span class="new-tag">v0.3.0</span></td></tr>
+      <tr><td>Sorts (barre rapide)</td><td><span class="key">1</span> <span class="key">2</span> <span class="key">3</span> <span class="key">4</span> <span class="new-tag">v0.4.0</span></td></tr>
+      <tr><td>Potions (barre rapide)</td><td><span class="key">F1</span> <span class="key">F2</span> <span class="key">F3</span> <span class="new-tag">v0.4.0</span></td></tr>
+      <tr><td>Sauvegarde rapide</td><td><span class="key">F5</span></td></tr>
+      <tr><td>Aide-mémoire</td><td><span class="key">H</span></td></tr>
+      <tr><td>Pause</td><td><span class="key">Échap</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="section">
+  <h2 class="section-title">🔧 Stack technique</h2>
+  <p class="section-sub">Monolithe unifié — 7 couches, un seul dépôt, zéro dépendance distante.</p>
+  <div class="stack-grid">
+    <div class="stack-item"><span class="stack-label">Rendu 3D</span><span class="stack-value"><strong>React Three Fiber 9</strong> · Three.js 0.184 · @react-three/drei · @react-three/postprocessing</span></div>
+    <div class="stack-item"><span class="stack-label">Shell Web</span><span class="stack-value"><strong>Next.js 16</strong> (App Router) · React 19</span></div>
+    <div class="stack-item"><span class="stack-label">Style</span><span class="stack-value"><strong>Tailwind CSS 4</strong> · Cinzel + EB Garamond</span></div>
+    <div class="stack-item"><span class="stack-label">État</span><span class="stack-value"><strong>Zustand 5</strong> · TypeScript 5 strict</span></div>
+    <div class="stack-item"><span class="stack-label">Persistance</span><span class="stack-value"><strong>localStorage</strong> (web) · Prisma 6 + SQLite (desktop)</span></div>
+    <div class="stack-item"><span class="stack-label">Distribution</span><span class="stack-value"><strong>Electron 42</strong> · electron-builder 26 (NSIS + DMG + AppImage/deb/rpm)</span></div>
+    <div class="stack-item"><span class="stack-label">CI / CD</span><span class="stack-value"><strong>GitHub Actions</strong> · Bun runtime</span></div>
+  </div>
+</section>
+
+<section class="section">
+  <h2 class="section-title">📚 Documentation &amp; Ressources</h2>
+  <p class="section-sub">Tout ce qu'il faut pour jouer, contribuer ou publier une release.</p>
+  <div class="docs-grid">
+    <a class="docs-link" href="https://github.com/DmzGamingYT/Eldoria/wiki">
+      <span class="docs-link-emoji">📖</span>
+      <span class="docs-link-text"><span class="docs-link-title">Wiki complet</span><span class="docs-link-desc">Manuel du jeu — lore, bestiaire, talents, quêtes, PNJ</span></span>
+    </a>
+    <a class="docs-link" href="docs/development/dev-setup.md">
+      <span class="docs-link-emoji">🛠️</span>
+      <span class="docs-link-text"><span class="docs-link-title">Démarrage dev local</span><span class="docs-link-desc">Installer &amp; builder — Bun + Prisma + 3 OS</span></span>
+    </a>
+    <a class="docs-link" href="docs/development/architecture.md">
+      <span class="docs-link-emoji">🏗️</span>
+      <span class="docs-link-text"><span class="docs-link-title">Architecture &amp; stack</span><span class="docs-link-desc">Les 7 couches du moteur en détail</span></span>
+    </a>
+    <a class="docs-link" href="docs/release/itchio-page-guide.md">
+      <span class="docs-link-emoji">🎮</span>
+      <span class="docs-link-text"><span class="docs-link-title">Publication itch.io</span><span class="docs-link-desc">Cover, screenshots, tags, thème — checklist complète</span></span>
+    </a>
+    <a class="docs-link" href="docs/release/apple-signing-guide.md">
+      <span class="docs-link-emoji">🍎</span>
+      <span class="docs-link-text"><span class="docs-link-title">Signature Apple</span><span class="docs-link-desc">Developer ID + notarisation automatique (5 secrets)</span></span>
+    </a>
+    <a class="docs-link" href="https://github.com/DmzGamingYT/Eldoria/releases/latest">
+      <span class="docs-link-emoji">⬇️</span>
+      <span class="docs-link-text"><span class="docs-link-title">Téléchargements</span><span class="docs-link-desc">8 installeurs — Windows · macOS · Linux</span></span>
+    </a>
+  </div>
+</section>
+
+<section class="section contrib-section">
+  <h2 class="section-title">🤝 Contribuer</h2>
+  <p class="section-sub">Les contributions sont les bienvenues — c'est open-source !</p>
+  <div class="contrib-body">
+    <p class="contrib-text">PR ouvertes contre <code>main</code> avec checks verts (Lint + Typecheck + Build). Recherchez les issues labellisées <strong>invite-to-collaborate</strong> 🎯 — ce sont les bons premiers PRs pour nouveaux contributeurs.</p>
+    <div class="cta-group contrib-cta">
+      <a class="btn" href="CONTRIBUTING.md">📋 Guide de contribution</a>
+      <a class="btn" href="https://github.com/DmzGamingYT/Eldoria/issues?q=is%3Aissue+label%3Ainvite-to-collaborate">🎯 Issues ouvertes</a>
+      <a class="btn" href="SECURITY.md">🔒 Politique de sécurité</a>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <h2>Prêt à purifier le sanctuaire ?</h2>
+  <p>Téléchargement libre et gratuit · Open-source (CC0 pour les assets 3D) · Aucun compte requis · 8 installeurs pour Windows, macOS et Linux.</p>
+  <div class="cta-group">
+    <a class="btn primary" href="https://github.com/DmzGamingYT/Eldoria/releases/latest">⬇ Télécharger v0.4.0</a>
+    <a class="btn" href="https://dmzgamingyt.itch.io/eldoria">🎮 Jouer sur itch.io</a>
+    <a class="btn" href="https://github.com/DmzGamingYT/Eldoria/wiki">📖 Lire le Wiki</a>
+    <a class="btn" href="https://github.com/DmzGamingYT/Eldoria">⭐ Star sur GitHub</a>
+  </div>
+</section>
+
+<footer>
+  <p class="footer-credits">
+    <strong style="color:var(--gold)">Eldoria — Chroniques de la Forêt d'Argent</strong><br>
+    RPG 3D fantasy open-source · v0.4.0 · © 2026
+  </p>
+  <p class="footer-credits">
+    Développement &amp; direction artistique : <a href="https://github.com/DmzGamingYT">DmzGamingYT</a> ·
+    Modèles 3D : <a href="https://quaternius.com">Quaternius (CC0 1.0)</a> ·
+    Typographies : <a href="https://fonts.google.com/specimen/Cinzel">Cinzel</a> + <a href="https://fonts.google.com/specimen/EB+Garamond">EB Garamond</a>
+  </p>
+  <p class="footer-credits">
+    <a href="https://github.com/DmzGamingYT/Eldoria">Code source</a> ·
+    <a href="https://github.com/DmzGamingYT/Eldoria/wiki">Wiki</a> ·
+    <a href="CONTRIBUTING.md">Contribuer</a> ·
+    <a href="SECURITY.md">Sécurité</a> ·
+    <a href="https://dmzgamingyt.itch.io/eldoria">itch.io</a> ·
+    <a href="https://github.com/sponsors/DmzGamingYT">Sponsor</a>
+  </p>
+  <p style="opacity:.5;margin-top:1rem"><sub>Propulsé par React Three Fiber, Zustand, et une solide boucle <code>useFrame()</code>.</sub></p>
+</footer>
+
 </body>
 </html>

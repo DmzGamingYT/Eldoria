@@ -23,7 +23,7 @@
 //   éliminer tout risque d'erreur syntaxique.
 //
 // Usage :
-//   TAG=v0.3.0 REPO=DmzGamingYT/Eldoria node scripts/generate-release-body.mjs
+//   TAG=v0.4.0 REPO=DmzGamingYT/Eldoria node scripts/generate-release-body.mjs
 //   (lit VERSION depuis package.json si TAG absent)
 //   (lit HIGHLIGHTS depuis CHANGELOG.md [#X.Y.Z] si HIGHLIGHTS env absent)
 //
@@ -79,7 +79,7 @@ if (!TAG) {
   }
 }
 
-const VERSION = TAG.replace(/^v/, ""); // ex: v0.3.0 → 0.3.0
+const VERSION = TAG.replace(/^v/, ""); // ex: v0.4.0 → 0.4.0
 
 // ─── Lecture CHANGELOG (fallback highlights) ───────────────────
 // Précédence documentée : HIGHLIGHTS env > extraction CHANGELOG > générique.
@@ -146,7 +146,7 @@ ${newsBlock}
 * 🍎 **macOS** — Gatekeeper refusera. Solution : ${BT}xattr -cr /Applications/Eldoria.app${BT} (Terminal) ou *clic droit → Ouvrir*. Procédure unique.
 * 🐧 **Linux** — aucune incidence, l'AppImage / ${BT}.deb${BT} / ${BT}.rpm${BT} s'installe ou s'exécute directement.
 
-La signature automatique (Authenticode EV + Apple Developer ID + notarisation) est implémentée — à activer via secrets GitHub (${BT}CSC_LINK${BT}, ${BT}APPLE_ID${BT}, etc.). Voir [docs/apple-signing-guide.md](https://github.com/${REPO}/blob/main/docs/apple-signing-guide.md).
+La signature automatique (Authenticode EV + Apple Developer ID + notarisation) est implémentée — à activer via secrets GitHub (${BT}CSC_LINK${BT}, ${BT}APPLE_ID${BT}, etc.). Voir [docs/release/apple-signing-guide.md](https://github.com/${REPO}/blob/main/docs/release/apple-signing-guide.md).
 
 ---
 

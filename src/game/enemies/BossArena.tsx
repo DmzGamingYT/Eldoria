@@ -113,7 +113,10 @@ export function BossArena() {
     const bossAlive = !!boss;
     const inCombat =
       bossAlive &&
-      Math.hypot(boss!.position[0] - px, boss!.position[2] - pz) <
+      Math.hypot(
+        (boss as NonNullable<typeof boss>).position[0] - px,
+        (boss as NonNullable<typeof boss>).position[2] - pz,
+      ) <
         ENGAGEMENT_RADIUS;
 
     if (inCombat && distP > SOFT_BOUNDARY) {

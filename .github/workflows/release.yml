@@ -206,22 +206,34 @@ jobs:
           echo "=== Total installeurs ==="
           find artifacts -type f | wc -l
 
-      - name: 📝 Génération du corps de la release (body Markdown)
-        # On génère release-body.md via un script Node dédié au lieu d'un
-        # heredoc inline dans le workflow :
-        #   1. Le langage d'expressions GitHub Actions n'a PAS de filtre
-        #      `replace` (Jinja2/Liquid). Un `${{ ... | replace }}` dans le body
-        #      fait REFUSER la compilation du workflow entier ("workflow file
-        #      issue", 0s). On calcule donc la version sans 'v' en JS.
-        #   2. Un heredoc indenté dans `run: |` YAML est cassé (délimiteur de
-        #      fin doit être en colonne 0 + le contenu garde l'indentation).
-        # Le script lit TAG/REPO depuis env (fournis ci-dessous), lit aussi la
-        # version dans package.json en fallback, et écrit release-body.md que
-        # l'étape suivante consomme via `body_path`.
+      - name: 📝 Récupération du body (brouillon release-drafter ou généré)
+        # Ordre de priorité pour le body :
+        #   1. Si une release *draft* existe déjà pour ce tag (créée par
+        #      .github/workflows/release-drafter.yml au fil des PRs mergées),
+        #      on reprend son body tel quel. Évite d'écraser le changelog
+        #      catégorisé accumulé par release-drafter.
+        #   2. Sinon (premier tag d'une nouvelle ligne de release), on
+        #      génère le body via le script dédié :
+        #      - Langage d'expressions GitHub Actions n'a PAS de filtre
+        #        `replace` (Jinja2/Liquid). Un `${{ ... | replace }}` dans le
+        #        body fait REFUSER la compilation du workflow entier.
+        #      - Un heredoc indenté dans `run: |` YAML est cassé (délimiteur
+        #        de fin doit être en colonne 0 + le contenu garde l'indentation).
+        #      Le script lit TAG/REPO depuis env, lit package.json en fallback,
+        #      écrit release-body.md que l'étape suivante consomme via `body_path`.
         env:
           TAG: ${{ github.ref_name }}
           REPO: ${{ github.repository }}
-        run: bun scripts/generate-release-body.mjs
+        run: |
+          set -euo pipefail
+          echo "→ Tentative de récupération d'un brouillon pré-existant pour $TAG…"
+          if DRAFT_BODY=$(gh release view "$TAG" --repo "$REPO" --json body -q '.body // empty' 2>/dev/null) && [ -n "$DRAFT_BODY" ]; then
+            printf '%s\n' "$DRAFT_BODY" > release-body.md
+            echo "✅ Body récupéré depuis le brouillon release-drafter pré-existant ($(wc -l < release-body.md) lignes)."
+          else
+            echo "→ Aucun brouillon — génération du body via scripts/generate-release-body.mjs."
+            bun scripts/generate-release-body.mjs
+          fi
 
       - name: 🎨 Régénération de la social card (PNG 1280×640)
         # Le SVG source public/banner/social-card.svg est versionné dans le
@@ -233,9 +245,18 @@ jobs:
         #   - Évite les diffs binaires parasites à chaque release (qu'un
         #     humain oublierait probablement de commit)
         #   - Garantit que le PNG n'est jamais stale par rapport au SVG
-        #   - `bun run social-card` utilise le script Node déjà testé + la
-        #     dépendance sharp déjà installée via bun install
-        run: bun run social-card
+        # `continue-on-error: true` : la régénération du PNG est un nice-to-have
+        # (aperçu social), pas un bloqueur de release. Si sharp ne se résout
+        # pas (binding natif manquant sous `bun install --frozen-lockfile` parce
+        # que sharp@0.34.x n'a plus de postinstall téléchargeable — le binding
+        # vient du package `@img/sharp-<platform>-<arch>` qui n'est pas listé
+        # dans le lockfile), on continue le release SANS PNG.
+        # Le mainteneur peut régénérer localement (sharp installé via
+        # `bun add sharp` qui pull le bon `@img/*`) et attacher le PNG via
+        # l'UI GitHub Releases, ou attendre une PR de fond qui fix le
+        # binding sharp pour les futurs releases.
+        continue-on-error: true
+        run: bun pm trust sharp && bun scripts/generate-social-card.mjs
 
       - name: 🔍 Aperçu du body généré (debug)
         run: |
@@ -258,12 +279,15 @@ jobs:
           generate_release_notes: false
           draft: false
           prerelease: ${{ contains(github.ref_name, '-') }}
-          # Files : installeurs + métadonnées electron-updater + social card
+          # Files : installeurs + métadonnées electron-updater (PAS de social card).
           # electron-updater a besoin de latest*.yml + .blockmap pour
           # le téléchargement différentiel et la validation SHA-512.
-          # La social card PNG 1280x640 est attachée pour permettre le
-          # téléchargement direct depuis la release (mise à jour manuelle
-          # de l'image GitHub Social Preview via l'UI Settings).
+          # `public/banner/social-card.png` est volontairement exclu : la
+          # régénération juste au-dessus est `continue-on-error`, donc le PNG
+          # peut être absent. Avec `fail_on_unmatched_files: true`, un PNG
+          # manquant ferait échouer tout le release. Les 8 installeurs sont
+          # l'unique attachment obligatoire. Le PNG, s'il est régénéré, est
+          # attaché manuellement par le mainteneur via l'UI GitHub Releases.
           files: |
             artifacts/**/*.exe
             artifacts/**/*.dmg
@@ -273,7 +297,6 @@ jobs:
             artifacts/**/*.rpm
             artifacts/**/*.blockmap
             artifacts/**/latest*.yml
-            public/banner/social-card.png
           fail_on_unmatched_files: true
 
 

@@ -75,8 +75,8 @@ build/icon_test.ico
 tmp/
 
 # Cover PNG + screenshots préparés pour l'upload itch.io (scripts/render-itch-cover.mjs).
-# On n'ignore que le sous-dossier release/ du projet, pas les autres.
-release/
-release/**/*.png
+# On n'ignore que le sous-dossier release/ racine du projet, pas docs/release/.
+/release/
+/release/**/*.png
 # Internal dev journal (not for public repo)
 worklog.md

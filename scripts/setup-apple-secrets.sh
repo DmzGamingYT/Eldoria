@@ -157,7 +157,7 @@ main() {
 
   echo
   warn "You'll be prompted for 5 secrets. Two are passwords (NOT echoed)."
-  warn "Source of truth: docs/apple-signing-guide.md (PR #29 merged)."
+  warn "Source of truth: docs/release/apple-signing-guide.md (PR #29 merged)."
   echo
 
   prompt_p12
@@ -192,8 +192,8 @@ main() {
   gh secret list --json name --jq '.[] | .name' | sort | sed 's/^/  - /'
   echo
   log "Next step:"
-  echo "    git tag v0.3.0"
-  echo "    git push origin v0.3.0"
+  echo "    git tag v0.4.0"
+  echo "    git push origin v0.4.0"
   echo "  (or push a v* tag of your choice \u2014 the CI will sign + notarize automatically)"
   echo
   log "Watch the release workflow logs for:"

@@ -97,8 +97,8 @@ Ou via l'interface web : **Settings → Secrets and variables → Actions → Ne
 Après avoir configuré les secrets, créez un tag de release pour déclencher le pipeline :
 
 ```bash
-git tag v0.3.0
-git push origin v0.3.0
+git tag v0.4.0
+git push origin v0.4.0
 ```
 
 Dans les logs GitHub Actions, vous devriez voir :

@@ -14,8 +14,8 @@
 
 | Objectif | Comment on l'atteint sans risque |
 |---|---|
-| Exercer la pipeline complète `v*` → build 3 OS → release | Push d'un tag `vX.Y.Z-rcN` (le pattern `on.push.tags: 'v*'` dans `../.github/workflows/release.yml` ligne 32 matche) |
-| Isoler la release test de la dernière stable | `release.yml:278` détecte `-` dans le tag : `prerelease: ${{ contains(github.ref_name, '-') }}` → la release est marquée **pre-release** et **n'écrase pas** `v0.3.0` pour les consumers `electron-updater` |
+| Exercer la pipeline complète `v*` → build 3 OS → release | Push d'un tag `vX.Y.Z-rcN` (le pattern `on.push.tags: 'v*'` dans `../../.github/workflows/release.yml` ligne 32 matche) |
+| Isoler la release test de la dernière stable | `release.yml:278` détecte `-` dans le tag : `prerelease: ${{ contains(github.ref_name, '-') }}` → la release est marquée **pre-release** et **n'écrase pas** `v0.4.0` pour les consumers `electron-updater` |
 | Cleanup complet après test | Tag + branche + GitHub Pre-Release supprimables à la main (§ Cleanup), aucun résidu laissé sur `main` |
 
 > ⚠️ **Important** : `release.yml` **n'a pas de garde-fou "skip si pas signé"**. Si la notarisation échoue (côté Apple : mot de passe invalide, certificat révoqué, etc.), la GitHub Release est **créée quand même** avec un DMG/ZIP **non-notarisé**. La release sera marquée pre-release mais ses artefacts ne passeront pas Gatekeeper. Le cleanup reste le même — mais le test est invalidé et il faut investiguer.
@@ -24,10 +24,10 @@
 
 ## 🧰 Pré-requis (5 secrets Apple sur le repo)
 
-À **ne pas skipper** : sans secret, la pipeline tourne mais signing + notarisation skip **silencieusement** (cf. `../scripts/notarize.mjs:32-39`) → tu penses avoir validé quelque chose alors qu'aucune étape Apple n'a été exercée.
+À **ne pas skipper** : sans secret, la pipeline tourne mais signing + notarisation skip **silencieusement** (cf. `../../scripts/notarize.mjs:32-39`) → tu penses avoir validé quelque chose alors qu'aucune étape Apple n'a été exercée.
 
 ```bash
-./../scripts/setup-apple-secrets.sh        # interactif : .p12 → base64 → 5 secrets
+./../../scripts/setup-apple-secrets.sh     # interactif : .p12 → base64 → 5 secrets
 gh secret list --json name --jq '.[] | .name' | sort
 # doit afficher exactement (alphabétique) :
 #   APPLE_APP_SPECIFIC_PASSWORD
@@ -114,7 +114,7 @@ TAG_VERSION=${GITHUB_REF_NAME#v}      # strip 'v' prefix
 
 Donc `package.json` doit être **strictement identique** au tag après strip du `v`.
 
-> ⚠️ Note : `electron-builder` peut aligner la version de l'installeur sur `package.json` (suffixe `-rc.1` apparaîtra dans le filename : `Eldoria-0.3.1-rc.1-mac-arm64.dmg`). C'est volontaire (cf. ligne `artifactName` dans `../electron-builder.yml`).
+> ⚠️ Note : `electron-builder` peut aligner la version de l'installeur sur `package.json` (suffixe `-rc.1` apparaîtra dans le filename : `Eldoria-0.3.1-rc.1-mac-arm64.dmg`). C'est volontaire (cf. ligne `artifactName` dans `../../electron-builder.yml`).
 
 ---
 
@@ -128,7 +128,7 @@ Test de la chaîne Apple signing + notarisation sans impacter la
 release stable <x.y.z-1>.0. Le tag <v>.-rc.<n> correspondant
 déclenche la pipeline complète, marquée pre-release par release.yml.
 
-Rollback prévu : cf. docs/test-apple-signing.md"
+Rollback prévu : cf. docs/release/test-apple-signing.md"
 
 git push --set-upstream origin test/<version>-signing
 ```
@@ -144,7 +144,7 @@ git tag -a <v>.<y>.<z>-rc<n> -m "<v>.<y>.<z>-rc<n>: signing + notarisation chain
 
 Pas de fonctionnalités ajoutées (version bump only). Marque la release
 comme pre-release côté GitHub (cf. release.yml :278 prerelease detection).
-Cleanup prévu via docs/test-apple-signing.md."
+Cleanup prévu via docs/release/test-apple-signing.md."
 
 git push origin <v>.<y>.<z>-rc<n>
 ```
@@ -352,7 +352,7 @@ git tag -a v<stable> -m "v<stable>: signing + notarisation validated via v<rc>"
 git push origin v<stable>
 ```
 
-`release.yml:278` détecte l'absence de `-` → `prerelease: false` → release **stable** qui **écrase** `v0.3.0` côté canal `electron-updater` (les utilisateurs existants reçoivent la mise à jour auto).
+`release.yml:278` détecte l'absence de `-` → `prerelease: false` → release **stable** qui **écrase** `v0.4.0` côté canal `electron-updater` (les utilisateurs existants reçoivent la mise à jour auto).
 
 ---
 
@@ -384,10 +384,10 @@ Les RC tags peuvent s'empiler (v0.3.1-rc1 → v0.3.1-rc2 → v0.3.1 finale), mai
 ## 🔗 Liens utiles
 
 - `apple-signing-guide.md` — procédure **setup** des 5 secrets (volume précédent de la doc)
-- `../scripts/setup-apple-secrets.sh` — assistant interactif de setup (avec `--dry-run`)
-- `../.github/workflows/release.yml` — pipeline Release complète (build matrix + release)
-- `../scripts/notarize.mjs` — hook `afterSign` (consomme `APPLE_ID` etc., skip silencieux en absence)
-- `../electron-builder.yml` — config artefacts par OS + signing config (Keychain ou env var)
+- `../../scripts/setup-apple-secrets.sh` — assistant interactif de setup (avec `--dry-run`)
+- `../../.github/workflows/release.yml` — pipeline Release complète (build matrix + release)
+- `../../scripts/notarize.mjs` — hook `afterSign` (consomme `APPLE_ID` etc., skip silencieux en absence)
+- `../../electron-builder.yml` — config artefacts par OS + signing config (Keychain ou env var)
 - [Apple — Notarization requirements](https://developer.apple.com/documentation/security/notarization)
 - [electron-builder — Code Signing](https://www.electron.build/code-signing)
 - [`@electron/notarize`](https://github.com/electron/notarize) — utilisé par `scripts/notarize.mjs`

@@ -1,0 +1,53 @@
+# Dependabot — mises à jour hebdomadaires pour la sécurité des dépendances.
+# Cf. https://docs.github.com/en/code-security/dependabot/dependabot-security-updates/configuring-dependabot
+
+version: 2
+
+updates:
+  # ─── Paquets Node / Bun (le runtime de dev/CI) ───────────────
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "08:00"
+      timezone: "Europe/Paris"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+    # Ignorer les bumps majeurs pour les binaires natifs et Electron :
+    # ces changements impliquent des native bindings (.node) qui cassent
+    # souvent la chaîne de build. Bump manuel via la procédure de release.
+    ignore:
+      - dependency-name: "@img/*"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "electron"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "next"
+        update-types: ["version-update:semver-major"]
+
+  # ─── Workflows GitHub Actions ───────────────────────────────
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "ci"
+
+  # ─── Python (Pillow pour la regénération des icônes win/ico) ─
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 2
+    labels:
+      - "dependencies"
+    # Pillow est épinglé à 10.4.0 dans release.yml pour garantir la sérialisation
+    # ICONDIR multi-résolutions (cf. scripts/build-icons.py module docstring).
+    # Bump majeur = à tester manuellement sur les 3 runners.
+    ignore:
+      - dependency-name: "Pillow"
+        update-types: ["version-update:semver-major"]
