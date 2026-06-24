@@ -26,9 +26,9 @@ cd Eldoria
 # 2. Installer les dépendances
 bun install
 
-# 3. Initialiser la base Prisma
-bun run db:generate
-bun run db:push
+# 3. (Pas de base de données à initialiser — la persistance du jeu
+#     passe par `Zustand persist` dans `src/game/store.ts`.
+#     `bun install` suffit pour une installation fraîche jouable.)
 ```
 
 ## Lancer en mode développement
