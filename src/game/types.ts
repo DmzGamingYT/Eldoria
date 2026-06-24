@@ -181,12 +181,18 @@ export interface Chest {
 }
 
 // Active buffs on the player
+// type union covers BOTH transient effects (shield from Bouclier Arcanique
+// skill, expiresAt finite) and persistent talent-driven effects (capstones
+// — Immortel/Archimage/Bourreau — exposed in the HUD via a derived array,
+// expiresAt = Infinity). Persisted via SAVE_SCHEMA_VERSION=3.
 export interface ActiveBuff {
   id: string;
-  type: "shield" | "haste" | "regen" | "rage";
+  type: "shield" | "haste" | "regen" | "rage" | "mana_tide" | "crit";
   name: string;
   icon: string;
-  expiresAt: number; // seconds (performance.now()/1000)
+  /** Seconds (performance.now()/1000). Use Number.POSITIVE_INFINITY for
+   *  permanent talent-driven buffs (HUD-only, never persisted to store). */
+  expiresAt: number;
   power: number;
 }
 
