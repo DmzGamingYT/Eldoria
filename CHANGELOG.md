@@ -6,12 +6,77 @@ le projet adhère au [Semantic Versioning](https://semver.org/lang/fr/).
 
 ---
 
-## [Non publié] — v0.3.0 livrée sur main (tag + release à pousser par le mainteneur)
+## [0.4.0] — 2026-06-24 — Sprint v0.4.0 (Talents multi-rang · Combat · Biome Frostpeak)
 
-### Prévu pour **v0.3.x**
-- Multi-rang sur les talents (maxRank > 1, coût exponentiel).
-- Intégration des sorts au combat : lancer via la barre rapide ou un nouveau panneau.
-- Active buffs UI (régénération en combat, blizzard de la capstone Survie).
+Le sprint v0.4.0 complète le système de talents commencé en v0.3.0
+(multi-rang exponentiel + capstones visibles), durcit l'expérience de
+combat (barre rapide dédiée + zone d'arène pour le boss final), et étend
+le monde explorable avec un nouveau biome hivernal au nord-ouest.
+
+### ✨ Ajouté
+
+- **Talents multi-rang** — chaque talent peut maintenant être amélioré
+  jusqu'à 3 fois (`maxRank` 1-3 selon le talent). Coût exponentiel : le
+  rang N consomme `1 + (N-1)` points de talent. Les capstones `Bourreau`
+  / `Archimage` / `Immortel` empilent leurs bonus à chaque rang investi
+  et sont désormais affichés sur la nouvelle barre de buffs HUD.
+- **Barre rapide de combat** — nouvelle barre HUD en bas-centre : touches
+  `1`-`4` pour les 4 premières compétences débloquées, `F1`-`F3` pour les
+  3 potions du sac. Icône + cooldown circulaire + slot vide assignable.
+  Les sorts s'exécutent depuis cette barre sans ouvrir le panneau Skills.
+- **Arène du boss Mordrak** — nouvelle zone circulaire centrée sur
+  `(0, -42)` (rayon 12) avec anneau doré au sol, 16 haies basses en
+  pourtour, et un obélisque violet central pulsant. Pendant l'engagement :
+  (a) Mordrak est clampé au périmètre de l'arène pour ne pas fuir dans
+  la forêt, (b) le joueur est repoussé en douceur à l'intérieur de
+  11 unités tant qu'il reste engagé (à moins de 20 unités du boss). Les
+  contraintes lèvent dès que le boss meurt : la phase de loot n'est pas
+  une prison.
+- **UI des buffs actifs (`ActiveBuff`)** — nouveau tray HUD affichant à
+  la fois les buffs transitoires (Bouclier Arcanique avec countdown)
+  et les capstones de talent persistantes (`Immortel → +X HP/s`,
+  `Archimage → +X% sorts`, `Bourreau → ×2.5 crit`). Type union étendu de
+  `4 → 6` variantes dans `src/game/types.ts`. Les puissances sont lues
+  structurellement via `getTalent(id).effects × rank` (single source of
+  truth = `src/game/data/talents.ts`).
+- **Potion de Soin Supérieure** — objet légendaire (soigne 100 HP, coût
+  40 or, revente 100 po) ajouté à l'inventaire du marchand Brynn.
+  L'objet existait déjà dans `src/game/data/items.ts` mais manquait à la
+  liste boutique : c'est le premier PR du sprint labellisé
+  `invite-to-collaborate` pour accueillir la communauté.
+- **Biome Frostpeak** — nouvelle zone au nord-ouest (x ∈ [-60,-30],
+  z ∈ [-30,0]) avec :
+  - 2 ennemis : **ice_slime** (HP 80, ATQ 12, gel bleuté) et
+    **frost_wolf** (HP 120, ATQ 18, fourrure pâle),
+  - 1 mentor hermite nordique et la quête **« Le Passage Gelé »** (100 XP,
+    30 or, récompense : anneau légendaire `frost_ward_ring`),
+  - neige procédurale (260 instances pré-seedées qui suivent le joueur),
+  - tint atmosphérique bleu-glacial symétrique (lerp 0.20 vers
+    `state.fogColor.clone()`) pour préserver le cycle jour/nuit
+    sous-jacent.
+
+### 🔧 Maintenance
+
+- `package.json` bump `0.3.0` → `0.4.0`.
+- `src/game/ui/Options.tsx` : version affichée `0.3.0` → `0.4.0`.
+- `src/game/types.ts` : type union `ActiveBuff` étendu (4 → 6 variantes).
+- `src/game/ui/HUD.tsx` : barre bas-centre réorganisée (3 potions F1-F3 +
+  4 skills 1-4 + attaque) + tray de buffs.
+- Nouveau fichier : `src/game/enemies/BossArena.tsx` (clamp Mordrak +
+  soft-push player + 16 hedges + obélisque central pulsant).
+- 5 PR mergées sur `main` (#43 #44 #46 #47 #48), chacune passée par le
+  pipeline `ci.yml` (lint + tsc + build Next.js).
+- Label GitHub `invite-to-collaborate` créé sur l'organisation pour
+  identifier les bons candidats good-first-issue.
+
+### ⚠️ Notes de compatibilité
+
+- Les saves v0.3.x restent compatibles à la lecture sans migration :
+  les buffs persistants sont dérivés de `allocatedTalents` au render, pas
+  stockés dans le store. Aucun bump de `schemaVersion` n'est nécessaire.
+- Les talents mono-rang en v0.3.0 conservent leur comportement tant
+  que le rang n'est pas explicitement augmenté (le coût par rang
+  supplémentaire suit `1 + (N-1)` points).
 
 ---
 
