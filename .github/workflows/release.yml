@@ -10,7 +10,7 @@
 #     ├── checkout → bun → install → icons regenerate → next build
 #     └── electron-builder --<target>  → artefact par OS
 #   release (Ubuntu, dépend de build)
-#     └── télécharger tous les artefacts → softprops/action-gh-release@v2
+#     └── télécharger tous les artefacts → softprops/action-gh-release@v3
 #         → crée la GitHub Release + joint les installeurs
 #
 # Signature de code (optionnelle) :
@@ -264,7 +264,7 @@ jobs:
           cat release-body.md
 
       - name: 🚀 Création de la GitHub Release + attachement des installeurs
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           # Le tag déclencheur devient le nom de la release
           tag_name: ${{ github.ref_name }}
