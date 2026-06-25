@@ -241,22 +241,17 @@ jobs:
         # garantir la cohérence entre l'identité du projet (TL;DR, médaillon
         # Arbre d'Argent, badges tech) et les aperçus partagés (GitHub Social
         # Preview, itch.io capsule, Steamworks, Discord/Twitter/OG cards).
-        # Pourquoi générer dans la CI plutôt que committer manuellement ?
-        #   - Évite les diffs binaires parasites à chaque release (qu'un
-        #     humain oublierait probablement de commit)
-        #   - Garantit que le PNG n'est jamais stale par rapport au SVG
-        # `continue-on-error: true` : la régénération du PNG est un nice-to-have
-        # (aperçu social), pas un bloqueur de release. Si sharp ne se résout
-        # pas (binding natif manquant sous `bun install --frozen-lockfile` parce
-        # que sharp@0.34.x n'a plus de postinstall téléchargeable — le binding
-        # vient du package `@img/sharp-<platform>-<arch>` qui n'est pas listé
-        # dans le lockfile), on continue le release SANS PNG.
-        # Le mainteneur peut régénérer localement (sharp installé via
-        # `bun add sharp` qui pull le bon `@img/*`) et attacher le PNG via
-        # l'UI GitHub Releases, ou attendre une PR de fond qui fix le
-        # binding sharp pour les futurs releases.
-        continue-on-error: true
-        run: bun pm trust sharp && bun scripts/generate-social-card.mjs
+        #
+        # Fix v0.5.0 (#51): sharp@0.34.x ne télécharge plus le binding natif
+        # via postinstall — il est fourni par le package compagnon
+        # `@img/sharp-<platform>-<arch>` (résolu via optionalDependencies).
+        # Sous `bun install --frozen-lockfile`, les optionnels conditionnels
+        # ne sont pas toujours matérialisés. On installe explicitement le
+        # binding plateforme pour le runner Ubuntu (release job) avant de
+        # lancer le script.
+        run: |
+          bun add --trust @img/sharp-linux-x64@^0.34.x
+          bun scripts/generate-social-card.mjs
 
       - name: 🔍 Aperçu du body généré (debug)
         run: |
@@ -279,15 +274,12 @@ jobs:
           generate_release_notes: false
           draft: false
           prerelease: ${{ contains(github.ref_name, '-') }}
-          # Files : installeurs + métadonnées electron-updater (PAS de social card).
+          # Files : installeurs + métadonnées electron-updater + social card.
           # electron-updater a besoin de latest*.yml + .blockmap pour
           # le téléchargement différentiel et la validation SHA-512.
-          # `public/banner/social-card.png` est volontairement exclu : la
-          # régénération juste au-dessus est `continue-on-error`, donc le PNG
-          # peut être absent. Avec `fail_on_unmatched_files: true`, un PNG
-          # manquant ferait échouer tout le release. Les 8 installeurs sont
-          # l'unique attachment obligatoire. Le PNG, s'il est régénéré, est
-          # attaché manuellement par le mainteneur via l'UI GitHub Releases.
+          # La social card PNG est toujours régénérée (fix v0.5.0 #51 :
+          # binding sharp installé explicitement), donc on l'attache
+          # directement à la release.
           files: |
             artifacts/**/*.exe
             artifacts/**/*.dmg
@@ -297,6 +289,7 @@ jobs:
             artifacts/**/*.rpm
             artifacts/**/*.blockmap
             artifacts/**/latest*.yml
+            public/banner/social-card.png
           fail_on_unmatched_files: true
 
 

@@ -19,6 +19,7 @@ import { ItemIcon, RarityPips, CategoryBadge } from "./ItemIcon";
 const CATEGORY_LABEL: Record<ItemCategory, string> = {
   weapon: "Armes",
   armor: "Armures",
+  ring: "Anneaux",
   potion: "Potions",
   material: "Matériaux",
   key: "Objets de quête",
@@ -102,7 +103,8 @@ export function Inventory() {
               {items.map((i) => {
                 const isEquipped =
                   equipment.weapon === i.itemId ||
-                  equipment.armor === i.itemId;
+                  equipment.armor === i.itemId ||
+                  equipment.ring === i.itemId;
                 return (
                   <button
                     key={i.itemId + i.qty}
@@ -137,7 +139,8 @@ export function Inventory() {
                   size="lg"
                   equipped={
                     equipment.weapon === sel.itemId ||
-                    equipment.armor === sel.itemId
+                    equipment.armor === sel.itemId ||
+                    equipment.ring === sel.itemId
                   }
                 />
                 <div className="min-w-0 flex-1">
@@ -216,7 +219,8 @@ export function Inventory() {
               </div>
               <div className="space-y-2">
                 {sel.def.category === "weapon" ||
-                sel.def.category === "armor" ? (
+                sel.def.category === "armor" ||
+                sel.def.category === "ring" ? (
                   <GoldButton
                     onClick={() => {
                       equipItem(sel.itemId);
@@ -225,7 +229,8 @@ export function Inventory() {
                     fullWidth
                   >
                     {equipment.weapon === sel.itemId ||
-                    equipment.armor === sel.itemId
+                    equipment.armor === sel.itemId ||
+                    equipment.ring === sel.itemId
                       ? "★ Équipé"
                       : "♦ Équiper"}
                   </GoldButton>
@@ -275,6 +280,12 @@ export function Inventory() {
             id={equipment.armor}
             item={equipment.armor ? ITEMS[equipment.armor] : null}
             onUnequip={() => unequipItem("armor")}
+          />
+          <EquipSlot
+            label="Anneau"
+            id={equipment.ring}
+            item={equipment.ring ? ITEMS[equipment.ring] : null}
+            onUnequip={() => unequipItem("ring")}
           />
           <div className="ml-auto flex flex-col justify-center rounded-lg border-2 border-[var(--gold-3)] bg-[rgba(255,245,215,0.55)] px-4 py-2 text-right">
             <Eyebrow>Bourse</Eyebrow>

@@ -29,6 +29,7 @@ const LUCIDE_SIZE_CLASSES: Record<ItemIconSize, string> = {
 const CATEGORY_LABEL: Record<ItemCategory, string> = {
   weapon: "Arme",
   armor: "Armure",
+  ring: "Anneau",
   potion: "Potion",
   material: "Matériau",
   key: "Quête",
@@ -38,6 +39,7 @@ const CATEGORY_LABEL: Record<ItemCategory, string> = {
 const CATEGORY_GLYPH: Record<ItemCategory, string> = {
   weapon: "⚔",
   armor: "▰",
+  ring: "💍",
   potion: "⚗",
   material: "◈",
   key: "⚷",

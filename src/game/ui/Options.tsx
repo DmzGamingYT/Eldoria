@@ -3,13 +3,19 @@
 import { useState } from "react";
 import { useGame } from "../store";
 import { ParchmentModal, GoldButton, InkButton, GoldRule, Eyebrow } from "./parchment";
-import { RefreshCw, ExternalLink, Info } from "lucide-react";
+import { RefreshCw, ExternalLink, Info, Volume2, VolumeX, Music } from "lucide-react";
+import { audio } from "../audio";
 
 export function Options() {
   const show = useGame((s) => s.ui.options);
   const closePanel = useGame((s) => s.closePanel);
   const showToast = useGame((s) => s.showToast);
   const [checking, setChecking] = useState(false);
+
+  // Volume state (initialized from audio engine)
+  const [masterVol, setMasterVol] = useState(() => audio.masterVolume);
+  const [sfxVol, setSfxVol] = useState(() => audio.sfxVolume);
+  const [musicVol, setMusicVol] = useState(() => audio.musicVolume);
 
   if (!show) return null;
 
@@ -37,6 +43,24 @@ export function Options() {
     window.open("https://github.com/DmzGamingYT/Eldoria/releases", "_blank");
   };
 
+  const handleMasterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const v = parseFloat(e.target.value);
+    setMasterVol(v);
+    audio.setMasterVolume(v);
+  };
+
+  const handleSfxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const v = parseFloat(e.target.value);
+    setSfxVol(v);
+    audio.setSfxVolume(v);
+  };
+
+  const handleMusicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const v = parseFloat(e.target.value);
+    setMusicVol(v);
+    audio.setMusicVolume(v);
+  };
+
   return (
     <ParchmentModal
       eyebrow="Configuration"
@@ -45,6 +69,72 @@ export function Options() {
       width="max-w-md"
     >
       <div className="space-y-5">
+        {/* ─── Volume ─── */}
+        <div>
+          <Eyebrow className="block">◈ Volume ◈</Eyebrow>
+          <div className="mt-3 space-y-3">
+            {/* Master */}
+            <div>
+              <label className="flex items-center justify-between font-serif text-xs text-[var(--parchment-ink)]">
+                <span className="flex items-center gap-1.5">
+                  {masterVol === 0 ? <VolumeX className="h-3.5 w-3.5" /> : <Volume2 className="h-3.5 w-3.5" />}
+                  Master
+                </span>
+                <span className="text-[var(--parchment-ink-soft)]">{Math.round(masterVol * 100)}%</span>
+              </label>
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.05"
+                value={masterVol}
+                onChange={handleMasterChange}
+                className="mt-1 w-full accent-[var(--gold-3)]"
+              />
+            </div>
+            {/* SFX */}
+            <div>
+              <label className="flex items-center justify-between font-serif text-xs text-[var(--parchment-ink)]">
+                <span className="flex items-center gap-1.5">
+                  <Volume2 className="h-3.5 w-3.5" />
+                  Effets sonores
+                </span>
+                <span className="text-[var(--parchment-ink-soft)]">{Math.round(sfxVol * 100)}%</span>
+              </label>
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.05"
+                value={sfxVol}
+                onChange={handleSfxChange}
+                className="mt-1 w-full accent-[var(--gold-3)]"
+              />
+            </div>
+            {/* Music */}
+            <div>
+              <label className="flex items-center justify-between font-serif text-xs text-[var(--parchment-ink)]">
+                <span className="flex items-center gap-1.5">
+                  <Music className="h-3.5 w-3.5" />
+                  Musique
+                </span>
+                <span className="text-[var(--parchment-ink-soft)]">{Math.round(musicVol * 100)}%</span>
+              </label>
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.05"
+                value={musicVol}
+                onChange={handleMusicChange}
+                className="mt-1 w-full accent-[var(--gold-3)]"
+              />
+            </div>
+          </div>
+        </div>
+
+        <GoldRule />
+
         {/* ─── Mises à jour ─── */}
         <div>
           <Eyebrow className="block">◈ Mises à jour ◈</Eyebrow>
@@ -78,7 +168,7 @@ export function Options() {
               Chroniques de la Forêt d'Argent
             </p>
             <p className="mt-1 text-xs text-[var(--parchment-ink-soft)]">
-              Version 0.4.0 · RPG fantasy 3D
+              Version 0.5.0 · RPG fantasy 3D
             </p>
             <p className="mt-1 text-xs text-[var(--parchment-ink-soft)]">
               © 2026 DmzGamingYT

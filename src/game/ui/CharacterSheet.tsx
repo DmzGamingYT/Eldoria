@@ -7,6 +7,7 @@ import type { ItemCategory } from "../types";
 import { PanelShell, Eyebrow, GoldRule, Medallion } from "./parchment";
 import { ItemIcon, RarityPips } from "./ItemIcon";
 import { Wand2, Sparkles } from "lucide-react";
+import { SETS, countSetPieces } from "../data/sets";
 
 export function CharacterSheet() {
   const player = useGame((s) => s.player);
@@ -25,6 +26,7 @@ export function CharacterSheet() {
 
   const weapon = equipment.weapon ? ITEMS[equipment.weapon] : null;
   const armor = equipment.armor ? ITEMS[equipment.armor] : null;
+  const ring = equipment.ring ? ITEMS[equipment.ring] : null;
 
   const stats = [
     { label: "Niveau", value: player.level, base: player.level, color: "var(--gold-3)" },
@@ -87,10 +89,14 @@ export function CharacterSheet() {
 
       {/* Équipement */}
       <Eyebrow className="block text-center">◈ Équipement ◈</Eyebrow>
-      <div className="mt-2 grid grid-cols-2 gap-2">
+      <div className="mt-2 grid grid-cols-3 gap-2">
         <EquipDisplay label="Arme" id={equipment.weapon} item={weapon} />
         <EquipDisplay label="Armure" id={equipment.armor} item={armor} />
+        <EquipDisplay label="Anneau" id={equipment.ring} item={ring} />
       </div>
+
+      {/* v0.5.0 — Set badges */}
+      <SetBadges equipment={equipment} />
 
       {/* v0.3.0: statPoints a été remplacé par un système de points de talent
           distribué dans l'Arbre de Talents. On propose ici un bouton d'accès
@@ -179,6 +185,61 @@ function EquipDisplay({
           {item.stats?.defense ? <span className="text-[#3a7aa0]">+{item.stats.defense} DÉF</span> : null}
         </div>
       </div>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*  SetBadges — shows equipped set pieces as golden pips (1–4 per set).       */
+/* -------------------------------------------------------------------------- */
+
+function SetBadges({
+  equipment,
+}: {
+  equipment: { weapon: string | null; armor: string | null; ring: string | null };
+}) {
+  const activeSets: { set: (typeof SETS)[string]; pieces: number }[] = [];
+  const seen = new Set<string>();
+  for (const setId of Object.keys(SETS)) {
+    if (seen.has(setId)) continue;
+    seen.add(setId);
+    const pieces = countSetPieces(setId, equipment, (id) => ITEMS[id]);
+    if (pieces > 0) {
+      activeSets.push({ set: SETS[setId], pieces });
+    }
+  }
+  if (activeSets.length === 0) return null;
+
+  return (
+    <div className="mt-2 space-y-1.5">
+      {activeSets.map(({ set, pieces }) => (
+        <div
+          key={set.id}
+          className="flex items-center gap-2 rounded-md border border-[var(--gold-4)] bg-[rgba(255,245,215,0.2)] px-2.5 py-1.5"
+        >
+          <span className="text-lg">{set.icon}</span>
+          <div className="min-w-0 flex-1">
+            <div className="truncate font-serif text-[11px] font-bold text-[var(--gold-3)]">
+              {set.nameFr}
+            </div>
+            <div className="flex gap-1 mt-0.5">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="h-2 w-2 rounded-full"
+                  style={{
+                    backgroundColor: i < pieces ? "#fbbf24" : "rgba(251,191,36,0.2)",
+                    boxShadow: i < pieces ? "0 0 4px #fbbf24" : "none",
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+          <span className="font-serif text-[10px] text-[var(--parchment-ink-soft)]">
+            {pieces}/4
+          </span>
+        </div>
+      ))}
     </div>
   );
 }

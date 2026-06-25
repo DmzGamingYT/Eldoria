@@ -131,6 +131,15 @@ export const ENEMIES: Record<EnemyType, EnemyDef> = {
     drops: [
       { itemId: "dragon_slayer", chance: 1, qty: [1, 1] },
       { itemId: "dungeon_key", chance: 1, qty: [1, 1] },
+      // v0.5.0 — Mordrak guarantees 1 legendary from the pool
+      { itemId: "crimson_axe", chance: 0.33 },
+      { itemId: "bone_plate", chance: 0.33 },
+      { itemId: "blood_signet", chance: 0.34 },
+      { itemId: "staff_of_storms", chance: 0.33 },
+      { itemId: "robe_of_warding", chance: 0.33 },
+      { itemId: "mana_crystal_ring", chance: 0.34 },
+      { itemId: "shield_of_ages", chance: 0.33 },
+      { itemId: "eternal_plate", chance: 0.33 },
     ],
   },
   // v0.4.0 — Frostpeak biome (NW zone)
@@ -150,6 +159,10 @@ export const ENEMIES: Record<EnemyType, EnemyDef> = {
     scale: 0.9,
     drops: [
       { itemId: "slime_gel", chance: 0.85, qty: [2, 3] },
+      // v0.5.0 — 5% chance for Archimage set piece
+      { itemId: "staff_of_storms", chance: 0.05 },
+      { itemId: "robe_of_warding", chance: 0.05 },
+      { itemId: "mana_crystal_ring", chance: 0.05 },
     ],
   },
   frost_wolf: {
@@ -169,6 +182,10 @@ export const ENEMIES: Record<EnemyType, EnemyDef> = {
     drops: [
       { itemId: "wolf_fang", chance: 0.85, qty: [2, 3] },
       { itemId: "leather_armor", chance: 0.08 },
+      // v0.5.0 — 5% chance for Immortal set piece
+      { itemId: "shield_of_ages", chance: 0.05 },
+      { itemId: "eternal_plate", chance: 0.05 },
+      { itemId: "frost_ward_ring", chance: 0.05 },
     ],
   },
 };
