@@ -36,7 +36,8 @@ import {
   isTalentAvailable,
   talentPointsForLevel,
 } from "./data/talents";
-// import { playSound } from "./audio"; // unused — re-enable when audio triggers are wired
+import { countSetPieces, getSetBonus } from "./data/sets";
+import { playSound } from "./audio";
 
 let enemyIdCounter = 0;
 function nextEnemyId() {
@@ -117,6 +118,7 @@ function makeInitialPlayer(): PlayerState {
     killCount: 0,
     facingDir: [0, 0, -1],
     allocatedTalents: {},
+    _phoenixUsed: false,
   };
 }
 
@@ -162,7 +164,7 @@ export interface GameStore {
   enemies: EnemyInstance[];
   npcs: NpcDef[];
   inventory: InventoryItem[];
-  equipment: { weapon: string | null; armor: string | null };
+  equipment: { weapon: string | null; armor: string | null; ring: string | null };
   quests: QuestState[];
   floatingTexts: FloatingText[];
   particles: ParticleBurst[];
@@ -219,7 +221,7 @@ export interface GameStore {
   tickCooldowns: (dt: number) => void;
   useItem: (itemId: string) => void;
   equipItem: (itemId: string) => void;
-  unequipItem: (slot: "weapon" | "armor") => void;
+  unequipItem: (slot: "weapon" | "armor" | "ring") => void;
   addItem: (itemId: string, qty?: number) => void;
   removeItem: (itemId: string, qty?: number) => void;
   buyItem: (itemId: string) => void;
@@ -270,7 +272,7 @@ export interface GameStore {
  */
 function recomputeDerived(
   player: PlayerState,
-  equipment: { weapon: string | null; armor: string | null },
+  equipment: { weapon: string | null; armor: string | null; ring: string | null },
 ) {
   // 1. Equipment flat bonuses (from items.ts).
   let bonusAttack = 0;
@@ -291,6 +293,15 @@ function recomputeDerived(
       bonusDefense += a.stats.defense ?? 0;
       bonusHealth += a.stats.health ?? 0;
       bonusMana += a.stats.mana ?? 0;
+    }
+  }
+  if (equipment.ring) {
+    const r = getItem(equipment.ring);
+    if (r?.stats) {
+      bonusAttack += r.stats.attack ?? 0;
+      bonusDefense += r.stats.defense ?? 0;
+      bonusHealth += r.stats.health ?? 0;
+      bonusMana += r.stats.mana ?? 0;
     }
   }
 
@@ -337,17 +348,58 @@ function recomputeDerived(
   const baseHp = player.maxHealth + bonusHealth + tHpFlat;
   const baseMp = player.maxMana + bonusMana + tMpFlat;
 
+  // 3. Equipment set bonuses (v0.5.0). Each set piece equipped beyond the
+  //    threshold adds the bonus effects. Bonuses stack per tier (2-pc + 3-pc
+  //    + 4-pc are cumulative).
+  let setCritFlat = 0;
+  let setSpellPowerPct = 0;
+  let setHealthRegenFlat = 0;
+  let setManaRegenFlat = 0;
+  let setHealthFlat = 0;
+  let setDefensePct = 0;
+
+  const setIds = new Set<string>();
+  if (equipment.weapon) {
+    const w = getItem(equipment.weapon);
+    if (w?.setId) setIds.add(w.setId);
+  }
+  if (equipment.armor) {
+    const a = getItem(equipment.armor);
+    if (a?.setId) setIds.add(a.setId);
+  }
+  if (equipment.ring) {
+    const r = getItem(equipment.ring);
+    if (r?.setId) setIds.add(r.setId);
+  }
+  for (const setId of setIds) {
+    const pieces = countSetPieces(setId, equipment, (id) => getItem(id) ?? {});
+    const bonus = getSetBonus(setId, pieces);
+    if (bonus) {
+      setCritFlat += bonus.effects.critChanceFlat ?? 0;
+      setSpellPowerPct += bonus.effects.spellPowerPct ?? 0;
+      setHealthRegenFlat += bonus.effects.healthRegenFlat ?? 0;
+      setManaRegenFlat += bonus.effects.manaRegenFlat ?? 0;
+      setHealthFlat += bonus.effects.healthFlat ?? 0;
+      setDefensePct += bonus.effects.defensePct ?? 0;
+    }
+  }
+
+  const finalAtk = baseAtk;
+  const finalDef = baseDef;
+  const finalHp = baseHp + setHealthFlat;
+  const finalMp = baseMp;
+
   return {
-    derivedAttack: Math.max(1, Math.floor(baseAtk * (1 + tAtkPct))),
-    derivedDefense: Math.max(0, Math.floor(baseDef * (1 + tDefPct))),
-    derivedMaxHealth: Math.max(1, Math.floor(baseHp * (1 + tHpPct))),
-    derivedMaxMana: Math.max(1, Math.floor(baseMp * (1 + tMpPct))),
-    /** Critical hit chance: base 15% + all talent contributions. */
-    derivedCritChance: Math.min(1, Math.max(0, 0.15 + critFlat)),
-    /** Spell damage multiplier: base 1.0 + talent %s. */
-    derivedSpellPower: Math.max(0, 1 + spellPowerPct),
-    derivedHealthRegen: Math.max(0, healthRegenFlat),
-    derivedManaRegen: Math.max(0, manaRegenFlat),
+    derivedAttack: Math.max(1, Math.floor(finalAtk * (1 + tAtkPct))),
+    derivedDefense: Math.max(0, Math.floor(finalDef * (1 + tDefPct + setDefensePct))),
+    derivedMaxHealth: Math.max(1, Math.floor(finalHp * (1 + tHpPct))),
+    derivedMaxMana: Math.max(1, Math.floor(finalMp * (1 + tMpPct))),
+    /** Critical hit chance: base 15% + all talent contributions + set bonuses. */
+    derivedCritChance: Math.min(1, Math.max(0, 0.15 + critFlat + setCritFlat)),
+    /** Spell damage multiplier: base 1.0 + talent %s + set %s. */
+    derivedSpellPower: Math.max(0, 1 + spellPowerPct + setSpellPowerPct),
+    derivedHealthRegen: Math.max(0, healthRegenFlat + setHealthRegenFlat),
+    derivedManaRegen: Math.max(0, manaRegenFlat + setManaRegenFlat),
     /** Cap at 75% so we never fully cancel the gameplay rhythm. */
     derivedCooldownReduction: Math.min(0.75, Math.max(0, cooldownReductionPct)),
   };
@@ -363,7 +415,7 @@ export const useGame = create<GameStore>((set, get) => ({
     { itemId: "health_potion", qty: 3 },
     { itemId: "mana_potion", qty: 2 },
   ],
-  equipment: { weapon: null, armor: null },
+  equipment: { weapon: null, armor: null, ring: null },
   quests: makeInitialQuests(),
   floatingTexts: [],
   particles: [],
@@ -395,7 +447,7 @@ export const useGame = create<GameStore>((set, get) => ({
 
   startGame: () => {
     const fresh = makeInitialPlayer();
-    const d = recomputeDerived(fresh, { weapon: null, armor: null });
+    const d = recomputeDerived(fresh, { weapon: null, armor: null, ring: null });
     set({
       status: "intro",
       player: fresh,
@@ -405,7 +457,7 @@ export const useGame = create<GameStore>((set, get) => ({
         { itemId: "health_potion", qty: 3 },
         { itemId: "mana_potion", qty: 2 },
       ],
-      equipment: { weapon: null, armor: null },
+      equipment: { weapon: null, armor: null, ring: null },
       quests: makeInitialQuests(),
       floatingTexts: [],
       particles: [],
@@ -497,6 +549,7 @@ export const useGame = create<GameStore>((set, get) => ({
     if (s.player.attackCooldown > 0) return;
     const dmg = s.derivedAttack;
     const px = s.player.position[0];
+    const py = s.player.position[1];
     const pz = s.player.position[2];
     const pfx = Math.sin(s.player.rotation);
     const pfz = Math.cos(s.player.rotation);
@@ -520,7 +573,18 @@ export const useGame = create<GameStore>((set, get) => ({
       // v0.3.0: crit chance now sourced from `derivedCritChance`
       // (base 15% + talent bonuses).
       const isCrit = Math.random() < s.derivedCritChance;
-      const damage = Math.max(1, Math.floor(dmg * variance * (isCrit ? critMult : 1)));
+      let damage = Math.max(1, Math.floor(dmg * variance * (isCrit ? critMult : 1)));
+      // v0.5.0 — Bourreau 4-pc proc: execute (instant kill if enemy < 20% HP)
+      {
+        const bPieces = countSetPieces("executioner", s.equipment, (id) => getItem(id) ?? {});
+        const bBonus = getSetBonus("executioner", bPieces);
+        if (bBonus?.effects.proc === "execute") {
+          const hpAfterDmg = e.health - damage;
+          if (hpAfterDmg > 0 && hpAfterDmg < e.maxHealth * 0.2) {
+            damage = e.health; // instant kill
+          }
+        }
+      }
       hitAny = true;
       get().addFloatingText(
         [e.position[0], e.position[1] + e.scale * 1.3, e.position[2]],
@@ -537,6 +601,7 @@ export const useGame = create<GameStore>((set, get) => ({
     // v0.3.0: cooldown reduction applies to the attack cooldown.
     const effectiveAttackCooldown =
       PLAYER.attackCooldown * (1 - s.derivedCooldownReduction);
+    playSound("attack", [px, py, pz]);
     set((st) => ({
       player: {
         ...st.player,
@@ -552,29 +617,32 @@ export const useGame = create<GameStore>((set, get) => ({
         const now = performance.now() / 1000;
         let goldGained = 0;
         let kills = 0;
-        const _levelUps = 0;
         const newLoot = [...cur.loot];
         let newQuests = cur.quests;
         const newFloatingTexts = [...cur.floatingTexts];
         const newParticles = [...cur.particles];
         const initialLevel = cur.player.level;
 
+        // Accumulate player changes in a local snapshot so we never mutate
+        // the Zustand state object directly inside the closure.
+        let runningPlayer = { ...cur.player };
+
         const updated = cur.enemies.map((e) => {
           if (!e.isDead && e.health <= 0) {
             const def = ENEMIES[e.type];
             // XP — accumulate level-ups
             const xpLeft = def.xpReward;
-            let xp = cur.player.xp + xpLeft;
-            let lvl = cur.player.level;
-            let xpToNext = cur.player.xpToNext;
-            let maxHp = cur.player.maxHealth;
-            let maxMp = cur.player.maxMana;
-            let atk = cur.player.attack;
-            let def_ = cur.player.defense;
-            let hp = cur.player.health;
-            let mp = cur.player.mana;
+            let xp = runningPlayer.xp + xpLeft;
+            let lvl = runningPlayer.level;
+            let xpToNext = runningPlayer.xpToNext;
+            let maxHp = runningPlayer.maxHealth;
+            let maxMp = runningPlayer.maxMana;
+            let atk = runningPlayer.attack;
+            let def_ = runningPlayer.defense;
+            let hp = runningPlayer.health;
+            let mp = runningPlayer.mana;
             // v0.3.0: each level-up grants 1 talent point (+1 bonus every 5).
-            let tp = cur.player.talentPoints;
+            let tp = runningPlayer.talentPoints;
             while (xp >= xpToNext) {
               xp -= xpToNext;
               lvl += 1;
@@ -596,6 +664,17 @@ export const useGame = create<GameStore>((set, get) => ({
             const gold = Math.floor(rand(def.goldReward[0], def.goldReward[1] + 1));
             goldGained += gold;
             kills += 1;
+            // v0.5.0 — Archimage 4-pc proc: mana_tide (restore 30 mana per kill)
+            {
+              const aPieces = countSetPieces("archmage", cur.equipment, (id) => getItem(id) ?? {});
+              const aBonus = getSetBonus("archmage", aPieces);
+              if (aBonus?.effects.proc === "mana_tide") {
+                const manaGain = 30;
+                mp = Math.min(cur.derivedMaxMana, mp + manaGain);
+                const mtId = `ft_${performance.now()}_mt_${e.id}`;
+                newFloatingTexts.push({ id: mtId, position: [e.position[0], e.position[1] + e.scale * 2.0, e.position[2]], text: `+${manaGain} MP`, color: "#7dd3fc", born: performance.now(), duration: 1100 });
+              }
+            }
             // floating texts
             const xpId = `ft_${performance.now()}_xp_${e.id}`;
             newFloatingTexts.push({ id: xpId, position: [e.position[0], e.position[1] + e.scale * 1.6, e.position[2]], text: `+${def.xpReward} XP`, color: "#a3e635", born: performance.now(), duration: 1100 });
@@ -604,6 +683,7 @@ export const useGame = create<GameStore>((set, get) => ({
             // particle burst
             const pbId = `pb_${performance.now()}_death_${e.id}`;
             newParticles.push({ id: pbId, position: [e.position[0], e.position[1] + e.scale * 0.6, e.position[2]], color: def.color, born: performance.now(), duration: 700, count: 8 });
+            playSound("enemyDeath", e.position);
             // drops
             for (const drop of def.drops) {
               if (Math.random() < drop.chance) {
@@ -637,25 +717,28 @@ export const useGame = create<GameStore>((set, get) => ({
               return q;
             });
             // Update accumulated player state for next iteration
-            cur.player.xp = xp;
-            cur.player.level = lvl;
-            cur.player.xpToNext = xpToNext;
-            cur.player.maxHealth = maxHp;
-            cur.player.maxMana = maxMp;
-            cur.player.attack = atk;
-            cur.player.defense = def_;
-            cur.player.health = hp;
-            cur.player.mana = mp;
-            cur.player.talentPoints = tp;
+            runningPlayer = {
+              ...runningPlayer,
+              xp,
+              level: lvl,
+              xpToNext,
+              maxHealth: maxHp,
+              maxMana: maxMp,
+              attack: atk,
+              defense: def_,
+              health: hp,
+              mana: mp,
+              talentPoints: tp,
+            };
             return { ...e, isDead: true, state: "dead" as const, deathTime: now };
           }
           return e;
         });
         // Build final player object with gold and killCount
         const finalPlayer = {
-          ...cur.player,
-          gold: cur.player.gold + goldGained,
-          killCount: cur.player.killCount + kills,
+          ...runningPlayer,
+          gold: runningPlayer.gold + goldGained,
+          killCount: runningPlayer.killCount + kills,
         };
         const d = recomputeDerived(finalPlayer, cur.equipment);
         // Batch all state changes into one set() call
@@ -1012,7 +1095,7 @@ export const useGame = create<GameStore>((set, get) => ({
           newInv.push({ itemId: prev, qty: 1 });
         }
       }
-      const d = recomputeDerived(s.player, { weapon: itemId, armor: s.equipment.armor });
+      const d = recomputeDerived(s.player, { weapon: itemId, armor: s.equipment.armor, ring: s.equipment.ring });
       set({
         equipment: { ...s.equipment, weapon: itemId },
         inventory: newInv,
@@ -1044,9 +1127,41 @@ export const useGame = create<GameStore>((set, get) => ({
           newInv.push({ itemId: prev, qty: 1 });
         }
       }
-      const d = recomputeDerived(s.player, { weapon: s.equipment.weapon, armor: itemId });
+      const d = recomputeDerived(s.player, { weapon: s.equipment.weapon, armor: itemId, ring: s.equipment.ring });
       set({
         equipment: { ...s.equipment, armor: itemId },
+        inventory: newInv,
+        ...d,
+        player: { ...s.player, health: Math.min(s.player.health, d.derivedMaxHealth), mana: Math.min(s.player.mana, d.derivedMaxMana) },
+      });
+      get().showToast(`\u00c9quip\u00e9 : ${item.nameFr ?? item.name}`, "success");
+    } else if (item.category === "ring") {
+      const prev = s.equipment.ring;
+      const newInv = [...s.inventory];
+      const rmIdx = newInv.findIndex((i) => i.itemId === itemId);
+      if (rmIdx >= 0) {
+        if (item.stackable && newInv[rmIdx].qty > 1) {
+          newInv[rmIdx] = { ...newInv[rmIdx], qty: newInv[rmIdx].qty - 1 };
+        } else {
+          newInv.splice(rmIdx, 1);
+        }
+      }
+      if (prev) {
+        const pi = newInv.findIndex((i) => i.itemId === prev);
+        if (pi >= 0) {
+          const prevItem = getItem(prev);
+          if (prevItem?.stackable) {
+            newInv[pi] = { ...newInv[pi], qty: newInv[pi].qty + 1 };
+          } else {
+            newInv.push({ itemId: prev, qty: 1 });
+          }
+        } else {
+          newInv.push({ itemId: prev, qty: 1 });
+        }
+      }
+      const d = recomputeDerived(s.player, { weapon: s.equipment.weapon, armor: s.equipment.armor, ring: itemId });
+      set({
+        equipment: { ...s.equipment, ring: itemId },
         inventory: newInv,
         ...d,
         player: { ...s.player, health: Math.min(s.player.health, d.derivedMaxHealth), mana: Math.min(s.player.mana, d.derivedMaxMana) },
@@ -1073,6 +1188,7 @@ export const useGame = create<GameStore>((set, get) => ({
     const d = recomputeDerived(s.player, {
       weapon: slot === "weapon" ? null : s.equipment.weapon,
       armor: slot === "armor" ? null : s.equipment.armor,
+      ring: slot === "ring" ? null : s.equipment.ring,
     });
     set({
       equipment: { ...s.equipment, [slot]: null },
@@ -1091,6 +1207,8 @@ export const useGame = create<GameStore>((set, get) => ({
       const idx = inv.findIndex((i) => i.itemId === itemId);
       if (item.stackable && idx >= 0) {
         inv[idx] = { ...inv[idx], qty: inv[idx].qty + qty };
+      } else if (item.stackable) {
+        inv.push({ itemId, qty });
       } else {
         for (let i = 0; i < qty; i++) inv.push({ itemId, qty: 1 });
       }
@@ -1399,6 +1517,7 @@ export const useGame = create<GameStore>((set, get) => ({
         return;
       }
       get().addParticleBurst([px[0], px[1] + 1.4, px[2]], color, 14);
+      playSound("explosion", px);
       get().showToast(
         `${def.icon} ${def.name} — ${hits} cible${hits > 1 ? "s" : ""} touchée${hits > 1 ? "s" : ""} (−${totalDmg} PV)`,
         "success",
@@ -1531,7 +1650,29 @@ export const useGame = create<GameStore>((set, get) => ({
     if (now < s.player.invulnerableUntil) return;
     const mitigated = Math.max(1, damage);
     const newHp = s.player.health - mitigated;
+    playSound("playerHurt", s.player.position);
     if (newHp <= 0) {
+      // v0.5.0 — Immortal 4-pc proc: phoenix (revive at 30% HP, once per combat)
+      const iPieces = countSetPieces("immortal", s.equipment, (id) => getItem(id) ?? {});
+      const iBonus = getSetBonus("immortal", iPieces);
+      if (iBonus?.effects.proc === "phoenix" && !s.player._phoenixUsed) {
+        const reviveHp = Math.floor(s.derivedMaxHealth * 0.3);
+        set((st) => ({
+          player: {
+            ...st.player,
+            health: reviveHp,
+            invulnerableUntil: now + 2,
+            _phoenixUsed: true,
+          },
+        }));
+        get().showToast("🔮 Proc Phénix ! Revive à 30% PV", "success");
+        get().addFloatingText(
+          [s.player.position[0], 2.0, s.player.position[2]],
+          "PHÉNIX!",
+          "#fbbf24"
+        );
+        return;
+      }
       set((st) => ({
         player: { ...st.player, health: 0, isDead: true },
         status: "gameover",
@@ -1632,7 +1773,7 @@ export const useGame = create<GameStore>((set, get) => ({
         schemaVersion?: number;
         player?: Record<string, unknown>;
         inventory?: InventoryItem[];
-        equipment?: { weapon: string | null; armor: string | null };
+        equipment?: { weapon: string | null; armor: string | null; ring?: string | null };
         quests?: QuestState[];
         skillCooldowns?: SkillCooldownState;
         activeBuffs?: ActiveBuff[];
@@ -1666,6 +1807,7 @@ export const useGame = create<GameStore>((set, get) => ({
         ...fresh,
         ...cleaned,
         position: fresh.position, // overridden below with terrain-aware Y
+        _phoenixUsed: false, // reset phoenix proc on load (1×/combat semantics)
       } as PlayerState;
       if (merged.talentPoints === undefined) {
         merged.talentPoints = talentPointsForLevel(merged.level);
@@ -1682,12 +1824,13 @@ export const useGame = create<GameStore>((set, get) => ({
         ...merged,
         position: [merged.position[0], feetY, merged.position[2]] as Vec3,
       };
-      const d = recomputeDerived(player, data.equipment ?? { weapon: null, armor: null });
+      const eq = { weapon: null, armor: null, ring: null, ...(data.equipment ?? {}) };
+      const d = recomputeDerived(player, eq);
       set({
         status: "playing",
         player,
         inventory: data.inventory ?? [],
-        equipment: data.equipment ?? { weapon: null, armor: null },
+        equipment: eq,
         quests: data.quests ?? makeInitialQuests(),
         enemies: buildInitialEnemies(),
         floatingTexts: [],

@@ -188,7 +188,7 @@ export function getDayCycle(elapsedSeconds: number, out: DayState): DayState {
  *  the sun mesh ref so GodRays can lock onto it.
  * ========================================================================== */
 
-export function DynamicSky({ sunMeshRef }: { sunMeshRef: React.RefObject<THREE.Mesh | null> }) {
+export function DynamicSky({ sunMeshRef, dayFactorRef }: { sunMeshRef: React.RefObject<THREE.Mesh | null>; dayFactorRef?: React.RefObject<number> }) {
   // Note: the Three.js `scene` is read inside the `useFrame` callback
   // (frameState.scene) — NOT from `useThree()`. The eslint rule
   // `react-hooks/immutability` flags mutations of values *returned by a
@@ -284,6 +284,8 @@ export function DynamicSky({ sunMeshRef }: { sunMeshRef: React.RefObject<THREE.M
 
     // Scene background + fog colour — the single shared ambient tint.
     scene.background = state.fogColor;
+    // Expose dayFactor to parent (VolumetricCones, etc.)
+    if (dayFactorRef) dayFactorRef.current = state.dayFactor;
     if (scene.fog instanceof THREE.FogExp2) {
       scene.fog.color.copy(state.fogColor);
     }
