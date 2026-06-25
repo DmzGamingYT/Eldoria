@@ -9,9 +9,17 @@
 #   build (matrix 3 OS)
 #     ├── checkout → bun → install → icons regenerate → next build
 #     └── electron-builder --<target>  → artefact par OS
-#   release (Ubuntu, dépend de build)
-#     └── télécharger tous les artefacts → softprops/action-gh-release@v3
+#   release (Ubuntu, dépend de build, ne s'exécute que sur vrai tag)
+#     └── télécharger tous les artefacts (installeurs + social card
+#         optionnelle) → softprops/action-gh-release@v3
 #         → crée la GitHub Release + joint les installeurs
+#   social-card (Ubuntu, dépend de build, ne s'exécute que sur vrai tag)
+#     └── régénère public/banner/social-card.png via sharp+librsvg
+#         → artifact dédié. Tourne en `continue-on-error: true` : JAMAIS
+#         bloquant. C'est l'extraction du fix de l'issue #51 v0.5.0 :
+#         avant, ce step était inline dans `release` et faisait casser
+#         toute la publication quand il échouait
+#         (cf. runs #28091939778 et #280592602080).
 #
 # Signature de code (optionnelle) :
 #   - macOS :  secrets CSC_LINK (base64 .p12) + CSC_KEY_PASSWORD
@@ -235,23 +243,20 @@ jobs:
             bun scripts/generate-release-body.mjs
           fi
 
-      - name: 🎨 Régénération de la social card (PNG 1280×640)
-        # Le SVG source public/banner/social-card.svg est versionné dans le
-        # dépôt. À chaque release on régénère le PNG via sharp+librsvg pour
-        # garantir la cohérence entre l'identité du projet (TL;DR, médaillon
-        # Arbre d'Argent, badges tech) et les aperçus partagés (GitHub Social
-        # Preview, itch.io capsule, Steamworks, Discord/Twitter/OG cards).
-        #
-        # Fix v0.5.0 (#51): sharp@0.34.x ne télécharge plus le binding natif
-        # via postinstall — il est fourni par le package compagnon
-        # `@img/sharp-<platform>-<arch>` (résolu via optionalDependencies).
-        # Sous `bun install --frozen-lockfile`, les optionnels conditionnels
-        # ne sont pas toujours matérialisés. On installe explicitement le
-        # binding plateforme pour le runner Ubuntu (release job) avant de
-        # lancer le script.
-        run: |
-          bun add --trust @img/sharp-linux-x64@^0.34.x
-          bun scripts/generate-social-card.mjs
+      - name: 📥 Téléchargement de la social card (artefact non-bloquant)
+        # Issue #51 v0.5.0 : la génération de la social card a été extraite
+        # dans le job dédié `social-card` (lui-même `continue-on-error: true`)
+        # pour ne JAMAIS bloquer la publication de la release. Si la
+        # régénération a échoué (binding sharp, SVG corrompu, etc.), on
+        # télécharge quand même l'artefact (qui sera absent), `fail_on_unmatched_files`
+        # de softprops se chargera de l'ignorer proprement, et la release
+        # part sans social card plutôt que d'échouer.
+        continue-on-error: true
+        uses: actions/download-artifact@v8
+        with:
+          name: social-card
+          path: public/banner
+          if-no-files-found: warn
 
       - name: 🔍 Aperçu du body généré (debug)
         run: |
@@ -275,11 +280,18 @@ jobs:
           draft: false
           prerelease: ${{ contains(github.ref_name, '-') }}
           # Files : installeurs + métadonnées electron-updater + social card.
-          # electron-updater a besoin de latest*.yml + .blockmap pour
-          # le téléchargement différentiel et la validation SHA-512.
-          # La social card PNG est toujours régénérée (fix v0.5.0 #51 :
-          # binding sharp installé explicitement), donc on l'attache
-          # directement à la release.
+          #
+          # electron-updater a besoin de latest*.yml + .blockmap pour le
+          # téléchargement différentiel et la validation SHA-512.
+          #
+          # Issue #51 v0.5.0 : la social card est désormais OPTIONNELLE.
+          # Elle est générée par le job `social-card` qui tourne en
+          # `continue-on-error: true` ; si elle échoue, on publie la
+          # release sans elle plutôt que de tout casser (cf. runs
+          # #28091939778 et #280592602080). On désactive donc
+          # `fail_on_unmatched_files` — la safety net pour les installeurs
+          # reste assurée par le job `build` lui-même (`upload-artifact`
+          # avec `if-no-files-found: error`).
           files: |
             artifacts/**/*.exe
             artifacts/**/*.dmg
@@ -290,7 +302,64 @@ jobs:
             artifacts/**/*.blockmap
             artifacts/**/latest*.yml
             public/banner/social-card.png
-          fail_on_unmatched_files: true
+          fail_on_unmatched_files: false
+
+
+  # ── Social card : régénération non-bloquante du PNG de release ───
+  # Issue #51 v0.5.0 : ce job tourne en `continue-on-error: true`. Si la
+  # génération échoue (binding sharp natif manquant, SVG corrompu, etc.),
+  # le workflow global reste `success` tant que `build` + `release` passent.
+  # C'est exactement le scénario qui faisait casser les runs #28091939778
+  # et #280592602080 quand la génération était inline dans le job `release`.
+  social-card:
+    name: 🎨 Social card PNG (non-bloquant)
+    needs: build
+    runs-on: ubuntu-latest
+    continue-on-error: true
+
+    # On ne régénère la social card que pour un vrai push de tag (pas pour
+    # un workflow_dispatch générique).
+    if: startsWith(github.ref, 'refs/tags/')
+
+    steps:
+      - name: 📥 Récupération du code
+        uses: actions/checkout@v7
+
+      - name: 🟢 Installation de Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: 📦 Installation des dépendances
+        run: bun install --frozen-lockfile
+
+      - name: 📦 Installation explicite du binding sharp
+        # Fix v0.5.0 (#51): sharp@0.34.x ne télécharge plus le binding natif
+        # via postinstall — il est fourni par le package compagnon
+        # `@img/sharp-<platform>-<arch>` (résolu via optionalDependencies).
+        # Sous `bun install --frozen-lockfile`, les optionnels conditionnels
+        # ne sont pas toujours matérialisés. On installe explicitement le
+        # binding plateforme pour le runner Ubuntu.
+        run: bun add --trust @img/sharp-linux-x64@^0.34.x
+
+      - name: 🎨 Régénération de la social card (PNG 1280×640)
+        # Le SVG source public/banner/social-card.svg est versionné dans le
+        # dépôt. À chaque release on régénère le PNG via sharp+librsvg pour
+        # garantir la cohérence entre l'identité du projet (TL;DR, médaillon
+        # Arbre d'Argent, badges tech) et les aperçus partagés (GitHub Social
+        # Preview, itch.io capsule, Steamworks, Discord/Twitter/OG cards).
+        run: bun scripts/generate-social-card.mjs
+
+      - name: 📤 Upload de la social card (artefact dédié)
+        uses: actions/upload-artifact@v7
+        with:
+          name: social-card
+          path: public/banner/social-card.png
+          # `warn` plutôt que `error` : si la génération a échoué, on remonte
+          # juste un avertissement mais le job reste marqué comme un succès
+          # (continue-on-error: true ci-dessus fait que le workflow continue).
+          if-no-files-found: warn
+          retention-days: 14
 
 
   # ── (Optionnel) Build CI séparé pour valider sans tag ─────────
