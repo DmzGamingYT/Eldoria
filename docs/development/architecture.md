@@ -50,7 +50,8 @@ src/
 | Effet | Source |
 |---|---|
 | Bloom (rayons de lumière autour des sorts) | `@react-three/postprocessing` |
-| God Rays | Effet maison (Phase 2 : remplaçable par `@react-three/postprocessing` GodRays) |
+| God Rays | `@react-three/postprocessing` `GodRays` (verrouillé sur le sun mesh de `DynamicSky`) |
+| Volumetric Cones | Cônes additifs par shader local (torches Mordrak, lampadaires Village, cristaux Frostpeak) — interagit avec Bloom sans occlure les GodRays du soleil |
 | Vignette | Parchemin + faible HP (rouge pulsé) |
 | Tone mapping | `ACESFilmicToneMapping` (Three.js) |
 

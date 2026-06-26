@@ -5,6 +5,7 @@ import { Suspense, useEffect, useRef } from "react";
 import * as THREE from "three";
 import { useGame } from "./store";
 import { WORLD } from "./constants";
+import { audio, type MusicZone } from "./audio";
 import { Terrain, Environment, Lighting } from "./world/World";
 import { DynamicSky } from "./world/Sky";
 import { Player } from "./player/Player";
@@ -12,6 +13,7 @@ import { EnemyManager } from "./enemies/EnemyManager";
 import { NpcModel } from "./player/Npc";
 import { FloatingTexts, ParticleBursts, LootDrops, EnemyDamageParticles, SlashArc, RunDust } from "./effects/Effects";
 import { BloomPostProcessing, EnemyDeathShockwave, LowHPVignette } from "./effects/PostProcessing";
+import { VolumetricCones } from "./effects/VolumetricCones";
 import { HUD } from "./ui/HUD";
 import { Inventory } from "./ui/Inventory";
 import { QuestLog } from "./ui/QuestLog";
@@ -39,6 +41,9 @@ export function Game() {
   // processing stack) needs to lock onto it, so the ref lives here and is
   // shared between the two.
   const sunMeshRef = useRef<THREE.Mesh | null>(null);
+  // Shared ref for dayFactor (0–1) driven by Sky.tsx, consumed by VolumetricCones
+  // to modulate cone opacity (brighter at night).
+  const dayFactorRef = useRef(1);
 
   // Victory when shadow_lord turned in
   useEffect(() => {
@@ -47,6 +52,41 @@ export function Game() {
       useGame.setState({ status: "victory" });
     }
   }, [quests, status]);
+
+  // v0.5.0 — Zone-based ambient music. Polled every 500 ms instead of
+  // subscribing to every Zustand state change (which fires ~60×/s during
+  // gameplay). This is plenty responsive for ambient crossfades.
+  useEffect(() => {
+    if (status !== "playing") return;
+    const id = setInterval(() => {
+      const state = useGame.getState();
+      const px = state.player.position[0];
+      const pz = state.player.position[2];
+
+      let zone: MusicZone = "forest";
+      if (px >= -15 && px <= 15 && pz >= -5 && pz <= 15) {
+        zone = "village";
+      } else if (px >= -60 && px <= -30 && pz >= -30 && pz <= 0) {
+        zone = "frostpeak";
+      }
+
+      const bossEnemy = state.enemies.find((e) => e.type === "boss" && !e.isDead);
+      const isBossNear = bossEnemy
+        ? Math.hypot(
+            bossEnemy.position[0] - px,
+            bossEnemy.position[2] - pz,
+          ) < 30
+        : false;
+
+      if (isBossNear) {
+        zone = "boss";
+      }
+
+      audio.setZone(zone);
+      audio.setBossMusic(isBossNear);
+    }, 500);
+    return () => clearInterval(id);
+  }, [status]);
 
   // Expose store for debugging (dev only)
   useEffect(() => {
@@ -76,10 +116,11 @@ export function Game() {
           {/* <DynamicSky> MUST mount before <BloomPostProcessing>: the
               <GodRays> wrapper resolves sun.current in its own useMemo, so
               sunMeshRef must be populated before it constructs. */}
-          <DynamicSky sunMeshRef={sunMeshRef} />
+          <DynamicSky sunMeshRef={sunMeshRef} dayFactorRef={dayFactorRef} />
           <BloomPostProcessing sunMeshRef={sunMeshRef} />
           <LowHPVignette />
           <EnemyDeathShockwave />
+          <VolumetricCones dayFactorRef={dayFactorRef} />
           <Lighting />
           <Terrain />
           <Environment />

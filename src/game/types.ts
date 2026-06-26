@@ -34,6 +34,8 @@ export interface PlayerState extends PlayerStats {
   facingDir: Vec3;
   /** Map of talentId -> rank (always 1 in v0.3.0 MVP). {@link TalentDef}. */
   allocatedTalents: Record<string, number>;
+  /** v0.5.0 — Immortal set phoenix proc flag. Reset on each combat start. */
+  _phoenixUsed?: boolean;
 }
 
 export type EnemyType =
@@ -67,7 +69,7 @@ export interface EnemyInstance {
   scale: number;
 }
 
-export type ItemCategory = "weapon" | "armor" | "potion" | "material" | "key";
+export type ItemCategory = "weapon" | "armor" | "ring" | "potion" | "material" | "key";
 
 export interface ItemDef {
   id: string;
@@ -94,6 +96,9 @@ export interface ItemDef {
   nameFr?: string;
   rarityFr?: string;
   categoryFr?: string;
+  /** Equipment set id (v0.5.0). Items sharing the same setId contribute
+   *  to cumulative set bonuses when multiple pieces are equipped. */
+  setId?: string;
 }
 
 export interface InventoryItem {

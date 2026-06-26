@@ -80,3 +80,6 @@ tmp/
 /release/**/*.png
 # Internal dev journal (not for public repo)
 worklog.md
+
+# SVG optimizer transient backups (scripts/optimize-svgs.mjs --backup)
+*.svg.bak
