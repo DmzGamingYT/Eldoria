@@ -16,6 +16,10 @@ export interface EnemyDef {
   scale: number;
   drops: { itemId: string; chance: number; qty?: [number, number] }[];
   isBoss?: boolean;
+  /** Items in this pool — when the enemy dies, at least one item from
+   *  this list is guaranteed to drop (in addition to normal `drops` rolls).
+   *  Used by the boss to ensure the player always gets a legendary piece. */
+  guaranteedDropPool?: string[];
 }
 
 export const ENEMIES: Record<EnemyType, EnemyDef> = {
@@ -91,6 +95,9 @@ export const ENEMIES: Record<EnemyType, EnemyDef> = {
       { itemId: "bone_shard", chance: 0.8, qty: [1, 2] },
       { itemId: "iron_sword", chance: 0.06 },
       { itemId: "chain_mail", chance: 0.04 },
+      // v0.5.0 — 5% chance for Bourreau set piece
+      { itemId: "crimson_axe", chance: 0.05 },
+      { itemId: "blood_signet", chance: 0.05 },
     ],
   },
   ogre: {
@@ -111,6 +118,9 @@ export const ENEMIES: Record<EnemyType, EnemyDef> = {
       { itemId: "ogre_horn", chance: 0.9, qty: [1, 1] },
       { itemId: "steel_axe", chance: 0.15 },
       { itemId: "plate_armor", chance: 0.1 },
+      // v0.5.0 — 5% chance for Bourreau set piece
+      { itemId: "bone_plate", chance: 0.05 },
+      { itemId: "blood_signet", chance: 0.05 },
     ],
   },
   boss: {
@@ -140,6 +150,12 @@ export const ENEMIES: Record<EnemyType, EnemyDef> = {
       { itemId: "mana_crystal_ring", chance: 0.34 },
       { itemId: "shield_of_ages", chance: 0.33 },
       { itemId: "eternal_plate", chance: 0.33 },
+    ],
+    // v0.5.0 — At least one legendary from this pool is guaranteed per kill
+    guaranteedDropPool: [
+      "crimson_axe", "bone_plate", "blood_signet",
+      "staff_of_storms", "robe_of_warding", "mana_crystal_ring",
+      "shield_of_ages", "eternal_plate",
     ],
   },
   // v0.4.0 — Frostpeak biome (NW zone)
