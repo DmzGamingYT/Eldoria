@@ -82,13 +82,17 @@ async function captureScreenshots() {
   await sleep(3500);
   await shoot(page, "02-intro-sequence.png", "Cinématique d'intro");
 
-  // ───────────── Skipper l'intro ─────────────
-  for (let i = 0; i < 12; i++) {
-    await page.keyboard.press("Enter").catch(() => {});
-    await page.mouse.click(720, 450).catch(() => {});
-    await sleep(280);
+  // ───────────── Skipper l'intro via le bouton Passer ─────────────
+  const skipped = await clickIfVisible(page, /Passer/i, 5000);
+  if (!skipped) {
+    for (let i = 0; i < 14; i++) {
+      await page.keyboard.press("Enter").catch(() => {});
+      await sleep(300);
+    }
+    await sleep(500);
+    await clickIfVisible(page, /Commencer l.aventure/i, 5000);
   }
-  await sleep(1500);
+  await sleep(3000);
 
   // ───────────── 3/11 — Monde 3D ─────────────
   step(3, "Capture du monde 3D…");
