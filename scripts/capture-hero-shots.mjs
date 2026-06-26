@@ -63,12 +63,12 @@ async function captureHeroShots() {
   // ───────────── 1/3 — Intro cinématique dramatique ─────────────
   step(1, "Intro cinématique — 6 lignes visibles…");
   await page.goto(BASE_URL, { waitUntil: "networkidle" });
-  await sleep(2000);
+  await sleep(3500);
 
   // Click "Commencer une nouvelle quête"
-  const started = await clickIfVisible(page, /Commencer une nouvelle quête/i);
+  const started = await clickIfVisible(page, /Commencer/i);
   if (!started) throw new Error("Bouton « Commencer » introuvable");
-  await sleep(1500);
+  await sleep(2500);
 
   // Avancer jusqu'à 6 lignes visibles (texte dramatique)
   // Lignes 0-5 = "Depuis trois hivers…" → "Vous êtes le dernier espoir."
@@ -119,19 +119,22 @@ async function captureHeroShots() {
   // ───────────── 3/3 — Combat + HUD ─────────────
   step(3, "Combat + HUD — action en cours…");
 
-  // Téléporter le joueur près des slimes (spawn ≈ (12, 0, -8))
-  // pour garantir la présence d'ennemis dans le champ.
+  // Téléporter le joueur près des slimes + forcer HP bas + buff actif
   await page.evaluate(() => {
-    const store = (window).gameStore;
+    const store = window.gameStore;
     if (store) {
       const s = store.getState();
       store.setState({
         cameraYaw: 1.6,
         cameraPitch: 0.5,
-        player: { ...s.player, position: [8, s.player.position[1], -5] },
+        player: { ...s.player, position: [8, s.player.position[1], -5], health: Math.floor(s.derivedMaxHealth * 0.18) },
+        activeBuffs: [{
+          id: 'shield_capture', type: 'shield', name: 'Bouclier Arcanique',
+          icon: '🛡️', expiresAt: performance.now() / 1000 + 30, power: 0.5
+        }],
       });
     } else {
-      console.warn("gameStore not found — camera angles not applied");
+      console.warn("gameStore not found — state not applied");
     }
   });
   await sleep(1500);
@@ -143,19 +146,19 @@ async function captureHeroShots() {
   }
   await sleep(600);
 
-  // Ajuster la caméra pour un angle dramatique pendant le combat
+  // Ajuster la caméra pour un angle dramatique
   await page.evaluate(() => {
-    const store = (window).gameStore;
+    const store = window.gameStore;
     if (store) {
       store.setState({
         cameraYaw: 1.4,
-        cameraPitch: 0.55,  // Plus basse pour voir le HUD et l'action
+        cameraPitch: 0.55,
       });
     }
   });
   await sleep(800);
 
-  // Une attaque de plus pour avoir un moment d'action
+  // Une attaque de plus pour un moment d'action
   await page.keyboard.press("Space");
   await sleep(200);
   await shoot(page, "04-combat-hud.png", "Combat + HUD (action)");
