@@ -173,7 +173,7 @@ Upload dans l'ordre depuis `public/screenshots/` :
 | 1 | `01-main-menu.png` | Menu principal (fond cinématique) |
 | 2 | `02-intro-sequence.png` | Cinématique d'intro |
 | 3 | `03-game-world.png` | Monde procédural + cycle jour/nuit |
-| 4 | `04-gameplay-hud.png` | HUD + combat + interface |
+| 4 | `04-combat-hud.png` | HUD + combat + interface |
 
 > 💡 Bonus : trailer vidéo (`bun run trailer` → `public/illustrations/trailer.{gif,webm}`) ou embed YouTube/Vimeo dans la section "Video".
 

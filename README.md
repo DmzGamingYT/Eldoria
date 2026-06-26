@@ -139,16 +139,19 @@ Capstones visibles comme buffs
 ## 📸 Captures
 
 <p align="center">
-  <table><tr>
-    <td align="center" width="50%"><a href="public/screenshots/01-main-menu.png"><picture><source srcset="public/screenshots/01-main-menu.webp" type="image/webp"><img src="public/screenshots/01-main-menu.png" alt="Menu principal — fond cinématique" width="100%" style="max-width:560px;border:2px solid #a07c3a;border-radius:2px" loading="lazy"></picture></a></td>
-    <td align="center" width="50%"><a href="public/screenshots/04-gameplay-hud.png"><picture><source srcset="public/screenshots/04-gameplay-hud.webp" type="image/webp"><img src="public/screenshots/04-gameplay-hud.png" alt="HUD parchemin + combat + talents" width="100%" style="max-width:560px;border:2px solid #a07c3a;border-radius:2px" loading="lazy"></picture></a></td>
-  </tr><tr>
-    <td align="center" width="50%"><a href="public/screenshots/03-game-world.png"><picture><source srcset="public/screenshots/03-game-world.webp" type="image/webp"><img src="public/screenshots/03-game-world.png" alt="Monde procédural + cycle jour/nuit" width="100%" style="max-width:560px;border:2px solid #a07c3a;border-radius:2px" loading="lazy"></picture></a></td>
-    <td align="center" width="50%"><a href="public/screenshots/02-intro-sequence.png"><picture><source srcset="public/screenshots/02-intro-sequence.webp" type="image/webp"><img src="public/screenshots/02-intro-sequence.png" alt="Cinématique d'intro" width="100%" style="max-width:560px;border:2px solid #a07c3a;border-radius:2px" loading="lazy"></picture></a></td>
-  </tr></table>
+  <table>
+    <tr>
+      <td align="center" width="50%"><a href="public/screenshots/01-main-menu.png"><img src="public/screenshots/01-main-menu.png" alt="Menu principal Eldoria — ambiance cinématique" width="100%" style="max-width:560px;border:2px solid #a07c3a;border-radius:2px" loading="lazy"></a><br><sub><em>Menu principal</em></sub></td>
+      <td align="center" width="50%"><a href="public/screenshots/04-combat-hud.png"><img src="public/screenshots/04-combat-hud.png" alt="Combat en temps réel + HUD parchemin" width="100%" style="max-width:560px;border:2px solid #a07c3a;border-radius:2px" loading="lazy"></a><br><sub><em>Combat + HUD</em></sub></td>
+    </tr>
+    <tr>
+      <td align="center" width="50%"><a href="public/screenshots/03-game-world.png"><img src="public/screenshots/03-game-world.png" alt="Monde procédural 200×200 + cycle jour/nuit" width="100%" style="max-width:560px;border:2px solid #a07c3a;border-radius:2px" loading="lazy"></a><br><sub><em>Monde 3D exploré</em></sub></td>
+      <td align="center" width="50%"><a href="public/screenshots/02-intro-sequence.png"><img src="public/screenshots/02-intro-sequence.png" alt="Cinématique narrative d'intro" width="100%" style="max-width:560px;border:2px solid #a07c3a;border-radius:2px" loading="lazy"></a><br><sub><em>Cinématique d'intro</em></sub></td>
+    </tr>
+  </table>
 </p>
 
-Plus de visuels dans [`public/screenshots/`](public/screenshots/) — bestiaire, sorts, talents, carte du monde sur le [Wiki](https://github.com/DmzGamingYT/Eldoria/wiki).
+Les captures complètes (inventaire, boutique, quêtes, fiche héros, PNJ, game over) sont dans la [galerie ci-dessous](#-captures-du-jeu) et dans [`public/screenshots/`](public/screenshots/).
 
 ---
 
@@ -350,16 +353,18 @@ Clonez, installez, lancez `bun dev`.
 <p align="center">
   <table>
     <tr>
-      <td align="center" width="50%"><a href="public/screenshots/01-main-menu.png"><picture><source srcset="public/screenshots/01-main-menu.webp" type="image/webp"><img src="public/screenshots/01-main-menu.png" alt="Menu cinématique" width="100%" style="max-width:520px;border:2px solid #a07c3a;border-radius:2px" loading="lazy"></picture></a></td>
-      <td align="center" width="50%"><a href="public/screenshots/04-gameplay-hud.png"><picture><source srcset="public/screenshots/04-gameplay-hud.webp" type="image/webp"><img src="public/screenshots/04-gameplay-hud.png" alt="Combat + talents" width="100%" style="max-width:520px;border:2px solid #a07c3a;border-radius:2px" loading="lazy"></picture></a></td>
+      <td align="center" width="33%"><a href="public/screenshots/05-inventory.png"><img src="public/screenshots/05-inventory.png" alt="Inventaire — 16+ objets, 5 raretés, sets légendaires" width="100%" style="max-width:400px;border:2px solid #a07c3a;border-radius:2px" loading="lazy"></a><br><sub><em>🎒 Inventaire</em></sub></td>
+      <td align="center" width="33%"><a href="public/screenshots/06-shop.png"><img src="public/screenshots/06-shop.png" alt="Boutique de Brynn — achat / revente 50%" width="100%" style="max-width:400px;border:2px solid #a07c3a;border-radius:2px" loading="lazy"></a><br><sub><em>🛒 Boutique</em></sub></td>
+      <td align="center" width="33%"><a href="public/screenshots/07-quest-log.png"><img src="public/screenshots/07-quest-log.png" alt="Journal de quêtes — progression et marqueurs" width="100%" style="max-width:400px;border:2px solid #a07c3a;border-radius:2px" loading="lazy"></a><br><sub><em>📜 Quêtes</em></sub></td>
     </tr>
     <tr>
-      <td align="center" width="50%"><a href="public/screenshots/03-game-world.png"><picture><source srcset="public/screenshots/03-game-world.webp" type="image/webp"><img src="public/screenshots/03-game-world.png" alt="Monde 3D · cycle jour/nuit" width="100%" style="max-width:520px;border:2px solid #a07c3a;border-radius:2px" loading="lazy"></picture></a></td>
-      <td align="center" width="50%"><a href="public/screenshots/02-intro-sequence.png"><picture><source srcset="public/screenshots/02-intro-sequence.webp" type="image/webp"><img src="public/screenshots/02-intro-sequence.png" alt="Cinématique narrative" width="100%" style="max-width:520px;border:2px solid #a07c3a;border-radius:2px" loading="lazy"></picture></a></td>
+      <td align="center" width="33%"><a href="public/screenshots/08-character-sheet.png"><img src="public/screenshots/08-character-sheet.png" alt="Fiche du héros — stats, équipement, set badges" width="100%" style="max-width:400px;border:2px solid #a07c3a;border-radius:2px" loading="lazy"></a><br><sub><em>🧙 Fiche héros</em></sub></td>
+      <td align="center" width="33%"><a href="public/screenshots/09-dialogue.png"><img src="public/screenshots/09-dialogue.png" alt="Dialogue PNJ — Aldric l'Ancien" width="100%" style="max-width:400px;border:2px solid #a07c3a;border-radius:2px" loading="lazy"></a><br><sub><em>💬 Dialogue PNJ</em></sub></td>
+      <td align="center" width="33%"><a href="public/screenshots/10-game-over.png"><img src="public/screenshots/10-game-over.png" alt="Écran Game Over — fin de chapitre" width="100%" style="max-width:400px;border:2px solid #a07c3a;border-radius:2px" loading="lazy"></a><br><sub><em>💀 Game Over</em></sub></td>
     </tr>
   </table>
 </p>
-<p align="center"><sub>Plus de captures (inventaire, boutique, talents, fiche héros) — voir <a href="public/screenshots/">public/screenshots</a> · bestiaire complet sur le <a href="https://github.com/DmzGamingYT/Eldoria/wiki">Wiki</a>.</sub></p>
+<p align="center"><sub>11 captures HD — <a href="public/screenshots/">dossier complet</a> · <a href="https://github.com/DmzGamingYT/Eldoria/wiki">Wiki</a> pour le bestiaire et les sorts.</sub></p>
 
 ---
 
@@ -389,7 +394,7 @@ Plus de détails dans [`docs/development/architecture.md`](docs/development/arch
 | 🤝 **Contribuer** (conventions Git, types, review) | [`CONTRIBUTING.md`](CONTRIBUTING.md) |
 | 🔒 **Politique de sécurité** | [`SECURITY.md`](SECURITY.md) |
 | 📜 **Historique des versions** | [`CHANGELOG.md`](CHANGELOG.md) |
-| ⚙️ **Workflows CI / GitHub** | [`.github/README.md`](.github/README.md) |
+| ⚙️ **Workflows CI / GitHub** | [`.github/WORKFLOWS.md`](.github/WORKFLOWS.md) |
 
 ---
 
