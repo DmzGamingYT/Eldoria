@@ -25,6 +25,8 @@ const CATEGORY_LABEL: Record<ItemCategory, string> = {
   key: "Objets de quête",
 };
 
+const RARITY_ORDER: Record<string, number> = { common: 0, uncommon: 1, rare: 2, epic: 3, legendary: 4 };
+
 export function Inventory() {
   const inventory = useGame((s) => s.inventory);
   const equipment = useGame((s) => s.equipment);
@@ -36,14 +38,25 @@ export function Inventory() {
   const player = useGame((s) => s.player);
   const [filter, setFilter] = useState<ItemCategory | "all">("all");
   const [selected, setSelected] = useState<string | null>(null);
+  const [sortBy, setSortBy] = useState<"name" | "rarity" | "value" | "qty">("name");
 
   const items = useMemo(
-    () =>
-      inventory
+    () => {
+      const list = inventory
         .map((i) => ({ ...i, def: ITEMS[i.itemId] }))
         .filter((i) => i.def)
-        .filter((i) => filter === "all" || i.def.category === filter),
-    [inventory, filter]
+        .filter((i) => filter === "all" || i.def.category === filter);
+      list.sort((a, b) => {
+        switch (sortBy) {
+          case "rarity": return (RARITY_ORDER[b.def.rarity] ?? 0) - (RARITY_ORDER[a.def.rarity] ?? 0) || a.def.name.localeCompare(b.def.name);
+          case "value": return b.def.value - a.def.value || a.def.name.localeCompare(b.def.name);
+          case "qty": return b.qty - a.qty || a.def.name.localeCompare(b.def.name);
+          default: return (a.def.nameFr ?? a.def.name).localeCompare(b.def.nameFr ?? b.def.name);
+        }
+      });
+      return list;
+    },
+    [inventory, filter, sortBy]
   );
 
   // Counters per category (for the filter buttons).
@@ -81,7 +94,7 @@ export function Inventory() {
       <div className="flex flex-col gap-4 sm:flex-row">
         {/* grille d'objets */}
         <div className="flex-1">
-          <div className="mb-2 flex flex-wrap gap-1.5">
+          <div className="mb-2 flex flex-wrap items-center gap-1.5">
             <CatBtn active={filter === "all"} onClick={() => setFilter("all")}>
               Tout ({counts.all})
             </CatBtn>
@@ -124,6 +137,23 @@ export function Inventory() {
                   </button>
                 );
               })}
+            </div>
+            {/* Sort buttons */}
+            <div className="mt-2 flex items-center gap-1.5">
+              <span className="font-serif text-[9px] uppercase tracking-wider text-[var(--parchment-ink-soft)]">Trier :</span>
+              {(["name", "rarity", "value", "qty"] as const).map((s) => (
+                <button
+                  key={s}
+                  onClick={() => setSortBy(s)}
+                  className={`rounded border px-1.5 py-0.5 font-serif text-[9px] font-bold uppercase tracking-wider transition ${
+                    sortBy === s
+                      ? "border-[var(--gold-2)] bg-[var(--gold-2)]/40 text-[var(--parchment-ink)]"
+                      : "border-[var(--gold-4)] bg-transparent text-[var(--parchment-ink-soft)] hover:bg-[rgba(255,245,215,0.4)]"
+                  }`}
+                >
+                  {{ name: "Nom", rarity: "Rareté", value: "Valeur", qty: "Qté" }[s]}
+                </button>
+              ))}
             </div>
           </div>
         </div>

@@ -18,6 +18,9 @@ const INTRO_LINES = [
   "Ou périssez en essayant.",
 ];
 
+/** Lines that get the dramatic scale + gold color treatment. */
+const DRAMATIC_LINES = new Set([5, 8, 11]); // 0-indexed: "Vous êtes le dernier espoir.", "Forgez votre légende.", "Ou périssez en essayant.");
+
 export function Intro() {
   const status = useGame((s) => s.status);
   const [lineIndex, setLineIndex] = useState(0);
@@ -84,12 +87,14 @@ export function Intro() {
           }
           const isVisible = i < lineIndex;
           const isCurrent = i === lineIndex - 1;
+          const isDramatic = DRAMATIC_LINES.has(i);
           return (
             <p
               key={i}
-              className={`intro-line ${isVisible ? "intro-line-visible" : ""} ${isCurrent ? "intro-line-current" : ""}`}
+              className={`intro-line ${isVisible ? "intro-line-visible" : ""} ${isCurrent ? "intro-line-current" : ""} ${isDramatic && isVisible ? "intro-dramatic" : ""}`}
             >
               {text}
+              {isCurrent && <span className="intro-cursor" />}
             </p>
           );
         })}

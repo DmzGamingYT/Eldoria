@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import { Suspense, useEffect, useRef } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { useGame } from "./store";
 import { WORLD } from "./constants";
@@ -36,6 +36,23 @@ export function Game() {
   // Re-mounted key used to restart the hit-shake CSS animation cleanly each
   // time the player takes damage.
   const lastDamageTime = useGame((s) => s.player.lastDamageTime);
+  // v0.6.0 — critical hit flash overlay
+  const [critFlashKey, setCritFlashKey] = useState(0);
+  const prevCritRef = useRef(0);
+  useEffect(() => {
+    const unsub = useGame.subscribe((s) => {
+      // Detect crits by watching for a floating text that contains '!'
+      const ft = s.floatingTexts;
+      if (ft.length > 0) {
+        const latest = ft[ft.length - 1];
+        if (latest.text.endsWith('!') && latest.color === '#fbbf24' && latest.born > prevCritRef.current) {
+          prevCritRef.current = latest.born;
+          setCritFlashKey((k) => k + 1);
+        }
+      }
+    });
+    return unsub;
+  }, []);
 
   // The sun mesh is created inside <DynamicSky> but GodRays (in the post
   // processing stack) needs to lock onto it, so the ref lives here and is
@@ -173,6 +190,17 @@ export function Game() {
           style={{
             boxShadow: "inset 0 0 120px 30px rgba(220,38,38,0.55)",
             animation: "pulseRed 1.2s ease-in-out infinite",
+          }}
+        />
+      )}
+
+      {/* v0.6.0 — Critical hit flash overlay */}
+      {critFlashKey > 0 && (
+        <div
+          key={`crit-${critFlashKey}`}
+          className="crit-flash-overlay pointer-events-none absolute inset-0 z-25"
+          style={{
+            background: "radial-gradient(circle at 50% 50%, rgba(251,191,36,0.25) 0%, transparent 70%)",
           }}
         />
       )}

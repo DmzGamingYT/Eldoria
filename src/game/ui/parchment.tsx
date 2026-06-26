@@ -180,9 +180,9 @@ export function InkButton({
 /*                                Bars (HP / MP / XP)                         */
 /* -------------------------------------------------------------------------- */
 
-export function ParHealthBar({ value, current, max }: { value: number; current: number; max: number }) {
+export function ParHealthBar({ value, current, max, critical }: { value: number; current: number; max: number; critical?: boolean }) {
   return (
-    <div className="parchment-bar hp" title={`Vie : ${current} / ${max}`}>
+    <div className={`parchment-bar hp ${critical ? "critical" : ""}`} title={`Vie : ${current} / ${max}`}>
       <div
         className="parchment-bar-fill"
         style={{ width: `${Math.max(0, Math.min(100, value))}%` }}
