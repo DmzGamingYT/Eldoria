@@ -76,7 +76,8 @@ async function captureScreenshots() {
 
   // ───────────── 2/11 — Intro / cinématique ─────────────
   step(2, "Lancement d'une partie → cinématique d'intro…");
-  const started = await clickIfVisible(page, /Commencer une nouvelle quête/i);
+  await sleep(2000);
+  const started = await clickIfVisible(page, /Commencer/i);
   if (!started) throw new Error("Bouton « Commencer » introuvable");
   await sleep(3500);
   await shoot(page, "02-intro-sequence.png", "Cinématique d'intro");
@@ -103,12 +104,31 @@ async function captureScreenshots() {
   await sleep(120); await page.keyboard.down("Space");
   await sleep(80); await page.keyboard.up("Space");
   await sleep(1500);
-  await shoot(page, "04-combat-hud.png", "Combat en temps réel + HUD");
+  // Force low HP + activate a buff to show the visual improvements
+  await page.evaluate(() => {
+    const store = window.gameStore;
+    if (store) {
+      const s = store.getState();
+      store.setState({
+        player: { ...s.player, health: Math.floor(s.derivedMaxHealth * 0.18) },
+        activeBuffs: [{
+          id: 'shield_capture', type: 'shield', name: 'Bouclier Arcanique',
+          icon: '🛡️', expiresAt: performance.now() / 1000 + 30, power: 0.5
+        }],
+      });
+    }
+  });
+  await sleep(800);
+  await shoot(page, "04-combat-hud.png", "Combat en temps réel + HUD (HP bas + buff actif)");
 
   // ───────────── 5/11 — Inventaire ─────────────
   step(5, "Ouverture de l'inventaire…");
-  await page.keyboard.press("i"); await sleep(800);
-  await shoot(page, "05-inventory.png", "Inventaire (16+ items / 5 raretés)");
+  await page.keyboard.press("i"); await sleep(1000);
+  // Click on sort by rarity button to show the sort feature
+  const sortBtn = page.locator('button', { hasText: /Rareté/i }).first();
+  await sortBtn.click().catch(() => {});
+  await sleep(500);
+  await shoot(page, "05-inventory.png", "Inventaire (tri par rareté + badges)");
   await page.keyboard.press("Escape"); await sleep(500);
 
   // ───────────── 6/11 — Boutique ─────────────
