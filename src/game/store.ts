@@ -685,6 +685,7 @@ export const useGame = create<GameStore>((set, get) => ({
             newParticles.push({ id: pbId, position: [e.position[0], e.position[1] + e.scale * 0.6, e.position[2]], color: def.color, born: performance.now(), duration: 700, count: 8 });
             playSound("enemyDeath", e.position);
             // drops
+            const droppedItemIds = new Set<string>();
             for (const drop of def.drops) {
               if (Math.random() < drop.chance) {
                 const qty = drop.qty ? Math.floor(rand(drop.qty[0], drop.qty[1] + 1)) : 1;
@@ -693,6 +694,29 @@ export const useGame = create<GameStore>((set, get) => ({
                   id: lootId,
                   itemId: drop.itemId,
                   qty,
+                  position: [
+                    e.position[0] + rand(-0.6, 0.6),
+                    0.3,
+                    e.position[2] + rand(-0.6, 0.6),
+                  ],
+                  born: now,
+                });
+                droppedItemIds.add(drop.itemId);
+              }
+            }
+            // v0.5.0 — Guaranteed drop pool (boss): if none of the pool
+            // items rolled naturally, force one at random so the player
+            // always walks away with at least 1 legendary piece.
+            if (def.guaranteedDropPool && def.guaranteedDropPool.length > 0) {
+              const missed = def.guaranteedDropPool.filter((id) => !droppedItemIds.has(id));
+              if (missed.length === def.guaranteedDropPool.length) {
+                // Nothing from the pool dropped — pick one at random
+                const forced = missed[Math.floor(Math.random() * missed.length)];
+                const lootId = `loot_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+                newLoot.push({
+                  id: lootId,
+                  itemId: forced,
+                  qty: 1,
                   position: [
                     e.position[0] + rand(-0.6, 0.6),
                     0.3,
