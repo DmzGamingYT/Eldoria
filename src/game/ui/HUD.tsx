@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useGame } from "../store";
 import { ITEMS, getItemIcon } from "../data/items";
 import { ENEMIES, ENEMY_SPAWN_POINTS, NPCS, QUESTS as QUESTS_DEF } from "../data/enemies";
@@ -134,13 +134,27 @@ export function HUD() {
     return () => clearInterval(id);
   }, [activeBuffs.length]);
 
+  // v0.6.0 — track when the player last took damage for portrait flash effect
+  const lastDamageTime = useGame((s) => s.player.lastDamageTime);
+  const [portraitFlash, setPortraitFlash] = useState(false);
+  const prevDamageRef = useRef(0);
+  useEffect(() => {
+    if (lastDamageTime > prevDamageRef.current && lastDamageTime > 0) {
+      // Defer to avoid synchronous setState inside useEffect (lint rule).
+      queueMicrotask(() => setPortraitFlash(true));
+      prevDamageRef.current = lastDamageTime;
+      const t = setTimeout(() => setPortraitFlash(false), 500);
+      return () => clearTimeout(t);
+    }
+  }, [lastDamageTime]);
+
   return (
     <div className="pointer-events-none absolute inset-0 select-none font-[var(--font-garamond)]">
       {/* ===== Haut-gauche : fiche du personnage ===== */}
       <div className="absolute left-3 top-3 w-[220px] sm:w-[280px] lg:w-[330px]">
         <div className="parchment-banner pointer-events-auto p-3 text-[var(--parchment-ink)]">
           <div className="flex items-center gap-3">
-            <Medallion size="sm" className="relative">
+            <Medallion size="sm" className={`relative ${portraitFlash ? "portrait-hit" : ""}`}>
               <Swords className="h-6 w-6 text-[var(--parchment-ink)] drop-shadow" />
               <div className="absolute -bottom-1.5 -right-1.5 flex h-6 w-6 items-center justify-center rounded-full border-2 border-[var(--gold-4)] bg-[var(--parchment-1)] font-serif text-[11px] font-black text-[var(--gold-3)] shadow">
                 {player.level}
@@ -156,7 +170,7 @@ export function HUD() {
                 </span>
               </div>
               <div className="space-y-1.5 pt-1.5">
-                <ParHealthBar value={hpPct} current={Math.ceil(player.health)} max={Math.ceil(derivedMaxHealth)} />
+                <ParHealthBar value={hpPct} current={Math.ceil(player.health)} max={Math.ceil(derivedMaxHealth)} critical={hpPct < 25} />
                 <ParManaBar value={mpPct} current={Math.ceil(player.mana)} max={Math.ceil(derivedMaxMana)} />
                 <ParXpBar value={xpPct} current={player.xp} max={player.xpToNext} />
               </div>
@@ -203,7 +217,7 @@ export function HUD() {
                 return (
                   <div
                     key={b.id}
-                    className="flex items-center gap-1 rounded border px-1.5 py-0.5"
+                    className="buff-chip flex items-center gap-1 rounded border px-1.5 py-0.5"
                     style={{
                       borderColor: "var(--gold-3)",
                       background: isPermanent
