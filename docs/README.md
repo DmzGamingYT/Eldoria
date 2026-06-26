@@ -43,7 +43,7 @@ docs/
 | 🔒 Politique de signalement de vulnérabilités | [`SECURITY.md`](../SECURITY.md) |
 | 📖 Manuel de jeu (lore, bestiaire, talents, quêtes) | [Wiki GitHub](https://github.com/DmzGamingYT/Eldoria/wiki) |
 | ⚔️ Dernière release (installeurs Win/macOS/Linux) | [Releases GitHub](https://github.com/DmzGamingYT/Eldoria/releases/latest) |
-| ⚙️ Workflows CI (`ci.yml`, `release.yml`) | [`.github/README.md`](../.github/README.md) |
+| ⚙️ Workflows CI (`ci.yml`, `release.yml`) | [`.github/WORKFLOWS.md`](../.github/WORKFLOWS.md) |
 
 ---
 
