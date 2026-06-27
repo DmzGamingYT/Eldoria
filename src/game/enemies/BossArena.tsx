@@ -46,6 +46,15 @@ export function BossArena() {
   const indicatorRef = useRef<THREE.Mesh | null>(null);
   const innerIndicatorRef = useRef<THREE.Mesh | null>(null);
 
+  // v0.6.1 — sticky "currently-outside" flags. Previously the soft-push /
+  // boss-clamp branches called useGame.setState EVERY FRAME the constraint
+  // was violated, which both rubber-banded the entities AND triggered
+  // Zustand subscribers downstream (HUD panels, etc.) at ~60 Hz. We now
+  // only write on transitions: inside → outside fires one setState, then
+  // the flag stays latched until the entity returns inside.
+  const wasBossOutsideRef = useRef(false);
+  const wasPlayerOutsideRef = useRef(false);
+
   // 16 hedge positions around the perimeter, generated once on mount.
   const hedges = useMemo(() => {
     const arr: { dx: number; dz: number }[] = [];
@@ -77,12 +86,13 @@ export function BossArena() {
       const dx = boss.position[0] - ARENA_CX;
       const dz = boss.position[2] - ARENA_CZ;
       const dist = Math.hypot(dx, dz);
-      if (dist > ARENA_RADIUS) {
+      if (dist > ARENA_RADIUS && !wasBossOutsideRef.current) {
         const inv = dist > 0 ? 1 / dist : 0;
         const nx = dx * inv;
         const nz = dz * inv;
         const clampedX = ARENA_CX + nx * ARENA_RADIUS;
         const clampedZ = ARENA_CZ + nz * ARENA_RADIUS;
+        wasBossOutsideRef.current = true;
         useGame.setState((state) => ({
           enemies: state.enemies.map((e) =>
             e.id === boss.id
@@ -100,7 +110,11 @@ export function BossArena() {
               : e,
           ),
         }));
+      } else if (dist <= ARENA_RADIUS) {
+        wasBossOutsideRef.current = false;
       }
+    } else {
+      wasBossOutsideRef.current = false;
     }
 
     /* === 2. Soft-push the player back when they exit the boundary === */
@@ -119,7 +133,11 @@ export function BossArena() {
       ) <
         ENGAGEMENT_RADIUS;
 
-    if (inCombat && distP > SOFT_BOUNDARY) {
+    // Only write Zustand on the inside→outside crossing. The previous
+    // implementation wrote every frame (rubber-band + cascade). The flag
+    // stays latched until the player returns inside the boundary, so the
+    // entity coasts naturally on subsequent frames inside the arena.
+    if (inCombat && distP > SOFT_BOUNDARY && !wasPlayerOutsideRef.current) {
       const inv = distP > 0 ? 1 / distP : 0;
       const nxP = dxP * inv;
       const nzP = dzP * inv;
@@ -129,12 +147,15 @@ export function BossArena() {
       // frame N's next render. PLAYER.footOffset is 0 (see constants.ts),
       // so we can pass the raw height straight to position[1].
       const newFeetY = terrainHeight(newPX, newPZ);
+      wasPlayerOutsideRef.current = true;
       useGame.setState((state) => ({
         player: {
           ...state.player,
           position: [newPX, newFeetY, newPZ] as [number, number, number],
         },
       }));
+    } else if (distP <= SOFT_BOUNDARY) {
+      wasPlayerOutsideRef.current = false;
     }
 
     /* === 3. Pulse the ground indicator (gold ring stronger in combat,

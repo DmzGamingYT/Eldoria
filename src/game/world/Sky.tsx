@@ -90,6 +90,12 @@ const _sunDir = new THREE.Vector3();
 // v0.4.0 — Frostpeak zone fog tint (pale frost-blue, complement of daylight
 // palette without going navy cold). Singleton Color for zero per-frame alloc.
 const _FROST_FOG_COLOR = new THREE.Color("#b8d8e8");
+// v0.6.2 — Per-tick snapshot of the day-cycle fog colour for the bidirectional
+// Frostpeak blend. Snapshotting (rather than reading state.fogColor live) is
+// critical so that the transition doesn't chase the day cycle (which would
+// read as "frost lazily releasing while noon overtakes it"). Distinct buffer
+// (not an alias of _col) so the intent is unambiguous to future readers.
+const _dayFogSnap = new THREE.Color();
 
 /** The Preetham sky shader uniforms we drive from useFrame. Mirrors the
  *  static shape declared in `three-stdlib/objects/Sky.d.ts`. */
@@ -305,11 +311,12 @@ export function DynamicSky({ sunMeshRef, dayFactorRef }: { sunMeshRef: React.Ref
       // bidirectional blend speed.
       const inFrostpeak = px >= -60 && px <= -30 && pz >= -30 && pz <= 0;
       // Snapshot the day-cycle colour once per tick so the lerp has a
-      // stable target (without the clone, the exit transition subtly
-      // *chases* the live state.fogColor as the day cycle advances,
-      // reading as "frost lazily releasing while noon overtakes it").
-      const dayColor = state.fogColor.clone();
-      scene.fog.color.lerp(inFrostpeak ? _FROST_FOG_COLOR : dayColor, 0.2);
+      // stable target. We copy into a shared module-level buffer so the
+      // allocation stays zero — previously this called state.fogColor.clone()
+      // every frame (~60 alloc/s) which showed up in GC traces during
+      // long play sessions.
+      _dayFogSnap.copy(state.fogColor);
+      scene.fog.color.lerp(inFrostpeak ? _FROST_FOG_COLOR : _dayFogSnap, 0.2);
       scene.background = scene.fog.color;
     }
   });

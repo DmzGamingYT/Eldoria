@@ -144,7 +144,11 @@ export function NpcModel({ npc }: { npc: NpcDef }) {
       }
     }
 
-    moveState.current = { isMoving, velocity: speed, rotY: targetRotY };
+    // v0.6.1 — mutate the existing ref fields in place instead of allocating
+    // a fresh NpcMoveState every frame. 4 NPCs × 60 Hz = 240 alloc/s shaved.
+    moveState.current.isMoving = isMoving;
+    moveState.current.velocity = speed;
+    moveState.current.rotY = targetRotY;
 
     // --- Visual transforms ---
     if (bobRef.current) {

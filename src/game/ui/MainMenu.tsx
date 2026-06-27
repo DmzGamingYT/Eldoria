@@ -296,6 +296,7 @@ export function HelpPanel() {
             <Key tag="Q" desc="Ouvrir le journal de quêtes" />
             <Key tag="C" desc="Ouvrir la fiche du personnage" />
             <Key tag="T" desc="Ouvrir l'Arbre de Talents (v0.3.0)" />
+            <Key tag="L" desc="Ouvrir le Codex des Âges (v0.6.1)" />
             <Key tag="H / ?" desc="Afficher / masquer cette aide" />
             <Key tag="Échap" desc="Fermer un panneau / mettre en pause" />
             <Key tag="F5" desc="Sauvegarder" />
@@ -308,6 +309,8 @@ export function HelpPanel() {
           <li>Vainquez des ennemis pour gagner de l'XP et de l'or ; montez de niveau pour devenir plus fort.</li>
           <li>Appuyez sur <kbd className="rounded border border-[var(--gold-4)] bg-[rgba(255,245,215,0.5)] px-1 font-serif text-[10px] font-bold text-[var(--gold-3)]">T</kbd> pour dépenser vos points dans l'Arbre de Talents (3 branches : Combat, Magie, Survie).</li>
           <li>Parlez aux PNJ (touche E à proximité) pour accepter et rendre des quêtes.</li>
+          <li>Trouvez les pierres runiques d'Eldoria (appuyez sur <kbd className="rounded border border-[var(--gold-4)] bg-[rgba(255,245,215,0.5)] px-1 font-serif text-[10px] font-bold text-[var(--gold-3)]">E</kbd> à proximité) pour enrichir le Codex des Âges.</li>
+          <li>Appuyez sur <kbd className="rounded border border-[var(--gold-4)] bg-[rgba(255,245,215,0.5)] px-1 font-serif text-[10px] font-bold text-[var(--gold-3)]">L</kbd> pour relire les fragments déjà découverts.</li>
           <li>Le Seigneur des Ombres Mordrak attend derrière la porte du donjon nord.</li>
           <li>Ramassez les orbes de butin (octaèdres) en passant dessus.</li>
         </ul>
