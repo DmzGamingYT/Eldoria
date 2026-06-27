@@ -232,6 +232,10 @@ export const NPCS: NpcDef[] = [
       "Bienvenue, voyageur. De sombres temps sont tombés sur Eldoria.",
       "Les monstres rôdent dans les bois, et le Seigneur des Ombres Mordrak s'agite au nord.",
       "Nous tiendrons grâce à vous. Allez voir la marchande et la chasseuse pour vos premières tâches.",
+      // v0.6.1 — backstory beat. Reveals Aldric was Mordrak's apprentice;
+      // pairs with the runestone "La Confession d'Aldric" that the player
+      // can read at the village square to complete the connection.
+      "Avant tout ceci, je fus son élève. Pardonne ma faiblesse… et sauve-nous de sa noirceur.",
     ],
     quest: "slime_cleanup",
   },

@@ -38,6 +38,7 @@ import {
 } from "./data/talents";
 import { countSetPieces, getSetBonus } from "./data/sets";
 import { playSound } from "./audio";
+import { CODEX_BY_ID } from "./data/lore";
 
 let enemyIdCounter = 0;
 function nextEnemyId() {
@@ -145,18 +146,21 @@ export type UiPanelKey =
   | "character"
   | "help"
   | "options"
-  | "talents";
+  | "talents"
+  | "codex";
 
 /**
- * v0.4.0 save schema. Bumped from 2 to 3 to add optional runtime fields
- * (`skillCooldowns`, `activeBuffs`). v2 saves remain loadable via the
- * `loadGame` fallback chain; the migration defaults sane empty values.
+ * v0.6.1 save schema. Bumped from 3 to 4 to add the optional
+ * `unlockedLoreIds` collection for the new codex feature. v3 saves remain
+ * loadable via the `loadGame` fallback chain; the migration defaults to an
+ * empty collection so progress on an existing save is preserved (you simply
+ * re-read the runestones you've already visited in real life).
  */
-export const SAVE_KEY = "rpg_save_v3";
-export const SAVE_SCHEMA_VERSION = 3 as const;
+export const SAVE_KEY = "rpg_save_v4";
+export const SAVE_SCHEMA_VERSION = 4 as const;
 /** Legacy keys cleaned up on every successful write (so downgrades don't
  *  silently reload stale data). */
-const LEGACY_SAVE_KEYS = ["rpg_save_v2", "rpg_save_v1"] as const;
+const LEGACY_SAVE_KEYS = ["rpg_save_v3", "rpg_save_v2", "rpg_save_v1"] as const;
 
 export interface GameStore {
   status: GameStatus;
@@ -178,6 +182,8 @@ export interface GameStore {
     options: boolean;
     /** SkillTree panel (v0.3.0+) — toggled by hotkey T or HUD button. */
     talents: boolean;
+    /** v0.6.1 — Codex des Âges panel (toggleable via L key). */
+    codex: boolean;
     dialogue: string | null; // npc id
     shop: string | null; // npc id
     toast: { id: number; message: string; type: "info" | "success" | "error" } | null;
@@ -192,6 +198,13 @@ export interface GameStore {
    *  `shield` skill from Bouclier Arcanique). Mitigates incoming damage
    *  while any shield-type buff is present. */
   activeBuffs: ActiveBuff[];
+  /** v0.6.1 — collected codex fragments. Keys are `CodexEntry.id`s.
+   *  Using a `Record<string, true>` rather than a Set for clean JSON
+   *  serialization. */
+  unlockedLoreIds: Record<string, true>;
+  /** v0.6.1 — id of the runestone the player is currently within read range
+   *  of (null if none). Drives the [E] Lire billboard + keyboard prompt. */
+  nearestStoneId: string | null;
   // computed
   derivedAttack: number;
   derivedDefense: number;
@@ -230,6 +243,14 @@ export interface GameStore {
   turnInQuest: (questId: string) => void;
   togglePanel: (panel: UiPanelKey) => void;
   closePanel: (panel: UiPanelKey) => void;
+  /** v0.6.1 — record a codex fragment as read. Idempotent (no-op for
+   *  already-unlocked ids). Auto-unlocks are surfaced through this same
+   *  action so the locking-down logic lives in one place. */
+  unlockLore: (entryId: string) => void;
+  /** v0.6.1 — set the nearest runestone within read range. The LoreStones
+   *  component writes this every frame based on player proximity; the
+   *  keyboard handler in Player.tsx reads it on the E keypress. */
+  setNearestStone: (stoneId: string | null) => void;
   openDialogue: (npcId: string) => void;
   closeDialogue: () => void;
   openShop: (npcId: string) => void;
@@ -427,6 +448,7 @@ export const useGame = create<GameStore>((set, get) => ({
     help: false,
     options: false,
     talents: false,
+    codex: false,
     dialogue: null,
     shop: null,
     toast: null,
@@ -435,6 +457,8 @@ export const useGame = create<GameStore>((set, get) => ({
   cameraPitch: 0.5,
   skillCooldowns: {},
   activeBuffs: [],
+  unlockedLoreIds: {},
+  nearestStoneId: null,
   derivedAttack: PLAYER.baseAttack,
   derivedDefense: PLAYER.baseDefense,
   derivedMaxHealth: PLAYER.baseMaxHealth,
@@ -469,12 +493,15 @@ export const useGame = create<GameStore>((set, get) => ({
         help: false,
         options: false,
         talents: false,
+        codex: false,
         dialogue: null,
         shop: null,
         toast: null,
       },
       skillCooldowns: {},
       activeBuffs: [],
+      unlockedLoreIds: {},
+      nearestStoneId: null,
       ...d,
     });
   },
@@ -758,6 +785,18 @@ export const useGame = create<GameStore>((set, get) => ({
           }
           return e;
         });
+        // v0.6.1 — auto-unlock Mordrak's final words when the boss dies. We
+        // detect this by checking the freshly-clamped enemies array for a
+        // boss that flipped to dead during THIS tick (rather than querying
+        // `cur.enemies`, which already lists it as dead but might have died
+        // earlier). Filtering by deathTime === now guarantees once-per-kill
+        // semantics even if the player lands several hits in the same tick.
+        {
+          const bossJustDied = updated.some(
+            (e) => e.type === "boss" && e.isDead && e.deathTime === now,
+          );
+          if (bossJustDied) get().unlockLore("mordrak_final");
+        }
         // Build final player object with gold and killCount
         const finalPlayer = {
           ...runningPlayer,
@@ -1649,6 +1688,30 @@ export const useGame = create<GameStore>((set, get) => ({
     }, 2800);
   },
 
+  /* ------------------------- v0.6.1 lore actions ------------------------ */
+
+  /** Record a codex fragment as read. Pure-additive — already-unlocked ids\n   *  are a no-op (we don't churn the map reference, which means React\n   *  selectors on `unlockedLoreIds` stay stable for downstream UI). */
+  unlockLore: (entryId) => {
+    if (!CODEX_BY_ID[entryId]) return;
+    const s = get();
+    if (s.unlockedLoreIds[entryId]) return;
+    set((st) => ({
+      unlockedLoreIds: { ...st.unlockedLoreIds, [entryId]: true },
+    }));
+    const entry = CODEX_BY_ID[entryId];
+    get().showToast(`Codex : « ${entry.title} » ajout\u00e9`, "success");
+  },
+
+  /** Set the nearest read-range runestone (null when none). Cheap setter —
+   *  LoreStones writes it every frame, Player reads on E. We only emit a
+   *  setState when the value actually changes to avoid triggering React
+   *  re-renders every tick the player walks past an empty patch of grass. */
+  setNearestStone: (stoneId) => {
+    const cur = get().nearestStoneId;
+    if (cur === stoneId) return;
+    set({ nearestStoneId: stoneId });
+  },
+
   applyDamageToEnemy: (enemyId, damage, knockback) => {
     set((st) => ({
       enemies: st.enemies.map((e) =>
@@ -1769,7 +1832,7 @@ export const useGame = create<GameStore>((set, get) => ({
   saveGame: () => {
     const s = get();
     const data = {
-      // v0.4.0: schema bumped 2 → 3 (skillCooldowns + activeBuffs).
+      // v0.6.1: schema bumped 3 → 4 (unlockedLoreIds).
       schemaVersion: SAVE_SCHEMA_VERSION,
       player: s.player,
       inventory: s.inventory,
@@ -1777,6 +1840,7 @@ export const useGame = create<GameStore>((set, get) => ({
       quests: s.quests,
       skillCooldowns: s.skillCooldowns,
       activeBuffs: s.activeBuffs,
+      unlockedLoreIds: s.unlockedLoreIds,
       timestamp: Date.now(),
     };
     try {
@@ -1801,6 +1865,7 @@ export const useGame = create<GameStore>((set, get) => ({
         quests?: QuestState[];
         skillCooldowns?: SkillCooldownState;
         activeBuffs?: ActiveBuff[];
+        unlockedLoreIds?: Record<string, true>;
       } | null = null;
       const rawV3 = localStorage.getItem(SAVE_KEY);
       if (rawV3) {
@@ -1867,12 +1932,15 @@ export const useGame = create<GameStore>((set, get) => ({
           help: false,
           options: false,
           talents: false,
+          codex: false,
           dialogue: null,
           shop: null,
           toast: null,
         },
         skillCooldowns: data.skillCooldowns ?? {},
         activeBuffs: data.activeBuffs ?? [],
+        unlockedLoreIds: data.unlockedLoreIds ?? {},
+        nearestStoneId: null,
         ...d,
       });
       get().showToast("Partie charg\u00e9e", "success");
