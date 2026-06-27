@@ -25,11 +25,19 @@ import { Intro } from "./ui/Intro";
 import { UpdateNotifier } from "./ui/UpdateNotifier";
 import { Options } from "./ui/Options";
 import { SkillTree } from "./ui/SkillTree";
+import { CodexPanel } from "./ui/CodexPanel";
+import { LoreStones } from "./ui/LoreStones";
 
 export function Game() {
   const status = useGame((s) => s.status);
   const ui = useGame((s) => s.ui);
-  const player = useGame((s) => s.player);
+  // v0.6.1 — atomic selectors. The previous
+  //   `const player = useGame((s) => s.player)` subscribed to the entire
+  // player object, so every movePlayer (60 Hz) cascaded a re-render of the
+  // whole Game root — including the <Canvas/>, panels and HUD subscribers.
+  // Split into the only fields the JSX actually reads.
+  const playerHealth = useGame((s) => s.player.health);
+  const playerIsDead = useGame((s) => s.player.isDead);
   const quests = useGame((s) => s.quests);
   const npcs = useGame((s) => s.npcs);
   const derivedMaxHealth = useGame((s) => s.derivedMaxHealth);
@@ -112,6 +120,40 @@ export function Game() {
     }
   }, []);
 
+  // v0.6.1 — global keyboard handlers for codex + lore reading.
+  //   L    → toggle the CodexPanel
+  //   E    → if the player is in range of a runestone, unlock the matching
+  //          fragment (the E key already opens NPC dialogue / shop through
+  //          Player.tsx; we PREVENT default here ONLY when a stone is in
+  //          range so the two systems stay composable).
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      // Ignore typing in inputs / text fields
+      const tgt = e.target as HTMLElement | null;
+      if (tgt && (tgt.tagName === "INPUT" || tgt.tagName === "TEXTAREA" || tgt.isContentEditable)) {
+        return;
+      }
+      const k = e.key.toLowerCase();
+      if (k === "l") {
+        e.preventDefault();
+        useGame.getState().togglePanel("codex");
+        return;
+      }
+      if (k === "e") {
+        const nearest = useGame.getState().nearestStoneId;
+        if (nearest && !useGame.getState().ui.dialogue) {
+          e.preventDefault();
+          useGame.getState().unlockLore(nearest);
+          // Briefly clear so the billboard disappears immediately on read;
+          // the parent's useFrame will republish it if the player stays.
+          useGame.getState().setNearestStone(null);
+        }
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
   // Mobile attack button support already in HUD; nothing extra
 
   return (      <div className="relative h-screen w-screen overflow-hidden bg-slate-950">
@@ -141,6 +183,7 @@ export function Game() {
           <Lighting />
           <Terrain />
           <Environment />
+          <LoreStones />
           {status === "playing" || status === "paused" || status === "gameover" || status === "victory" ? (
             <>
               <Player />
@@ -179,12 +222,13 @@ export function Game() {
       {ui.shop && <Shop />}
       {ui.help && <HelpPanel />}
       {ui.options && <Options />}
+      {ui.codex && <CodexPanel />}
       <MainMenu />
       <Intro />
       <UpdateNotifier />
 
       {/* Low HP vignette */}
-      {status === "playing" && player.health > 0 && player.health / derivedMaxHealth < 0.3 && (
+      {status === "playing" && !playerIsDead && playerHealth > 0 && playerHealth / derivedMaxHealth < 0.3 && (
         <div
           className="pointer-events-none absolute inset-0 z-30"
           style={{
